@@ -1,6 +1,17 @@
-// function findText(parentTag:Element, childName:string):string {
-//     return parentTag.getElementsByTagName(childName)[0].textContent;
-// }
+/**
+ * Abstraction of MAL's XML
+ */
+
+
+/**
+ * 
+ * @param parentTag
+ * @param childName
+ * @returns {string}
+ */
+function findText(parentTag:Element, childName:string):string {
+    return parentTag.getElementsByTagName(childName)[0].textContent;
+}
 
 
 const nullDate:string = "0000-00-00";
@@ -19,10 +30,13 @@ class MALAnimeList {
     public anime:MALAnime[];
 
     constructor(MALXML:Element) {
+
         let animeList:any = MALXML.getElementsByTagName('anime');
         let userInfo = MALXML.getElementsByTagName('myinfo')[0];
 
         this.user = new MALUser(userInfo);
+        this.anime = [];
+
         for (let anime of animeList) {
             this.anime.push(new MALAnime(anime));
         }
@@ -87,7 +101,7 @@ class MALAnime {
         this.seriesType = findText(anime, "series_type");
         this.seriesEpisodes = parseInt(findText(anime, "series_episodes"));
         this.myId = parseInt(findText(anime, "my_id"));
-        this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episode"));
+        this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
         this.myStartDate = new MALDate(findText(anime, "my_start_date"));
         this.myFinishDate = new MALDate(findText(anime, "my_finish_date"));
         this.myRated = findText(anime, "my_rated");
@@ -132,7 +146,7 @@ class MALAnime {
 
 class MALDate {
 
-
+    //YYYY-MM-DD
     public rawDateStr:string;
     public fixedDateStr:string;
     //public date:Date;
@@ -164,7 +178,6 @@ class MALDate {
     }
 
     fixDate():string {
-        //console.log(dateStr)
         const dateStr:string = this.rawDateStr;
 
         if (dateStr == nullDate) {

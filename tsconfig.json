@@ -9,7 +9,7 @@
   ],
   "files": [
     "typings/index.d.ts",
-    "animelistTL.ts",
-    "MAL.ts"
+    "src/animelistTL.ts",
+    "src/MAL.ts"
   ]
 }
