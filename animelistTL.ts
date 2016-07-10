@@ -68,7 +68,7 @@ function findText(parentTag:Element, childName:string):string {
     return parentTag.getElementsByTagName(childName)[0].textContent;
 }
 
-class AnimeList {
+class AnimeListTL {
     //
 
     public foo:string;
@@ -81,8 +81,26 @@ class AnimeList {
 
     public data:Object;
 
-    constructor(filename) {
+    loadData(url:string) {
+        return (function () {
+            let xml = null;
+            $.ajax({
+                async: false,
 
+                crossDomain: true,
+
+                global: false,
+                url: url,
+                dataType: "xml",
+                success: function (data) {
+                    xml = data;
+                }
+            });
+            return xml;
+        })();
+    }
+
+    constructor(filename) {
 
         console.log("before")
 
@@ -96,17 +114,17 @@ class AnimeList {
 
         // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
 
-        // $.ajax({
-        //     url: yqlURL,
-        //     dataType: 'json',
-        //     async: false,
-        //     //data: myData,
-        //     success: function(data) {
-        //         xmlContent = $(data.results[0]);
-        //         let Abstract = $(xmlContent).find("Abstract").text();
-        //         console.log(Abstract);
-        //     }
-        // });
+        $.ajax({
+            url: yqlURL,
+            dataType: 'json',
+            async: false,
+            //data: myData,
+            success: function (data) {
+                xmlContent = $(data.results[0]);
+                let Abstract = $(xmlContent).find("Abstract").text();
+                console.log(Abstract);
+            }
+        });
 
         // $.getJSON(yqlURL, function(data){
         //     xmlContent = $(data.results[0]);
@@ -118,29 +136,14 @@ class AnimeList {
 
         //console.log(xmlData)
 
-        this.xmlData = (function () {
-            let xml = null;
-            $.ajax({
-                async: false,
-
-                crossDomain: true,
-
-                global: false,
-                url: filename,
-                dataType: "xml",
-                success: function (data) {
-                    xml = data;
-                }
-            });
-            return xml;
-        })();
+        this.xmlData = this.loadData(filename);
 
         console.log("after")
 
         this.foo = "foo";
 
         console.log("use")
-        let animeList= this.xmlData.getElementsByTagName('anime');
+        let animeList = this.xmlData.getElementsByTagName('anime');
         console.log()
         console.log("rip")
         this.firstDate = nullDate;
@@ -229,17 +232,60 @@ class AnimeList {
     getJson() {
         return JSON.stringify(this.data);
     }
-
     //
+}
+
+class MAL{
+    constructor(){
+
+    }
+}
+
+
+function yqlTest() {
+    //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
+    // find some demo xml - DuckDuckGo is great for this
+    var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml"
+
+    // build the yql query. Could be just a string - I think join makes easier reading
+    var yqlURL = [
+        "http://query.yahooapis.com/v1/public/yql",
+        "?q=" + encodeURIComponent("select * from xml where url='" + xmlSource + "'"),
+        "&format=xml&callback=?"
+    ].join("");
+
+
+    let xmlContent;
+    console.log("before")
+    // Now do the AJAX heavy lifting
+    $.getJSON(yqlURL, doA);
+    console.log("after")
+    console.log(xmlContent)
 
 
 }
 
+function doA(data){
+    var xmlContent = $(data.results[0]);
+    var Abstract = $(xmlContent).find("Abstract").text();
+    console.log("in ajax");
+    console.log(xmlContent)
+}
 
 let uname:string;
-let list:AnimeList;
+let list:AnimeListTL;
 
+///TODO
 function getListName():void {
+    yqlTest()
+    return;
+
+
+
+}
+
+function fooofof(){
+    //
     uname = (<HTMLInputElement>document.getElementById("listName")).value.trim();
     document.getElementById("inputOut").innerHTML = getApiUrl(uname);
 
@@ -250,8 +296,10 @@ function getListName():void {
         url = getApiUrl(uname)
     }
 
-    list = new AnimeList(url);
+    list = new AnimeListTL(url);
 
     document.getElementById("json").innerHTML = list.getJson();
-
 }
+
+
+
