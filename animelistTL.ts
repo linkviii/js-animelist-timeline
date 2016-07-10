@@ -1,7 +1,6 @@
 //http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
 
 
-const nullDate:string = "0000-00-00";
 const svgWidth:number = 1000;
 const startColor:string = "#C0C0FF";//blueish
 const endColor:string = "#CD3F85";//redish
@@ -17,52 +16,52 @@ function getApiUrl(name:string):string {
 }
 
 
-function fixDate(dateStr:string):string {
-    //console.log(dateStr)
-    if (dateStr == nullDate) {
-        return nullDate;
-    }
-    let m:string = dateStr.slice(5, 7);
-    if (m == '00') m = '01';
-    let d:string = dateStr.slice(8);
-    if (d == '00') d = '01';
+// function fixDate(dateStr:string):string {
+//     //console.log(dateStr)
+//     if (dateStr == nullDate) {
+//         return nullDate;
+//     }
+//     let m:string = dateStr.slice(5, 7);
+//     if (m == '00') m = '01';
+//     let d:string = dateStr.slice(8);
+//     if (d == '00') d = '01';
+//
+//     return dateStr.slice(0, 5) + m + '-' + d;
+// }
 
-    return dateStr.slice(0, 5) + m + '-' + d;
-}
-
-/**
- * Compare date strings that could be null
- * @param d1 string
- * @param d2 string
- * @param findMax bool
- * @returns string
- */
-function compareDate(d1:string, d2:string, findMax:boolean = true):string {
-    if (d1 == nullDate && d2 == nullDate) {
-        return nullDate;
-    } else if (d1 == nullDate) {
-        return fixDate(d2);
-    } else if (d2 == nullDate) {
-        return fixDate(d1);
-    }
-
-    d1 = fixDate(d1);
-    d2 = fixDate(d2);
-    if (d1 == d2) {
-        return d1;
-    }
-    const dt1:Date = new Date(d1);
-    const dt2:Date = new Date(d2);
-
-    const v:boolean = dt1 > dt2;
-
-    if ((findMax && v) || (!findMax && !v)) {
-        return d1;
-    } else {
-        return d2;
-    }
-
-}
+// /**
+//  * Compare date strings that could be null
+//  * @param d1 string
+//  * @param d2 string
+//  * @param findMax bool
+//  * @returns string
+//  */
+// function compareDate(d1:string, d2:string, findMax:boolean = true):string {
+//     if (d1 == nullDate && d2 == nullDate) {
+//         return nullDate;
+//     } else if (d1 == nullDate) {
+//         return fixDate(d2);
+//     } else if (d2 == nullDate) {
+//         return fixDate(d1);
+//     }
+//
+//     d1 = fixDate(d1);
+//     d2 = fixDate(d2);
+//     if (d1 == d2) {
+//         return d1;
+//     }
+//     const dt1:Date = new Date(d1);
+//     const dt2:Date = new Date(d2);
+//
+//     const v:boolean = dt1 > dt2;
+//
+//     if ((findMax && v) || (!findMax && !v)) {
+//         return d1;
+//     } else {
+//         return d2;
+//     }
+//
+// }
 
 function findText(parentTag:Element, childName:string):string {
     return parentTag.getElementsByTagName(childName)[0].textContent;
@@ -76,12 +75,17 @@ class AnimeListTL {
 
     public firstDate:string;
     public lastDate:string;
+
+
     public datedAnime:Element[];// = [];
     public notDatedAnime:Element[];
 
+    public dated:MALAnime[];
+    public notDated:MALAnime[];
+
     public data:Object;
 
-    loadData(url:string) {
+    loadData(url:string):any /*xml*/ {
         return (function () {
             let xml = null;
             $.ajax({
@@ -100,31 +104,29 @@ class AnimeListTL {
         })();
     }
 
-    constructor(filename) {
 
-        console.log("before")
+    deadCode() {
+        // let yqlURL:string = [
+        //     "http://query.yahooapis.com/v1/public/yql",
+        //     "?q=" + encodeURIComponent("select * from xml where url='" + filename + "'"),
+        //     "&format=xml&callback=?"
+        // ].join("");
 
-        let yqlURL:string = [
-            "http://query.yahooapis.com/v1/public/yql",
-            "?q=" + encodeURIComponent("select * from xml where url='" + filename + "'"),
-            "&format=xml&callback=?"
-        ].join("");
-
-        let xmlContent;
-
-        // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
-
-        $.ajax({
-            url: yqlURL,
-            dataType: 'json',
-            async: false,
-            //data: myData,
-            success: function (data) {
-                xmlContent = $(data.results[0]);
-                let Abstract = $(xmlContent).find("Abstract").text();
-                console.log(Abstract);
-            }
-        });
+        // let xmlContent;
+        //
+        // // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
+        //
+        // $.ajax({
+        //     url: yqlURL,
+        //     dataType: 'json',
+        //     async: false,
+        //     //data: myData,
+        //     success: function (data) {
+        //         xmlContent = $(data.results[0]);
+        //         let Abstract = $(xmlContent).find("Abstract").text();
+        //         console.log(Abstract);
+        //     }
+        // });
 
         // $.getJSON(yqlURL, function(data){
         //     xmlContent = $(data.results[0]);
@@ -133,44 +135,51 @@ class AnimeListTL {
         // });
 
         //this.xmlData = xmlContent[0];
+    }
 
+    constructor(filename) {
+
+        // console.log("before")
         //console.log(xmlData)
 
         this.xmlData = this.loadData(filename);
 
-        console.log("after")
+        // console.log("after")
+        // console.log("use")
 
-        this.foo = "foo";
+        let mal:MALAnimeList = new MALAnimeList(this.xmlData);
 
-        console.log("use")
-        let animeList = this.xmlData.getElementsByTagName('anime');
-        console.log()
+
         console.log("rip")
+
         this.firstDate = nullDate;
         this.lastDate = nullDate;
+
+
         this.datedAnime = [];
         this.notDatedAnime = [];
 
-        for (let anime of animeList) {
-            const status:string = findText(anime, 'my_status');
-            if (status != 'Completed') {
+        this.dated = [];
+        this.notDated = [];
+
+        for (let anime of mal.anime) {
+            if (anime.myStatus == STATUSES.completed) {
                 continue;
             }
 
-            const start:string = fixDate(findText(anime, 'my_start_date'));
-            const end:string = fixDate(findText(anime, 'my_finish_date'));
-            if (start == nullDate && end == nullDate) {
-                this.notDatedAnime.push(anime);
+            const start:string = anime.myStartDate.fixDate();
+            const end:string = anime.myFinishDate.fixDate();
+
+            if (anime.isDated()) {
+                this.dated.push(anime);
             } else {
-                this.datedAnime.push(anime);
+                this.notDated.push(anime);
             }
 
-            //console.log(anime);
-            this.firstDate = compareDate(this.firstDate, start, false);
-            this.lastDate = compareDate(this.lastDate, end);
-
-
+            this.firstDate = anime.myStartDate.compareRawDate(this.firstDate, false);
+            this.lastDate = anime.myFinishDate.compareRawDate(this.lastDate);
         }
+
         //console.log(this.firstDate)
         //console.log(this.lastDate)
 
@@ -182,64 +191,50 @@ class AnimeListTL {
         let callouts = [];
 
         //make callouts
-        for (let anime of this.datedAnime) {
+        
+        for (let anime of this.dated) {
             let c = [];
             let d = [];
-            let start:string = findText(anime, 'my_start_date');
-            let end:string = findText(anime, 'my_finish_date');
-            const name:string = findText(anime, 'series_title');
 
-            start = fixDate(start);
-            end = fixDate(end);
+            const oneDate:string|boolean = anime.hasOneDate();
 
-            if (start == end || start == nullDate || end == nullDate) {
-                //one date
-                let date:string;
-                if (start != nullDate) {
-                    date = start;
-                } else {
-                    date = end;
-                }
-                date = fixDate(date);
-
-                c.push(name);
-                c.push(date);
-
+            if (oneDate) {
+                c.push(anime.seriesTitle);
+                c.push(oneDate);
                 callouts.push(c);
 
-            } else {
-                //two dates
-                const startLabel:string = "Started " + name;
-                const finishLabel:string = "finished " + name;
+            }else{
+
+                const startLabel:string = "Started " + anime.seriesTitle;
+                const finishLabel:string = "finished " + anime.seriesTitle;
 
                 c.push(startLabel);
-                c.push(start);
+                c.push(anime.myStartDate.fixedDateStr);
                 c.push(startColor);
 
                 d.push(finishLabel);
-                d.push(end);
+                d.push(anime.myFinishDate.fixedDateStr);
                 d.push(endColor);
 
                 callouts.push(c);
                 callouts.push(d);
+
             }
 
-            this.data['callouts'] = callouts;
         }
+        this.data['callouts'] = callouts;
 
+        
     }
 
     getJson() {
         return JSON.stringify(this.data);
     }
+
     //
 }
 
-class MAL{
-    constructor(){
 
-    }
-}
 
 
 function yqlTest() {
@@ -265,7 +260,7 @@ function yqlTest() {
 
 }
 
-function doA(data){
+function doA(data) {
     var xmlContent = $(data.results[0]);
     var Abstract = $(xmlContent).find("Abstract").text();
     console.log("in ajax");
@@ -281,10 +276,9 @@ function getListName():void {
     return;
 
 
-
 }
 
-function fooofof(){
+function fooofof() {
     //
     uname = (<HTMLInputElement>document.getElementById("listName")).value.trim();
     document.getElementById("inputOut").innerHTML = getApiUrl(uname);

@@ -2,16 +2,28 @@
 //     return parentTag.getElementsByTagName(childName)[0].textContent;
 // }
 
-class AnimeList {
+
+const nullDate:string = "0000-00-00";
+const STATUSES = {
+
+    watching: "Watching",
+    completed: "Completed",
+    onHold: "On-Hold",
+    dropped: "Dropped",
+    planToWatch: "Plan to Watch"
+
+};
+
+class MALAnimeList {
     public user:MALUser;
     public anime:MALAnime[];
 
-    constructor(MALXML:Element){
+    constructor(MALXML:Element) {
         let animeList:any = MALXML.getElementsByTagName('anime');
         let userInfo = MALXML.getElementsByTagName('myinfo')[0];
 
         this.user = new MALUser(userInfo);
-        for (let anime of animeList){
+        for (let anime of animeList) {
             this.anime.push(new MALAnime(anime));
         }
 
@@ -93,25 +105,70 @@ class MALAnime {
         this.updateOnImport = parseInt(findText(anime, "update_on_import"));
     }
 
+    isDated():boolean {
+        return !this.myStartDate.isNullDate() || !this.myFinishDate.isNullDate();
+    }
+
+
+    /**
+     * Returns the single date if there is only one or false.
+     * @returns {string|boolean}
+     */
+    hasOneDate():string|boolean {
+        const one:boolean = this.myStartDate.fixedDateStr == this.myFinishDate.fixedDateStr
+            || this.myStartDate.isNullDate() || this.myFinishDate.isNullDate();
+        if (!one) {
+            return false;
+        }
+        if (this.myStartDate.isNullDate()) {
+            return this.myFinishDate.fixedDateStr;
+        }
+        //this.myFinishDate.isNullDate()
+        return this.myStartDate.fixedDateStr;
+
+    }
+
 }
 
 class MALDate {
 
-    public nullDate:string = "0000-00-00";
-
 
     public rawDateStr:string;
-    public date:Date;
+    public fixedDateStr:string;
+    //public date:Date;
 
     constructor(date:string) {
         this.rawDateStr = date;
+        this.fixedDateStr = MALDate.fixDate(date);
 
     }
 
-    fixDate(dateStr:string):string {
+    isNullDate():boolean {
+        return this.rawDateStr == nullDate;
+    }
+
+    static fixDate(dateStr:string):string {
         //console.log(dateStr)
-        if (dateStr == this.nullDate) {
-            return this.nullDate;
+
+        // const dateStr:string = this.rawDateStr;
+
+        if (dateStr == nullDate) {
+            return nullDate;
+        }
+        let m:string = dateStr.slice(5, 7);
+        if (m == '00') m = '01';
+        let d:string = dateStr.slice(8);
+        if (d == '00') d = '01';
+
+        return dateStr.slice(0, 5) + m + '-' + d;
+    }
+
+    fixDate():string {
+        //console.log(dateStr)
+        const dateStr:string = this.rawDateStr;
+
+        if (dateStr == nullDate) {
+            return nullDate;
         }
         let m:string = dateStr.slice(5, 7);
         if (m == '00') m = '01';
@@ -130,16 +187,16 @@ class MALDate {
     compareRawDate(d2:string, findMax:boolean = true):string {
         let d1:string = this.rawDateStr;
 
-        if (d1 == this.nullDate && d2 == this.nullDate) {
-            return this.nullDate;
-        } else if (d1 == this.nullDate) {
-            return this.fixDate(d2);
+        if (d1 == nullDate && d2 == nullDate) {
+            return nullDate;
+        } else if (d1 == nullDate) {
+            return MALDate.fixDate(d2);
         } else if (d2 == nullDate) {
-            return this.fixDate(d1);
+            return MALDate.fixDate(d1);
         }
 
-        d1 = this.fixDate(d1);
-        d2 = this.fixDate(d2);
+        d1 = MALDate.fixDate(d1);
+        d2 = MALDate.fixDate(d2);
         if (d1 == d2) {
             return d1;
         }
