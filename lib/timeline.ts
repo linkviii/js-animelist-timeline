@@ -40,10 +40,10 @@ interface TimelineData {
     width:number;
     start:string;
     end:string;
-    num_ticks:number;
-    tick_format:string;
-    callouts:Array<Array<string>>;
-    eras:Array<Array<string>>;
+    num_ticks?:number;
+    tick_format?:string;
+    callouts?:Array<Array<string>>;
+    eras?:Array<Array<string>>;
 }
 
 /**
