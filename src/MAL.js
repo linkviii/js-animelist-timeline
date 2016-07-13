@@ -10,7 +10,7 @@
 function findText(parentTag, childName) {
     return parentTag.getElementsByTagName(childName)[0].textContent;
 }
-const nullDate = "0000-00-00";
+const rawNullDate = "0000-00-00";
 const STATUSES = {
     watching: "Watching",
     completed: "Completed",
@@ -69,6 +69,12 @@ class MALAnime {
     isDated() {
         return !this.myStartDate.isNullDate() || !this.myFinishDate.isNullDate();
     }
+    adjustDates(minDate, maxDate) {
+        if (this.myStartDate.extremeOfDates(minDate)) {
+            this.myStartDate = nullDate;
+        }
+        //TODO
+    }
     /**
      * Returns the single date if there is only one or false.
      * @returns {string|boolean}
@@ -93,26 +99,13 @@ class MALDate {
         this.fixedDateStr = MALDate.fixDate(date);
     }
     isNullDate() {
-        return this.rawDateStr == nullDate;
+        return this.rawDateStr == rawNullDate;
     }
     static fixDate(dateStr) {
         //console.log(dateStr)
         // const dateStr:string = this.rawDateStr;
-        if (dateStr == nullDate) {
-            return nullDate;
-        }
-        let m = dateStr.slice(5, 7);
-        if (m == '00')
-            m = '01';
-        let d = dateStr.slice(8);
-        if (d == '00')
-            d = '01';
-        return dateStr.slice(0, 5) + m + '-' + d;
-    }
-    fixDate() {
-        const dateStr = this.rawDateStr;
-        if (dateStr == nullDate) {
-            return nullDate;
+        if (dateStr == rawNullDate) {
+            return rawNullDate;
         }
         let m = dateStr.slice(5, 7);
         if (m == '00')
@@ -123,36 +116,72 @@ class MALDate {
         return dateStr.slice(0, 5) + m + '-' + d;
     }
     /**
+     *  this > other -> +
+     *  this < other -> -
+     * @param other
+     * @returns {number}
+     */
+    compare(other) {
+        let d1 = this.rawDateStr;
+        let d2;
+        if (typeof other === "string") {
+            d2 = other;
+        }
+        else {
+            d2 = other.rawDateStr;
+        }
+        /* -- selecting not null here was not working for extremeOfDates
+         // if (d1 == rawNullDate && d2 == rawNullDate) {
+         //    p(0)
+         //     return 0;
+         // } else if (d1 == rawNullDate) {
+         //     p(-1)
+         //     return -1;
+         // } else if (d2 == rawNullDate) {
+         //     p(1)
+         //     return 1;
+         // }
+         */
+        d1 = MALDate.fixDate(d1);
+        d2 = MALDate.fixDate(d2);
+        if (d1 == d2) {
+            return 0;
+        }
+        const dt1 = new Date(d1);
+        const dt2 = new Date(d2);
+        return dt1.valueOf() - dt2.valueOf();
+    }
+    /**
      * Compare date strings that could be null
      * @param d2 string
      * @param findMax bool
      * @returns string
      */
-    compareRawDate(d2, findMax = true) {
-        let d1 = this.rawDateStr;
-        if (d1 == nullDate && d2 == nullDate) {
-            return nullDate;
+    extremeOfDates(d2, findMax = true) {
+        if (this.rawDateStr == rawNullDate && d2 == rawNullDate) {
+            return rawNullDate;
         }
-        else if (d1 == nullDate) {
+        else if (this.rawDateStr == rawNullDate) {
             return MALDate.fixDate(d2);
         }
-        else if (d2 == nullDate) {
-            return MALDate.fixDate(d1);
+        else if (d2 == rawNullDate) {
+            return this.fixedDateStr;
         }
-        d1 = MALDate.fixDate(d1);
-        d2 = MALDate.fixDate(d2);
-        if (d1 == d2) {
-            return d1;
+        //console.log(d2)
+        let val = this.compare(d2);
+        if (val == 0) {
+            return this.fixedDateStr;
         }
-        const dt1 = new Date(d1);
-        const dt2 = new Date(d2);
-        const v = dt1 > dt2;
-        if ((findMax && v) || (!findMax && !v)) {
-            return d1;
+        if (!findMax) {
+            val = -val;
+        }
+        if (val > 0) {
+            return this.fixedDateStr;
         }
         else {
-            return d2;
+            return MALDate.fixDate(d2);
         }
     }
 }
+const nullDate = new MALDate(rawNullDate);
 //# sourceMappingURL=MAL.js.map

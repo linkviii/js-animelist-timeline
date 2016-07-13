@@ -4,7 +4,7 @@
 
 
 /**
- * 
+ *
  * @param parentTag
  * @param childName
  * @returns {string}
@@ -14,7 +14,8 @@ function findText(parentTag:Element, childName:string):string {
 }
 
 
-const nullDate:string = "0000-00-00";
+const rawNullDate:string = "0000-00-00";
+
 const STATUSES = {
 
     watching: "Watching",
@@ -123,6 +124,12 @@ class MALAnime {
         return !this.myStartDate.isNullDate() || !this.myFinishDate.isNullDate();
     }
 
+    adjustDates(minDate:string, maxDate:string):void {
+        if (this.myStartDate.extremeOfDates(minDate)) {
+            this.myStartDate = nullDate;
+        }
+        //TODO
+    }
 
     /**
      * Returns the single date if there is only one or false.
@@ -158,7 +165,7 @@ class MALDate {
     }
 
     isNullDate():boolean {
-        return this.rawDateStr == nullDate;
+        return this.rawDateStr == rawNullDate;
     }
 
     static fixDate(dateStr:string):string {
@@ -166,8 +173,8 @@ class MALDate {
 
         // const dateStr:string = this.rawDateStr;
 
-        if (dateStr == nullDate) {
-            return nullDate;
+        if (dateStr == rawNullDate) {
+            return rawNullDate;
         }
         let m:string = dateStr.slice(5, 7);
         if (m == '00') m = '01';
@@ -177,18 +184,46 @@ class MALDate {
         return dateStr.slice(0, 5) + m + '-' + d;
     }
 
-    fixDate():string {
-        const dateStr:string = this.rawDateStr;
 
-        if (dateStr == nullDate) {
-            return nullDate;
+    /**
+     *  this > other -> +
+     *  this < other -> -
+     * @param other
+     * @returns {number}
+     */
+    compare(other:string|MALDate):number {
+        let d1:string = this.rawDateStr;
+        let d2:string;
+
+        if (typeof other === "string") {
+            d2 = other;
+        } else {
+            d2 = other.rawDateStr;
         }
-        let m:string = dateStr.slice(5, 7);
-        if (m == '00') m = '01';
-        let d:string = dateStr.slice(8);
-        if (d == '00') d = '01';
 
-        return dateStr.slice(0, 5) + m + '-' + d;
+        /* -- selecting not null here was not working for extremeOfDates
+         // if (d1 == rawNullDate && d2 == rawNullDate) {
+         //    p(0)
+         //     return 0;
+         // } else if (d1 == rawNullDate) {
+         //     p(-1)
+         //     return -1;
+         // } else if (d2 == rawNullDate) {
+         //     p(1)
+         //     return 1;
+         // }
+         */
+
+        d1 = MALDate.fixDate(d1);
+        d2 = MALDate.fixDate(d2);
+        if (d1 == d2) {
+            return 0;
+        }
+        const dt1:Date = new Date(d1);
+        const dt2:Date = new Date(d2);
+
+        return dt1.valueOf() - dt2.valueOf();
+
     }
 
     /**
@@ -197,33 +232,35 @@ class MALDate {
      * @param findMax bool
      * @returns string
      */
-    compareRawDate(d2:string, findMax:boolean = true):string {
-        let d1:string = this.rawDateStr;
+    extremeOfDates(d2:string, findMax:boolean = true):string {
 
-        if (d1 == nullDate && d2 == nullDate) {
-            return nullDate;
-        } else if (d1 == nullDate) {
+        if (this.rawDateStr == rawNullDate && d2 == rawNullDate) {
+            return rawNullDate;
+        } else if (this.rawDateStr == rawNullDate) {
             return MALDate.fixDate(d2);
-        } else if (d2 == nullDate) {
-            return MALDate.fixDate(d1);
+        } else if (d2 == rawNullDate) {
+            return this.fixedDateStr;
         }
 
-        d1 = MALDate.fixDate(d1);
-        d2 = MALDate.fixDate(d2);
-        if (d1 == d2) {
-            return d1;
-        }
-        const dt1:Date = new Date(d1);
-        const dt2:Date = new Date(d2);
+        //console.log(d2)
+        let val:number = this.compare(d2);
 
-        const v:boolean = dt1 > dt2;
-
-        if ((findMax && v) || (!findMax && !v)) {
-            return d1;
-        } else {
-            return d2;
+        if (val == 0) {
+            return this.fixedDateStr;
         }
+
+        if (!findMax) {
+            val = -val;
+        }
+
+        if (val > 0) {
+            return this.fixedDateStr;
+        } else {//if (val < 0){
+            return MALDate.fixDate(d2);
+        }
+
     }
 
 }
 
+const nullDate:MALDate = new MALDate(rawNullDate);
