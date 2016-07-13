@@ -1,10 +1,17 @@
 /**
- * 
+ *
  */
 
 
+//const testing:boolean = false;
+const testing:boolean = true;
 
+const testData:string = "res/nowork.xml";
 
+function getApiUrl(name:string):string {
+    return "http://myanimelist.net/malappinfo.php?u="
+        + name + "&status=all&type=anime";
+}
 
 
 function yqlTest() {
@@ -38,20 +45,20 @@ function doA(data) {
 }
 
 let uname:string;
-let list:AnimeListTL;
+let tln:AnimeListTimeline;
 
 ///TODO
 function getListName():void {
     //yqlTest()
     higs()
     return;
-
-
 }
 
 function higs() {
     //
-    uname = (<HTMLInputElement>document.getElementById("listName")).value.trim();
+
+    uname = $("#listName").val().trim();
+
     document.getElementById("inputOut").innerHTML = getApiUrl(uname);
 
     let url:string;
@@ -61,19 +68,31 @@ function higs() {
         url = getApiUrl(uname)
     }
 
-    let doc = loadData(url);
-    let mal:MALAnimeList = new MALAnimeList(doc);
+    let doc = loadData(url);//ajax
+    postAjax(doc);
+}
 
-    //console.log(url)
-    //console.log(doc)
+function postAjax(doc):void {
 
-    list = new AnimeListTL(mal);
+    const mal:MALAnimeList = new MALAnimeList(doc);
 
-    document.getElementById("json").innerHTML = list.getJson();
+    const widthStr:string = $("#width").val();
+
+    //check that its valid
+    //tdo
+
+    const width:number = parseInt(widthStr);
+
+    tln = new AnimeListTimeline(mal );
+
+    document.getElementById("json").innerHTML = tln.getJson();
+    const svg:Timeline = new Timeline(tln.data, "tl");
+    svg.build();
+    //console.log(svg);
 }
 
 
-function  loadData(url:string):any /*xml*/ {
+function loadData(url:string):any /*xml*/ {
     return (function () {
         let xml = null;
         $.ajax({
@@ -93,3 +112,34 @@ function  loadData(url:string):any /*xml*/ {
 }
 
 
+function  deadCode() {
+    // let yqlURL:string = [
+    //     "http://query.yahooapis.com/v1/public/yql",
+    //     "?q=" + encodeURIComponent("select * from xml where url='" + filename + "'"),
+    //     "&format=xml&callback=?"
+    // ].join("");
+
+    // let xmlContent;
+    //
+    // // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
+    //
+    // $.ajax({
+    //     url: yqlURL,
+    //     dataType: 'json',
+    //     async: false,
+    //     //data: myData,
+    //     success: function (data) {
+    //         xmlContent = $(data.results[0]);
+    //         let Abstract = $(xmlContent).find("Abstract").text();
+    //         console.log(Abstract);
+    //     }
+    // });
+
+    // $.getJSON(yqlURL, function(data){
+    //     xmlContent = $(data.results[0]);
+    //     let Abstract = $(xmlContent).find("Abstract").text();
+    //     console.log(Abstract);
+    // });
+
+    //this.xmlData = xmlContent[0];
+}

@@ -7,19 +7,33 @@
 
 <body>
 
-stuffs
 
-<p>List username</p>
+<p>bla</p>
 
-<input id="listName">
+<label>List username
+    <input id="listName" required/>
+</label>
+
+<label> Width
+    <input id="width" type="number" value="1000" required/>
+</label>
+
+<label>From
+    <input id="from" type="date" placeholder="mm/dd/yyyy"/>
+</label>
+
+<label>To
+    <input id="to" type="date"/>
+</label>
 
 <button type="button" onclick="getListName()">Submit</button>
 
 <pre id="inputOut"></pre>
 <p id="json"></p>
 <div id="tl"></div>
+<p>foo</p>
 
-
+<canvas id="dummyCanvas" width="0" height="0"></canvas>
 
 <script src="lib/jquery-2.2.3.min.js" type="text/javascript"></script>
 <script src="lib/svg.min.js" type="text/javascript"></script>

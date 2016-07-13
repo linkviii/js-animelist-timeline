@@ -1,18 +1,11 @@
 //http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
-//const testing:boolean = false;
-const testing = true;
-const testData = "res/nowork.xml";
 const svgWidth = 1000;
 const startColor = "#C0C0FF"; //blueish
 const endColor = "#CD3F85"; //redish
-function getApiUrl(name) {
-    return "http://myanimelist.net/malappinfo.php?u="
-        + name + "&status=all&type=anime";
-}
-class AnimeListTL {
-    constructor(mal) {
-        this.firstDate = nullDate;
-        this.lastDate = nullDate;
+class AnimeListTimeline {
+    constructor(mal, tlConfig) {
+        this.firstDate = rawNullDate;
+        this.lastDate = rawNullDate;
         this.dated = [];
         this.notDated = [];
         for (let anime of mal.anime) {
@@ -25,21 +18,22 @@ class AnimeListTL {
             else {
                 this.notDated.push(anime);
             }
-            this.firstDate = anime.myStartDate.compareRawDate(this.firstDate, false);
-            this.lastDate = anime.myFinishDate.compareRawDate(this.lastDate);
+            //console.log("b: " + this.lastDate)
+            this.firstDate = anime.myStartDate.extremeOfDates(this.firstDate, false);
+            this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
         }
         // console.log(this.firstDate)
         // console.log(this.lastDate)
-        this.data = {};
-        this.data['tick_format'] = "%Y-%m-%d";
-        this.data['width'] = svgWidth;
-        this.data['start'] = this.firstDate;
-        this.data['end'] = this.lastDate;
-        let callouts = [];
+        // this.data = <AnimeListTimelineData> {};
+        // this.data.tick_format = "%Y-%m-%d";
+        // this.data.width = width;
+        // this.data.start = this.firstDate;
+        // this.data.end = this.lastDate;
+        const callouts = [];
         //make callouts
         for (let anime of this.dated) {
-            let c = [];
-            let d = [];
+            const c = [];
+            const d = [];
             const oneDate = anime.hasOneDate();
             if (oneDate) {
                 c.push(anime.seriesTitle);
@@ -59,35 +53,20 @@ class AnimeListTL {
                 callouts.push(d);
             }
         }
-        this.data['callouts'] = callouts;
-    }
-    deadCode() {
-        // let yqlURL:string = [
-        //     "http://query.yahooapis.com/v1/public/yql",
-        //     "?q=" + encodeURIComponent("select * from xml where url='" + filename + "'"),
-        //     "&format=xml&callback=?"
-        // ].join("");
-        // let xmlContent;
-        //
-        // // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
-        //
-        // $.ajax({
-        //     url: yqlURL,
-        //     dataType: 'json',
-        //     async: false,
-        //     //data: myData,
-        //     success: function (data) {
-        //         xmlContent = $(data.results[0]);
-        //         let Abstract = $(xmlContent).find("Abstract").text();
-        //         console.log(Abstract);
-        //     }
-        // });
-        // $.getJSON(yqlURL, function(data){
-        //     xmlContent = $(data.results[0]);
-        //     let Abstract = $(xmlContent).find("Abstract").text();
-        //     console.log(Abstract);
-        // });
-        //this.xmlData = xmlContent[0];
+        //this.data.callouts = callouts;
+        //XXX
+        let w;
+        if (tlConfig)
+            w = tlConfig.width;
+        else
+            w = 1000;
+        this.data = {
+            width: w,
+            start: this.firstDate,
+            end: this.lastDate,
+            callouts: callouts,
+            tick_format: "%Y-%m-%d"
+        };
     }
     getJson() {
         return JSON.stringify(this.data);
