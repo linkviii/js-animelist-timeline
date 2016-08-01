@@ -1,61 +1,85 @@
 /**
  *
  */
-//const testing:boolean = false;
-const testing = true;
-const testData = "res/nowork.xml";
+const usingTestData = false;
+// const usingTestData:boolean = true;
+const testData = "res/malappinfo.xml";
 const dateRegex = /^\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 function getApiUrl(name) {
     return "http://myanimelist.net/malappinfo.php?u="
         + name + "&status=all&type=anime";
 }
+/*
 function yqlTest() {
     //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
     // find some demo xml - DuckDuckGo is great for this
-    var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
+    var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml"
+
     // build the yql query. Could be just a string - I think join makes easier reading
     var yqlURL = [
         "http://query.yahooapis.com/v1/public/yql",
         "?q=", encodeURIComponent("select * from xml where url='" + xmlSource + "'"),
         "&format=xml&callback=?"
     ].join("");
-    let xmlContent;
-    console.log("before");
-    // Now do the AJAX heavy lifting
-    $.getJSON(yqlURL, doA);
-    console.log("after");
-    console.log(xmlContent);
+
+
+    // let xmlContent;
+    // console.log("before")
+    $.getJSON(yqlURL, yqlTestAfter);
+    // console.log("after")
+    // console.log(xmlContent)
+
 }
-function doA(data) {
-    var xmlContent = $(data.results[0]);
-    var Abstract = $(xmlContent).find("Abstract").text();
+
+function yqlTestAfter(data) {
     console.log("in ajax");
-    console.log(xmlContent);
+    console.log(data)
+
+    console.log(data.results[0])
+
+    console.log($.parseXML(data.results[0]))
+
+    var xmlContent = $(data.results[0]);
+    console.log(xmlContent)
+    console.log(xmlContent[0])
+
+    var Abstract = $(xmlContent).find("Abstract").text();
+
+    console.log(Abstract)
 }
+*/
 let uname;
 let tln;
 ///TODO
-function getListName() {
-    //yqlTest()
+function listFormSubmit() {
+    // yqlTest()
     beforeAjax();
     return;
 }
 function beforeAjax() {
-    //
+    if (usingTestData) {
+        let doc = loadTestData(testData); //ajax
+        afterAjax(doc);
+        return;
+    }
     uname = $("#listName").val().trim();
-    document.getElementById("inputOut").innerHTML = getApiUrl(uname);
-    let url;
-    if (testing) {
-        url = testData;
-    }
-    else {
-        url = getApiUrl(uname);
-    }
-    let doc = loadData(url); //ajax
-    afterAjax(doc);
+    const malUrl = getApiUrl(uname);
+    document.getElementById("inputOut").innerHTML = malUrl;
+    const yqlURL = [
+        "http://query.yahooapis.com/v1/public/yql", "?q=",
+        encodeURIComponent("select * from xml where url='" + malUrl + "'"),
+        "&format=xml&callback=?"
+    ].join("");
+    $.getJSON(yqlURL, ajaxData);
+}
+function ajaxData(data) {
+    //console.log(data.results[0])
+    const thing = $.parseXML(data.results[0]);
+    afterAjax(thing);
 }
 function afterAjax(doc) {
+    //console.log(doc)
     const mal = new MALAnimeList(doc);
     let startDate = $("#from").val().trim();
     let endDate = $("#to").val().trim();
@@ -120,7 +144,7 @@ function afterAjax(doc) {
     svg.build();
     //console.log(svg);
 }
-function loadData(url) {
+function loadTestData(url) {
     return (function () {
         let xml = null;
         $.ajax({
@@ -135,33 +159,5 @@ function loadData(url) {
         });
         return xml;
     })();
-}
-function deadCode() {
-    // let yqlURL:string = [
-    //     "http://query.yahooapis.com/v1/public/yql",
-    //     "?q=" + encodeURIComponent("select * from xml where url='" + filename + "'"),
-    //     "&format=xml&callback=?"
-    // ].join("");
-    // let xmlContent;
-    //
-    // // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
-    //
-    // $.ajax({
-    //     url: yqlURL,
-    //     dataType: 'json',
-    //     async: false,
-    //     //data: myData,
-    //     success: function (data) {
-    //         xmlContent = $(data.results[0]);
-    //         let Abstract = $(xmlContent).find("Abstract").text();
-    //         console.log(Abstract);
-    //     }
-    // });
-    // $.getJSON(yqlURL, function(data){
-    //     xmlContent = $(data.results[0]);
-    //     let Abstract = $(xmlContent).find("Abstract").text();
-    //     console.log(Abstract);
-    // });
-    //this.xmlData = xmlContent[0];
 }
 //# sourceMappingURL=main.js.map

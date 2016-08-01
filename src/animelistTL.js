@@ -10,9 +10,9 @@ class AnimeListTimeline {
         const maxDate = new MALDate(tlConfig.maxDate);
         this.dated = [];
         this.notDated = [];
-        function dateInBounds() { }
         for (let anime of mal.anime) {
-            if (anime.myStatus != STATUSES.completed) {
+            // p(anime.myStatus)
+            if (anime.myStatus != MALStatus.Completed) {
                 continue;
             }
             anime.adjustDates(minDate, maxDate);
@@ -25,17 +25,9 @@ class AnimeListTimeline {
                 this.notDated.push(anime);
             }
         }
-        //XXX remove
-        if (!minDate.isNullDate() && minDate.compare(this.firstDate) > 0) {
-            this.firstDate = minDate.fixedDateStr;
-        }
+        // console.log("end")
         // console.log(this.firstDate)
         // console.log(this.lastDate)
-        // this.data = <AnimeListTimelineData> {};
-        // this.data.tick_format = "%Y-%m-%d";
-        // this.data.width = width;
-        // this.data.start = this.firstDate;
-        // this.data.end = this.lastDate;
         const callouts = [];
         //make callouts
         for (let anime of this.dated) {
@@ -60,7 +52,6 @@ class AnimeListTimeline {
                 callouts.push(d);
             }
         }
-        //this.data.callouts = callouts;
         this.data = {
             width: tlConfig.width,
             start: this.firstDate,

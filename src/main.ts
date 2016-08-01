@@ -2,12 +2,10 @@
  *
  */
 
+const usingTestData:boolean = false;
+// const usingTestData:boolean = true;
 
-//const testing:boolean = false;
-const testing:boolean = true;
-
-const testData:string = "res/nowork.xml";
-
+const testData:string = "res/malappinfo.xml";
 
 const dateRegex = /^\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
@@ -17,7 +15,7 @@ function getApiUrl(name:string):string {
         + name + "&status=all&type=anime";
 }
 
-
+/*
 function yqlTest() {
     //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
     // find some demo xml - DuckDuckGo is great for this
@@ -31,52 +29,73 @@ function yqlTest() {
     ].join("");
 
 
-    let xmlContent;
-    console.log("before")
-    // Now do the AJAX heavy lifting
-    $.getJSON(yqlURL, doA);
-    console.log("after")
-    console.log(xmlContent)
-
+    // let xmlContent;
+    // console.log("before")
+    $.getJSON(yqlURL, yqlTestAfter);
+    // console.log("after")
+    // console.log(xmlContent)
 
 }
 
-function doA(data) {
-    var xmlContent = $(data.results[0]);
-    var Abstract = $(xmlContent).find("Abstract").text();
+function yqlTestAfter(data) {
     console.log("in ajax");
+    console.log(data)
+
+    console.log(data.results[0])
+
+    console.log($.parseXML(data.results[0]))
+
+    var xmlContent = $(data.results[0]);
     console.log(xmlContent)
+    console.log(xmlContent[0])
+
+    var Abstract = $(xmlContent).find("Abstract").text();
+
+    console.log(Abstract)
 }
+*/
 
 let uname:string;
 let tln:AnimeListTimeline;
 
 ///TODO
-function getListName():void {
-    //yqlTest()
-    beforeAjax()
+function listFormSubmit():void {
+    // yqlTest()
+    beforeAjax();
     return;
 }
 
-function beforeAjax() {
-    //
+function beforeAjax():void {
+    if (usingTestData) {
+        let doc = loadTestData(testData);//ajax
+        afterAjax(doc);
+        return
+    }
 
     uname = $("#listName").val().trim();
 
-    document.getElementById("inputOut").innerHTML = getApiUrl(uname);
+    const malUrl:string = getApiUrl(uname);
+    document.getElementById("inputOut").innerHTML = malUrl;
 
-    let url:string;
-    if (testing) {
-        url = testData;
-    } else {
-        url = getApiUrl(uname)
-    }
+    const yqlURL = [
+        "http://query.yahooapis.com/v1/public/yql", "?q=",
+        encodeURIComponent("select * from xml where url='" + malUrl + "'"),
+        "&format=xml&callback=?"
+    ].join("");
 
-    let doc = loadData(url);//ajax
-    afterAjax(doc);
+    $.getJSON(yqlURL, ajaxData);
+
+}
+
+function ajaxData(data):void {
+    //console.log(data.results[0])
+    const thing = $.parseXML(data.results[0]);
+    afterAjax(thing);
 }
 
 function afterAjax(doc):void {
+    //console.log(doc)
+
     const mal:MALAnimeList = new MALAnimeList(doc);
 
     let startDate:string = $("#from").val().trim();
@@ -153,8 +172,7 @@ function afterAjax(doc):void {
     //console.log(svg);
 }
 
-
-function loadData(url:string):any /*xml*/ {
+function loadTestData(url:string):any /*xml*/ {
     return (function () {
         let xml = null;
         $.ajax({
@@ -171,37 +189,4 @@ function loadData(url:string):any /*xml*/ {
         });
         return xml;
     })();
-}
-
-
-function deadCode() {
-    // let yqlURL:string = [
-    //     "http://query.yahooapis.com/v1/public/yql",
-    //     "?q=" + encodeURIComponent("select * from xml where url='" + filename + "'"),
-    //     "&format=xml&callback=?"
-    // ].join("");
-
-    // let xmlContent;
-    //
-    // // filename = "http://api.duckduckgo.com/?q=StackOverflow&format=xml";
-    //
-    // $.ajax({
-    //     url: yqlURL,
-    //     dataType: 'json',
-    //     async: false,
-    //     //data: myData,
-    //     success: function (data) {
-    //         xmlContent = $(data.results[0]);
-    //         let Abstract = $(xmlContent).find("Abstract").text();
-    //         console.log(Abstract);
-    //     }
-    // });
-
-    // $.getJSON(yqlURL, function(data){
-    //     xmlContent = $(data.results[0]);
-    //     let Abstract = $(xmlContent).find("Abstract").text();
-    //     console.log(Abstract);
-    // });
-
-    //this.xmlData = xmlContent[0];
 }

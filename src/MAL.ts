@@ -1,5 +1,9 @@
 /**
- * Abstraction of MAL's XML
+ * Abstraction of MAL's API XML
+ *
+ * Note the api produces different XML than the export tool on the site.
+ * Commented fields are from the exported format. I wasn't using them anyway.
+ *
  */
 
 
@@ -16,6 +20,9 @@ function findText(parentTag:Element, childName:string):string {
 
 const rawNullDate:string = "0000-00-00";
 
+/**
+ *Exported list gave status as a string.
+ */
 const STATUSES = {
 
     watching: "Watching",
@@ -25,6 +32,17 @@ const STATUSES = {
     planToWatch: "Plan to Watch"
 
 };
+
+/**
+ * The API gives a number. What ever happened to 5?
+ */
+enum MALStatus {
+    Watching = 1,
+    Completed = 2,
+    OnHold = 3,
+    Dropped = 4,
+    PlanToWatch = 6
+}
 
 class MALAnimeList {
     public user:MALUser;
@@ -48,25 +66,25 @@ class MALAnimeList {
 class MALUser {
     public userId:number;
     public userName:string;
-    public userExportType:number;
-    public userTotalAnime:number;
-    public userTotalWatching:number;
-    public userTotalCompleted:number;
-    public userTotalOnhold:number;
-    public userTotalDropped:number;
-    public userTotalPlantowatch:number;
+    // public userExportType:number;
+    // public userTotalAnime:number;
+    // public userTotalWatching:number;
+    // public userTotalCompleted:number;
+    // public userTotalOnhold:number;
+    // public userTotalDropped:number;
+    // public userTotalPlantowatch:number;
 
     constructor(myinfo:Element) {
 
         this.userId = parseInt(findText(myinfo, "user_id"));
         this.userName = findText(myinfo, "user_name");
-        this.userExportType = parseInt(findText(myinfo, "user_export_type"));
-        this.userTotalAnime = parseInt(findText(myinfo, "user_total_anime"));
-        this.userTotalWatching = parseInt(findText(myinfo, "user_total_watching"));
-        this.userTotalCompleted = parseInt(findText(myinfo, "user_total_completed"));
-        this.userTotalOnhold = parseInt(findText(myinfo, "user_total_onhold"));
-        this.userTotalDropped = parseInt(findText(myinfo, "user_total_dropped"));
-        this.userTotalPlantowatch = parseInt(findText(myinfo, "user_total_plantowatch"));
+        // this.userExportType = parseInt(findText(myinfo, "user_export_type"));
+        // this.userTotalAnime = parseInt(findText(myinfo, "user_total_anime"));
+        // this.userTotalWatching = parseInt(findText(myinfo, "user_total_watching"));
+        // this.userTotalCompleted = parseInt(findText(myinfo, "user_total_completed"));
+        // this.userTotalOnhold = parseInt(findText(myinfo, "user_total_onhold"));
+        // this.userTotalDropped = parseInt(findText(myinfo, "user_total_dropped"));
+        // this.userTotalPlantowatch = parseInt(findText(myinfo, "user_total_plantowatch"));
 
     }
 
@@ -82,19 +100,19 @@ class MALAnime {
     public myWatchedEpisodes:number;
     public myStartDate:MALDate;
     public myFinishDate:MALDate;
-    public myRated:string;
+    // public myRated:string;
     public myScore:number;
-    public myDvd:string;
-    public myStorage:string;
-    public myStatus:string;
-    public myComments:string;
-    public myTimesWatched:number;
-    public myRewatchValue:string;
-    public myDownloadedEps:number;
+    // public myDvd:string;
+    // public myStorage:string;
+    public myStatus:number;
+    // public myComments:string;
+    // public myTimesWatched:number;
+    // public myRewatchValue:string;
+    // public myDownloadedEps:number;
     public myTags:string;
     public myRewatching:number;
     public myRewatchingEp:number;
-    public updateOnImport:number;
+    // public updateOnImport:number;
 
     constructor(anime:Element) {
         this.seriesAnimedbId = parseInt(findText(anime, "series_animedb_id"));
@@ -105,19 +123,19 @@ class MALAnime {
         this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
         this.myStartDate = new MALDate(findText(anime, "my_start_date"));
         this.myFinishDate = new MALDate(findText(anime, "my_finish_date"));
-        this.myRated = findText(anime, "my_rated");
+        // this.myRated = findText(anime, "my_rated");
         this.myScore = parseInt(findText(anime, "my_score"));
-        this.myDvd = findText(anime, "my_dvd");
-        this.myStorage = findText(anime, "my_storage");
-        this.myStatus = findText(anime, "my_status");
-        this.myComments = findText(anime, "my_comments");
-        this.myTimesWatched = parseInt(findText(anime, "my_times_watched"));
-        this.myRewatchValue = findText(anime, "my_rewatch_value");
-        this.myDownloadedEps = parseInt(findText(anime, "my_downloaded_eps"));
+        // this.myDvd = findText(anime, "my_dvd");
+        // this.myStorage = findText(anime, "my_storage");
+        this.myStatus = parseInt(findText(anime, "my_status"));
+        // this.myComments = findText(anime, "my_comments");
+        // this.myTimesWatched = parseInt(findText(anime, "my_times_watched"));
+        // this.myRewatchValue = findText(anime, "my_rewatch_value");
+        // this.myDownloadedEps = parseInt(findText(anime, "my_downloaded_eps"));
         this.myTags = findText(anime, "my_tags");
         this.myRewatching = parseInt(findText(anime, "my_rewatching"));
         this.myRewatchingEp = parseInt(findText(anime, "my_rewatching_ep"));
-        this.updateOnImport = parseInt(findText(anime, "update_on_import"));
+        // this.updateOnImport = parseInt(findText(anime, "update_on_import"));
     }
 
     isDated():boolean {
@@ -156,8 +174,8 @@ class MALAnime {
 
 class MALDate {
     /*
-     YYYY-MM-DD
-     MM and DD can be 00 but YYYY must be a year
+     * YYYY-MM-DD
+     * MM and DD can be 00 but YYYY must be a year
      */
 
 
