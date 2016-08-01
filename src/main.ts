@@ -78,7 +78,7 @@ function beforeAjax():void {
     document.getElementById("inputOut").innerHTML = malUrl;
 
     const yqlURL = [
-        "http://query.yahooapis.com/v1/public/yql", "?q=",
+        "https://query.yahooapis.com/v1/public/yql", "?q=",
         encodeURIComponent("select * from xml where url='" + malUrl + "'"),
         "&format=xml&callback=?"
     ].join("");
