@@ -1,10 +1,10 @@
 /**
- *
+ * MIT licenced
  */
 const usingTestData = false;
 // const usingTestData:boolean = true;
 const testData = "res/malappinfo.xml";
-const dateRegex = /^\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d$|^\d\d\d\d\d\d\d\d$/;
+const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 function getApiUrl(name) {
     return "http://myanimelist.net/malappinfo.php?u="

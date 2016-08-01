@@ -1,5 +1,5 @@
 /**
- *
+ * MIT licenced
  */
 
 const usingTestData:boolean = false;
@@ -7,7 +7,7 @@ const usingTestData:boolean = false;
 
 const testData:string = "res/malappinfo.xml";
 
-const dateRegex = /^\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d$|^\d\d\d\d\d\d\d\d$/;
+const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 
 function getApiUrl(name:string):string {

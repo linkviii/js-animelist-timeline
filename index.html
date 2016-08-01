@@ -24,11 +24,13 @@
     </span>
     <!--Not bothering with type="date" because browsers all suck-->
     <label>From
-        <input id="from" placeholder="yyyy-mm-dd" pattern="\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d|\d\d\d\d\d\d\d\d"/>
+        <input id="from" placeholder="yyyy-mm-dd"
+               pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
     </label>
 
     <label>To
-        <input id="to" placeholder="yyyy-mm-dd" pattern="\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d|\d\d\d\d\d\d\d\d"/>
+        <input id="to" placeholder="yyyy-mm-dd"
+               pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
     </label>
 
     <button type="button" onclick="listFormSubmit()">Submit</button>
