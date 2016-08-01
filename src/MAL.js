@@ -70,10 +70,12 @@ class MALAnime {
         return !this.myStartDate.isNullDate() || !this.myFinishDate.isNullDate();
     }
     adjustDates(minDate, maxDate) {
-        if (this.myStartDate.extremeOfDates(minDate)) {
+        if (!minDate.isNullDate() && minDate.compare(this.myStartDate) > 0) {
             this.myStartDate = nullDate;
         }
-        //TODO
+        if (!maxDate.isNullDate() && maxDate.compare(this.myFinishDate) < 0) {
+            this.myFinishDate = nullDate;
+        }
     }
     /**
      * Returns the single date if there is only one or false.
@@ -116,8 +118,11 @@ class MALDate {
         return dateStr.slice(0, 5) + m + '-' + d;
     }
     /**
-     *  this > other -> +
-     *  this < other -> -
+     *  this > other → +
+     *  this < other → -
+     *
+     *  can't use on null dates (?)
+     *
      * @param other
      * @returns {number}
      */
@@ -130,6 +135,7 @@ class MALDate {
         else {
             d2 = other.rawDateStr;
         }
+        //assert not null?
         /* -- selecting not null here was not working for extremeOfDates
          // if (d1 == rawNullDate && d2 == rawNullDate) {
          //    p(0)

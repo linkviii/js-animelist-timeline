@@ -3,36 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>anime stuffs</title>
+    <link rel="stylesheet" type="text/css" href="./res/root.css">
 </head>
 
 <body>
 
 
-<p>bla</p>
+<p>Generate a timeline from dated anime on your MyAnimeList</p>
 
-<label>List username
-    <input id="listName" required/>
-</label>
+<form>
+    <span class="required">
+        <label>List username
+            <input id="listName" required/>
+        </label>
+    </span>
+    <span class="required">
+        <label> Width
+            <input id="width" type="number" value="1000" required/>
+        </label>
+    </span>
+    <!--Not bothering with type="date" because browsers all suck-->
+    <label>From
+        <input id="from" placeholder="yyyy-mm-dd" pattern="\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d|\d\d\d\d\d\d\d\d"/>
+    </label>
 
-<label> Width
-    <input id="width" type="number" value="1000" required/>
-</label>
+    <label>To
+        <input id="to" placeholder="yyyy-mm-dd" pattern="\d\d[-\/\.]\d\d[-\/\.]\d\d\d\d|\d\d\d\d\d\d\d\d"/>
+    </label>
 
-<label>From
-    <input id="from" type="date" placeholder="mm/dd/yyyy"/>
-</label>
+    <button type="button" onclick="getListName()">Submit</button>
+</form>
 
-<label>To
-    <input id="to" type="date"/>
-</label>
-
-<button type="button" onclick="getListName()">Submit</button>
-
+<!--debug out-->
 <pre id="inputOut"></pre>
 <p id="json"></p>
-<div id="tl"></div>
-<p>foo</p>
 
+<!--Generate timeline here-->
+<div id="tl"></div>
+
+<!--Provide an object to test text size-->
 <canvas id="dummyCanvas" width="0" height="0"></canvas>
 
 <script src="lib/jquery-2.2.3.min.js" type="text/javascript"></script>

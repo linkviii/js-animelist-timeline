@@ -124,11 +124,14 @@ class MALAnime {
         return !this.myStartDate.isNullDate() || !this.myFinishDate.isNullDate();
     }
 
-    adjustDates(minDate:string, maxDate:string):void {
-        if (this.myStartDate.extremeOfDates(minDate)) {
+    adjustDates(minDate:MALDate, maxDate:MALDate):void {
+
+        if (!minDate.isNullDate() && minDate.compare(this.myStartDate) > 0) {
             this.myStartDate = nullDate;
         }
-        //TODO
+        if (!maxDate.isNullDate() && maxDate.compare(this.myFinishDate) < 0) {
+            this.myFinishDate = nullDate;
+        }
     }
 
     /**
@@ -152,8 +155,12 @@ class MALAnime {
 }
 
 class MALDate {
+    /*
+     YYYY-MM-DD
+     MM and DD can be 00 but YYYY must be a year
+     */
 
-    //YYYY-MM-DD
+
     public rawDateStr:string;
     public fixedDateStr:string;
     //public date:Date;
@@ -186,8 +193,11 @@ class MALDate {
 
 
     /**
-     *  this > other -> +
-     *  this < other -> -
+     *  this > other → +
+     *  this < other → -
+     *
+     *  can't use on null dates (?)
+     *
      * @param other
      * @returns {number}
      */
@@ -200,6 +210,8 @@ class MALDate {
         } else {
             d2 = other.rawDateStr;
         }
+
+        //assert not null?
 
         /* -- selecting not null here was not working for extremeOfDates
          // if (d1 == rawNullDate && d2 == rawNullDate) {

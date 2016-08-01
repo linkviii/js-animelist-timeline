@@ -30,30 +30,43 @@ class AnimeListTimeline {
     public data:AnimeListTimelineData;
 
 
-    constructor(mal:MALAnimeList, tlConfig?:AnimeListTimelineConfig) {
+    constructor(mal:MALAnimeList, tlConfig:AnimeListTimelineConfig) {
 
         this.firstDate = rawNullDate;
         this.lastDate = rawNullDate;
+        const minDate:MALDate = new MALDate(tlConfig.minDate);
+        const maxDate:MALDate = new MALDate(tlConfig.maxDate);
 
 
         this.dated = [];
         this.notDated = [];
+
+
+        function dateInBounds(){}
 
         for (let anime of mal.anime) {
             if (anime.myStatus != STATUSES.completed) {
                 continue;
             }
 
+            anime.adjustDates(minDate, maxDate);
+
             if (anime.isDated()) {
                 this.dated.push(anime);
+
+                this.firstDate = anime.myStartDate.extremeOfDates(this.firstDate, false);
+                this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
             } else {
                 this.notDated.push(anime);
             }
 
             //console.log("b: " + this.lastDate)
-            this.firstDate = anime.myStartDate.extremeOfDates(this.firstDate, false);
-            this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
+
             //p("a: "+this.lastDate)
+        }
+        //XXX remove
+        if(!minDate.isNullDate() &&minDate.compare(this.firstDate)>0){
+            this.firstDate = minDate.fixedDateStr;
         }
 
 
@@ -102,14 +115,11 @@ class AnimeListTimeline {
         }
         //this.data.callouts = callouts;
 
-        //XXX
-        let w;
-        if (tlConfig)
-            w = tlConfig.width;
-        else
-            w = 1000;
+
+
+
         this.data = {
-            width:w,
+            width:tlConfig.width,
             start: this.firstDate,
             end: this.lastDate,
             callouts: callouts,
