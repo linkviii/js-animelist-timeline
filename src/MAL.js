@@ -4,6 +4,8 @@
  * Note the api produces different XML than the export tool on the site.
  * Commented fields are from the exported format. I wasn't using them anyway.
  *
+ * Example api url:
+ * http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
  */
 /**
  *

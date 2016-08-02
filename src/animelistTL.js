@@ -1,5 +1,5 @@
-//http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
-const svgWidth = 1000;
+//import timeline.ts
+//import MAL.ts
 const startColor = "#C0C0FF"; //blueish
 const endColor = "#CD3F85"; //redish
 class AnimeListTimeline {
@@ -31,23 +31,19 @@ class AnimeListTimeline {
         const callouts = [];
         //make callouts
         for (let anime of this.dated) {
-            const c = [];
-            const d = [];
+            //date str or false
             const oneDate = anime.hasOneDate();
             if (oneDate) {
-                c.push(anime.seriesTitle);
-                c.push(oneDate);
+                const c = [anime.seriesTitle, oneDate];
                 callouts.push(c);
             }
             else {
                 const startLabel = "Started " + anime.seriesTitle;
                 const finishLabel = "finished " + anime.seriesTitle;
-                c.push(startLabel);
-                c.push(anime.myStartDate.fixedDateStr);
-                c.push(startColor);
-                d.push(finishLabel);
-                d.push(anime.myFinishDate.fixedDateStr);
-                d.push(endColor);
+                const tmps = anime.myStartDate.fixedDateStr;
+                const tmpe = anime.myFinishDate.fixedDateStr;
+                const c = [startLabel, tmps, startColor];
+                const d = [finishLabel, tmpe, endColor];
                 callouts.push(c);
                 callouts.push(d);
             }

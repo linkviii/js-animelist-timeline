@@ -1,14 +1,16 @@
-//http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
+
+//import timeline.ts
+//import MAL.ts
 
 
-const svgWidth:number = 1000;
 const startColor:string = "#C0C0FF";//blueish
 const endColor:string = "#CD3F85";//redish
 
-
+type CalloutType = [string, string]|[string, string, string];
+type CalloutListType = Array<CalloutType>;
 
 interface AnimeListTimelineData extends TimelineData{
-    callouts:Array<Array<string>>;
+    callouts:CalloutListType;
 }
 
 
@@ -70,19 +72,15 @@ class AnimeListTimeline {
         // console.log(this.lastDate)
 
         
-        const callouts:Array<Array<string>> = [];
+        const callouts:CalloutListType = [];
 
         //make callouts
-
         for (let anime of this.dated) {
-            const c = [];
-            const d = [];
-
+            //date str or false
             const oneDate:string|boolean = anime.hasOneDate();
 
             if (oneDate) {
-                c.push(anime.seriesTitle);
-                c.push(oneDate);
+                const c:CalloutType = [anime.seriesTitle, <string>oneDate];
                 callouts.push(c);
 
             } else {
@@ -90,13 +88,11 @@ class AnimeListTimeline {
                 const startLabel:string = "Started " + anime.seriesTitle;
                 const finishLabel:string = "finished " + anime.seriesTitle;
 
-                c.push(startLabel);
-                c.push(anime.myStartDate.fixedDateStr);
-                c.push(startColor);
+                const tmps:string =anime.myStartDate.fixedDateStr;
+                const tmpe:string =anime.myFinishDate.fixedDateStr;
 
-                d.push(finishLabel);
-                d.push(anime.myFinishDate.fixedDateStr);
-                d.push(endColor);
+                const c :CalloutType = [startLabel,tmps, startColor ];
+                const d:CalloutType = [finishLabel, tmpe, endColor];
 
                 callouts.push(c);
                 callouts.push(d);

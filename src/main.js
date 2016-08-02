@@ -1,6 +1,9 @@
 /**
  * MIT licenced
  */
+//import animelistTL.ts
+//import MAL.ts //rawNullDate
+//import jquery
 const usingTestData = false;
 // const usingTestData:boolean = true;
 const testData = "res/malappinfo.xml";
@@ -10,45 +13,6 @@ function getApiUrl(name) {
     return "http://myanimelist.net/malappinfo.php?u="
         + name + "&status=all&type=anime";
 }
-/*
-function yqlTest() {
-    //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
-    // find some demo xml - DuckDuckGo is great for this
-    var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml"
-
-    // build the yql query. Could be just a string - I think join makes easier reading
-    var yqlURL = [
-        "http://query.yahooapis.com/v1/public/yql",
-        "?q=", encodeURIComponent("select * from xml where url='" + xmlSource + "'"),
-        "&format=xml&callback=?"
-    ].join("");
-
-
-    // let xmlContent;
-    // console.log("before")
-    $.getJSON(yqlURL, yqlTestAfter);
-    // console.log("after")
-    // console.log(xmlContent)
-
-}
-
-function yqlTestAfter(data) {
-    console.log("in ajax");
-    console.log(data)
-
-    console.log(data.results[0])
-
-    console.log($.parseXML(data.results[0]))
-
-    var xmlContent = $(data.results[0]);
-    console.log(xmlContent)
-    console.log(xmlContent[0])
-
-    var Abstract = $(xmlContent).find("Abstract").text();
-
-    console.log(Abstract)
-}
-*/
 let uname;
 let tln;
 ///TODO
@@ -160,4 +124,43 @@ function loadTestData(url) {
         return xml;
     })();
 }
+/*
+ function yqlTest() {
+ //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
+ // find some demo xml - DuckDuckGo is great for this
+ var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml"
+
+ // build the yql query. Could be just a string - I think join makes easier reading
+ var yqlURL = [
+ "http://query.yahooapis.com/v1/public/yql",
+ "?q=", encodeURIComponent("select * from xml where url='" + xmlSource + "'"),
+ "&format=xml&callback=?"
+ ].join("");
+
+
+ // let xmlContent;
+ // console.log("before")
+ $.getJSON(yqlURL, yqlTestAfter);
+ // console.log("after")
+ // console.log(xmlContent)
+
+ }
+
+ function yqlTestAfter(data) {
+ console.log("in ajax");
+ console.log(data)
+
+ console.log(data.results[0])
+
+ console.log($.parseXML(data.results[0]))
+
+ var xmlContent = $(data.results[0]);
+ console.log(xmlContent)
+ console.log(xmlContent[0])
+
+ var Abstract = $(xmlContent).find("Abstract").text();
+
+ console.log(Abstract)
+ }
+ */ 
 //# sourceMappingURL=main.js.map

@@ -3,31 +3,21 @@
  * Based on https://github.com/jasonreisman/Timeline written in python.
  * Slightly documented: https://github.com/linkviii/Timeline
  *
- * Usage: `new Timeline("details.json", "timelineID").build();`
+ * Usage: `new Timeline(tlData, "timelineID").build();`
  *
- * v 7/10/2016
+ * v 8/1/2016
+ *   (Try to change with new features. Not strict.)
  * 
  * MIT licenced
  */
 
+//import svg.min.js
 
 /**
  *color constant
  */
 let Colors = {black: '#000000', gray: '#C0C0C0'};
 
-//non es6 utility
-// interface Map<T> {
-//     [K: string]: T;
-// }
-// /**
-//  * Math.trunc is es6
-//  * @param n
-//  * @returns {number}
-//  */
-// function truncate(n:number):number {
-//     return Math[n > 0 ? "floor" : "ceil"](n);
-// }
 
 function p(o:any):void {
     console.log(o);
@@ -35,6 +25,7 @@ function p(o:any):void {
 
 /**
  * Interface of controlling json
+ * start/end YYYY-MM-DD (currently `new Date(str);`)
  */
 interface TimelineData {
     width:number;
@@ -42,8 +33,10 @@ interface TimelineData {
     end:string;
     num_ticks?:number;
     tick_format?:string;
-    callouts?:Array<Array<string>>;
-    eras?:Array<Array<string>>;
+    //[[description, date, ?color],...]
+    callouts?:Array<[string, string]|[string, string, string]>;
+    //[[name, start, end, ?color],...]
+    eras?:Array<[string, string, string]|[string, string, string, string]>;
 }
 
 /**
@@ -81,38 +74,31 @@ class Timeline {
     public g_axis;
 
 
-    ///
-    //__init__
-    ///
     constructor(data:TimelineData, id:string) {
 
         this.data = data;
-
-
-        //# create drawing
         this.width = this.data.width;
 
         this.drawing = SVG(id);
-
         this.g_axis = this.drawing.group();
-
 
         this.start_date = new Date(this.data.start);
         this.end_date = new Date(this.data.end);
 
-        const delta:number = (this.end_date.valueOf() - this.start_date.valueOf());// / 1000;
+        const delta:number = (this.end_date.valueOf() - this.start_date.valueOf());
         const padding:number = (new Date(delta * 0.1)).valueOf();
 
         this.date0 = this.start_date.valueOf() - padding;
         this.date1 = this.end_date.valueOf() + padding;
         this.total_secs = (this.date1 - this.date0) / 1000;
 
-
         // # set up some params
-
+        //TODO Cleanup / factor
         this.callout_size = [10, 15, 10]; // width, height, increment
         this.text_fudge = [3, 1.5];
+        // TODO use
         this.tick_format = this.data.tick_format;
+
         this.markers = {};
 
 
@@ -121,9 +107,6 @@ class Timeline {
         this.max_label_height = 0;
     }
 
-    ///
-    //END __init__
-    ///
 
     build():void {
         //# MAGIC NUMBER: y_era
@@ -153,10 +136,6 @@ class Timeline {
 
     }
 
-    //TODO ?
-    //save(filename) {}
-    //to_string() {}
-    //datetime_from_string(s){}
 
     create_eras(y_era:number, y_axis:number, height:number):void {
         if (!('eras' in this.data)) {
@@ -165,7 +144,7 @@ class Timeline {
 
         //# create eras
         let eras_data:Array<Array<string>> = this.data.eras;
-        let markers = {};
+        //let markers = {};
 
         for (let era of eras_data) {
             //# extract era data
@@ -308,7 +287,7 @@ class Timeline {
         if (this.tick_format) {
             //##label = dt[0].strftime(self.tick_format)
             // label = dt
-            //TODO
+            //TODO tick format
         }
         const percent_width:number = (dt.valueOf() - this.date0) / 1000 / this.total_secs;
         if (percent_width < 0 || percent_width > 1) {
@@ -333,17 +312,17 @@ class Timeline {
         // # add label
         const fill:string = kw.fill || Colors.gray;
 
-        //let transfrom = "rotate(180, " + x + ", 0)";
+
         /*
          #self.drawing.text(label, insert=(x, -2 * dy), stroke='none', fill=fill, font_family='Helevetica',
          ##font_size='6pt', text_anchor='end', writing_mode='tb', transform=transform))
          */
-        //writing mode? stroke? fill?
+        //writing mode?
 
         const txt = this.drawing.text(label);
         txt.font({family: 'Helevetica', size: '6pt', anchor: 'end'});
         txt.transform({rotation: 270, cx: x, cy: 0});
-        txt.dx(x - 7).dy((-2 * dy) + 5);//txt.ref(x, -2 * dy)? marker?
+        txt.dx(x - 7).dy((-2 * dy) + 5);
 
         txt.fill(fill);
 
@@ -468,7 +447,7 @@ class Timeline {
         const ctx = c.getContext("2d");
         ctx.font = size + " " + family;
         const w = ctx.measureText(text).width;
-        const h = size; //TODO ?? font.metrics("linespace")
+        const h = size; //TODO ?? #font.metrics("linespace")
         return [w, h];
     }
 
