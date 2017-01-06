@@ -6,31 +6,36 @@
 //import MAL.ts //rawNullDate
 //import jquery
 
-const usingTestData:boolean = false;
+//
+// main data
+
+
+const usingTestData: boolean = false;
 // const usingTestData:boolean = true;
 
-const testData:string = "res/malappinfo.xml";
+
+const testData: string = "res/malappinfo.xml";
 
 const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 
-function getApiUrl(name:string):string {
-    return "http://myanimelist.net/malappinfo.php?u="
-        + name + "&status=all&type=anime";
-}
 
+let uname: string;
+let tln: AnimeListTimeline;
 
-let uname:string;
-let tln:AnimeListTimeline;
+// end main data
 
-///TODO
-function listFormSubmit():void {
+// main I
+// Entry point from html form
+function listFormSubmit(): void {
     // yqlTest()
     beforeAjax();
     return;
 }
 
-function beforeAjax():void {
+// main II
+// Form api requests and call
+function beforeAjax(): void {
     if (usingTestData) {
         let doc = loadTestData(testData);//ajax
         afterAjax(doc);
@@ -39,41 +44,42 @@ function beforeAjax():void {
 
     uname = $("#listName").val().trim();
 
-    const malUrl:string = getApiUrl(uname);
-    document.getElementById("inputOut").innerHTML = malUrl;
+    const malUrl: string = getApiUrl(uname);
+    //document.getElementById("inputOut").innerHTML = malUrl;//debug
 
-    const yqlURL = [
-        "https://query.yahooapis.com/v1/public/yql", "?q=",
-        encodeURIComponent("select * from xml where url='" + malUrl + "'"),
-        "&format=xml&callback=?"
-    ].join("");
+    const yqlURL: string = getYqlUrl(malUrl);
 
     $.getJSON(yqlURL, ajaxData);
 
 }
 
-function ajaxData(data):void {
+// main III
+// Transform yql response into an xml document
+function ajaxData(data): void {
     //console.log(data.results[0])
     const thing = $.parseXML(data.results[0]);
     afterAjax(thing);
 }
 
-function afterAjax(doc):void {
+// main IV
+// Use doc to build timeline
+function afterAjax(doc): void {
     //console.log(doc)
 
-    const mal:MALAnimeList = new MALAnimeList(doc);
+    const mal: MALAnimeList = new MALAnimeList(doc);
 
-    let startDate:string = $("#from").val().trim();
-    let endDate:string = $("#to").val().trim();
+    let startDate: string = $("#from").val().trim();
+    let endDate: string = $("#to").val().trim();
 
-    function fixDate(date:string):string {
-        const test:boolean = dateRegex.test(date);
+    //keep scope reduced
+    function fixDate(date: string): string {
+        const test: boolean = dateRegex.test(date);
         if (!test) {
             return rawNullDate;
         }
-        let ys:string;
-        let ms:string;
-        let ds:string;
+        let ys: string;
+        let ms: string;
+        let ds: string;
         if (/^\d\d\d\d\d\d\d\d$/.test(date)) {
             ys = date.slice(0, 4);
             ms = date.slice(4, 6);
@@ -83,9 +89,9 @@ function afterAjax(doc):void {
             ms = date.slice(5, 7);
             ds = date.slice(8, 10);
         }
-        const y:number = parseInt(ys);
-        const m:number = parseInt(ms);
-        const d:number = parseInt(ds);
+        const y: number = parseInt(ys);
+        const m: number = parseInt(ms);
+        const d: number = parseInt(ds);
 
         const minYear = 1980;//Nerds can change this in the future
         const maxYear = 2030;//For now its sane
@@ -102,42 +108,34 @@ function afterAjax(doc):void {
         return [ys, ms, ds].join("-")
     }
 
-    // let testF = dateRegex.test(startDate);
-    // let testT = dateRegex.test(endDate);
-    // p(startDate + " " + testF)
-    // p(endDate + " " + testT)
-
     startDate = fixDate(startDate);
     endDate = fixDate(endDate);
 
-    const widthStr:string = $("#width").val().trim();
+    const widthStr: string = $("#width").val().trim();
 
-    function isNormalInteger(str:string):boolean {
-        var n = ~~Number(str);
-        return String(n) === str && n >= 0;
-    }
-
-
-    let width:number;
+    let width: number;
     if (isNormalInteger(widthStr)) {
         width = parseInt(widthStr);
     } else {//default
         width = 1000;
     }
 
-    const tlConfig:AnimeListTimelineConfig = {
+    const tlConfig: AnimeListTimelineConfig = {
         width: width, minDate: startDate, maxDate: endDate
     };
 
     tln = new AnimeListTimeline(mal, tlConfig);
 
     //document.getElementById("json").innerHTML = tln.getJson();
-    const svg:Timeline = new Timeline(tln.data, "tl");
+    const svg: Timeline = new Timeline(tln.data, "tl");
     svg.build();
     //console.log(svg);
 }
 
-function loadTestData(url:string):any /*xml*/ {
+// End main chain
+
+// load xml not async
+function loadTestData(url: string): any /*xml*/ {
     return (function () {
         let xml = null;
         $.ajax({
@@ -156,6 +154,49 @@ function loadTestData(url:string):any /*xml*/ {
     })();
 }
 
+// Util
+
+/**
+ * Forms MAL API URL based on username.
+ * @param name
+ * @returns {string}
+ */
+function getApiUrl(name: string): string {
+    const malUrlBase: string = "http://myanimelist.net/malappinfo.php?u=";
+    const malUrlFilter: string = "&status=all&type=anime";
+
+    return malUrlBase + name + malUrlFilter;
+}
+
+
+/**
+ * Forms YQL URL based on MAL URL.
+ * YQL is used to proxy the xml request as json.
+ * @param malUrl
+ * @returns {string}
+ */
+function getYqlUrl(malUrl: string): string {
+    const yqlUrlBase: string = "https://query.yahooapis.com/v1/public/yql";
+    const q: string = "?q=";
+    const query: string = "select * from xml where url='" + malUrl + "'";
+    const encodedQuery = encodeURIComponent(query);
+    const yqlUrlFilter: string = "&format=xml&callback=?";
+
+    const yqlUrl: string = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
+
+    return yqlUrl;
+}
+
+
+/**
+ * Returns if the string represents a non negative integer.
+ * @param str
+ * @returns {boolean}
+ */
+function isNormalInteger(str: string): boolean {
+    const n: number = ~~Number(str);
+    return (String(n) === str) && (n >= 0);
+}
 
 /*
  function yqlTest() {
