@@ -5,14 +5,13 @@
 const startColor: string = "#C0C0FF";//blueish
 const endColor: string = "#CD3F85";//redish
 
-type CalloutType = [string, string]|[string, string, string];
-type CalloutListType = Array<CalloutType>;
+// type CalloutType = [string, string]|[string, string, string];
+// type CalloutListType = Array<CalloutType>;
 
 // Formalize the need for callouts.
-interface AnimeListTimelineData extends TimelineDataV1 {
-    callouts: CalloutListType;
+interface AnimeListTimelineData extends TimelineDataV2 {
+    callouts: TimelineCalloutV2[];
 }
-
 
 interface AnimeListTimelineConfig {
     width: number;
@@ -70,7 +69,7 @@ class AnimeListTimeline {
         // console.log(this.lastDate)
 
 
-        const callouts: CalloutListType = [];
+        const callouts: TimelineCalloutV2[] = [];
 
         //make callouts
         for (let anime of this.dated) {
@@ -78,22 +77,31 @@ class AnimeListTimeline {
             const oneDate: string|boolean = anime.hasOneDate();
 
             if (oneDate) {
-                const c: CalloutType = [anime.seriesTitle, <string>oneDate];
-                callouts.push(c);
+                const callout: TimelineCalloutV2 = {
+                    description: anime.seriesTitle,
+                    date: <string> oneDate
+                };
+                callouts.push(callout);
 
             } else {
 
                 const startLabel: string = "Started " + anime.seriesTitle;
                 const finishLabel: string = "finished " + anime.seriesTitle;
 
-                const tmps: string = anime.myStartDate.fixedDateStr;
-                const tmpe: string = anime.myFinishDate.fixedDateStr;
+                const startCallout: TimelineCalloutV2 = {
+                    description: startLabel,
+                    date: anime.myStartDate.fixedDateStr,
+                    color: startColor
+                };
+                const endCallout: TimelineCalloutV2 = {
+                    description: finishLabel,
+                    date: anime.myFinishDate.fixedDateStr,
+                    color: endColor
+                };
 
-                const c: CalloutType = [startLabel, tmps, startColor];
-                const d: CalloutType = [finishLabel, tmpe, endColor];
 
-                callouts.push(c);
-                callouts.push(d);
+                callouts.push(startCallout);
+                callouts.push(endCallout);
 
             }
 
@@ -101,11 +109,12 @@ class AnimeListTimeline {
 
         // Object to make an svg timeline
         this.data = {
+            apiVersion: 2,
             width: tlConfig.width,
-            start: this.firstDate,
-            end: this.lastDate,
+            startDate: this.firstDate,
+            endDate: this.lastDate,
             callouts: callouts,
-            tick_format: "%Y-%m-%d"
+            tickFormat: "%Y-%m-%d"
         }
 
 
