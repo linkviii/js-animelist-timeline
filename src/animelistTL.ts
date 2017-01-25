@@ -9,7 +9,7 @@ type CalloutType = [string, string]|[string, string, string];
 type CalloutListType = Array<CalloutType>;
 
 // Formalize the need for callouts.
-interface AnimeListTimelineData extends TimelineData {
+interface AnimeListTimelineData extends TimelineDataV1 {
     callouts: CalloutListType;
 }
 
