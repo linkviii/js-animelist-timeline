@@ -19,7 +19,7 @@ function findText(parentTag: Element, childName: string): string {
 
 
 const rawNullDate: string = "0000-00-00";
-const nullDate: MALDate = new MALDate(rawNullDate);
+//const nullDate: MALDate = new MALDate(rawNullDate); -> EOF/after MALDate
 
 /**
  *Exported list gave status as a string.
@@ -294,3 +294,4 @@ class MALDate {
 
 }
 
+const nullDate: MALDate = new MALDate(rawNullDate);
