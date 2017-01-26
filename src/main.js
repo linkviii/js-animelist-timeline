@@ -14,6 +14,22 @@ const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 let uname;
 let tln;
 // end main data
+function initFields() {
+    const param = getJsonFromUrl();
+    if (param["uname"]) {
+        $("#listName").val(param["uname"]);
+    }
+    if (param["width"]) {
+        $("#width").val(param["width"]);
+    }
+    if (param["minDate"]) {
+        $("#from").val(param["minDate"]);
+    }
+    if (param["maxDate"]) {
+        $("#to").val(param["maxDate"]);
+    }
+}
+$(document).ready(initFields);
 // main I
 // Entry point from html form
 function listFormSubmit() {
@@ -79,6 +95,7 @@ function prepareTimeline(doc) {
     const tlConfig = {
         width: width, minDate: startDate, maxDate: endDate
     };
+    updateUri(tlConfig);
     try {
         displayTimeline(mal, tlConfig);
     }
@@ -187,6 +204,59 @@ function fixDate(date) {
 function isNormalInteger(str) {
     const n = ~~Number(str);
     return (String(n) === str) && (n >= 0);
+}
+//http://stackoverflow.com/a/8486188/1993919
+function getJsonFromUrl(hashBased) {
+    let query;
+    if (hashBased) {
+        let pos = location.href.indexOf("?");
+        if (pos == -1)
+            return [];
+        query = location.href.substr(pos + 1);
+    }
+    else {
+        query = location.search.substr(1);
+    }
+    const result = {};
+    query.split("&").forEach(function (part) {
+        if (!part)
+            return;
+        part = part.split("+").join(" "); // replace every + with space, regexp-free version
+        const eq = part.indexOf("=");
+        let key = eq > -1 ? part.substr(0, eq) : part;
+        const val = eq > -1 ? decodeURIComponent(part.substr(eq + 1)) : "";
+        const from = key.indexOf("[");
+        if (from == -1)
+            result[decodeURIComponent(key)] = val;
+        else {
+            const to = key.indexOf("]");
+            const index = decodeURIComponent(key.substring(from + 1, to));
+            key = decodeURIComponent(key.substring(0, from));
+            if (!result[key])
+                result[key] = [];
+            if (!index)
+                result[key].push(val);
+            else
+                result[key][index] = val;
+        }
+    });
+    return result;
+}
+//http://stackoverflow.com/a/19472410/1993919
+function replaceQueryParam(param, newval, search) {
+    // Could default but probably not intended.
+    //search = search || window.location.search;
+    const regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
+    const query = search.replace(regex, "$1").replace(/&$/, '');
+    return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
+}
+function updateUri(param) {
+    let str = window.location.search;
+    str = replaceQueryParam("uname", uname, str);
+    str = replaceQueryParam("width", param.width.toString(), str);
+    str = replaceQueryParam("minDate", param.maxDate, str);
+    str = replaceQueryParam("maxDate", param.maxDate, str);
+    window.history.replaceState(null, null, str);
 }
 /*
  function yqlTest() {
