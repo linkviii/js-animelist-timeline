@@ -45,11 +45,18 @@ enum MALStatus {
     PlanToWatch = 6
 }
 
+class BadUsernameError extends Error{}
+
 class MALAnimeList {
     public user: MALUser;
     public anime: MALAnime[];
 
     constructor(MALXML: Element) {
+
+        //An invalid username's document will be `<myanimelist/>`
+        if (MALXML.childNodes[0].childNodes.length == 0){
+            throw new BadUsernameError();
+        }
 
         let animeList: any = MALXML.getElementsByTagName('anime');
         let userInfo = MALXML.getElementsByTagName('myinfo')[0];

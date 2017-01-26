@@ -5,8 +5,8 @@
 const startColor: string = "#C0C0FF";//blueish
 const endColor: string = "#CD3F85";//redish
 
-// type CalloutType = [string, string]|[string, string, string];
-// type CalloutListType = Array<CalloutType>;
+class NoDatedAnimeError extends Error {
+}
 
 // Formalize the need for callouts.
 interface AnimeListTimelineData extends TimelineDataV2 {
@@ -63,6 +63,10 @@ class AnimeListTimeline {
             // p("a: "+this.lastDate)
         }
 
+
+        if (this.dated.length == 0) {
+            throw new NoDatedAnimeError();
+        }
 
         // console.log("end")
         // console.log(this.firstDate)

@@ -6,17 +6,16 @@
  *
  * Example api url:
  * http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
- */
-/**
  *
- * @param parentTag
- * @param childName
- * @returns {string}
+ * Utilities for dealing with the dates are included.
+ *
  */
+// XML parsing util
 function findText(parentTag, childName) {
     return parentTag.getElementsByTagName(childName)[0].textContent;
 }
 const rawNullDate = "0000-00-00";
+//const nullDate: MALDate = new MALDate(rawNullDate); -> EOF/after MALDate
 /**
  *Exported list gave status as a string.
  */
@@ -38,8 +37,14 @@ var MALStatus;
     MALStatus[MALStatus["Dropped"] = 4] = "Dropped";
     MALStatus[MALStatus["PlanToWatch"] = 6] = "PlanToWatch";
 })(MALStatus || (MALStatus = {}));
+class BadUsernameError extends Error {
+}
 class MALAnimeList {
     constructor(MALXML) {
+        //An invalid username's document will be `<myanimelist/>`
+        if (MALXML.childNodes[0].childNodes.length == 0) {
+            throw new BadUsernameError();
+        }
         let animeList = MALXML.getElementsByTagName('anime');
         let userInfo = MALXML.getElementsByTagName('myinfo')[0];
         this.user = new MALUser(userInfo);

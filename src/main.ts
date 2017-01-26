@@ -62,51 +62,29 @@ function ajaxData(data): void {
 }
 
 // main IV
-// Use doc to build timeline
+// Wrapper to handle errors in MAL response.
+// Currently only a bad username is expected
 function afterAjax(doc): void {
-    //console.log(doc)
+    try {
+        prepareTimeline(doc);
+    } catch (err) {
+        if (err instanceof BadUsernameError) {
+            alert(uname + " is not a valid MAL username.");
+            return;
+        } else {
+            throw err;
+        }
+    }
+}
 
-    const mal: MALAnimeList = new MALAnimeList(doc);
+// main V
+// Use doc to build timeline
+function prepareTimeline(doc): void {
+    //console.log(doc)
+    const mal: MALAnimeList = new MALAnimeList(doc); // can throw BadUsernameError
 
     let startDate: string = $("#from").val().trim();
     let endDate: string = $("#to").val().trim();
-
-    //keep scope reduced
-    function fixDate(date: string): string {
-        const test: boolean = dateRegex.test(date);
-        if (!test) {
-            return rawNullDate;
-        }
-        let ys: string;
-        let ms: string;
-        let ds: string;
-        if (/^\d\d\d\d\d\d\d\d$/.test(date)) {
-            ys = date.slice(0, 4);
-            ms = date.slice(4, 6);
-            ds = date.slice(6, 8);
-        } else {
-            ys = date.slice(0, 4);
-            ms = date.slice(5, 7);
-            ds = date.slice(8, 10);
-        }
-        const y: number = parseInt(ys);
-        const m: number = parseInt(ms);
-        const d: number = parseInt(ds);
-
-        const minYear = 1980;//Nerds can change this in the future
-        const maxYear = 2030;//For now its sane
-        if (y < minYear || y > maxYear) {
-            return rawNullDate;//A date needs at least a sane year
-        }
-        if (m < 0 || m > 12) {
-            ms = "00";
-        }
-        if (d < 0 || d > 32) {
-            ds = "00";
-        }
-
-        return [ys, ms, ds].join("-")
-    }
 
     startDate = fixDate(startDate);
     endDate = fixDate(endDate);
@@ -124,7 +102,23 @@ function afterAjax(doc): void {
         width: width, minDate: startDate, maxDate: endDate
     };
 
-    tln = new AnimeListTimeline(mal, tlConfig);
+    try {
+        displayTimeline(mal, tlConfig);
+
+    } catch (err) {
+        if (err instanceof NoDatedAnimeError) {
+            alert("None of the anime in the list contained watched dates.");
+            return;
+        } else {
+            throw err;
+        }
+    }
+}
+
+// main VI
+// write the timeline to the document
+function displayTimeline(mal: MALAnimeList, tlConfig: AnimeListTimelineConfig): void {
+    tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
 
     //document.getElementById("json").innerHTML = tln.getJson();
     const svg: Timeline = new Timeline(tln.data, "tl");
@@ -185,6 +179,43 @@ function getYqlUrl(malUrl: string): string {
     const yqlUrl: string = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
 
     return yqlUrl;
+}
+
+
+function fixDate(date: string): string {
+    const test: boolean = dateRegex.test(date);
+    if (!test) {
+        return rawNullDate;
+    }
+    let ys: string;
+    let ms: string;
+    let ds: string;
+    if (/^\d\d\d\d\d\d\d\d$/.test(date)) {
+        ys = date.slice(0, 4);
+        ms = date.slice(4, 6);
+        ds = date.slice(6, 8);
+    } else {
+        ys = date.slice(0, 4);
+        ms = date.slice(5, 7);
+        ds = date.slice(8, 10);
+    }
+    const y: number = parseInt(ys);
+    const m: number = parseInt(ms);
+    const d: number = parseInt(ds);
+
+    const minYear = 1980;//Nerds can change this in the future
+    const maxYear = 2030;//For now its sane
+    if (y < minYear || y > maxYear) {
+        return rawNullDate;//A date needs at least a sane year
+    }
+    if (m < 0 || m > 12) {
+        ms = "00";
+    }
+    if (d < 0 || d > 32) {
+        ds = "00";
+    }
+
+    return [ys, ms, ds].join("-")
 }
 
 

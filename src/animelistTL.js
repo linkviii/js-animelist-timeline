@@ -2,6 +2,8 @@
 //import MAL.ts
 const startColor = "#C0C0FF"; //blueish
 const endColor = "#CD3F85"; //redish
+class NoDatedAnimeError extends Error {
+}
 class AnimeListTimeline {
     constructor(mal, tlConfig) {
         this.firstDate = rawNullDate;
@@ -10,6 +12,7 @@ class AnimeListTimeline {
         const maxDate = new MALDate(tlConfig.maxDate);
         this.dated = [];
         this.notDated = [];
+        // Filter dates and find the extreme of completed anime
         for (let anime of mal.anime) {
             // p(anime.myStatus)
             if (anime.myStatus != MALStatus.Completed) {
@@ -25,6 +28,9 @@ class AnimeListTimeline {
                 this.notDated.push(anime);
             }
         }
+        if (this.dated.length == 0) {
+            throw new NoDatedAnimeError();
+        }
         // console.log("end")
         // console.log(this.firstDate)
         // console.log(this.lastDate)
@@ -34,28 +40,40 @@ class AnimeListTimeline {
             //date str or false
             const oneDate = anime.hasOneDate();
             if (oneDate) {
-                const c = [anime.seriesTitle, oneDate];
-                callouts.push(c);
+                const callout = {
+                    description: anime.seriesTitle,
+                    date: oneDate
+                };
+                callouts.push(callout);
             }
             else {
                 const startLabel = "Started " + anime.seriesTitle;
                 const finishLabel = "finished " + anime.seriesTitle;
-                const tmps = anime.myStartDate.fixedDateStr;
-                const tmpe = anime.myFinishDate.fixedDateStr;
-                const c = [startLabel, tmps, startColor];
-                const d = [finishLabel, tmpe, endColor];
-                callouts.push(c);
-                callouts.push(d);
+                const startCallout = {
+                    description: startLabel,
+                    date: anime.myStartDate.fixedDateStr,
+                    color: startColor
+                };
+                const endCallout = {
+                    description: finishLabel,
+                    date: anime.myFinishDate.fixedDateStr,
+                    color: endColor
+                };
+                callouts.push(startCallout);
+                callouts.push(endCallout);
             }
         }
+        // Object to make an svg timeline
         this.data = {
+            apiVersion: 2,
             width: tlConfig.width,
-            start: this.firstDate,
-            end: this.lastDate,
+            startDate: this.firstDate,
+            endDate: this.lastDate,
             callouts: callouts,
-            tick_format: "%Y-%m-%d"
+            tickFormat: "%Y-%m-%d"
         };
     }
+    //End constructor
     getJson() {
         return JSON.stringify(this.data);
     }
