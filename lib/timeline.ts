@@ -502,7 +502,7 @@ class Timeline {
             }
         }
         if (maxCutPoint != 0) {
-            return [str.slice(0, maxCutPoint), str.slice(maxCutPoint + 1, str.length - 1)];
+            return [str.slice(0, maxCutPoint), str.slice(maxCutPoint + 1, str.length)];
         } else {
             return null;
         }
