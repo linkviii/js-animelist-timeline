@@ -11,7 +11,7 @@
 
 
 const usingTestData: boolean = false;
-// const usingTestData:boolean = true;
+// const usingTestData: boolean = true;
 
 
 const testData: string = "res/malappinfo.xml";
@@ -44,7 +44,6 @@ function initFields(): void {
 }
 
 $(document).ready(initFields);
-
 
 
 // main I
@@ -89,6 +88,7 @@ function ajaxData(data): void {
 function afterAjax(doc): void {
     try {
         prepareTimeline(doc);
+        return;
     } catch (err) {
         if (err instanceof BadUsernameError) {
             alert(uname + " is not a valid MAL username.");
@@ -296,6 +296,15 @@ function replaceQueryParam(param: string, newval: string, search: string): strin
 }
 
 function updateUri(param: AnimeListTimelineConfig): void {
+
+    const startDate: string = $("#from").val().trim();
+    if (startDate == "") {
+        param.minDate = "";
+    }
+    const endDate: string = $("#to").val().trim();
+    if (endDate == "") {
+        param.maxDate = "";
+    }
 
     let str = window.location.search;
 

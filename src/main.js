@@ -7,7 +7,7 @@
 //
 // main data
 const usingTestData = false;
-// const usingTestData:boolean = true;
+// const usingTestData: boolean = true;
 const testData = "res/malappinfo.xml";
 const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
@@ -64,6 +64,7 @@ function ajaxData(data) {
 function afterAjax(doc) {
     try {
         prepareTimeline(doc);
+        return;
     }
     catch (err) {
         if (err instanceof BadUsernameError) {
@@ -251,6 +252,14 @@ function replaceQueryParam(param, newval, search) {
     return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
 function updateUri(param) {
+    const startDate = $("#from").val().trim();
+    if (startDate == "") {
+        param.minDate = "";
+    }
+    const endDate = $("#to").val().trim();
+    if (endDate == "") {
+        param.maxDate = "";
+    }
     let str = window.location.search;
     str = replaceQueryParam("uname", uname, str);
     str = replaceQueryParam("width", param.width.toString(), str);
