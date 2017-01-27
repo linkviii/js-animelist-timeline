@@ -13,13 +13,17 @@
 const usingTestData: boolean = false;
 // const usingTestData: boolean = true;
 
-
 const testData: string = "res/malappinfo.xml";
+
 
 const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 
 
+const userCache: Map<string, MALAnimeList|BadUsernameError> = new Map();
+
+
+// global for testing
 let uname: string;
 let tln: AnimeListTimeline;
 
@@ -65,6 +69,20 @@ function beforeAjax(): void {
 
     uname = $("#listName").val().trim();
 
+    // check cache for name
+    // to skip ajax
+    const data: MALAnimeList|BadUsernameError = userCache.get(uname);
+    if (data) {
+        console.log([uname, "'s data loaded from cache."].join(""));
+        if (data instanceof MALAnimeList) {
+            prepareTimeline(data);
+        } else {
+            respondToBadUser();
+        }
+        return;
+    }
+
+
     const malUrl: string = getApiUrl(uname);
     //document.getElementById("inputOut").innerHTML = malUrl;//debug
 
@@ -86,24 +104,29 @@ function ajaxData(data): void {
 // Wrapper to handle errors in MAL response.
 // Currently only a bad username is expected
 function afterAjax(doc): void {
+    let mal: MALAnimeList;
+
     try {
-        prepareTimeline(doc);
-        return;
+        mal = new MALAnimeList(doc); // can throw BadUsernameError
+        userCache.set(uname, mal);
+
     } catch (err) {
         if (err instanceof BadUsernameError) {
-            alert(uname + " is not a valid MAL username.");
+            userCache.set(uname, err);
+            respondToBadUser();
             return;
         } else {
             throw err;
         }
     }
+
+    prepareTimeline(mal);
 }
 
 // main V
 // Use doc to build timeline
-function prepareTimeline(doc): void {
+function prepareTimeline(mal: MALAnimeList): void {
     //console.log(doc)
-    const mal: MALAnimeList = new MALAnimeList(doc); // can throw BadUsernameError
 
     let startDate: string = $("#from").val().trim();
     let endDate: string = $("#to").val().trim();
@@ -127,7 +150,8 @@ function prepareTimeline(doc): void {
     updateUri(tlConfig);
 
     try {
-        displayTimeline(mal, tlConfig);
+        tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+
 
     } catch (err) {
         if (err instanceof NoDatedAnimeError) {
@@ -137,12 +161,14 @@ function prepareTimeline(doc): void {
             throw err;
         }
     }
+
+    displayTimeline();
 }
 
 // main VI
 // write the timeline to the document
-function displayTimeline(mal: MALAnimeList, tlConfig: AnimeListTimelineConfig): void {
-    tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+// pre: tln is a valid AnimeListTimeline object
+function displayTimeline(): void {
 
     //document.getElementById("json").innerHTML = tln.getJson();
     const svg: Timeline = new Timeline(tln.data, "tl");
@@ -151,6 +177,12 @@ function displayTimeline(mal: MALAnimeList, tlConfig: AnimeListTimelineConfig): 
 }
 
 // End main chain
+
+
+function respondToBadUser(): void {
+    alert(uname + " is not a valid MAL username.");
+}
+
 
 // load xml not async
 function loadTestData(url: string): any /*xml*/ {

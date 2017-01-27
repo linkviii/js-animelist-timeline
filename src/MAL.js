@@ -15,7 +15,7 @@ function findText(parentTag, childName) {
     return parentTag.getElementsByTagName(childName)[0].textContent;
 }
 const rawNullDate = "0000-00-00";
-//const nullDate: MALDate = new MALDate(rawNullDate); -> EOF/after MALDate
+//const nullDate: MALDate = new MALDate(rawNullDate);// -> EOF/after MALDate
 /**
  *Exported list gave status as a string.
  */
