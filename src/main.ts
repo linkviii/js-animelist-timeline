@@ -49,6 +49,11 @@ function initFields(): void {
 
 $(document).ready(initFields);
 
+//Remove all button
+function clearAllTimelines():void{
+    $("#tl").empty();
+}
+
 
 // main I
 // Entry point from html form

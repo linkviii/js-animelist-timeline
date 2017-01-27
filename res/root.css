@@ -1,4 +1,4 @@
-.required:after {
+.required:before {
     content: " *";
     color: red;
 }

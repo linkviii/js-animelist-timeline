@@ -32,6 +32,10 @@ function initFields() {
     }
 }
 $(document).ready(initFields);
+//Remove all button
+function clearAllTimelines() {
+    $("#tl").empty();
+}
 // main I
 // Entry point from html form
 function listFormSubmit() {
