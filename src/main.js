@@ -263,7 +263,7 @@ function updateUri(param) {
     let str = window.location.search;
     str = replaceQueryParam("uname", uname, str);
     str = replaceQueryParam("width", param.width.toString(), str);
-    str = replaceQueryParam("minDate", param.maxDate, str);
+    str = replaceQueryParam("minDate", param.minDate, str);
     str = replaceQueryParam("maxDate", param.maxDate, str);
     window.history.replaceState(null, null, str);
 }
