@@ -5,13 +5,14 @@
 //import MAL.ts //rawNullDate
 //import jquery
 //
-// main data
 const usingTestData = false;
 // const usingTestData: boolean = true;
 const testData = "res/malappinfo.xml";
+// main data
 const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 const userCache = new Map();
+let timelineCount = 0;
 // global for testing
 let uname;
 let tln;
@@ -34,7 +35,7 @@ function initFields() {
 $(document).ready(initFields);
 //Remove all button
 function clearAllTimelines() {
-    $("#tl").empty();
+    $("#tls").empty();
 }
 // main I
 // Entry point from html form
@@ -136,15 +137,72 @@ function prepareTimeline(mal) {
 // write the timeline to the document
 // pre: tln is a valid AnimeListTimeline object
 function displayTimeline() {
-    //document.getElementById("json").innerHTML = tln.getJson();
-    const svg = new Timeline(tln.data, "tl");
+    /*
+     This comment could lie
+     div #tls
+     ``div
+     ````ul buttonlist
+     ``````li ``button
+     ````div #tl_*
+     ``````svg
+     */
+    //Allways add new timeline on top
+    const tlArea = document.createElement("div");
+    $("#tls").prepend(tlArea);
+    //make buttons
+    const removeButton = document.createElement("button");
+    const removeText = document.createTextNode("X");
+    removeButton.appendChild(removeText);
+    removeButton.addEventListener("click", removeTl);
+    //TODO implement and enable
+    const svgButton = document.createElement("button");
+    const svgText = document.createTextNode("S");
+    svgButton.appendChild(svgText);
+    svgButton.addEventListener("click", exportSvg);
+    svgButton.disabled = true;
+    const pngButton = document.createElement("button");
+    const pngText = document.createTextNode("P");
+    pngButton.appendChild(pngText);
+    pngButton.addEventListener("click", exportPng);
+    pngButton.disabled = true;
+    //make list
+    const controls = document.createElement("ul");
+    controls.className = "buttonList";
+    controls.appendChild(wrapListItem(removeButton));
+    controls.appendChild(wrapListItem(svgButton));
+    controls.appendChild(wrapListItem(pngButton));
+    //make timeline container
+    const tl = document.createElement("div");
+    tl.id = "tl_" + timelineCount;
+    timelineCount++;
+    // add to doc
+    tlArea.appendChild(controls);
+    tlArea.appendChild(tl);
+    //make timeline after it has a valid anchor in the doc
+    const svg = new Timeline(tln.data, tl.id);
     svg.build();
-    //console.log(svg);
 }
 // End main chain
 function respondToBadUser() {
     alert(uname + " is not a valid MAL username.");
 }
+function wrapListItem(elm) {
+    const li = document.createElement("li");
+    li.appendChild(elm);
+    return li;
+}
+//listener
+function removeTl() {
+    //rm ../../.. → div#tl_
+    this.parentElement.parentElement.parentElement.remove();
+}
+function exportSvg() {
+    console.error("Not implemented");
+}
+function exportPng() {
+    console.error("Not implemented");
+}
+//
 // load xml not async
 function loadTestData(url) {
     return (function () {
