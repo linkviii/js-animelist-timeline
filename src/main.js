@@ -48,6 +48,7 @@ function listFormSubmit() {
 // Form api requests and call
 function beforeAjax() {
     if (usingTestData) {
+        console.info("Using test data");
         let doc = loadTestData(testData); //ajax
         afterAjax(doc);
         return;
@@ -57,7 +58,7 @@ function beforeAjax() {
     // to skip ajax
     const data = userCache.get(uname);
     if (data) {
-        console.log([uname, "'s data loaded from cache."].join(""));
+        console.info([uname, "'s data loaded from cache."].join(""));
         if (data instanceof MALAnimeList) {
             prepareTimeline(data);
         }
@@ -74,7 +75,6 @@ function beforeAjax() {
 // main III
 // Transform yql response into an xml document
 function ajaxData(data) {
-    //console.log(data.results[0])
     const thing = $.parseXML(data.results[0]);
     afterAjax(thing);
 }
@@ -102,11 +102,10 @@ function afterAjax(doc) {
 // main V
 // Use doc to build timeline
 function prepareTimeline(mal) {
-    //console.log(doc)
     let startDate = $("#from").val().trim();
     let endDate = $("#to").val().trim();
-    startDate = fixDate(startDate);
-    endDate = fixDate(endDate);
+    startDate = fixDate(startDate, -1);
+    endDate = fixDate(endDate, 1);
     const widthStr = $("#width").val().trim();
     let width;
     if (isNormalInteger(widthStr)) {
@@ -246,10 +245,14 @@ function getYqlUrl(malUrl) {
     const yqlUrl = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
     return yqlUrl;
 }
-function fixDate(date) {
+//make user input suitible for anime timeline
+//must not be null
+function fixDate(date, minmax) {
+    const minYear = 1980; //Nerds can change this in the future
+    const maxYear = 2030; //For now its sane
     const test = dateRegex.test(date);
     if (!test) {
-        return rawNullDate;
+        date = rawNullDate;
     }
     let ys;
     let ms;
@@ -267,10 +270,12 @@ function fixDate(date) {
     const y = parseInt(ys);
     const m = parseInt(ms);
     const d = parseInt(ds);
-    const minYear = 1980; //Nerds can change this in the future
-    const maxYear = 2030; //For now its sane
+    //A date needs at least a sane year
     if (y < minYear || y > maxYear) {
-        return rawNullDate; //A date needs at least a sane year
+        if (minmax == -1)
+            ys = minYear.toString();
+        else
+            ys = maxYear.toString();
     }
     if (m < 0 || m > 12) {
         ms = "00";
@@ -335,19 +340,19 @@ function replaceQueryParam(param, newval, search) {
     return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
 function updateUri(param) {
-    const startDate = $("#from").val().trim();
+    let startDate = $("#from").val().trim();
     if (startDate == "") {
-        param.minDate = "";
+        startDate = "";
     }
-    const endDate = $("#to").val().trim();
+    let endDate = $("#to").val().trim();
     if (endDate == "") {
-        param.maxDate = "";
+        endDate = "";
     }
     let str = window.location.search;
     str = replaceQueryParam("uname", uname, str);
     str = replaceQueryParam("width", param.width.toString(), str);
-    str = replaceQueryParam("minDate", param.minDate, str);
-    str = replaceQueryParam("maxDate", param.maxDate, str);
+    str = replaceQueryParam("minDate", startDate, str);
+    str = replaceQueryParam("maxDate", endDate, str);
     window.history.replaceState(null, null, str);
 }
 /*

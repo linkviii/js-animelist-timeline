@@ -15,78 +15,96 @@ interface AnimeListTimelineData extends TimelineDataV2 {
 
 interface AnimeListTimelineConfig {
     width: number;
-    minDate: string;//YYYY-MM-DD
+    //YYYY-MM-DD
+    //Cannot be rawNullDate
+    minDate: string;
     maxDate: string;
 }
 
+/**
+ * Data to be used for a js-timeline
+ * ```
+ * const atl: AnimeListTimeline = ...;
+ * const tln: Timeline = new Timeline(atl.data, "id");
+ * ```
+ *
+ */
 class AnimeListTimeline {
     //
 
-    public firstDate: string;
-    public lastDate: string;
+    public firstDate: MALDate;
+    public lastDate: MALDate;
 
-    public dated: MALAnime[];
-    public notDated: MALAnime[];
 
-    public data: AnimeListTimelineData;
+    public readonly data: AnimeListTimelineData;
 
+
+    // static dateInBounds(lb: MALDate, rb: MALDate, other: MALDate): boolean {
+    //
+    //     return false;
+    // }
+
+    static filterInbounds(anime: MALAnime, lb: MALDate, rb: MALDate): MALDate[] {
+        let dates: MALDate[] = [anime.myStartDate, anime.myFinishDate];
+
+
+        dates = dates.filter(
+            //dateInBounds(date: MALDate, lb: MALDate, rb: MALDate)
+            function (date: MALDate) {
+                if (date.isNullDate())
+                    return false;
+                return date.compare(lb) >= 0 && date.compare(rb) <= 0
+            });
+
+        //TODO Make sure uniq
+        return dates;
+    }
 
     constructor(mal: MALAnimeList, tlConfig: AnimeListTimelineConfig) {
 
-        this.firstDate = rawNullDate;
-        this.lastDate = rawNullDate;
+        this.firstDate = nullDate;
+        this.lastDate = nullDate;
+
         const minDate: MALDate = new MALDate(tlConfig.minDate);
         const maxDate: MALDate = new MALDate(tlConfig.maxDate);
-
-
-        this.dated = [];
-        this.notDated = [];
-
-        // Filter dates and find the extreme of completed anime
-        for (let anime of mal.anime) {
-            // p(anime.myStatus)
-            if (anime.myStatus != MALStatus.Completed) {
-                continue;
-            }
-
-            anime.adjustDates(minDate, maxDate);
-
-            if (anime.isDated()) {
-                this.dated.push(anime);
-
-                this.firstDate = anime.myStartDate.extremeOfDates(this.firstDate, false);
-                this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
-            } else {
-                this.notDated.push(anime);
-            }
-            // console.log("b: " + this.lastDate)
-            // p("a: "+this.lastDate)
+        //assert not null and is valid
+        if (minDate.isNullDate() || maxDate.isNullDate() || tlConfig.maxDate.length == 0 || tlConfig.maxDate.length == 0) {
+            throw ["Invalid config", tlConfig];
         }
 
-
-        if (this.dated.length == 0) {
-            throw new NoDatedAnimeError();
-        }
-
-        // console.log("end")
-        // console.log(this.firstDate)
-        // console.log(this.lastDate)
 
 
         const callouts: TimelineCalloutV2[] = [];
 
-        //make callouts
-        for (let anime of this.dated) {
-            //date str or false
-            const oneDate: string|boolean = anime.hasOneDate();
 
-            if (oneDate) {
+        for (let anime of mal.anime) {
+
+            // Filter dates and find the extreme of completed anime
+
+            if (anime.myStatus != MALStatus.Completed) {
+                continue;
+            }
+
+            const dates: MALDate[] = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
+
+
+            if (dates.length == 0) {
+                continue;
+            }
+
+            for (let date of dates) {
+                this.firstDate = date.extremeOfDates(this.firstDate, false);
+                this.lastDate = date.extremeOfDates(this.lastDate);
+            }
+
+
+            //make callouts
+            if (dates.length == 1) {
                 const callout: TimelineCalloutV2 = {
                     description: anime.seriesTitle,
-                    date: <string> oneDate
+                    date: dates[0].fixedDateStr
                 };
                 callouts.push(callout);
-
             } else {
 
                 const startLabel: string = "Started " + anime.seriesTitle;
@@ -111,12 +129,19 @@ class AnimeListTimeline {
 
         }
 
+        // or callouts not empty
+        if (callouts.length == 0) {
+            throw new NoDatedAnimeError();
+        }
+
+
+
         // Object to make an svg timeline
         this.data = {
             apiVersion: 2,
             width: tlConfig.width,
-            startDate: this.firstDate,
-            endDate: this.lastDate,
+            startDate: this.firstDate.fixedDateStr,
+            endDate: this.lastDate.fixedDateStr,
             callouts: callouts,
             tickFormat: "%Y-%m-%d"
         }
@@ -127,6 +152,7 @@ class AnimeListTimeline {
 
     //End constructor
 
+    //Debug utility
     getJson() {
         return JSON.stringify(this.data);
     }

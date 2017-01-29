@@ -7,7 +7,7 @@
  * Example api url:
  * http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
  *
- * Utilities for dealing with the dates are included. 
+ * Utilities for dealing with the dates are included.
  *
  */
 
@@ -19,7 +19,7 @@ function findText(parentTag: Element, childName: string): string {
 
 
 const rawNullDate: string = "0000-00-00";
-//const nullDate: MALDate = new MALDate(rawNullDate);// -> EOF/after MALDate
+//const nullDate: MALDate = new MALDate(rawNullDate);// @at EOF/after MALDate
 
 /**
  *Exported list gave status as a string.
@@ -45,16 +45,17 @@ enum MALStatus {
     PlanToWatch = 6
 }
 
-class BadUsernameError extends Error{}
+class BadUsernameError extends Error {
+}
 
 class MALAnimeList {
-    public user: MALUser;
-    public anime: MALAnime[];
+    public readonly user: MALUser;
+    public readonly anime: MALAnime[];
 
     constructor(MALXML: Element) {
 
         //An invalid username's document will be `<myanimelist/>`
-        if (MALXML.childNodes[0].childNodes.length == 0){
+        if (MALXML.childNodes[0].childNodes.length == 0) {
             throw new BadUsernameError();
         }
 
@@ -98,29 +99,22 @@ class MALUser {
 
 }
 
+//immutable
 class MALAnime {
 
-    public seriesAnimedbId: number;
-    public seriesTitle: string;
-    public seriesType: string;
-    public seriesEpisodes: number;
-    public myId: number;
-    public myWatchedEpisodes: number;
-    public myStartDate: MALDate;
-    public myFinishDate: MALDate;
-    // public myRated:string;
-    public myScore: number;
-    // public myDvd:string;
-    // public myStorage:string;
-    public myStatus: number;
-    // public myComments:string;
-    // public myTimesWatched:number;
-    // public myRewatchValue:string;
-    // public myDownloadedEps:number;
-    public myTags: string;
-    public myRewatching: number;
-    public myRewatchingEp: number;
-    // public updateOnImport:number;
+    public readonly seriesAnimedbId: number;
+    public readonly seriesTitle: string;
+    public readonly seriesType: string;
+    public readonly seriesEpisodes: number;
+    public readonly myId: number;
+    public readonly myWatchedEpisodes: number;
+    public readonly myStartDate: MALDate;
+    public readonly myFinishDate: MALDate;
+    public readonly myScore: number;
+    public readonly myTags: string;
+    public readonly myRewatching: number;
+    public readonly myRewatchingEp: number;
+    public readonly myStatus: number;
 
     constructor(anime: Element) {
         this.seriesAnimedbId = parseInt(findText(anime, "series_animedb_id"));
@@ -131,51 +125,11 @@ class MALAnime {
         this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
         this.myStartDate = new MALDate(findText(anime, "my_start_date"));
         this.myFinishDate = new MALDate(findText(anime, "my_finish_date"));
-        // this.myRated = findText(anime, "my_rated");
         this.myScore = parseInt(findText(anime, "my_score"));
-        // this.myDvd = findText(anime, "my_dvd");
-        // this.myStorage = findText(anime, "my_storage");
         this.myStatus = parseInt(findText(anime, "my_status"));
-        // this.myComments = findText(anime, "my_comments");
-        // this.myTimesWatched = parseInt(findText(anime, "my_times_watched"));
-        // this.myRewatchValue = findText(anime, "my_rewatch_value");
-        // this.myDownloadedEps = parseInt(findText(anime, "my_downloaded_eps"));
         this.myTags = findText(anime, "my_tags");
         this.myRewatching = parseInt(findText(anime, "my_rewatching"));
         this.myRewatchingEp = parseInt(findText(anime, "my_rewatching_ep"));
-        // this.updateOnImport = parseInt(findText(anime, "update_on_import"));
-    }
-
-    isDated(): boolean {
-        return !this.myStartDate.isNullDate() || !this.myFinishDate.isNullDate();
-    }
-
-    adjustDates(minDate: MALDate, maxDate: MALDate): void {
-
-        if (!minDate.isNullDate() && minDate.compare(this.myStartDate) > 0) {
-            this.myStartDate = nullDate;
-        }
-        if (!maxDate.isNullDate() && maxDate.compare(this.myFinishDate) < 0) {
-            this.myFinishDate = nullDate;
-        }
-    }
-
-    /**
-     * Returns the single date if there is only one or false.
-     * @returns {string|boolean}
-     */
-    hasOneDate(): string|boolean {
-        const one: boolean = this.myStartDate.fixedDateStr == this.myFinishDate.fixedDateStr
-            || this.myStartDate.isNullDate() || this.myFinishDate.isNullDate();
-        if (!one) {
-            return false;
-        }
-        if (this.myStartDate.isNullDate()) {
-            return this.myFinishDate.fixedDateStr;
-        }
-        //this.myFinishDate.isNullDate()
-        return this.myStartDate.fixedDateStr;
-
     }
 
 }
@@ -187,14 +141,23 @@ class MALDate {
      */
 
 
-    public rawDateStr: string;
-    public fixedDateStr: string;
-    //public date:Date;
+    public readonly rawDateStr: string;
+    public readonly fixedDateStr: string;
+
+    /**
+     * Available only if not nullDate
+     */
+    public readonly date: Date;
 
     constructor(date: string) {
+
+        //@assume valid string
+
         this.rawDateStr = date;
         this.fixedDateStr = MALDate.fixDate(date);
-
+        if (this.rawDateStr != rawNullDate) {
+            this.date = new Date(this.fixedDateStr);
+        }
     }
 
     isNullDate(): boolean {
@@ -202,13 +165,10 @@ class MALDate {
     }
 
     static fixDate(dateStr: string): string {
-        //console.log(dateStr)
-
-        // const dateStr:string = this.rawDateStr;
-
         if (dateStr == rawNullDate) {
             return rawNullDate;
         }
+
         let m: string = dateStr.slice(5, 7);
         if (m == '00') m = '01';
         let d: string = dateStr.slice(8);
@@ -228,63 +188,43 @@ class MALDate {
      * @returns {number}
      */
     compare(other: string|MALDate): number {
-        let d1: string = this.rawDateStr;
-        let d2: string;
-
+        let d2: MALDate;
         if (typeof other === "string") {
-            d2 = other;
+            d2 = new MALDate(other);
         } else {
-            d2 = other.rawDateStr;
+            d2 = other;
         }
 
         //assert not null?
+        if (this.isNullDate() || d2.isNullDate()) {
+            throw "Can't compare null dates";
+        }
 
-        /* -- selecting not null here was not working for extremeOfDates
-         // if (d1 == rawNullDate && d2 == rawNullDate) {
-         //    p(0)
-         //     return 0;
-         // } else if (d1 == rawNullDate) {
-         //     p(-1)
-         //     return -1;
-         // } else if (d2 == rawNullDate) {
-         //     p(1)
-         //     return 1;
-         // }
-         */
 
-        d1 = MALDate.fixDate(d1);
-        d2 = MALDate.fixDate(d2);
-        if (d1 == d2) {
+        if (this.fixedDateStr == d2.fixedDateStr) {
             return 0;
         }
-        const dt1: Date = new Date(d1);
-        const dt2: Date = new Date(d2);
 
-        return dt1.valueOf() - dt2.valueOf();
+        return this.date.valueOf() - d2.date.valueOf();
 
     }
 
-    /**
-     * Compare date strings that could be null
-     * @param d2 string
-     * @param findMax bool
-     * @returns string
-     */
-    extremeOfDates(d2: string, findMax: boolean = true): string {
 
-        if (this.rawDateStr == rawNullDate && d2 == rawNullDate) {
-            return rawNullDate;
-        } else if (this.rawDateStr == rawNullDate) {
-            return MALDate.fixDate(d2);
-        } else if (d2 == rawNullDate) {
-            return this.fixedDateStr;
+    // Select max/min of possibly null dates
+    extremeOfDates(d2: MALDate, findMax: boolean = true): MALDate {
+
+        if (this.isNullDate() && d2.isNullDate()) {
+            return nullDate;
+        } else if (this.isNullDate()) {
+            return d2;
+        } else if (d2.isNullDate()) {
+            return this;
         }
 
-        //console.log(d2)
         let val: number = this.compare(d2);
 
         if (val == 0) {
-            return this.fixedDateStr;
+            return this;
         }
 
         if (!findMax) {
@@ -292,9 +232,9 @@ class MALDate {
         }
 
         if (val > 0) {
-            return this.fixedDateStr;
+            return this;
         } else {//if (val < 0){
-            return MALDate.fixDate(d2);
+            return d2;
         }
 
     }

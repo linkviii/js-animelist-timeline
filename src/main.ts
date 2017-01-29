@@ -68,6 +68,7 @@ function listFormSubmit(): void {
 // Form api requests and call
 function beforeAjax(): void {
     if (usingTestData) {
+        console.info("Using test data");
         let doc = loadTestData(testData);//ajax
         afterAjax(doc);
         return
@@ -79,7 +80,7 @@ function beforeAjax(): void {
     // to skip ajax
     const data: MALAnimeList|BadUsernameError = userCache.get(uname);
     if (data) {
-        console.log([uname, "'s data loaded from cache."].join(""));
+        console.info([uname, "'s data loaded from cache."].join(""));
         if (data instanceof MALAnimeList) {
             prepareTimeline(data);
         } else {
@@ -101,7 +102,6 @@ function beforeAjax(): void {
 // main III
 // Transform yql response into an xml document
 function ajaxData(data): void {
-    //console.log(data.results[0])
     const thing = $.parseXML(data.results[0]);
     afterAjax(thing);
 }
@@ -132,13 +132,15 @@ function afterAjax(doc): void {
 // main V
 // Use doc to build timeline
 function prepareTimeline(mal: MALAnimeList): void {
-    //console.log(doc)
 
     let startDate: string = $("#from").val().trim();
     let endDate: string = $("#to").val().trim();
 
-    startDate = fixDate(startDate);
-    endDate = fixDate(endDate);
+
+
+    startDate = fixDate(startDate, -1);
+    endDate = fixDate(endDate, 1);
+
 
     const widthStr: string = $("#width").val().trim();
 
@@ -316,10 +318,16 @@ function getYqlUrl(malUrl: string): string {
 }
 
 
-function fixDate(date: string): string {
+//make user input suitible for anime timeline
+//must not be null
+function fixDate(date: string, minmax: -1|1): string {
+
+    const minYear = 1980;//Nerds can change this in the future
+    const maxYear = 2030;//For now its sane
+
     const test: boolean = dateRegex.test(date);
     if (!test) {
-        return rawNullDate;
+        date = rawNullDate;
     }
     let ys: string;
     let ms: string;
@@ -337,10 +345,13 @@ function fixDate(date: string): string {
     const m: number = parseInt(ms);
     const d: number = parseInt(ds);
 
-    const minYear = 1980;//Nerds can change this in the future
-    const maxYear = 2030;//For now its sane
+    //A date needs at least a sane year
     if (y < minYear || y > maxYear) {
-        return rawNullDate;//A date needs at least a sane year
+        if (minmax == -1)
+            ys = minYear.toString();
+        else // (minmax == 1)
+            ys = maxYear.toString();
+
     }
     if (m < 0 || m > 12) {
         ms = "00";
@@ -407,21 +418,21 @@ function replaceQueryParam(param: string, newval: string, search: string): strin
 
 function updateUri(param: AnimeListTimelineConfig): void {
 
-    const startDate: string = $("#from").val().trim();
+    let startDate: string = $("#from").val().trim();
     if (startDate == "") {
-        param.minDate = "";
+        startDate = "";
     }
-    const endDate: string = $("#to").val().trim();
+    let endDate: string = $("#to").val().trim();
     if (endDate == "") {
-        param.maxDate = "";
+        endDate = "";
     }
 
     let str = window.location.search;
 
     str = replaceQueryParam("uname", uname, str);
     str = replaceQueryParam("width", param.width.toString(), str);
-    str = replaceQueryParam("minDate", param.minDate, str);
-    str = replaceQueryParam("maxDate", param.maxDate, str);
+    str = replaceQueryParam("minDate",startDate, str);
+    str = replaceQueryParam("maxDate", endDate, str);
 
     window.history.replaceState(null, null, str);
 }
