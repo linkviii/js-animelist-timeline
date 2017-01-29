@@ -47,7 +47,6 @@ class AnimeListTimeline {
     static filterInbounds(anime: MALAnime, lb: MALDate, rb: MALDate): MALDate[] {
         let dates: MALDate[] = [anime.myStartDate, anime.myFinishDate];
 
-
         dates = dates.filter(
             //dateInBounds(date: MALDate, lb: MALDate, rb: MALDate)
             function (date: MALDate) {
@@ -56,7 +55,11 @@ class AnimeListTimeline {
                 return date.compare(lb) >= 0 && date.compare(rb) <= 0
             });
 
-        //TODO Make sure uniq
+        // Make sure unique
+        if (dates.length && dates[0] == dates[1]){
+            dates = [dates[0]];
+        }
+
         return dates;
     }
 
@@ -129,7 +132,6 @@ class AnimeListTimeline {
 
         }
 
-        // or callouts not empty
         if (callouts.length == 0) {
             throw new NoDatedAnimeError();
         }
@@ -147,10 +149,7 @@ class AnimeListTimeline {
         }
 
 
-    }
-
-
-    //End constructor
+    }//End constructor
 
     //Debug utility
     getJson() {

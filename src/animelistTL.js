@@ -61,7 +61,6 @@ class AnimeListTimeline {
                 callouts.push(endCallout);
             }
         }
-        // or callouts not empty
         if (callouts.length == 0) {
             throw new NoDatedAnimeError();
         }
@@ -74,7 +73,7 @@ class AnimeListTimeline {
             callouts: callouts,
             tickFormat: "%Y-%m-%d"
         };
-    }
+    } //End constructor
     // static dateInBounds(lb: MALDate, rb: MALDate, other: MALDate): boolean {
     //
     //     return false;
@@ -88,10 +87,12 @@ class AnimeListTimeline {
                 return false;
             return date.compare(lb) >= 0 && date.compare(rb) <= 0;
         });
-        //TODO Make sure uniq
+        // Make sure unique
+        if (dates.length && dates[0] == dates[1]) {
+            dates = [dates[0]];
+        }
         return dates;
     }
-    //End constructor
     //Debug utility
     getJson() {
         return JSON.stringify(this.data);

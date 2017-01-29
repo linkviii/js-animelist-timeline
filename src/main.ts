@@ -9,8 +9,8 @@
 
 //
 
-const usingTestData: boolean = false;
-// const usingTestData: boolean = true;
+// const usingTestData: boolean = false;
+const usingTestData: boolean = true;
 
 const testData: string = "res/malappinfo.xml";
 // main data
@@ -222,6 +222,7 @@ function displayTimeline(): void {
 
     //make timeline container
     const tl = document.createElement("div");
+    tl.className = "timeline";
     tl.id = "tl_" + timelineCount;
     timelineCount++;
 

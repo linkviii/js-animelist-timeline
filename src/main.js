@@ -5,8 +5,8 @@
 //import MAL.ts //rawNullDate
 //import jquery
 //
-const usingTestData = false;
-// const usingTestData: boolean = true;
+// const usingTestData: boolean = false;
+const usingTestData = true;
 const testData = "res/malappinfo.xml";
 // main data
 const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
@@ -172,6 +172,7 @@ function displayTimeline() {
     controls.appendChild(wrapListItem(pngButton));
     //make timeline container
     const tl = document.createElement("div");
+    tl.className = "timeline";
     tl.id = "tl_" + timelineCount;
     timelineCount++;
     // add to doc
