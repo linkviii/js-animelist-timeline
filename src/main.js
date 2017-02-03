@@ -5,8 +5,8 @@
 //import MAL.ts //rawNullDate
 //import jquery
 //
-// const usingTestData: boolean = false;
-const usingTestData = true;
+const usingTestData: boolean = false;
+//const usingTestData = true;
 const testData = "res/malappinfo.xml";
 // main data
 const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
