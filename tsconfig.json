@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es6",
-    "sourceMap": true
+    "sourceMap": true,
+    "module": "amd",
+    "baseUrl": "js"
   },
   "exclude": [
     "node_modules"
   ],
   "files": [
-    "typings/index.d.ts",
-    "src/animelistTL.ts",
-    "src/MAL.ts",
-    "src/main.ts",
-    "lib/timeline.ts"
+    "js/src/animelistTL.ts",
+    "js/src/MAL.ts",
+    "js/main.ts",
+
+    "js/lib/timeline.ts",
+
+    "js/test/test.ts"
   ]
 }

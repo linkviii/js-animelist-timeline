@@ -5,12 +5,15 @@
  *
  * Usage: `new Timeline(tlData, "timelineID").build();`
  *
- * v 2017-1-26*
+ * v 2017-2-4
  *   (Try to change with new features. Not strict.)
  * 
  * MIT licenced
  */
 
+
+/// <reference path="./svgjs.d.ts"/>
+import * as SVG from "./svgjs";
 
 //Util
 function max<T>(x: T, y: T, fn: (val: T) => number): T {
@@ -23,16 +26,9 @@ function max<T>(x: T, y: T, fn: (val: T) => number): T {
 
 //
 
+export const Colors: {black: string, gray: string} = {black: '#000000', gray: '#C0C0C0'};
 
-/**
- *color constant
- */
-let Colors: {black: string, gray: string} = {black: '#000000', gray: '#C0C0C0'};
-
-
-function p(o: any): void {
-    console.log(o);
-}
+//
 
 /*
  * Interfaces of controlling json
@@ -40,12 +36,12 @@ function p(o: any): void {
  * V2 is prefered
  */
 
-type TimelineData = TimelineDataV1 | TimelineDataV2;
+export type TimelineData = TimelineDataV1 | TimelineDataV2;
 
 //v1
-type TimelineCalloutV1 = [string, string]|[string, string, string];
-type TimelineEraV1 = [string, string, string]|[string, string, string, string];
-interface TimelineDataV1 {
+export type TimelineCalloutV1 = [string, string]|[string, string, string];
+export type TimelineEraV1 = [string, string, string]|[string, string, string, string];
+export interface TimelineDataV1 {
     width: number;
     start: string;
     end: string;
@@ -58,20 +54,20 @@ interface TimelineDataV1 {
 }
 
 //v2
-interface TimelineCalloutV2 {
+export interface TimelineCalloutV2 {
     description: string;
     date: string;
     color?: string;
 }
 
-interface TimelineEraV2 {
+export interface TimelineEraV2 {
     name: string;
     startDate: string;
     endDate: string;
     color?: string;
 }
 
-interface TimelineDataV2 {
+export interface TimelineDataV2 {
     apiVersion: 2;
     width: number;
     startDate: string;
@@ -82,8 +78,8 @@ interface TimelineDataV2 {
     eras?: TimelineEraV2[];
 }
 
-class TimelineConverter {
-    static convertCallouts(oldCallouts: TimelineCalloutV1[]): TimelineCalloutV2[] {
+export class TimelineConverter {
+    public static convertCallouts(oldCallouts: TimelineCalloutV1[]): TimelineCalloutV2[] {
         const callouts: TimelineCalloutV2[] = [];
 
         for (let oldCallout of oldCallouts) {
@@ -99,7 +95,7 @@ class TimelineConverter {
         return callouts;
     }
 
-    static convertEras(oldEras: TimelineEraV1[]): TimelineEraV2[] {
+    public static convertEras(oldEras: TimelineEraV1[]): TimelineEraV2[] {
         const eras: TimelineEraV2[] = [];
         for (let oldEra of oldEras) {
             const newEra: TimelineEraV2 = {
@@ -161,7 +157,7 @@ interface LabelKW {
 
 type Info = [string, string];// event, color
 
-class Timeline {
+export class Timeline {
 
 
     public static readonly calloutProperties: {width: number, height: number, increment: number} = {
@@ -199,6 +195,7 @@ class Timeline {
             this.data = <TimelineDataV2>data;
         } else {
             this.data = TimelineConverter.convertTimelineDataV1ToV2(<TimelineDataV1>data);
+
         }
 
 
@@ -230,7 +227,7 @@ class Timeline {
     }
 
     // Generates svg document
-    build(): void {
+    public  build(): void {
         //# MAGIC NUMBER: y_era
         //# draw era label and markers at this height
         const yEra: number = 10;
@@ -259,7 +256,7 @@ class Timeline {
     }
 
 
-    createEras(yEra: number, yAxis: number, height: number): void {
+    private createEras(yEra: number, yAxis: number, height: number): void {
         if (!('eras' in this.data)) {
             return;
         }
@@ -339,7 +336,7 @@ class Timeline {
      * @param {String} color
      * @return {Array<marker, marker>}
      */
-    getMarkers(color: string): [any, any] {
+    private  getMarkers(color: string): [any, any] {
 
         let startMarker;
         let endMarker;
@@ -362,7 +359,7 @@ class Timeline {
     };
 
 
-    createMainAxis() {
+    private  createMainAxis() {
         //# draw main line
         this.axisGroup.add(this.drawing.line(0, 0, this.width, 0)
             .stroke({color: Colors.black, width: 3}));
@@ -386,7 +383,7 @@ class Timeline {
     }
 
 
-    createEraAxisLabels(): void {
+    private createEraAxisLabels(): void {
         if (!('eras' in this.data)) {
             return;
         }
@@ -403,7 +400,7 @@ class Timeline {
 
 
     //def addAxisLabel(self, dt, label, **kwargs):
-    addAxisLabel(dt: Date, label: string, kw?: LabelKW) {
+    private  addAxisLabel(dt: Date, label: string, kw?: LabelKW) {
         //date, string?
         kw = kw || {};
 
@@ -460,7 +457,7 @@ class Timeline {
 
     //pure fn
     //sub fn createCallouts()
-    static sortCallouts(calloutsData: TimelineCalloutV2[]): [number[], Map<number, Info[]>] {
+    private static sortCallouts(calloutsData: TimelineCalloutV2[]): [number[], Map<number, Info[]>] {
 
         const sortedDates: number[] = [];
         const eventsByDate: Map<number, Info[]> = new Map();
@@ -491,10 +488,11 @@ class Timeline {
      * @param str
      * @returns {any}
      */
-    static bifercateString(str: string): [string, string] | null {
+    private static bifercateString(str: string): [string, string] | null {
         const cuttingRangeStart = Math.floor(str.length * 0.33);
         const cuttingRangeEnd = str.length * 0.66;
 
+        //TODO better
         let maxCutPoint = 0;
         for (let i = cuttingRangeStart; i < cuttingRangeEnd; i++) {
             if (str[i] == " ") {
@@ -511,7 +509,7 @@ class Timeline {
 
 
     //pure fn
-    static calculateCalloutLevel(leftBoundary: number, prevEndpoints: number[], prevLevels: number[]): number {
+    private static calculateCalloutLevel(leftBoundary: number, prevEndpoints: number[], prevLevels: number[]): number {
 
         let i: number = prevEndpoints.length - 1;
         let level: number = 0;
@@ -531,9 +529,8 @@ class Timeline {
         return level;
     }
 
-    static calculateEventLeftBondary(event: string, eventEndpoint: number): number {
-        //const adjustment: number = 0; //XXX
-        const textWidth: number = Timeline.getTextWidth('Helevetica', 6, event);// - adjustment;
+    private static calculateEventLeftBondary(event: string, eventEndpoint: number): number {
+        const textWidth: number = Timeline.getTextWidth('Helevetica', 6, event);
         //const leftBoundary: number =
         return eventEndpoint - (textWidth + Timeline.calloutProperties.width + Timeline.textFudge[0]);
     }
@@ -541,7 +538,7 @@ class Timeline {
     //not pure fn
     //sub fn createCallouts()
     //modifies prev*
-    static calculateCalloutHeight(eventEndpoint: number, prevEndpoints: number[], prevLevels: number[], event: string): [number, string] {
+    private static calculateCalloutHeight(eventEndpoint: number, prevEndpoints: number[], prevLevels: number[], event: string): [number, string] {
 
 
         //ensure text does not overlap with previous entries
@@ -550,7 +547,6 @@ class Timeline {
 
         let level: number = Timeline.calculateCalloutLevel(leftBoundary, prevEndpoints, prevLevels);
 
-        //TODO Compare against bifracated areas
 
         const bif = Timeline.bifercateString(event);
         if (bif) {
@@ -585,7 +581,7 @@ class Timeline {
      *
      * @returns {number} min_y ?
      */
-    createCallouts(): number {
+    private  createCallouts(): number {
         if (!('callouts' in this.data)) {
             return;//undefined
         }
@@ -655,9 +651,9 @@ class Timeline {
 
     }
 
-    static readonly canvas = document.createElement('canvas');
+    private static readonly canvas = document.createElement('canvas');
 
-    static getTextWidth(family: string, size: number, text: string): number {
+    private static getTextWidth(family: string, size: number, text: string): number {
         //use canvas to measure text width
 
         const ctx = Timeline.canvas.getContext("2d");

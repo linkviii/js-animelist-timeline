@@ -2,15 +2,28 @@
  * MIT licenced
  */
 
+
 //import animelistTL.ts
-//import MAL.ts //rawNullDate
+import {AnimeListTimeline} from "./src/animelistTL";
+import {AnimeListTimelineConfig} from "./src/animelistTL";
+import {NoDatedAnimeError} from "./src/animelistTL";
+
+//import MAL.ts
+import {MALDate} from "./src/MAL";
+import {MALAnimeList} from "./src/MAL";
+import {BadUsernameError} from "./src/MAL";
+
+//import timeline.ts
+import {Timeline} from "./lib/timeline";
+
 //import jquery
+import * as $ from "jquery";
 
 
 //
 
-// const usingTestData: boolean = false;
-const usingTestData: boolean = true;
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true;
 
 const testData: string = "res/malappinfo.xml";
 // main data
@@ -30,8 +43,9 @@ let tln: AnimeListTimeline;
 
 // end main data
 
-function initFields(): void {
+function init(): void {
 
+    //fields
     const param = getJsonFromUrl();
     if (param["uname"]) {
         $("#listName").val(param["uname"]);
@@ -46,9 +60,18 @@ function initFields(): void {
         $("#to").val(param["maxDate"]);
     }
 
+    //buttons
+    $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
+    $("#clearAllTimelines")[0].addEventListener("click", clearAllTimelines);
+
 }
 
-$(document).ready(initFields);
+//for node testing
+try {
+    $(document).ready(init);
+} catch (err) {
+
+}
 
 //Remove all button
 function clearAllTimelines(): void {
@@ -135,7 +158,6 @@ function prepareTimeline(mal: MALAnimeList): void {
 
     let startDate: string = $("#from").val().trim();
     let endDate: string = $("#to").val().trim();
-
 
 
     startDate = fixDate(startDate, -1);
@@ -328,7 +350,7 @@ function fixDate(date: string, minmax: -1|1): string {
 
     const test: boolean = dateRegex.test(date);
     if (!test) {
-        date = rawNullDate;
+        date = MALDate.rawNullDate;
     }
     let ys: string;
     let ms: string;
@@ -432,7 +454,7 @@ function updateUri(param: AnimeListTimelineConfig): void {
 
     str = replaceQueryParam("uname", uname, str);
     str = replaceQueryParam("width", param.width.toString(), str);
-    str = replaceQueryParam("minDate",startDate, str);
+    str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);
 
     window.history.replaceState(null, null, str);

@@ -1,19 +1,25 @@
 //import timeline.ts
+import {TimelineDataV2} from "../lib/timeline";
+import {TimelineCalloutV2} from "../lib/timeline";
 //import MAL.ts
+import {MALDate} from "./MAL";
+import {MALAnime} from "./MAL";
+import {MALAnimeList} from "./MAL";
+import {MALStatus} from "./MAL";
 
 
 const startColor: string = "#C0C0FF";//blueish
 const endColor: string = "#CD3F85";//redish
 
-class NoDatedAnimeError extends Error {
+export class NoDatedAnimeError extends Error {
 }
 
 // Formalize the need for callouts.
-interface AnimeListTimelineData extends TimelineDataV2 {
+export interface AnimeListTimelineData extends TimelineDataV2 {
     callouts: TimelineCalloutV2[];
 }
 
-interface AnimeListTimelineConfig {
+export interface AnimeListTimelineConfig {
     width: number;
     //YYYY-MM-DD
     //Cannot be rawNullDate
@@ -29,7 +35,7 @@ interface AnimeListTimelineConfig {
  * ```
  *
  */
-class AnimeListTimeline {
+export class AnimeListTimeline {
     //
 
     public firstDate: MALDate;
@@ -65,8 +71,8 @@ class AnimeListTimeline {
 
     constructor(mal: MALAnimeList, tlConfig: AnimeListTimelineConfig) {
 
-        this.firstDate = nullDate;
-        this.lastDate = nullDate;
+        this.firstDate = MALDate.nullDate;
+        this.lastDate = MALDate.nullDate;
 
         const minDate: MALDate = new MALDate(tlConfig.minDate);
         const maxDate: MALDate = new MALDate(tlConfig.maxDate);
@@ -95,13 +101,13 @@ class AnimeListTimeline {
                 continue;
             }
 
-            for (let date of dates) {
+            for (let date of dates) { // 1 or 2 iterations
                 this.firstDate = date.extremeOfDates(this.firstDate, false);
                 this.lastDate = date.extremeOfDates(this.lastDate);
             }
 
 
-            //make callouts
+            //make callout
             if (dates.length == 1) {
                 const callout: TimelineCalloutV2 = {
                     description: anime.seriesTitle,
@@ -152,7 +158,7 @@ class AnimeListTimeline {
     }//End constructor
 
     //Debug utility
-    getJson() {
+    public getJson() {
         return JSON.stringify(this.data);
     }
 
