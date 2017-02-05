@@ -1,7 +1,7 @@
 /**
  * MIT licenced
  */
-define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./src/MAL", "./src/MAL", "./lib/timeline", "jquery"], function (require, exports, animelistTL_1, animelistTL_2, MAL_1, MAL_2, MAL_3, timeline_1, $) {
+define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $) {
     "use strict";
     //
     // export const usingTestData: boolean = false;
@@ -67,7 +67,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         const data = userCache.get(uname);
         if (data) {
             console.info([uname, "'s data loaded from cache."].join(""));
-            if (data instanceof MAL_2.MALAnimeList) {
+            if (data instanceof MAL.AnimeList) {
                 prepareTimeline(data);
             }
             else {
@@ -92,11 +92,11 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     function afterAjax(doc) {
         let mal;
         try {
-            mal = new MAL_2.MALAnimeList(doc); // can throw BadUsernameError
+            mal = new MAL.AnimeList(doc); // can throw BadUsernameError
             userCache.set(uname, mal);
         }
         catch (err) {
-            if (err instanceof MAL_3.BadUsernameError) {
+            if (err instanceof MAL.BadUsernameError) {
                 userCache.set(uname, err);
                 respondToBadUser();
                 return;
@@ -261,7 +261,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         const maxYear = 2030; //For now its sane
         const test = dateRegex.test(date);
         if (!test) {
-            date = MAL_1.MALDate.rawNullDate;
+            date = MAL.rawNullDate;
         }
         let ys;
         let ms;

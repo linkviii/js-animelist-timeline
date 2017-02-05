@@ -29,18 +29,18 @@ define(["require", "exports"], function (require, exports) {
     /**
      * The API gives a number. What ever happened to 5?
      */
-    (function (MALStatus) {
-        MALStatus[MALStatus["Watching"] = 1] = "Watching";
-        MALStatus[MALStatus["Completed"] = 2] = "Completed";
-        MALStatus[MALStatus["OnHold"] = 3] = "OnHold";
-        MALStatus[MALStatus["Dropped"] = 4] = "Dropped";
-        MALStatus[MALStatus["PlanToWatch"] = 6] = "PlanToWatch";
-    })(exports.MALStatus || (exports.MALStatus = {}));
-    var MALStatus = exports.MALStatus;
+    (function (Status) {
+        Status[Status["Watching"] = 1] = "Watching";
+        Status[Status["Completed"] = 2] = "Completed";
+        Status[Status["OnHold"] = 3] = "OnHold";
+        Status[Status["Dropped"] = 4] = "Dropped";
+        Status[Status["PlanToWatch"] = 6] = "PlanToWatch";
+    })(exports.Status || (exports.Status = {}));
+    var Status = exports.Status;
     class BadUsernameError extends Error {
     }
     exports.BadUsernameError = BadUsernameError;
-    class MALAnimeList {
+    class AnimeList {
         constructor(MALXML) {
             //An invalid username's document will be `<myanimelist/>`
             if (MALXML.childNodes[0].childNodes.length == 0) {
@@ -48,15 +48,15 @@ define(["require", "exports"], function (require, exports) {
             }
             let animeList = MALXML.getElementsByTagName('anime');
             let userInfo = MALXML.getElementsByTagName('myinfo')[0];
-            this.user = new MALUser(userInfo);
+            this.user = new User(userInfo);
             this.anime = [];
             for (let anime of animeList) {
-                this.anime.push(new MALAnime(anime));
+                this.anime.push(new Anime(anime));
             }
         }
     }
-    exports.MALAnimeList = MALAnimeList;
-    class MALUser {
+    exports.AnimeList = AnimeList;
+    class User {
         // public userExportType:number;
         // public userTotalAnime:number;
         // public userTotalWatching:number;
@@ -76,9 +76,9 @@ define(["require", "exports"], function (require, exports) {
             // this.userTotalPlantowatch = parseInt(findText(myinfo, "user_total_plantowatch"));
         }
     }
-    exports.MALUser = MALUser;
+    exports.User = User;
     //immutable
-    class MALAnime {
+    class Anime {
         constructor(anime) {
             this.seriesAnimedbId = parseInt(findText(anime, "series_animedb_id"));
             this.seriesTitle = findText(anime, "series_title");
@@ -86,8 +86,8 @@ define(["require", "exports"], function (require, exports) {
             this.seriesEpisodes = parseInt(findText(anime, "series_episodes"));
             this.myId = parseInt(findText(anime, "my_id"));
             this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
-            this.myStartDate = new MALDate(findText(anime, "my_start_date"));
-            this.myFinishDate = new MALDate(findText(anime, "my_finish_date"));
+            this.myStartDate = new Mdate(findText(anime, "my_start_date"));
+            this.myFinishDate = new Mdate(findText(anime, "my_finish_date"));
             this.myScore = parseInt(findText(anime, "my_score"));
             this.myStatus = parseInt(findText(anime, "my_status"));
             this.myTags = findText(anime, "my_tags");
@@ -95,22 +95,22 @@ define(["require", "exports"], function (require, exports) {
             this.myRewatchingEp = parseInt(findText(anime, "my_rewatching_ep"));
         }
     }
-    exports.MALAnime = MALAnime;
-    class MALDate {
+    exports.Anime = Anime;
+    class Mdate {
         constructor(date) {
             //@assume valid string
             this.rawDateStr = date;
-            this.fixedDateStr = MALDate.fixDate(date);
-            if (this.rawDateStr != MALDate.rawNullDate) {
+            this.fixedDateStr = Mdate.fixDate(date);
+            if (this.rawDateStr != exports.rawNullDate) {
                 this.date = new Date(this.fixedDateStr);
             }
         }
         isNullDate() {
-            return this.rawDateStr == MALDate.rawNullDate;
+            return this.rawDateStr == exports.rawNullDate;
         }
         static fixDate(dateStr) {
-            if (dateStr == MALDate.rawNullDate) {
-                return MALDate.rawNullDate;
+            if (dateStr == exports.rawNullDate) {
+                return exports.rawNullDate;
             }
             let m = dateStr.slice(5, 7);
             if (m == '00')
@@ -132,7 +132,7 @@ define(["require", "exports"], function (require, exports) {
         compare(other) {
             let d2;
             if (typeof other === "string") {
-                d2 = new MALDate(other);
+                d2 = new Mdate(other);
             }
             else {
                 d2 = other;
@@ -149,7 +149,7 @@ define(["require", "exports"], function (require, exports) {
         // Select max/min of possibly null dates
         extremeOfDates(d2, findMax = true) {
             if (this.isNullDate() && d2.isNullDate()) {
-                return MALDate.nullDate;
+                return exports.nullDate;
             }
             else if (this.isNullDate()) {
                 return d2;
@@ -172,12 +172,8 @@ define(["require", "exports"], function (require, exports) {
             }
         }
     }
-    /*
-     * YYYY-MM-DD
-     * MM and DD can be 00 but YYYY must be a year
-     */
-    MALDate.rawNullDate = "0000-00-00";
-    MALDate.nullDate = new MALDate(MALDate.rawNullDate);
-    exports.MALDate = MALDate;
+    exports.Mdate = Mdate;
+    exports.rawNullDate = "0000-00-00";
+    exports.nullDate = new Mdate(exports.rawNullDate);
 });
 //# sourceMappingURL=MAL.js.map

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+## referance
+# http://codeinthehole.com/writing/tips-for-using-a-git-pre-commit-hook/
+# https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+
+## Install
+#` cd .git/hooks `
+#` ln -sf ../../pre-commit pre-commit ` 
+
+echo "pre commit hook"
+
+#git stash -q --keep-index
+
+#run test
+#node
+RESULT=$?
+
+#git stash pop -q
+
+#[ $RESULT -ne 0 ] && exit 1
+
+exit 0

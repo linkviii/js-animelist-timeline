@@ -34,7 +34,7 @@ export const STATUSES = {
 /**
  * The API gives a number. What ever happened to 5?
  */
-export enum MALStatus {
+export enum Status {
     Watching = 1,
     Completed = 2,
     OnHold = 3,
@@ -45,9 +45,9 @@ export enum MALStatus {
 export class BadUsernameError extends Error {
 }
 
-export class MALAnimeList {
-    public readonly user: MALUser;
-    public readonly anime: MALAnime[];
+export class AnimeList {
+    public readonly user: User;
+    public readonly anime: Anime[];
 
     constructor(MALXML: Element) {
 
@@ -59,17 +59,17 @@ export class MALAnimeList {
         let animeList: any = MALXML.getElementsByTagName('anime');
         let userInfo = MALXML.getElementsByTagName('myinfo')[0];
 
-        this.user = new MALUser(userInfo);
+        this.user = new User(userInfo);
         this.anime = [];
 
         for (let anime of animeList) {
-            this.anime.push(new MALAnime(anime));
+            this.anime.push(new Anime(anime));
         }
 
     }
 }
 
-export class MALUser {
+export class User {
     public userId: number;
     public userName: string;
     // public userExportType:number;
@@ -97,7 +97,7 @@ export class MALUser {
 }
 
 //immutable
-export class MALAnime {
+export class Anime {
 
     public readonly seriesAnimedbId: number;
     public readonly seriesTitle: string;
@@ -105,8 +105,8 @@ export class MALAnime {
     public readonly seriesEpisodes: number;
     public readonly myId: number;
     public readonly myWatchedEpisodes: number;
-    public readonly myStartDate: MALDate;
-    public readonly myFinishDate: MALDate;
+    public readonly myStartDate: Mdate;
+    public readonly myFinishDate: Mdate;
     public readonly myScore: number;
     public readonly myTags: string;
     public readonly myRewatching: number;
@@ -120,8 +120,8 @@ export class MALAnime {
         this.seriesEpisodes = parseInt(findText(anime, "series_episodes"));
         this.myId = parseInt(findText(anime, "my_id"));
         this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
-        this.myStartDate = new MALDate(findText(anime, "my_start_date"));
-        this.myFinishDate = new MALDate(findText(anime, "my_finish_date"));
+        this.myStartDate = new Mdate(findText(anime, "my_start_date"));
+        this.myFinishDate = new Mdate(findText(anime, "my_finish_date"));
         this.myScore = parseInt(findText(anime, "my_score"));
         this.myStatus = parseInt(findText(anime, "my_status"));
         this.myTags = findText(anime, "my_tags");
@@ -131,14 +131,12 @@ export class MALAnime {
 
 }
 
-export class MALDate {
+export class Mdate {
     /*
      * YYYY-MM-DD
      * MM and DD can be 00 but YYYY must be a year
      */
 
-    public static readonly rawNullDate: string = "0000-00-00";
-    public static readonly nullDate: MALDate = new MALDate(MALDate.rawNullDate);
 
     public readonly rawDateStr: string;
     public readonly fixedDateStr: string;
@@ -153,19 +151,19 @@ export class MALDate {
         //@assume valid string
 
         this.rawDateStr = date;
-        this.fixedDateStr = MALDate.fixDate(date);
-        if (this.rawDateStr != MALDate.rawNullDate) {
+        this.fixedDateStr = Mdate.fixDate(date);
+        if (this.rawDateStr != rawNullDate) {
             this.date = new Date(this.fixedDateStr);
         }
     }
 
     isNullDate(): boolean {
-        return this.rawDateStr == MALDate.rawNullDate;
+        return this.rawDateStr == rawNullDate;
     }
 
     static fixDate(dateStr: string): string {
-        if (dateStr == MALDate.rawNullDate) {
-            return MALDate.rawNullDate;
+        if (dateStr == rawNullDate) {
+            return rawNullDate;
         }
 
         let m: string = dateStr.slice(5, 7);
@@ -186,10 +184,10 @@ export class MALDate {
      * @param other
      * @returns {number}
      */
-    compare(other: string|MALDate): number {
-        let d2: MALDate;
+    compare(other: string|Mdate): number {
+        let d2: Mdate;
         if (typeof other === "string") {
-            d2 = new MALDate(other);
+            d2 = new Mdate(other);
         } else {
             d2 = other;
         }
@@ -210,10 +208,10 @@ export class MALDate {
 
 
     // Select max/min of possibly null dates
-    extremeOfDates(d2: MALDate, findMax: boolean = true): MALDate {
+    extremeOfDates(d2: Mdate, findMax: boolean = true): Mdate {
 
         if (this.isNullDate() && d2.isNullDate()) {
-            return MALDate.nullDate;
+            return nullDate;
         } else if (this.isNullDate()) {
             return d2;
         } else if (d2.isNullDate()) {
@@ -239,4 +237,7 @@ export class MALDate {
     }
 
 }
+
+export const rawNullDate:string = "0000-00-00";
+export const nullDate: Mdate = new Mdate(rawNullDate);
 

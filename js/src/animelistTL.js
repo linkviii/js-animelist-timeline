@@ -1,5 +1,8 @@
-define(["require", "exports", "./MAL", "./MAL"], function (require, exports, MAL_1, MAL_2) {
+define(["require", "exports", "./MAL"], function (require, exports, MAL) {
     "use strict";
+    // import {MALAnime} from "./MAL";
+    // import {MALAnimeList} from "./MAL";
+    // import {MALStatus} from "./MAL";
     const startColor = "#C0C0FF"; //blueish
     const endColor = "#CD3F85"; //redish
     class NoDatedAnimeError extends Error {
@@ -15,10 +18,10 @@ define(["require", "exports", "./MAL", "./MAL"], function (require, exports, MAL
      */
     class AnimeListTimeline {
         constructor(mal, tlConfig) {
-            this.firstDate = MAL_1.MALDate.nullDate;
-            this.lastDate = MAL_1.MALDate.nullDate;
-            const minDate = new MAL_1.MALDate(tlConfig.minDate);
-            const maxDate = new MAL_1.MALDate(tlConfig.maxDate);
+            this.firstDate = MAL.nullDate;
+            this.lastDate = MAL.nullDate;
+            const minDate = new MAL.Mdate(tlConfig.minDate);
+            const maxDate = new MAL.Mdate(tlConfig.maxDate);
             //assert not null and is valid
             if (minDate.isNullDate() || maxDate.isNullDate() || tlConfig.maxDate.length == 0 || tlConfig.maxDate.length == 0) {
                 throw ["Invalid config", tlConfig];
@@ -26,7 +29,7 @@ define(["require", "exports", "./MAL", "./MAL"], function (require, exports, MAL
             const callouts = [];
             for (let anime of mal.anime) {
                 // Filter dates and find the extreme of completed anime
-                if (anime.myStatus != MAL_2.MALStatus.Completed) {
+                if (anime.myStatus != MAL.Status.Completed) {
                     continue;
                 }
                 const dates = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);

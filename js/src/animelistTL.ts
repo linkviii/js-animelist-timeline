@@ -2,10 +2,10 @@
 import {TimelineDataV2} from "../lib/timeline";
 import {TimelineCalloutV2} from "../lib/timeline";
 //import MAL.ts
-import {MALDate} from "./MAL";
-import {MALAnime} from "./MAL";
-import {MALAnimeList} from "./MAL";
-import {MALStatus} from "./MAL";
+import * as MAL from "./MAL";
+// import {MALAnime} from "./MAL";
+// import {MALAnimeList} from "./MAL";
+// import {MALStatus} from "./MAL";
 
 
 const startColor: string = "#C0C0FF";//blueish
@@ -38,8 +38,8 @@ export interface AnimeListTimelineConfig {
 export class AnimeListTimeline {
     //
 
-    public firstDate: MALDate;
-    public lastDate: MALDate;
+    public firstDate: MAL.Mdate;
+    public lastDate: MAL.Mdate;
 
 
     public readonly data: AnimeListTimelineData;
@@ -50,12 +50,12 @@ export class AnimeListTimeline {
     //     return false;
     // }
 
-    static filterInbounds(anime: MALAnime, lb: MALDate, rb: MALDate): MALDate[] {
-        let dates: MALDate[] = [anime.myStartDate, anime.myFinishDate];
+    static filterInbounds(anime: MAL.Anime, lb: MAL.Mdate, rb: MAL.Mdate): MAL.Mdate[] {
+        let dates: MAL.Mdate[] = [anime.myStartDate, anime.myFinishDate];
 
         dates = dates.filter(
             //dateInBounds(date: MALDate, lb: MALDate, rb: MALDate)
-            function (date: MALDate) {
+            function (date: MAL.Mdate) {
                 if (date.isNullDate())
                     return false;
                 return date.compare(lb) >= 0 && date.compare(rb) <= 0
@@ -69,13 +69,13 @@ export class AnimeListTimeline {
         return dates;
     }
 
-    constructor(mal: MALAnimeList, tlConfig: AnimeListTimelineConfig) {
+    constructor(mal: MAL.AnimeList, tlConfig: AnimeListTimelineConfig) {
 
-        this.firstDate = MALDate.nullDate;
-        this.lastDate = MALDate.nullDate;
+        this.firstDate = MAL.nullDate;
+        this.lastDate = MAL.nullDate;
 
-        const minDate: MALDate = new MALDate(tlConfig.minDate);
-        const maxDate: MALDate = new MALDate(tlConfig.maxDate);
+        const minDate: MAL.Mdate = new MAL.Mdate(tlConfig.minDate);
+        const maxDate: MAL.Mdate = new MAL.Mdate(tlConfig.maxDate);
         //assert not null and is valid
         if (minDate.isNullDate() || maxDate.isNullDate() || tlConfig.maxDate.length == 0 || tlConfig.maxDate.length == 0) {
             throw ["Invalid config", tlConfig];
@@ -90,11 +90,11 @@ export class AnimeListTimeline {
 
             // Filter dates and find the extreme of completed anime
 
-            if (anime.myStatus != MALStatus.Completed) {
+            if (anime.myStatus != MAL.Status.Completed) {
                 continue;
             }
 
-            const dates: MALDate[] = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
+            const dates: MAL.Mdate[] = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
 
 
             if (dates.length == 0) {

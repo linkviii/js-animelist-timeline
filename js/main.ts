@@ -9,9 +9,9 @@ import {AnimeListTimelineConfig} from "./src/animelistTL";
 import {NoDatedAnimeError} from "./src/animelistTL";
 
 //import MAL.ts
-import {MALDate} from "./src/MAL";
-import {MALAnimeList} from "./src/MAL";
-import {BadUsernameError} from "./src/MAL";
+import * as MAL from "./src/MAL";
+// import {MALAnimeList} from "./src/MAL";
+// import {BadUsernameError} from "./src/MAL";
 
 //import timeline.ts
 import {Timeline} from "./lib/timeline";
@@ -33,7 +33,7 @@ const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 
 
-const userCache: Map<string, MALAnimeList|BadUsernameError> = new Map();
+const userCache: Map<string, MAL.AnimeList|MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
 
@@ -101,10 +101,10 @@ function beforeAjax(): void {
 
     // check cache for name
     // to skip ajax
-    const data: MALAnimeList|BadUsernameError = userCache.get(uname);
+    const data: MAL.AnimeList|MAL.BadUsernameError = userCache.get(uname);
     if (data) {
         console.info([uname, "'s data loaded from cache."].join(""));
-        if (data instanceof MALAnimeList) {
+        if (data instanceof MAL.AnimeList) {
             prepareTimeline(data);
         } else {
             respondToBadUser();
@@ -133,14 +133,14 @@ function ajaxData(data): void {
 // Wrapper to handle errors in MAL response.
 // Currently only a bad username is expected
 function afterAjax(doc): void {
-    let mal: MALAnimeList;
+    let mal: MAL.AnimeList;
 
     try {
-        mal = new MALAnimeList(doc); // can throw BadUsernameError
+        mal = new MAL.AnimeList(doc); // can throw BadUsernameError
         userCache.set(uname, mal);
 
     } catch (err) {
-        if (err instanceof BadUsernameError) {
+        if (err instanceof MAL.BadUsernameError) {
             userCache.set(uname, err);
             respondToBadUser();
             return;
@@ -154,7 +154,7 @@ function afterAjax(doc): void {
 
 // main V
 // Use doc to build timeline
-function prepareTimeline(mal: MALAnimeList): void {
+function prepareTimeline(mal: MAL.AnimeList): void {
 
     let startDate: string = $("#from").val().trim();
     let endDate: string = $("#to").val().trim();
@@ -350,7 +350,7 @@ function fixDate(date: string, minmax: -1|1): string {
 
     const test: boolean = dateRegex.test(date);
     if (!test) {
-        date = MALDate.rawNullDate;
+        date = MAL.rawNullDate;
     }
     let ys: string;
     let ms: string;
