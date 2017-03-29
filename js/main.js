@@ -3,9 +3,10 @@
  */
 define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     //
-    // export const usingTestData: boolean = false;
-    exports.usingTestData = true;
+    exports.usingTestData = false;
+    // export const usingTestData: boolean = true;
     const testData = "res/malappinfo.xml";
     // main data
     const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;

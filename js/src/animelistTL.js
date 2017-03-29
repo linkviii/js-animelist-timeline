@@ -1,5 +1,6 @@
 define(["require", "exports", "./MAL"], function (require, exports, MAL) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     // import {MALAnime} from "./MAL";
     // import {MALAnimeList} from "./MAL";
     // import {MALStatus} from "./MAL";
@@ -17,6 +18,25 @@ define(["require", "exports", "./MAL"], function (require, exports, MAL) {
      *
      */
     class AnimeListTimeline {
+        // static dateInBounds(lb: MALDate, rb: MALDate, other: MALDate): boolean {
+        //
+        //     return false;
+        // }
+        static filterInbounds(anime, lb, rb) {
+            let dates = [anime.myStartDate, anime.myFinishDate];
+            dates = dates.filter(
+            //dateInBounds(date: MALDate, lb: MALDate, rb: MALDate)
+            function (date) {
+                if (date.isNullDate())
+                    return false;
+                return date.compare(lb) >= 0 && date.compare(rb) <= 0;
+            });
+            // Make sure unique
+            if (dates.length && dates[0] == dates[1]) {
+                dates = [dates[0]];
+            }
+            return dates;
+        }
         constructor(mal, tlConfig) {
             this.firstDate = MAL.nullDate;
             this.lastDate = MAL.nullDate;
@@ -78,25 +98,6 @@ define(["require", "exports", "./MAL"], function (require, exports, MAL) {
                 tickFormat: "%Y-%m-%d"
             };
         } //End constructor
-        // static dateInBounds(lb: MALDate, rb: MALDate, other: MALDate): boolean {
-        //
-        //     return false;
-        // }
-        static filterInbounds(anime, lb, rb) {
-            let dates = [anime.myStartDate, anime.myFinishDate];
-            dates = dates.filter(
-            //dateInBounds(date: MALDate, lb: MALDate, rb: MALDate)
-            function (date) {
-                if (date.isNullDate())
-                    return false;
-                return date.compare(lb) >= 0 && date.compare(rb) <= 0;
-            });
-            // Make sure unique
-            if (dates.length && dates[0] == dates[1]) {
-                dates = [dates[0]];
-            }
-            return dates;
-        }
         //Debug utility
         getJson() {
             return JSON.stringify(this.data);

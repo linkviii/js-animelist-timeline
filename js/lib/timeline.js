@@ -12,6 +12,7 @@
  */
 define(["require", "exports", "./svgjs"], function (require, exports, SVG) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     //Util
     function max(x, y, fn) {
         if (fn(x) > fn(y)) {
@@ -233,6 +234,9 @@ define(["require", "exports", "./svgjs"], function (require, exports, SVG) {
             //date, string?
             kw = kw || {};
             if (this.tickFormat) {
+                //##label = dt[0].strftime(self.tickFormat)
+                // label = dt
+                //TODO tick format
             }
             const percentWidth = (dt.valueOf() - this.date0) / 1000 / this.totalSeconds;
             if (percentWidth < 0 || percentWidth > 1) {

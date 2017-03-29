@@ -22,8 +22,8 @@ import * as $ from "jquery";
 
 //
 
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true;
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true;
 
 const testData: string = "res/malappinfo.xml";
 // main data

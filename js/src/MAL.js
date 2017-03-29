@@ -12,6 +12,7 @@
  */
 define(["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
     // XML parsing util
     function findText(parentTag, childName) {
         return parentTag.getElementsByTagName(childName)[0].textContent;
@@ -29,14 +30,14 @@ define(["require", "exports"], function (require, exports) {
     /**
      * The API gives a number. What ever happened to 5?
      */
+    var Status;
     (function (Status) {
         Status[Status["Watching"] = 1] = "Watching";
         Status[Status["Completed"] = 2] = "Completed";
         Status[Status["OnHold"] = 3] = "OnHold";
         Status[Status["Dropped"] = 4] = "Dropped";
         Status[Status["PlanToWatch"] = 6] = "PlanToWatch";
-    })(exports.Status || (exports.Status = {}));
-    var Status = exports.Status;
+    })(Status = exports.Status || (exports.Status = {}));
     class BadUsernameError extends Error {
     }
     exports.BadUsernameError = BadUsernameError;
