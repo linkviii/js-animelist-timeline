@@ -3,12 +3,12 @@
     <myinfo>
         <user_id>4885624</user_id>
         <user_name>linkviii</user_name>
-        <user_watching>4</user_watching>
-        <user_completed>70</user_completed>
+        <user_watching>5</user_watching>
+        <user_completed>75</user_completed>
         <user_onhold>0</user_onhold>
         <user_dropped>0</user_dropped>
-        <user_plantowatch>7</user_plantowatch>
-        <user_days_spent_watching>42.38</user_days_spent_watching>
+        <user_plantowatch>5</user_plantowatch>
+        <user_days_spent_watching>44.68</user_days_spent_watching>
     </myinfo>
     <anime>
         <series_animedb_id>20</series_animedb_id>
@@ -19,7 +19,7 @@
         <series_status>2</series_status>
         <series_start>2002-10-03</series_start>
         <series_end>2007-02-08</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/13/17405.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/13/17405.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>220</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -29,7 +29,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726648</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>30</series_animedb_id>
@@ -40,17 +40,17 @@
         <series_status>2</series_status>
         <series_start>1995-10-04</series_start>
         <series_end>1996-03-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/21418.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/21418.jpg</series_image>
         <my_id>0</my_id>
-        <my_watched_episodes>0</my_watched_episodes>
-        <my_start_date>0000-00-00</my_start_date>
-        <my_finish_date>0000-00-00</my_finish_date>
+        <my_watched_episodes>26</my_watched_episodes>
+        <my_start_date>2017-01-14</my_start_date>
+        <my_finish_date>2017-01-17</my_finish_date>
         <my_score>0</my_score>
-        <my_status>6</my_status>
+        <my_status>2</my_status>
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
-        <my_last_updated>1459842142</my_last_updated>
-        <my_tags></my_tags>
+        <my_last_updated>1484707062</my_last_updated>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>121</series_animedb_id>
@@ -61,7 +61,7 @@
         <series_status>2</series_status>
         <series_start>2003-10-04</series_start>
         <series_end>2004-10-02</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/75815.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/75815.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>51</my_watched_episodes>
         <my_start_date>2016-04-08</my_start_date>
@@ -71,7 +71,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1460614531</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>227</series_animedb_id>
@@ -82,7 +82,7 @@
         <series_status>2</series_status>
         <series_start>2000-04-26</series_start>
         <series_end>2001-03-16</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/7/77356.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/7/77356.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>6</my_watched_episodes>
         <my_start_date>2016-04-08</my_start_date>
@@ -92,7 +92,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1460622224</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>246</series_animedb_id>
@@ -103,7 +103,7 @@
         <series_status>2</series_status>
         <series_start>2001-10-13</series_start>
         <series_end>2002-09-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/20134.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/20134.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>0</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -113,7 +113,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1447112794</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>269</series_animedb_id>
@@ -124,14 +124,14 @@
         <series_status>2</series_status>
         <series_start>2004-10-05</series_start>
         <series_end>2012-03-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/3/40451.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/3/40451.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>366</my_watched_episodes>
         <my_start_date>2007-00-00</my_start_date>
         <my_finish_date>2012-04-00</my_finish_date>
         <my_score>7</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726591</my_last_updated>
         <my_tags>(I will always love Bleach.)</my_tags>
@@ -145,7 +145,7 @@
         <series_status>2</series_status>
         <series_start>2001-04-06</series_start>
         <series_end>2001-09-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/11/46139.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/11/46139.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>26</my_watched_episodes>
         <my_start_date>2016-01-07</my_start_date>
@@ -155,7 +155,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1455554144</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>356</series_animedb_id>
@@ -166,17 +166,17 @@
         <series_status>2</series_status>
         <series_start>2006-01-07</series_start>
         <series_end>2006-06-17</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/30327.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/30327.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>24</my_watched_episodes>
         <my_start_date>2015-12-09</my_start_date>
         <my_finish_date>2015-12-10</my_finish_date>
         <my_score>7</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449787682</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>430</series_animedb_id>
@@ -189,7 +189,7 @@
         <series_status>2</series_status>
         <series_start>2005-07-23</series_start>
         <series_end>2005-07-23</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/20113.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/20113.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -199,7 +199,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1461388844</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>934</series_animedb_id>
@@ -210,28 +210,28 @@
         <series_status>2</series_status>
         <series_start>2006-04-05</series_start>
         <series_end>2006-09-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/19634.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/19634.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>26</my_watched_episodes>
         <my_start_date>2015-11-19</my_start_date>
         <my_finish_date>2015-11-26</my_finish_date>
         <my_score>7</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1448530342</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>1535</series_animedb_id>
         <series_title>Death Note</series_title>
-        <series_synonyms>; Death Note</series_synonyms>
+        <series_synonyms>DN; Death Note</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>37</series_episodes>
         <series_status>2</series_status>
         <series_start>2006-10-04</series_start>
         <series_end>2007-06-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/9453.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/9453.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>37</my_watched_episodes>
         <my_start_date>2015-12-30</my_start_date>
@@ -241,7 +241,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1451743039</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>1686</series_animedb_id>
@@ -252,7 +252,7 @@
         <series_status>2</series_status>
         <series_start>2006-12-16</series_start>
         <series_end>2006-12-16</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/1/1686.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/1/1686.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -262,7 +262,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443151326</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>1723</series_animedb_id>
@@ -273,7 +273,7 @@
         <series_status>2</series_status>
         <series_start>2007-09-15</series_start>
         <series_end>2007-09-15</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/13/75650.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/13/75650.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -283,18 +283,18 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1451010203</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>1735</series_animedb_id>
         <series_title>Naruto: Shippuuden</series_title>
         <series_synonyms>Naruto Hurricane Chronicles; Naruto: Shippuden</series_synonyms>
         <series_type>1</series_type>
-        <series_episodes>0</series_episodes>
-        <series_status>1</series_status>
+        <series_episodes>500</series_episodes>
+        <series_status>2</series_status>
         <series_start>2007-02-15</series_start>
-        <series_end>0000-00-00</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/17407.jpg</series_image>
+        <series_end>2017-03-23</series_end>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/17407.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>432</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -304,7 +304,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442809155</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>1889</series_animedb_id>
@@ -317,17 +317,17 @@
         <series_status>2</series_status>
         <series_start>2007-07-06</series_start>
         <series_end>2007-12-18</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/14114.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/14114.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>24</my_watched_episodes>
         <my_start_date>2015-11-26</my_start_date>
         <my_finish_date>2015-12-01</my_finish_date>
         <my_score>8</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1448957839</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>2167</series_animedb_id>
@@ -338,17 +338,17 @@
         <series_status>2</series_status>
         <series_start>2007-10-05</series_start>
         <series_end>2008-03-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/13/8498.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/13/8498.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>23</my_watched_episodes>
         <my_start_date>2015-12-23</my_start_date>
         <my_finish_date>2015-12-24</my_finish_date>
         <my_score>7</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450962421</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>2889</series_animedb_id>
@@ -359,7 +359,7 @@
         <series_status>2</series_status>
         <series_start>2007-12-22</series_start>
         <series_end>2007-12-22</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/7499.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/7499.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -369,7 +369,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443151355</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>2899</series_animedb_id>
@@ -380,17 +380,17 @@
         <series_status>2</series_status>
         <series_start>2007-08-02</series_start>
         <series_end>2007-08-02</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/6/10220.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/6/10220.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>2015-11-26</my_start_date>
         <my_finish_date>2015-11-26</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1448535681</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>3230</series_animedb_id>
@@ -401,7 +401,7 @@
         <series_status>2</series_status>
         <series_start>2008-04-05</series_start>
         <series_end>2008-06-21</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/75646.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/75646.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -411,7 +411,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726930</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>3652</series_animedb_id>
@@ -424,17 +424,17 @@
         <series_status>2</series_status>
         <series_start>2009-02-25</series_start>
         <series_end>2009-08-21</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/14113.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/14113.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>5</my_watched_episodes>
         <my_start_date>2015-12-01</my_start_date>
         <my_finish_date>2015-12-02</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449041176</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4059</series_animedb_id>
@@ -445,28 +445,28 @@
         <series_status>2</series_status>
         <series_start>2008-07-16</series_start>
         <series_end>2008-07-16</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/19620.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/19620.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
         <my_finish_date>2015-12-24</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450962491</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4181</series_animedb_id>
         <series_title>Clannad: After Story</series_title>
-        <series_synonyms>CLANNAD: AFTER STORY; Clannad: After Story</series_synonyms>
+        <series_synonyms>; Clannad ~After Story~</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>24</series_episodes>
         <series_status>2</series_status>
         <series_start>2008-10-03</series_start>
         <series_end>2009-03-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/13/24647.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/13/24647.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>24</my_watched_episodes>
         <my_start_date>2015-12-24</my_start_date>
@@ -476,7 +476,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>0</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4726</series_animedb_id>
@@ -487,7 +487,7 @@
         <series_status>2</series_status>
         <series_start>2009-01-09</series_start>
         <series_end>2009-03-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/75647.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/75647.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2015-09-18</my_start_date>
@@ -497,7 +497,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726981</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4798</series_animedb_id>
@@ -510,7 +510,7 @@
         <series_status>2</series_status>
         <series_start>2008-04-04</series_start>
         <series_end>2008-04-04</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/8/60801.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/8/60801.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -520,7 +520,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442729975</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4835</series_animedb_id>
@@ -531,7 +531,7 @@
         <series_status>2</series_status>
         <series_start>2008-12-13</series_start>
         <series_end>2008-12-13</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/3/64689.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/3/64689.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -541,7 +541,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443151287</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4896</series_animedb_id>
@@ -553,38 +553,38 @@
         <series_status>2</series_status>
         <series_start>2009-07-02</series_start>
         <series_end>2009-12-24</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/17709.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/17709.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>26</my_watched_episodes>
         <my_start_date>2015-12-02</my_start_date>
         <my_finish_date>2015-12-07</my_finish_date>
         <my_score>3</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449484191</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>4975</series_animedb_id>
         <series_title>ChäoS;HEAd</series_title>
-        <series_synonyms>; Chaos;Head</series_synonyms>
+        <series_synonyms>ChaoS;HEAd; ChäoS;HEAd</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>12</series_episodes>
         <series_status>2</series_status>
         <series_start>2008-10-09</series_start>
         <series_end>2008-12-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/13/15443.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/13/15443.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2015-09-25</my_start_date>
         <my_finish_date>2015-09-29</my_finish_date>
         <my_score>4</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443516968</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>5114</series_animedb_id>
@@ -597,17 +597,17 @@
         <series_status>2</series_status>
         <series_start>2009-04-05</series_start>
         <series_end>2010-07-04</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/47421.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/47421.jpg</series_image>
         <my_id>0</my_id>
-        <my_watched_episodes>0</my_watched_episodes>
-        <my_start_date>0000-00-00</my_start_date>
-        <my_finish_date>0000-00-00</my_finish_date>
-        <my_score>0</my_score>
-        <my_status>6</my_status>
+        <my_watched_episodes>64</my_watched_episodes>
+        <my_start_date>2016-12-25</my_start_date>
+        <my_finish_date>2017-01-14</my_finish_date>
+        <my_score>7</my_score>
+        <my_status>2</my_status>
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
-        <my_last_updated>1461389152</my_last_updated>
-        <my_tags></my_tags>
+        <my_last_updated>1484431836</my_last_updated>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>5630</series_animedb_id>
@@ -618,7 +618,7 @@
         <series_status>2</series_status>
         <series_start>2009-04-10</series_start>
         <series_end>2009-06-19</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/15033.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/15033.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>11</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -628,7 +628,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726777</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6045</series_animedb_id>
@@ -639,7 +639,7 @@
         <series_status>2</series_status>
         <series_start>2009-10-07</series_start>
         <series_end>2010-03-31</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/7/17890.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/7/17890.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>3</my_watched_episodes>
         <my_start_date>2016-04-04</my_start_date>
@@ -649,18 +649,18 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1460623950</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6351</series_animedb_id>
         <series_title>Clannad: After Story - Mou Hitotsu no Sekai, Kyou-hen</series_title>
-        <series_synonyms>Clannad: After Story OVA; Clannad After Story: Another World, Kyou Chapter</series_synonyms>
+        <series_synonyms>Clannad: After Story OVA; Clannad ~After Story~: Another World, Kyou Chapter</series_synonyms>
         <series_type>4</series_type>
         <series_episodes>1</series_episodes>
         <series_status>2</series_status>
         <series_start>2009-07-01</series_start>
         <series_end>2009-07-01</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/19621.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/19621.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -670,7 +670,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>0</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6372</series_animedb_id>
@@ -683,7 +683,7 @@
         <series_status>2</series_status>
         <series_start>2009-11-28</series_start>
         <series_end>2009-11-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/19101.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/19101.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -693,7 +693,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726831</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6547</series_animedb_id>
@@ -704,17 +704,17 @@
         <series_status>2</series_status>
         <series_start>2010-04-03</series_start>
         <series_end>2010-06-26</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/22061.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/22061.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>13</my_watched_episodes>
         <my_start_date>2015-11-07</my_start_date>
         <my_finish_date>2015-11-08</my_finish_date>
         <my_score>9</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1447025971</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6637</series_animedb_id>
@@ -726,7 +726,7 @@
         <series_status>2</series_status>
         <series_start>2010-03-13</series_start>
         <series_end>2010-03-13</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/26126.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/26126.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -736,7 +736,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442726864</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6746</series_animedb_id>
@@ -747,7 +747,7 @@
         <series_status>2</series_status>
         <series_start>2010-01-08</series_start>
         <series_end>2010-06-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/71772.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/71772.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>24</my_watched_episodes>
         <my_start_date>2016-04-16</my_start_date>
@@ -757,7 +757,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1461374960</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>6922</series_animedb_id>
@@ -770,7 +770,7 @@
         <series_status>2</series_status>
         <series_start>2010-01-23</series_start>
         <series_end>2010-01-23</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/80350.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/80350.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -780,7 +780,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449884088</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>8247</series_animedb_id>
@@ -791,7 +791,7 @@
         <series_status>2</series_status>
         <series_start>2010-12-04</series_start>
         <series_end>2010-12-04</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/26792.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/26792.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -801,7 +801,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443151303</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>9253</series_animedb_id>
@@ -812,17 +812,17 @@
         <series_status>2</series_status>
         <series_start>2011-04-06</series_start>
         <series_end>2011-09-14</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/73199.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/73199.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>24</my_watched_episodes>
         <my_start_date>2015-09-20</my_start_date>
         <my_finish_date>2015-09-22</my_finish_date>
         <my_score>8</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1442970403</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>9756</series_animedb_id>
@@ -834,17 +834,17 @@
         <series_status>2</series_status>
         <series_start>2011-01-07</series_start>
         <series_end>2011-04-22</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/11/55225.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/11/55225.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2015-12-16</my_start_date>
         <my_finish_date>2015-12-22</my_finish_date>
         <my_score>5</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450771282</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>9989</series_animedb_id>
@@ -857,7 +857,7 @@
         <series_status>2</series_status>
         <series_start>2011-04-15</series_start>
         <series_end>2011-06-24</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/79697.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/79697.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>11</my_watched_episodes>
         <my_start_date>2016-03-27</my_start_date>
@@ -867,7 +867,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1459841491</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>10087</series_animedb_id>
@@ -878,17 +878,17 @@
         <series_status>2</series_status>
         <series_start>2011-10-02</series_start>
         <series_end>2011-12-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/2/73249.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/2/73249.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>13</my_watched_episodes>
         <my_start_date>2015-12-07</my_start_date>
         <my_finish_date>2015-12-08</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449578064</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>10491</series_animedb_id>
@@ -899,17 +899,17 @@
         <series_status>2</series_status>
         <series_start>2011-07-21</series_start>
         <series_end>2012-01-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/6/29774.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/6/29774.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>4</my_watched_episodes>
         <my_start_date>2015-12-02</my_start_date>
         <my_finish_date>2015-12-02</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449099412</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>10863</series_animedb_id>
@@ -920,17 +920,17 @@
         <series_status>2</series_status>
         <series_start>2012-02-22</series_start>
         <series_end>2012-02-22</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/7/36531.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/7/36531.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>2015-09-24</my_start_date>
         <my_finish_date>2015-09-24</my_finish_date>
         <my_score>5</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443152392</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>11013</series_animedb_id>
@@ -941,7 +941,7 @@
         <series_status>2</series_status>
         <series_start>2012-01-13</series_start>
         <series_end>2012-03-30</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/35893.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/35893.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-05-21</my_start_date>
@@ -951,7 +951,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1467228344</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>11111</series_animedb_id>
@@ -962,7 +962,7 @@
         <series_status>2</series_status>
         <series_start>2012-01-10</series_start>
         <series_end>2012-03-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/75509.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/75509.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-02-12</my_start_date>
@@ -972,18 +972,18 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1455356513</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>11577</series_animedb_id>
         <series_title>Steins;Gate Movie: Fuka Ryouiki no Déjà vu</series_title>
-        <series_synonyms>Steins Gate Movie; Steins;Gate: Fuka Ryouiki no Déjà vu</series_synonyms>
+        <series_synonyms>Steins Gate Movie; Steins;Gate: The Movie − Load Region of Déjà Vu</series_synonyms>
         <series_type>3</series_type>
         <series_episodes>1</series_episodes>
         <series_status>2</series_status>
         <series_start>2013-04-20</series_start>
         <series_end>2013-04-20</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/3/50317.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/3/50317.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>2015-09-23</my_start_date>
@@ -993,51 +993,51 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443078412</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>11741</series_animedb_id>
         <series_title>Fate/Zero 2nd Season</series_title>
-        <series_synonyms>Fate/Zero Second Season; Fate/Zero 2nd Season</series_synonyms>
+        <series_synonyms>Fate/Zero Second Season; Fate/Zero Season 2</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>12</series_episodes>
         <series_status>2</series_status>
         <series_start>2012-04-08</series_start>
         <series_end>2012-06-24</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/8/41125.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/8/41125.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2015-12-09</my_start_date>
         <my_finish_date>2015-12-09</my_finish_date>
         <my_score>8</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449717912</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>11981</series_animedb_id>
         <series_title>Mahou Shoujo Madoka★Magica Movie 3: Hangyaku no Monogatari</series_title>
         <series_synonyms>Mahou Shoujo Madoka Magika Movie 3; Magical Girl Madoka Magica Movie 3; Puella Magi Madoka
-            Magica the Movie Part III: Rebellion
+            Magica the Movie: Rebellion
         </series_synonyms>
         <series_type>3</series_type>
         <series_episodes>1</series_episodes>
         <series_status>2</series_status>
         <series_start>2013-10-26</series_start>
         <series_end>2013-10-26</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/54231.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/54231.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
         <my_finish_date>2015-12-22</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450772171</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>13599</series_animedb_id>
@@ -1048,17 +1048,17 @@
         <series_status>2</series_status>
         <series_start>2012-10-12</series_start>
         <series_end>2013-03-22</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/42013.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/42013.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>22</my_watched_episodes>
         <my_start_date>2015-10-02</my_start_date>
         <my_finish_date>2015-11-05</my_finish_date>
         <my_score>5</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1446875820</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>13759</series_animedb_id>
@@ -1069,7 +1069,7 @@
         <series_status>2</series_status>
         <series_start>2012-10-09</series_start>
         <series_end>2013-03-26</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/43643.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/43643.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>0</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -1079,7 +1079,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1462911938</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>14811</series_animedb_id>
@@ -1090,7 +1090,7 @@
         <series_status>2</series_status>
         <series_start>2013-01-10</series_start>
         <series_end>2013-03-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/45995.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/45995.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>0</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -1100,7 +1100,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1462912883</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>15039</series_animedb_id>
@@ -1113,7 +1113,7 @@
         <series_status>2</series_status>
         <series_start>2013-08-31</series_start>
         <series_end>2013-08-31</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/49993.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/49993.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>0</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -1123,7 +1123,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1459841912</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>15225</series_animedb_id>
@@ -1134,7 +1134,7 @@
         <series_status>2</series_status>
         <series_start>2013-04-13</series_start>
         <series_end>2013-06-29</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/3/75788.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/3/75788.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-01-04</my_start_date>
@@ -1144,7 +1144,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1451923192</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>16700</series_animedb_id>
@@ -1155,17 +1155,17 @@
         <series_status>2</series_status>
         <series_start>2013-08-15</series_start>
         <series_end>2013-08-15</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/51063.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/51063.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>2015-12-01</my_start_date>
         <my_finish_date>2015-12-01</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449025446</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>17265</series_animedb_id>
@@ -1176,7 +1176,7 @@
         <series_status>2</series_status>
         <series_start>2013-10-05</series_start>
         <series_end>2014-03-22</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/6/60613.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/84004.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>25</my_watched_episodes>
         <my_start_date>2016-06-29</my_start_date>
@@ -1186,7 +1186,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1467323871</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>17729</series_animedb_id>
@@ -1197,7 +1197,7 @@
         <series_status>2</series_status>
         <series_start>2014-10-05</series_start>
         <series_end>2014-12-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/73591.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/73591.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>13</my_watched_episodes>
         <my_start_date>2016-02-12</my_start_date>
@@ -1207,7 +1207,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1455508021</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>18495</series_animedb_id>
@@ -1218,7 +1218,7 @@
         <series_status>2</series_status>
         <series_start>2013-07-05</series_start>
         <series_end>2013-10-11</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/59639.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/59639.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-05-20</my_start_date>
@@ -1228,28 +1228,28 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1464008471</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>20031</series_animedb_id>
         <series_title>D-Frag!</series_title>
-        <series_synonyms>D-Frag!; D-Fragments!</series_synonyms>
+        <series_synonyms>D-Frag!; D-Frag!</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>12</series_episodes>
         <series_status>2</series_status>
         <series_start>2014-01-07</series_start>
         <series_end>2014-03-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/2/53407.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/2/53407.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2015-12-22</my_start_date>
         <my_finish_date>2015-12-23</my_finish_date>
         <my_score>9</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450849902</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>20507</series_animedb_id>
@@ -1260,7 +1260,7 @@
         <series_status>2</series_status>
         <series_start>2014-01-05</series_start>
         <series_end>2014-03-23</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/77809.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/77809.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-03-07</my_start_date>
@@ -1270,7 +1270,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1457684460</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>20853</series_animedb_id>
@@ -1281,7 +1281,7 @@
         <series_status>2</series_status>
         <series_start>2014-04-10</series_start>
         <series_end>2014-06-26</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/61781.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/61781.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-02-14</my_start_date>
@@ -1291,7 +1291,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1456374994</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>22297</series_animedb_id>
@@ -1303,29 +1303,49 @@
         <series_status>2</series_status>
         <series_start>2014-10-12</series_start>
         <series_end>2014-12-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/67333.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/67333.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2015-12-11</my_start_date>
         <my_finish_date>2015-12-13</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450192305</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
+    </anime>
+    <anime>
+        <series_animedb_id>23199</series_animedb_id>
+        <series_title>Durarara!!x2 Shou</series_title>
+        <series_synonyms>Durarara!! 2nd Season; DRRR!! 2nd Season; Durarara!! x2</series_synonyms>
+        <series_type>1</series_type>
+        <series_episodes>12</series_episodes>
+        <series_status>2</series_status>
+        <series_start>2015-01-10</series_start>
+        <series_end>2015-03-28</series_end>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/67743.jpg</series_image>
+        <my_id>0</my_id>
+        <my_watched_episodes>12</my_watched_episodes>
+        <my_start_date>0000-00-00</my_start_date>
+        <my_finish_date>0000-00-00</my_finish_date>
+        <my_score>0</my_score>
+        <my_status>2</my_status>
+        <my_rewatching>0</my_rewatching>
+        <my_rewatching_ep>0</my_rewatching_ep>
+        <my_last_updated>1478748589</my_last_updated>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>23321</series_animedb_id>
         <series_title>Log Horizon 2nd Season</series_title>
-        <series_synonyms>Log Horizon Second Season; Log Horizon Dai 2 Series; ログ・ホライズン 第2シリーズ; Log Horizon 2
-        </series_synonyms>
+        <series_synonyms>Log Horizon Second Season; Log Horizon Dai 2 Series; Log Horizon 2</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>25</series_episodes>
         <series_status>2</series_status>
         <series_start>2014-10-04</series_start>
         <series_end>2015-03-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/5/68097.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/5/68097.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>2016-07-01</my_start_date>
@@ -1335,7 +1355,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1467385063</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>23383</series_animedb_id>
@@ -1346,17 +1366,17 @@
         <series_status>2</series_status>
         <series_start>2014-09-22</series_start>
         <series_end>2014-09-22</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/67077.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/67077.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
         <my_finish_date>2015-12-23</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450849885</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>24231</series_animedb_id>
@@ -1369,7 +1389,7 @@
         <series_status>2</series_status>
         <series_start>2014-10-09</series_start>
         <series_end>2014-12-11</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/3/67797.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/3/67797.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>10</my_watched_episodes>
         <my_start_date>2016-03-25</my_start_date>
@@ -1379,7 +1399,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1459062675</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>25157</series_animedb_id>
@@ -1390,7 +1410,7 @@
         <series_status>2</series_status>
         <series_start>2014-10-08</series_start>
         <series_end>2014-12-24</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/67795.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/67795.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-03-05</my_start_date>
@@ -1400,7 +1420,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1457172683</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>27821</series_animedb_id>
@@ -1412,7 +1432,7 @@
         <series_status>2</series_status>
         <series_start>2014-10-05</series_start>
         <series_end>2014-10-05</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/67425.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/67425.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -1422,28 +1442,70 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1449885345</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
+    </anime>
+    <anime>
+        <series_animedb_id>27831</series_animedb_id>
+        <series_title>Durarara!!x2 Ten</series_title>
+        <series_synonyms>Durarara!!x2 Ten</series_synonyms>
+        <series_type>1</series_type>
+        <series_episodes>12</series_episodes>
+        <series_status>2</series_status>
+        <series_start>2015-07-04</series_start>
+        <series_end>2015-09-26</series_end>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/8/74981.jpg</series_image>
+        <my_id>0</my_id>
+        <my_watched_episodes>12</my_watched_episodes>
+        <my_start_date>0000-00-00</my_start_date>
+        <my_finish_date>0000-00-00</my_finish_date>
+        <my_score>0</my_score>
+        <my_status>2</my_status>
+        <my_rewatching>0</my_rewatching>
+        <my_rewatching_ep>0</my_rewatching_ep>
+        <my_last_updated>1478748456</my_last_updated>
+        <my_tags/>
+    </anime>
+    <anime>
+        <series_animedb_id>27833</series_animedb_id>
+        <series_title>Durarara!!x2 Ketsu</series_title>
+        <series_synonyms>Durarara!!x2 Ketsu</series_synonyms>
+        <series_type>1</series_type>
+        <series_episodes>12</series_episodes>
+        <series_status>2</series_status>
+        <series_start>2016-01-09</series_start>
+        <series_end>2016-03-26</series_end>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/6/77838.jpg</series_image>
+        <my_id>0</my_id>
+        <my_watched_episodes>12</my_watched_episodes>
+        <my_start_date>0000-00-00</my_start_date>
+        <my_finish_date>2016-11-09</my_finish_date>
+        <my_score>0</my_score>
+        <my_status>2</my_status>
+        <my_rewatching>0</my_rewatching>
+        <my_rewatching_ep>0</my_rewatching_ep>
+        <my_last_updated>1478748484</my_last_updated>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>27957</series_animedb_id>
         <series_title>Steins;Gate: Soumei Eichi no Cognitive Computing</series_title>
-        <series_synonyms></series_synonyms>
+        <series_synonyms/>
         <series_type>5</series_type>
         <series_episodes>4</series_episodes>
         <series_status>2</series_status>
         <series_start>2014-10-15</series_start>
         <series_end>2014-11-12</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/71319.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/71319.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>4</my_watched_episodes>
         <my_start_date>2015-09-25</my_start_date>
         <my_finish_date>2015-09-25</my_finish_date>
         <my_score>4</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1443155596</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>28285</series_animedb_id>
@@ -1454,7 +1516,7 @@
         <series_status>2</series_status>
         <series_start>2015-03-25</series_start>
         <series_end>2015-03-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/3/74066.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/3/74066.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -1464,18 +1526,18 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1457174754</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>28497</series_animedb_id>
         <series_title>Rokka no Yuusha</series_title>
-        <series_synonyms>Rokka no Yuusha; Rokka: Braves of the Six Flowers</series_synonyms>
+        <series_synonyms>Rokka no Yusha; Rokka: Braves of the Six Flowers</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>12</series_episodes>
         <series_status>2</series_status>
         <series_start>2015-07-05</series_start>
         <series_end>2015-09-20</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/74374.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/74374.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-03-06</my_start_date>
@@ -1485,29 +1547,28 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1457333166</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>28701</series_animedb_id>
         <series_title>Fate/stay night: Unlimited Blade Works 2nd Season</series_title>
-        <series_synonyms>Fate/stay night (2015); Fate - Stay Night; Fate/stay night [Unlimited Blade Works] (2015)
-        </series_synonyms>
+        <series_synonyms>Fate/stay night (2015); Fate - Stay Night</series_synonyms>
         <series_type>1</series_type>
         <series_episodes>13</series_episodes>
         <series_status>2</series_status>
         <series_start>2015-04-05</series_start>
         <series_end>2015-06-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/11/72863.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/11/72863.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>13</my_watched_episodes>
         <my_start_date>2015-12-13</my_start_date>
         <my_finish_date>2015-12-15</my_finish_date>
         <my_score>0</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450202663</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>28907</series_animedb_id>
@@ -1518,7 +1579,7 @@
         <series_status>2</series_status>
         <series_start>2015-07-04</series_start>
         <series_end>2015-09-19</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/8/76222.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/8/76222.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-02-07</my_start_date>
@@ -1528,7 +1589,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1454915500</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>28999</series_animedb_id>
@@ -1539,17 +1600,17 @@
         <series_status>2</series_status>
         <series_start>2015-07-05</series_start>
         <series_end>2015-09-27</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/12/74683.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/12/74683.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>13</my_watched_episodes>
         <my_start_date>2015-11-17</my_start_date>
         <my_finish_date>2015-11-19</my_finish_date>
         <my_score>10</my_score>
         <my_status>2</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1447955967</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>29093</series_animedb_id>
@@ -1561,7 +1622,7 @@
         <series_status>2</series_status>
         <series_start>2015-04-12</series_start>
         <series_end>2015-04-12</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/2/73152.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/2/73152.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
@@ -1571,7 +1632,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1456389845</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>29095</series_animedb_id>
@@ -1582,7 +1643,7 @@
         <series_status>2</series_status>
         <series_start>2015-04-19</series_start>
         <series_end>2015-06-21</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/8/72855.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/8/72855.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>10</my_watched_episodes>
         <my_start_date>2016-02-26</my_start_date>
@@ -1592,7 +1653,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1457083846</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>29786</series_animedb_id>
@@ -1604,7 +1665,7 @@
         <series_status>2</series_status>
         <series_start>2015-07-04</series_start>
         <series_end>2015-09-19</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/6/75106.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/6/75106.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-02-20</my_start_date>
@@ -1614,7 +1675,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1456384518</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>30296</series_animedb_id>
@@ -1627,7 +1688,7 @@
         <series_status>2</series_status>
         <series_start>2015-10-03</series_start>
         <series_end>2015-12-19</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/9/76493.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/9/76493.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-01-02</my_start_date>
@@ -1637,7 +1698,28 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1451807215</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
+    </anime>
+    <anime>
+        <series_animedb_id>30485</series_animedb_id>
+        <series_title>ChäoS;Child</series_title>
+        <series_synonyms>Chaos Child; ChäoS;Child</series_synonyms>
+        <series_type>1</series_type>
+        <series_episodes>12</series_episodes>
+        <series_status>2</series_status>
+        <series_start>2017-01-11</series_start>
+        <series_end>2017-03-29</series_end>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/11/83805.jpg</series_image>
+        <my_id>0</my_id>
+        <my_watched_episodes>11</my_watched_episodes>
+        <my_start_date>2017-03-22</my_start_date>
+        <my_finish_date>0000-00-00</my_finish_date>
+        <my_score>0</my_score>
+        <my_status>1</my_status>
+        <my_rewatching>0</my_rewatching>
+        <my_rewatching_ep>0</my_rewatching_ep>
+        <my_last_updated>1490326971</my_last_updated>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>30503</series_animedb_id>
@@ -1648,7 +1730,7 @@
         <series_status>2</series_status>
         <series_start>2015-10-03</series_start>
         <series_end>2015-12-26</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/75627.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/75627.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>13</my_watched_episodes>
         <my_start_date>2016-03-08</my_start_date>
@@ -1658,7 +1740,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1457739900</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>31043</series_animedb_id>
@@ -1669,7 +1751,7 @@
         <series_status>2</series_status>
         <series_start>2016-01-08</series_start>
         <series_end>2016-03-25</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/10/77957.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/10/77957.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-04-23</my_start_date>
@@ -1679,28 +1761,28 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1463765709</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>31389</series_animedb_id>
         <series_title>Fate/stay night: Unlimited Blade Works 2nd Season - Sunny Day</series_title>
-        <series_synonyms></series_synonyms>
+        <series_synonyms>Fate/stay night [Unlimited Blade Works] Season 2 - Sunny Day</series_synonyms>
         <series_type>4</series_type>
         <series_episodes>1</series_episodes>
         <series_status>2</series_status>
         <series_start>2015-10-07</series_start>
         <series_end>2015-10-07</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/4/75684.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/4/75684.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>0</my_watched_episodes>
         <my_start_date>0000-00-00</my_start_date>
         <my_finish_date>0000-00-00</my_finish_date>
         <my_score>0</my_score>
         <my_status>6</my_status>
-        <my_rewatching></my_rewatching>
+        <my_rewatching/>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1450193015</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>31637</series_animedb_id>
@@ -1713,7 +1795,7 @@
         <series_status>2</series_status>
         <series_start>2016-01-09</series_start>
         <series_end>2016-03-26</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/8/77382.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/8/77382.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>1</my_watched_episodes>
         <my_start_date>2016-05-24</my_start_date>
@@ -1723,7 +1805,7 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1464095485</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
     <anime>
         <series_animedb_id>31859</series_animedb_id>
@@ -1736,7 +1818,7 @@
         <series_status>2</series_status>
         <series_start>2016-01-11</series_start>
         <series_end>2016-03-28</series_end>
-        <series_image>http://cdn.myanimelist.net/images/anime/13/77976.jpg</series_image>
+        <series_image>https://myanimelist.cdn-dena.com/images/anime/13/77976.jpg</series_image>
         <my_id>0</my_id>
         <my_watched_episodes>12</my_watched_episodes>
         <my_start_date>2016-05-23</my_start_date>
@@ -1746,6 +1828,6 @@
         <my_rewatching>0</my_rewatching>
         <my_rewatching_ep>0</my_rewatching_ep>
         <my_last_updated>1464093553</my_last_updated>
-        <my_tags></my_tags>
+        <my_tags/>
     </anime>
 </myanimelist>
