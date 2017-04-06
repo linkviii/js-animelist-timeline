@@ -8,6 +8,7 @@ Test it with Username: linkviii, Width: 2000, From: 2016-00-00, To: 2016-06-00. 
 Uses:
 * https://github.com/Linkviii/js-timeline, a js rewrite of https://github.com/jasonreisman/Timeline
   * http://svgjs.com/
+* https://github.com/eligrey/FileSaver.js/ 
 * jquery
 
 Timeline layout issues are probably for js-timeline. 
