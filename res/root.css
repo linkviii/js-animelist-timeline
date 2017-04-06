@@ -15,6 +15,11 @@ div#top {
     background-color: lightgray;
 }
 
+span#feedback {
+    background-color: plum;
+    margin-left: 20px;
+}
+
 header {
     float: right;
 }

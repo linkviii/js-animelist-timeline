@@ -1,6 +1,8 @@
 /**
  * MIT licenced
  *
+ * v0.1.1
+ * 2017-04-06
  */
 define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery", "./lib/FileSaver"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $, FileSaver) {
     "use strict";
@@ -14,12 +16,13 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     exports.usingTestData = false;
     // export const usingTestData: boolean = true
     const testData = "res/malappinfo.xml";
-    // main data
-    const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
-    //const dateRegex = /\d\d\d\d\d\d\d\d/;
+    const siteUrl = "https://linkviii.github.io/js-animelist-timeline/";
+    const repoUrl = "https://github.com/linkviii/js-animelist-timeline";
+    const issueUrl = "https://github.com/linkviii/js-animelist-timeline/issues";
+    const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
     const userCache = new Map();
     let timelineCount = 0;
-    // global for testing
+    // global for ease of testing. Used as globals.
     let uname;
     let tln;
     //
@@ -28,8 +31,10 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     function init() {
         // form fields
         const param = getJsonFromUrl();
+        const listField = $("#listName");
+        listField.select();
         if (param["uname"]) {
-            $("#listName").val(param["uname"]);
+            listField.val(param["uname"]);
         }
         if (param["width"]) {
             $("#width").val(param["width"]);
@@ -66,6 +71,10 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
             afterAjax(doc);
             return;
         }
+        if (uname == "") {
+            reportNoUser();
+            return;
+        }
         // check cache for name
         // to skip ajax
         const data = userCache.get(uname);
@@ -75,7 +84,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
                 prepareTimeline(data);
             }
             else {
-                respondToBadUser();
+                reportBadUser();
             }
             return;
         }
@@ -102,7 +111,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         catch (err) {
             if (err instanceof MAL.BadUsernameError) {
                 userCache.set(uname, err);
-                respondToBadUser();
+                reportBadUser();
                 return;
             }
             else {
@@ -136,7 +145,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         }
         catch (err) {
             if (err instanceof animelistTL_2.NoDatedAnimeError) {
-                alert("None of the anime in the list contained watched dates.");
+                reportNoDated();
                 return;
             }
             else {
@@ -210,8 +219,32 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     //
     // feedback
     //
-    function respondToBadUser() {
-        alert(uname + " is not a valid MAL username.");
+    function reportNoUser() {
+        usernameFeedback("No username given.");
+    }
+    function reportBadUser() {
+        usernameFeedback(uname + " is not a valid MAL username.");
+    }
+    function reportNoDated() {
+        const str = ["None of the anime in the list contained watched dates. ",
+            "Try removing date filters. ",
+            "If the list does contain watched dates and you see this error, please report an issue at ",
+            issueUrl]
+            .join("");
+        giveFeedback(str, 14);
+    }
+    function usernameFeedback(str) {
+        giveFeedback(str);
+        $("#listName").select();
+    }
+    function giveFeedback(str, sec = 5) {
+        const time = sec * 1000;
+        const feedback = $("#feedback");
+        feedback.text(str);
+        // feedback[0].textContent = str;
+        setTimeout(function () {
+            feedback.text("");
+        }, time);
     }
     //
     // types

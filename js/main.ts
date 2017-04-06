@@ -1,6 +1,8 @@
 /**
  * MIT licenced
  *
+ * v0.1.1
+ * 2017-04-06
  */
 
 /*
@@ -64,18 +66,19 @@ export const usingTestData: boolean = false;
 // export const usingTestData: boolean = true
 
 const testData: string = "res/malappinfo.xml";
-// main data
 
+const siteUrl: string = "https://linkviii.github.io/js-animelist-timeline/";
+const repoUrl: string = "https://github.com/linkviii/js-animelist-timeline";
+const issueUrl: string = "https://github.com/linkviii/js-animelist-timeline/issues";
 
-const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
-//const dateRegex = /\d\d\d\d\d\d\d\d/;
+const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 
 
 const userCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
 
-// global for testing
+// global for ease of testing. Used as globals.
 let uname: string;
 let tln: AnimeListTimeline;
 
@@ -87,8 +90,12 @@ function init(): void {
 
     // form fields
     const param = getJsonFromUrl();
+
+    const listField = $("#listName");
+    listField.select();
+
     if (param["uname"]) {
-        $("#listName").val(param["uname"]);
+        listField.val(param["uname"]);
     }
     if (param["width"]) {
         $("#width").val(param["width"]);
@@ -106,7 +113,7 @@ function init(): void {
     const removeAll = <HTMLButtonElement> document.getElementById("clearAllTimelines");
     removeAll.disabled = true;
     removeAll.addEventListener("click", clearAllTimelines);
-    
+
 }
 
 
@@ -136,6 +143,10 @@ function beforeAjax(): void {
         return
     }
 
+    if (uname == "") {
+        reportNoUser();
+        return;
+    }
 
     // check cache for name
     // to skip ajax
@@ -145,7 +156,7 @@ function beforeAjax(): void {
         if (data instanceof MAL.AnimeList) {
             prepareTimeline(data);
         } else {
-            respondToBadUser();
+            reportBadUser();
         }
         return;
     }
@@ -180,7 +191,7 @@ function afterAjax(doc): void {
     } catch (err) {
         if (err instanceof MAL.BadUsernameError) {
             userCache.set(uname, err);
-            respondToBadUser();
+            reportBadUser();
             return;
         } else {
             throw err;
@@ -223,7 +234,7 @@ function prepareTimeline(mal: MAL.AnimeList): void {
 
     } catch (err) {
         if (err instanceof NoDatedAnimeError) {
-            alert("None of the anime in the list contained watched dates.");
+            reportNoDated();
             return;
         } else {
             throw err;
@@ -314,8 +325,40 @@ function displayTimeline(): void {
 // feedback
 //
 
-function respondToBadUser(): void {
-    alert(uname + " is not a valid MAL username.");
+
+function reportNoUser() {
+    usernameFeedback("No username given.");
+}
+
+function reportBadUser(): void {
+    usernameFeedback(uname + " is not a valid MAL username.");
+}
+
+function reportNoDated() {
+    const str = ["None of the anime in the list contained watched dates. ",
+        "Try removing date filters. ",
+        "If the list does contain watched dates and you see this error, please report an issue at ",
+        issueUrl]
+        .join("");
+    giveFeedback(str, 14);
+}
+
+function usernameFeedback(str: string) {
+    giveFeedback(str);
+    $("#listName").select();
+}
+
+function giveFeedback(str: string, sec = 5) {
+
+    const time = sec * 1000;
+
+    const feedback = $("#feedback");
+    feedback.text(str);
+    // feedback[0].textContent = str;
+    setTimeout(function () {
+        feedback.text("");
+    }, time);
+
 }
 
 
