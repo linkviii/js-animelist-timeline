@@ -1,7 +1,31 @@
 /**
  * MIT licenced
+ *
  */
 
+/*
+ *
+ * code outline:
+ *
+ * imports
+ * global data
+ * page load
+ * main chain
+ * feedback
+ * types
+ * buttons
+ * util
+ * data cleaning
+ * url query manipulation
+ * api urls
+ * test(ing) stuff
+ *
+ */
+
+
+//
+// imports
+//
 
 //import animelistTL.ts
 import {AnimeListTimeline} from "./src/animelistTL";
@@ -24,16 +48,18 @@ import * as $ from "jquery";
 import FileSaver = require('./lib/FileSaver');
 // import *  as FileSaver from "./lib/file-saver";
 declare function saveAs(foo?, fooo?);
-console.info("init FileSaver???")
-console.info(FileSaver)
-console.info(saveAs)
+console.info("init FileSaver???");
+console.info(FileSaver);
+console.info(saveAs);
 
 
 declare function unescape(s: string): string;
 
 
 //
+// Global data
 //
+
 // export const usingTestData: boolean = false;
 export const usingTestData: boolean = true;
 
@@ -53,11 +79,13 @@ let timelineCount: number = 0;
 let uname: string;
 let tln: AnimeListTimeline;
 
-// end main data
+//
+// Page load
+//
 
 function init(): void {
 
-    //fields
+    // form fields
     const param = getJsonFromUrl();
     if (param["uname"]) {
         $("#listName").val(param["uname"]);
@@ -78,23 +106,17 @@ function init(): void {
 
 }
 
-//for node testing
-try {
-    $(document).ready(init);
-} catch (err) {
 
-}
+$(document).ready(init);
 
-//Remove all button
-function clearAllTimelines(): void {
-    $("#tls").empty();
-}
 
+//
+// main chain
+//
 
 // main I
 // Entry point from html form
 function listFormSubmit(): void {
-    // yqlTest()
     beforeAjax();
     return;
 }
@@ -126,7 +148,7 @@ function beforeAjax(): void {
     }
 
 
-    const malUrl: string = getApiUrl(uname);
+    const malUrl: string = getMalApiUrl(uname);
     //document.getElementById("inputOut").innerHTML = malUrl;//debug
 
     const yqlURL: string = getYqlUrl(malUrl);
@@ -269,7 +291,7 @@ function displayTimeline(): void {
 
     tl.meta = [uname, tln.firstDate.rawDateStr, tln.lastDate.rawDateStr];
 
-    // add to doc
+    // add to dom
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
 
@@ -279,9 +301,12 @@ function displayTimeline(): void {
 
 }
 
+// ***
 // End main chain
+// ***
 
-
+//
+// feedback
 //
 
 function respondToBadUser(): void {
@@ -290,13 +315,7 @@ function respondToBadUser(): void {
 
 
 //
-
-function wrapListItem(elm: Element) {
-    const li = document.createElement("li");
-    li.appendChild(elm);
-    return li;
-}
-
+// types
 //
 
 enum exportType {
@@ -313,14 +332,24 @@ class MyContainer extends HTMLDivElement {
 }
 
 //
+// Buttons (other than submit)
+//
 
-//listeners. `this` is the button
+
+// "Remove all" button
+function clearAllTimelines(): void {
+    $("#tls").empty();
+}
+
+//button listeners. `this` is the button
+
+// "X" button
 function removeTl() {
     //rm ../../.. → div {ul, div#tl_}
     this.parentElement.parentElement.parentElement.remove();
 }
 
-
+// "P" | "S" button
 function exportTimeline() {
     //div = ../../.. → div {ul, div#tl_}
     //svg = div/div#tl_/svg
@@ -376,73 +405,28 @@ function exportTimeline() {
 
 
 //
-
-// load xml not async
-function loadTestData(url: string): any /*xml*/ {
-    return (function () {
-        let xml = null;
-        $.ajax({
-            async: false,
-
-            crossDomain: true,
-
-            global: false,
-            url: url,
-            dataType: "xml",
-            success: function (data) {
-                xml = data;
-            }
-        });
-        return xml;
-    })();
-}
-
 // Util
-
-//
-// function toPng(svg) {
-//     let x = new XMLSerializer();
-//     let svgdata = x.serializeToString(svg)
-//     let img = document.createElement("img")
-//     img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
-//
-// }
-
-
 //
 
-/**
- * Forms MAL API URL based on username.
- * @param name
- * @returns {string}
- */
-function getApiUrl(name: string): string {
-    const malUrlBase: string = "http://myanimelist.net/malappinfo.php?u=";
-    const malUrlFilter: string = "&status=all&type=anime";
-
-    return malUrlBase + name + malUrlFilter;
-}
-
-
-/**
- * Forms YQL URL based on MAL URL.
- * YQL is used to proxy the xml request as json.
- * @param malUrl
- * @returns {string}
- */
-function getYqlUrl(malUrl: string): string {
-    const yqlUrlBase: string = "https://query.yahooapis.com/v1/public/yql";
-    const q: string = "?q=";
-    const query: string = "select * from xml where url='" + malUrl + "'";
-    const encodedQuery = encodeURIComponent(query);
-    const yqlUrlFilter: string = "&format=xml&callback=?";
-
-    const yqlUrl: string = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
-
-    return yqlUrl;
+function wrapListItem(elm: Element) {
+    const li = document.createElement("li");
+    li.appendChild(elm);
+    return li;
 }
 
 //
+// Data cleaning
+//
+
+/**
+ * Returns if the string represents a non negative integer.
+ * @param str
+ * @returns {boolean}
+ */
+function isNormalInteger(str: string): boolean {
+    const n: number = ~~Number(str);
+    return (String(n) === str) && (n >= 0);
+}
 
 //make user input suitible for anime timeline
 //must not be null
@@ -490,16 +474,8 @@ function fixDate(date: string, minmax: -1 | 1): string {
 }
 
 
-/**
- * Returns if the string represents a non negative integer.
- * @param str
- * @returns {boolean}
- */
-function isNormalInteger(str: string): boolean {
-    const n: number = ~~Number(str);
-    return (String(n) === str) && (n >= 0);
-}
-
+//
+// url query manipulation
 //
 
 //http://stackoverflow.com/a/8486188/1993919
@@ -566,43 +542,60 @@ function updateUri(param: AnimeListTimelineConfig): void {
 }
 
 //
+// API urls
+//
 
-/*
- function yqlTest() {
- //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
- // find some demo xml - DuckDuckGo is great for this
- var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml"
-
- // build the yql query. Could be just a string - I think join makes easier reading
- var yqlURL = [
- "http://query.yahooapis.com/v1/public/yql",
- "?q=", encodeURIComponent("select * from xml where url='" + xmlSource + "'"),
- "&format=xml&callback=?"
- ].join("");
-
-
- // let xmlContent;
- // console.log("before")
- $.getJSON(yqlURL, yqlTestAfter);
- // console.log("after")
- // console.log(xmlContent)
-
- }
-
- function yqlTestAfter(data) {
- console.log("in ajax");
- console.log(data)
-
- console.log(data.results[0])
-
- console.log($.parseXML(data.results[0]))
-
- var xmlContent = $(data.results[0]);
- console.log(xmlContent)
- console.log(xmlContent[0])
-
- var Abstract = $(xmlContent).find("Abstract").text();
-
- console.log(Abstract)
- }
+/**
+ * Forms MAL API URL based on username.
+ * @param name
+ * @returns {string}
  */
+function getMalApiUrl(name: string): string {
+    const malUrlBase: string = "http://myanimelist.net/malappinfo.php?u=";
+    const malUrlFilter: string = "&status=all&type=anime";
+
+    return malUrlBase + name + malUrlFilter;
+}
+
+
+/**
+ * Forms YQL URL based on MAL URL.
+ * YQL is used to proxy the xml request as json.
+ * @param malUrl
+ * @returns {string}
+ */
+function getYqlUrl(malUrl: string): string {
+    const yqlUrlBase: string = "https://query.yahooapis.com/v1/public/yql";
+    const q: string = "?q=";
+    const query: string = "select * from xml where url='" + malUrl + "'";
+    const encodedQuery = encodeURIComponent(query);
+    const yqlUrlFilter: string = "&format=xml&callback=?";
+
+    const yqlUrl: string = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
+
+    return yqlUrl;
+}
+
+//
+// test(ing) stuff
+//
+
+// load xml not async
+function loadTestData(url: string): any /*xml*/ {
+    return (function () {
+        let xml = null;
+        $.ajax({
+            async: false,
+
+            crossDomain: true,
+
+            global: false,
+            url: url,
+            dataType: "xml",
+            success: function (data) {
+                xml = data;
+            }
+        });
+        return xml;
+    })();
+}
