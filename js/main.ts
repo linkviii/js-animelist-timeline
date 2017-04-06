@@ -102,6 +102,8 @@ function listFormSubmit(): void {
 // main II
 // Form api requests and call
 function beforeAjax(): void {
+    uname = $("#listName").val().trim();
+
     if (usingTestData) {
         console.info("Using test data");
         let doc = loadTestData(testData);//ajax
@@ -109,7 +111,6 @@ function beforeAjax(): void {
         return
     }
 
-    uname = $("#listName").val().trim();
 
     // check cache for name
     // to skip ajax
@@ -192,8 +193,8 @@ function prepareTimeline(mal: MAL.AnimeList): void {
     updateUri(tlConfig);
 
     try {
+        //global
         tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
-
 
     } catch (err) {
         if (err instanceof NoDatedAnimeError) {
@@ -216,13 +217,17 @@ function displayTimeline(): void {
      This comment could lie
      and so could any other
 
-     div #tls
-     ``div
-     ````ul buttonlist
-     ``````li
-     ````````button
-     ````div #tl_*
-     ``````svg
+     `` div #tls
+     ``** div
+     ``**`` ul buttonlist
+     ``**``** li
+     ``**``**`` button
+     ``**`` div .tl_[n]
+     ``**```` svg
+
+     ** → multiple
+     `` → single
+
      */
 
 
@@ -257,11 +262,12 @@ function displayTimeline(): void {
     controls.appendChild(wrapListItem(pngButton));
 
     //make timeline container
-    const tl = document.createElement("div");
+    const tl: MyContainer = document.createElement("div");
     tl.className = "timeline";
     tl.id = "tl_" + timelineCount;
     timelineCount++;
 
+    tl.meta = [uname, tln.firstDate.rawDateStr, tln.lastDate.rawDateStr];
 
     // add to doc
     tlArea.appendChild(controls);
@@ -276,16 +282,22 @@ function displayTimeline(): void {
 // End main chain
 
 
+//
 
 function respondToBadUser(): void {
     alert(uname + " is not a valid MAL username.");
 }
+
+
+//
 
 function wrapListItem(elm: Element) {
     const li = document.createElement("li");
     li.appendChild(elm);
     return li;
 }
+
+//
 
 enum exportType {
     Png,
@@ -296,22 +308,27 @@ class MyButton extends HTMLButtonElement {
     kind?: exportType;
 }
 
-//listener
+class MyContainer extends HTMLDivElement {
+    meta?: string[];
+}
+
+//
+
+//listeners. `this` is the button
 function removeTl() {
     //rm ../../.. → div {ul, div#tl_}
     this.parentElement.parentElement.parentElement.remove();
 }
 
 
-
-//    const filename = [uname,]
-
-//type: exportType
 function exportTimeline() {
-    // declare foo:exportType;
-    //get ../../../div#tl_/svg
+    //div = ../../.. → div {ul, div#tl_}
+    //svg = div/div#tl_/svg
     const div = this.parentElement.parentElement.parentElement;
-    const svg = div.getElementsByClassName("timeline")[0].firstElementChild;
+    const container: MyContainer = div.getElementsByClassName("timeline")[0];
+    const svg = container.firstElementChild;
+
+    const fileName: string = container.meta.join("_");
 
     const svgdata = new XMLSerializer().serializeToString(svg);
 
@@ -321,10 +338,8 @@ function exportTimeline() {
             const img = document.createElement("img");
             img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
 
-
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
-
 
             const svgSize = svg.getBoundingClientRect();
             canvas.width = svgSize.width * 3;
@@ -336,20 +351,18 @@ function exportTimeline() {
             img.onload = function () {
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-
                 canvas.toBlob(function (blob) {
-                    saveAs(blob, "pretty image.png");
+                    saveAs(blob, fileName + ".png");
                 });
             };
 
-            // document.appendChild(canvas)
         }
             break;
         //
         case exportType.Svg: {
 
-            const blob = new Blob([svgdata], {type: "text/plain;charset=utf-8"});
-            saveAs(blob, "foo.svg");
+            const blob = new Blob([svgdata], {type: "image/svg+xml"});
+            saveAs(blob, fileName + ".svg");
         }
             break;
 
@@ -361,13 +374,7 @@ function exportTimeline() {
 
 }
 
-function exportSvg() {
-    // exportTimeline(exportType.Svg)
-}
 
-function exportPng() {
-    // exportTimeline(exportType.Png);
-}
 //
 
 // load xml not async
