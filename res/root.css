@@ -11,6 +11,10 @@ input:valid {
     border: 1px solid green;
 }
 
+div#top {
+    background-color: lightgray;
+}
+
 header {
     float: right;
 }

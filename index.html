@@ -9,51 +9,58 @@
 
 <body>
 
-<header>
-    This is a work in progress. About/Source/Support:
-    <a href="https://github.com/linkviii/js-animelist-timeline">
-        https://github.com/linkviii/js-animelist-timeline
-    </a>
-</header>
+<div id="top">
 
-<br>
+    <header>
+        This is a work in progress. About/Source/Support:
+        <a href="https://github.com/linkviii/js-animelist-timeline">
+            https://github.com/linkviii/js-animelist-timeline
+        </a>
+    </header>
 
-<p>Generate a timeline from dated anime on your MyAnimeList</p>
+    <br>
 
-<form>
-    <span class="required">
-        <label>List username
-            <input id="listName" required/>
+    <p>Generate a timeline of when you watched anime from dates on your MyAnimeList</p>
+
+    <form>
+        <span class="required">
+            <label>List username
+                <input id="listName" required/>
+            </label>
+        </span>
+        <span class="required">
+            <label> Width
+                <input id="width" type="number" value="1000" step="100" required/>
+            </label>
+        </span>
+        <!--Not bothering with type="date" because browsers all suck-->
+        <label>From
+            <input id="from" placeholder="yyyy-mm-dd"
+                   pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
         </label>
-    </span>
-    <span class="required">
-        <label> Width
-            <input id="width" type="number" value="1000" required/>
+
+        <label>To
+            <input id="to" placeholder="yyyy-mm-dd"
+                   pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
         </label>
-    </span>
-    <!--Not bothering with type="date" because browsers all suck-->
-    <label>From
-        <input id="from" placeholder="yyyy-mm-dd"
-               pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
-    </label>
 
-    <label>To
-        <input id="to" placeholder="yyyy-mm-dd"
-               pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
-    </label>
+        <button type="button" id="listFormSubmit" title="Generate timeline">Submit</button>
+        <button type="reset" title="Clear form data">Clear</button>
 
-    <button type="button" id="listFormSubmit">Submit</button>
-    <button type="reset">Clear</button>
+    </form>
 
-</form>
+</div>
 
 <!--debug out-->
 <pre id="inputOut"></pre>
 <p id="json"></p>
 
 
-<button type="button" id="clearAllTimelines">Remove all</button>
+<button type="button" id="clearAllTimelines"
+        title="Remove all generated timelines" disabled>Remove all</button>
 
+<br>
+<br>
 
 <!--Generate timeline here-->
 <div id="tls"></div>

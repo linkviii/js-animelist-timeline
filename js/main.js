@@ -42,7 +42,9 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         }
         //buttons
         $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
-        $("#clearAllTimelines")[0].addEventListener("click", clearAllTimelines);
+        const removeAll = document.getElementById("clearAllTimelines");
+        removeAll.disabled = true;
+        removeAll.addEventListener("click", clearAllTimelines);
     }
     $(document).ready(init);
     //
@@ -199,6 +201,8 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         //make timeline after it has a valid anchor in the doc
         const svg = new timeline_1.Timeline(tln.data, tl.id);
         svg.build();
+        const removeAll = document.getElementById("clearAllTimelines");
+        removeAll.disabled = false;
     }
     // ***
     // End main chain
@@ -226,6 +230,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     //
     // "Remove all" button
     function clearAllTimelines() {
+        this.disabled = true;
         $("#tls").empty();
     }
     //button listeners. `this` is the button
@@ -233,6 +238,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     function removeTl() {
         //rm ../../.. → div {ul, div#tl_}
         this.parentElement.parentElement.parentElement.remove();
+        // to do? disable remove all if there are no more timelines
     }
     // "P" | "S" button
     function exportTimeline() {

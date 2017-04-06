@@ -102,8 +102,11 @@ function init(): void {
 
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
-    $("#clearAllTimelines")[0].addEventListener("click", clearAllTimelines);
 
+    const removeAll = <HTMLButtonElement> document.getElementById("clearAllTimelines");
+    removeAll.disabled = true;
+    removeAll.addEventListener("click", clearAllTimelines);
+    
 }
 
 
@@ -299,6 +302,8 @@ function displayTimeline(): void {
     const svg: Timeline = new Timeline(tln.data, tl.id);
     svg.build();
 
+    const removeAll = <HTMLButtonElement> document.getElementById("clearAllTimelines");
+    removeAll.disabled = false;
 }
 
 // ***
@@ -338,6 +343,7 @@ class MyContainer extends HTMLDivElement {
 
 // "Remove all" button
 function clearAllTimelines(): void {
+    this.disabled = true;
     $("#tls").empty();
 }
 
@@ -347,6 +353,7 @@ function clearAllTimelines(): void {
 function removeTl() {
     //rm ../../.. → div {ul, div#tl_}
     this.parentElement.parentElement.parentElement.remove();
+    // to do? disable remove all if there are no more timelines
 }
 
 // "P" | "S" button
