@@ -1,5 +1,6 @@
 /**
  * MIT licenced
+ *
  */
 define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery", "./lib/FileSaver"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $, FileSaver) {
     "use strict";
@@ -8,9 +9,10 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     console.info(FileSaver);
     console.info(saveAs);
     //
+    // Global data
     //
-    // export const usingTestData: boolean = false;
-    exports.usingTestData = true;
+    exports.usingTestData = false;
+    // export const usingTestData: boolean = true
     const testData = "res/malappinfo.xml";
     // main data
     const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
@@ -20,9 +22,11 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     // global for testing
     let uname;
     let tln;
-    // end main data
+    //
+    // Page load
+    //
     function init() {
-        //fields
+        // form fields
         const param = getJsonFromUrl();
         if (param["uname"]) {
             $("#listName").val(param["uname"]);
@@ -40,33 +44,26 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
         $("#clearAllTimelines")[0].addEventListener("click", clearAllTimelines);
     }
-    //for node testing
-    try {
-        $(document).ready(init);
-    }
-    catch (err) {
-    }
-    //Remove all button
-    function clearAllTimelines() {
-        $("#tls").empty();
-    }
+    $(document).ready(init);
+    //
+    // main chain
+    //
     // main I
     // Entry point from html form
     function listFormSubmit() {
-        // yqlTest()
         beforeAjax();
         return;
     }
     // main II
     // Form api requests and call
     function beforeAjax() {
+        uname = $("#listName").val().trim();
         if (exports.usingTestData) {
             console.info("Using test data");
             let doc = loadTestData(testData); //ajax
             afterAjax(doc);
             return;
         }
-        uname = $("#listName").val().trim();
         // check cache for name
         // to skip ajax
         const data = userCache.get(uname);
@@ -80,7 +77,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
             }
             return;
         }
-        const malUrl = getApiUrl(uname);
+        const malUrl = getMalApiUrl(uname);
         //document.getElementById("inputOut").innerHTML = malUrl;//debug
         const yqlURL = getYqlUrl(malUrl);
         $.getJSON(yqlURL, ajaxData);
@@ -132,6 +129,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         };
         updateUri(tlConfig);
         try {
+            //global
             tln = new animelistTL_1.AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
         }
         catch (err) {
@@ -153,13 +151,17 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
          This comment could lie
          and so could any other
     
-         div #tls
-         ``div
-         ````ul buttonlist
-         ``````li
-         ````````button
-         ````div #tl_*
-         ``````svg
+         `` div #tls
+         ``** div
+         ``**`` ul buttonlist
+         ``**``** li
+         ``**``**`` button
+         ``**`` div .tl_[n]
+         ``**```` svg
+    
+         ** → multiple
+         `` → single
+    
          */
         //Allways add new timeline on top
         const tlArea = document.createElement("div");
@@ -190,22 +192,26 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         tl.className = "timeline";
         tl.id = "tl_" + timelineCount;
         timelineCount++;
-        // add to doc
+        tl.meta = [uname, tln.firstDate.rawDateStr, tln.lastDate.rawDateStr];
+        // add to dom
         tlArea.appendChild(controls);
         tlArea.appendChild(tl);
         //make timeline after it has a valid anchor in the doc
         const svg = new timeline_1.Timeline(tln.data, tl.id);
         svg.build();
     }
+    // ***
     // End main chain
+    // ***
+    //
+    // feedback
+    //
     function respondToBadUser() {
         alert(uname + " is not a valid MAL username.");
     }
-    function wrapListItem(elm) {
-        const li = document.createElement("li");
-        li.appendChild(elm);
-        return li;
-    }
+    //
+    // types
+    //
     var exportType;
     (function (exportType) {
         exportType[exportType["Png"] = 0] = "Png";
@@ -213,18 +219,29 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     })(exportType || (exportType = {}));
     class MyButton extends HTMLButtonElement {
     }
-    //listener
+    class MyContainer extends HTMLDivElement {
+    }
+    //
+    // Buttons (other than submit)
+    //
+    // "Remove all" button
+    function clearAllTimelines() {
+        $("#tls").empty();
+    }
+    //button listeners. `this` is the button
+    // "X" button
     function removeTl() {
         //rm ../../.. → div {ul, div#tl_}
         this.parentElement.parentElement.parentElement.remove();
     }
-    //    const filename = [uname,]
-    //type: exportType
+    // "P" | "S" button
     function exportTimeline() {
-        // declare foo:exportType;
-        //get ../../../div#tl_/svg
+        //div = ../../.. → div {ul, div#tl_}
+        //svg = div/div#tl_/svg
         const div = this.parentElement.parentElement.parentElement;
-        const svg = div.getElementsByClassName("timeline")[0].firstElementChild;
+        const container = div.getElementsByClassName("timeline")[0];
+        const svg = container.firstElementChild;
+        const fileName = container.meta.join("_");
         const svgdata = new XMLSerializer().serializeToString(svg);
         switch (this.kind) {
             //
@@ -242,17 +259,16 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
                     img.onload = function () {
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         canvas.toBlob(function (blob) {
-                            saveAs(blob, "pretty image.png");
+                            saveAs(blob, fileName + ".png");
                         });
                     };
-                    // document.appendChild(canvas)
                 }
                 break;
             //
             case exportType.Svg:
                 {
-                    const blob = new Blob([svgdata], { type: "text/plain;charset=utf-8" });
-                    saveAs(blob, "foo.svg");
+                    const blob = new Blob([svgdata], { type: "image/svg+xml" });
+                    saveAs(blob, fileName + ".svg");
                 }
                 break;
             //
@@ -261,66 +277,26 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
             }
         }
     }
-    function exportSvg() {
-        // exportTimeline(exportType.Svg)
-    }
-    function exportPng() {
-        // exportTimeline(exportType.Png);
-    }
     //
-    // load xml not async
-    function loadTestData(url) {
-        return (function () {
-            let xml = null;
-            $.ajax({
-                async: false,
-                crossDomain: true,
-                global: false,
-                url: url,
-                dataType: "xml",
-                success: function (data) {
-                    xml = data;
-                }
-            });
-            return xml;
-        })();
-    }
     // Util
     //
-    // function toPng(svg) {
-    //     let x = new XMLSerializer();
-    //     let svgdata = x.serializeToString(svg)
-    //     let img = document.createElement("img")
-    //     img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
-    //
-    // }
-    //
-    /**
-     * Forms MAL API URL based on username.
-     * @param name
-     * @returns {string}
-     */
-    function getApiUrl(name) {
-        const malUrlBase = "http://myanimelist.net/malappinfo.php?u=";
-        const malUrlFilter = "&status=all&type=anime";
-        return malUrlBase + name + malUrlFilter;
-    }
-    /**
-     * Forms YQL URL based on MAL URL.
-     * YQL is used to proxy the xml request as json.
-     * @param malUrl
-     * @returns {string}
-     */
-    function getYqlUrl(malUrl) {
-        const yqlUrlBase = "https://query.yahooapis.com/v1/public/yql";
-        const q = "?q=";
-        const query = "select * from xml where url='" + malUrl + "'";
-        const encodedQuery = encodeURIComponent(query);
-        const yqlUrlFilter = "&format=xml&callback=?";
-        const yqlUrl = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
-        return yqlUrl;
+    function wrapListItem(elm) {
+        const li = document.createElement("li");
+        li.appendChild(elm);
+        return li;
     }
     //
+    // Data cleaning
+    //
+    /**
+     * Returns if the string represents a non negative integer.
+     * @param str
+     * @returns {boolean}
+     */
+    function isNormalInteger(str) {
+        const n = ~~Number(str);
+        return (String(n) === str) && (n >= 0);
+    }
     //make user input suitible for anime timeline
     //must not be null
     function fixDate(date, minmax) {
@@ -361,15 +337,8 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         }
         return [ys, ms, ds].join("-");
     }
-    /**
-     * Returns if the string represents a non negative integer.
-     * @param str
-     * @returns {boolean}
-     */
-    function isNormalInteger(str) {
-        const n = ~~Number(str);
-        return (String(n) === str) && (n >= 0);
-    }
+    //
+    // url query manipulation
     //
     //http://stackoverflow.com/a/8486188/1993919
     function getJsonFromUrl(hashBased) {
@@ -432,45 +401,53 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         str = replaceQueryParam("maxDate", endDate, str);
         window.history.replaceState(null, null, str);
     }
+    //
+    // API urls
+    //
+    /**
+     * Forms MAL API URL based on username.
+     * @param name
+     * @returns {string}
+     */
+    function getMalApiUrl(name) {
+        const malUrlBase = "http://myanimelist.net/malappinfo.php?u=";
+        const malUrlFilter = "&status=all&type=anime";
+        return malUrlBase + name + malUrlFilter;
+    }
+    /**
+     * Forms YQL URL based on MAL URL.
+     * YQL is used to proxy the xml request as json.
+     * @param malUrl
+     * @returns {string}
+     */
+    function getYqlUrl(malUrl) {
+        const yqlUrlBase = "https://query.yahooapis.com/v1/public/yql";
+        const q = "?q=";
+        const query = "select * from xml where url='" + malUrl + "'";
+        const encodedQuery = encodeURIComponent(query);
+        const yqlUrlFilter = "&format=xml&callback=?";
+        const yqlUrl = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
+        return yqlUrl;
+    }
+    //
+    // test(ing) stuff
+    //
+    // load xml not async
+    function loadTestData(url) {
+        return (function () {
+            let xml = null;
+            $.ajax({
+                async: false,
+                crossDomain: true,
+                global: false,
+                url: url,
+                dataType: "xml",
+                success: function (data) {
+                    xml = data;
+                }
+            });
+            return xml;
+        })();
+    }
 });
-//
-/*
- function yqlTest() {
- //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484
- // find some demo xml - DuckDuckGo is great for this
- var xmlSource = "http://api.duckduckgo.com/?q=StackOverflow&format=xml"
-
- // build the yql query. Could be just a string - I think join makes easier reading
- var yqlURL = [
- "http://query.yahooapis.com/v1/public/yql",
- "?q=", encodeURIComponent("select * from xml where url='" + xmlSource + "'"),
- "&format=xml&callback=?"
- ].join("");
-
-
- // let xmlContent;
- // console.log("before")
- $.getJSON(yqlURL, yqlTestAfter);
- // console.log("after")
- // console.log(xmlContent)
-
- }
-
- function yqlTestAfter(data) {
- console.log("in ajax");
- console.log(data)
-
- console.log(data.results[0])
-
- console.log($.parseXML(data.results[0]))
-
- var xmlContent = $(data.results[0]);
- console.log(xmlContent)
- console.log(xmlContent[0])
-
- var Abstract = $(xmlContent).find("Abstract").text();
-
- console.log(Abstract)
- }
- */ 
 //# sourceMappingURL=main.js.map

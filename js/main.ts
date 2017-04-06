@@ -60,8 +60,8 @@ declare function unescape(s: string): string;
 // Global data
 //
 
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true;
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true
 
 const testData: string = "res/malappinfo.xml";
 // main data
