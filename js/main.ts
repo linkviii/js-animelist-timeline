@@ -16,14 +16,26 @@ import * as MAL from "./src/MAL";
 //import timeline.ts
 import {Timeline} from "./lib/timeline";
 
+
 //import jquery
 import * as $ from "jquery";
 
+//import FileSaver.js
+import FileSaver = require('./lib/FileSaver');
+// import *  as FileSaver from "./lib/file-saver";
+declare function saveAs(foo?, fooo?);
+console.info("init FileSaver???")
+console.info(FileSaver)
+console.info(saveAs)
+
+
+declare function unescape(s: string): string;
+
 
 //
-
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true;
+//
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true;
 
 const testData: string = "res/malappinfo.xml";
 // main data
@@ -33,7 +45,7 @@ const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 //const dateRegex = /\d\d\d\d\d\d\d\d/;
 
 
-const userCache: Map<string, MAL.AnimeList|MAL.BadUsernameError> = new Map();
+const userCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
 
@@ -101,7 +113,7 @@ function beforeAjax(): void {
 
     // check cache for name
     // to skip ajax
-    const data: MAL.AnimeList|MAL.BadUsernameError = userCache.get(uname);
+    const data: MAL.AnimeList | MAL.BadUsernameError = userCache.get(uname);
     if (data) {
         console.info([uname, "'s data loaded from cache."].join(""));
         if (data instanceof MAL.AnimeList) {
@@ -202,10 +214,13 @@ function displayTimeline(): void {
 
     /*
      This comment could lie
+     and so could any other
+
      div #tls
      ``div
      ````ul buttonlist
-     ``````li ``button
+     ``````li
+     ````````button
      ````div #tl_*
      ``````svg
      */
@@ -218,22 +233,21 @@ function displayTimeline(): void {
 
     //make buttons
     const removeButton = document.createElement("button");
-    const removeText = document.createTextNode("X");
-    removeButton.appendChild(removeText);
+    removeButton.textContent = "X";
+    removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
 
-    //TODO implement and enable
-    const svgButton = document.createElement("button");
-    const svgText = document.createTextNode("S");
-    svgButton.appendChild(svgText);
-    svgButton.addEventListener("click", exportSvg);
-    svgButton.disabled = true;
+    const svgButton: MyButton = document.createElement("button");
+    svgButton.textContent = "S";
+    svgButton.setAttribute("title", "Save as svg");
+    svgButton.addEventListener("click", exportTimeline);
+    svgButton.kind = exportType.Svg;
 
-    const pngButton = document.createElement("button");
-    const pngText = document.createTextNode("P");
-    pngButton.appendChild(pngText);
-    pngButton.addEventListener("click", exportPng);
-    pngButton.disabled = true;
+    const pngButton: MyButton = document.createElement("button");
+    pngButton.textContent = "P";
+    pngButton.setAttribute("title", "Save as png");
+    pngButton.addEventListener("click", exportTimeline);
+    pngButton.kind = exportType.Png;
 
     //make list
     const controls = document.createElement("ul");
@@ -262,6 +276,7 @@ function displayTimeline(): void {
 // End main chain
 
 
+
 function respondToBadUser(): void {
     alert(uname + " is not a valid MAL username.");
 }
@@ -272,18 +287,86 @@ function wrapListItem(elm: Element) {
     return li;
 }
 
+enum exportType {
+    Png,
+    Svg
+}
+
+class MyButton extends HTMLButtonElement {
+    kind?: exportType;
+}
+
 //listener
 function removeTl() {
-    //rm ../../.. → div#tl_
+    //rm ../../.. → div {ul, div#tl_}
     this.parentElement.parentElement.parentElement.remove();
 }
 
+
+
+//    const filename = [uname,]
+
+//type: exportType
+function exportTimeline() {
+    // declare foo:exportType;
+    //get ../../../div#tl_/svg
+    const div = this.parentElement.parentElement.parentElement;
+    const svg = div.getElementsByClassName("timeline")[0].firstElementChild;
+
+    const svgdata = new XMLSerializer().serializeToString(svg);
+
+    switch (this.kind) {
+        //
+        case exportType.Png: {
+            const img = document.createElement("img");
+            img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
+
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+
+            const svgSize = svg.getBoundingClientRect();
+            canvas.width = svgSize.width * 3;
+            canvas.height = svgSize.height * 3;
+
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+
+                canvas.toBlob(function (blob) {
+                    saveAs(blob, "pretty image.png");
+                });
+            };
+
+            // document.appendChild(canvas)
+        }
+            break;
+        //
+        case exportType.Svg: {
+
+            const blob = new Blob([svgdata], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, "foo.svg");
+        }
+            break;
+
+        //
+        default: {
+            console.error("unhandled export case");
+        }
+    }
+
+}
+
 function exportSvg() {
-    console.error("Not implemented")
+    // exportTimeline(exportType.Svg)
 }
 
 function exportPng() {
-    console.error("Not implemented")
+    // exportTimeline(exportType.Png);
 }
 //
 
@@ -308,6 +391,18 @@ function loadTestData(url: string): any /*xml*/ {
 }
 
 // Util
+
+//
+// function toPng(svg) {
+//     let x = new XMLSerializer();
+//     let svgdata = x.serializeToString(svg)
+//     let img = document.createElement("img")
+//     img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
+//
+// }
+
+
+//
 
 /**
  * Forms MAL API URL based on username.
@@ -340,10 +435,11 @@ function getYqlUrl(malUrl: string): string {
     return yqlUrl;
 }
 
+//
 
 //make user input suitible for anime timeline
 //must not be null
-function fixDate(date: string, minmax: -1|1): string {
+function fixDate(date: string, minmax: -1 | 1): string {
 
     const minYear = 1980;//Nerds can change this in the future
     const maxYear = 2030;//For now its sane
@@ -396,6 +492,8 @@ function isNormalInteger(str: string): boolean {
     const n: number = ~~Number(str);
     return (String(n) === str) && (n >= 0);
 }
+
+//
 
 //http://stackoverflow.com/a/8486188/1993919
 function getJsonFromUrl(hashBased?): any {
@@ -459,6 +557,8 @@ function updateUri(param: AnimeListTimelineConfig): void {
 
     window.history.replaceState(null, null, str);
 }
+
+//
 
 /*
  function yqlTest() {

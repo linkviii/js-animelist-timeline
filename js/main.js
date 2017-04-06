@@ -1,12 +1,16 @@
 /**
  * MIT licenced
  */
-define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $) {
+define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery", "./lib/FileSaver"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $, FileSaver) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    console.info("init FileSaver???");
+    console.info(FileSaver);
+    console.info(saveAs);
     //
-    exports.usingTestData = false;
-    // export const usingTestData: boolean = true;
+    //
+    // export const usingTestData: boolean = false;
+    exports.usingTestData = true;
     const testData = "res/malappinfo.xml";
     // main data
     const dateRegex = /^\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
@@ -147,10 +151,13 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     function displayTimeline() {
         /*
          This comment could lie
+         and so could any other
+    
          div #tls
          ``div
          ````ul buttonlist
-         ``````li ``button
+         ``````li
+         ````````button
          ````div #tl_*
          ``````svg
          */
@@ -159,20 +166,19 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         $("#tls").prepend(tlArea);
         //make buttons
         const removeButton = document.createElement("button");
-        const removeText = document.createTextNode("X");
-        removeButton.appendChild(removeText);
+        removeButton.textContent = "X";
+        removeButton.setAttribute("title", "Remove timeline from the page");
         removeButton.addEventListener("click", removeTl);
-        //TODO implement and enable
         const svgButton = document.createElement("button");
-        const svgText = document.createTextNode("S");
-        svgButton.appendChild(svgText);
-        svgButton.addEventListener("click", exportSvg);
-        svgButton.disabled = true;
+        svgButton.textContent = "S";
+        svgButton.setAttribute("title", "Save as svg");
+        svgButton.addEventListener("click", exportTimeline);
+        svgButton.kind = exportType.Svg;
         const pngButton = document.createElement("button");
-        const pngText = document.createTextNode("P");
-        pngButton.appendChild(pngText);
-        pngButton.addEventListener("click", exportPng);
-        pngButton.disabled = true;
+        pngButton.textContent = "P";
+        pngButton.setAttribute("title", "Save as png");
+        pngButton.addEventListener("click", exportTimeline);
+        pngButton.kind = exportType.Png;
         //make list
         const controls = document.createElement("ul");
         controls.className = "buttonList";
@@ -200,16 +206,66 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         li.appendChild(elm);
         return li;
     }
+    var exportType;
+    (function (exportType) {
+        exportType[exportType["Png"] = 0] = "Png";
+        exportType[exportType["Svg"] = 1] = "Svg";
+    })(exportType || (exportType = {}));
+    class MyButton extends HTMLButtonElement {
+    }
     //listener
     function removeTl() {
-        //rm ../../.. → div#tl_
+        //rm ../../.. → div {ul, div#tl_}
         this.parentElement.parentElement.parentElement.remove();
     }
+    //    const filename = [uname,]
+    //type: exportType
+    function exportTimeline() {
+        // declare foo:exportType;
+        //get ../../../div#tl_/svg
+        const div = this.parentElement.parentElement.parentElement;
+        const svg = div.getElementsByClassName("timeline")[0].firstElementChild;
+        const svgdata = new XMLSerializer().serializeToString(svg);
+        switch (this.kind) {
+            //
+            case exportType.Png:
+                {
+                    const img = document.createElement("img");
+                    img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const svgSize = svg.getBoundingClientRect();
+                    canvas.width = svgSize.width * 3;
+                    canvas.height = svgSize.height * 3;
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    img.onload = function () {
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        canvas.toBlob(function (blob) {
+                            saveAs(blob, "pretty image.png");
+                        });
+                    };
+                    // document.appendChild(canvas)
+                }
+                break;
+            //
+            case exportType.Svg:
+                {
+                    const blob = new Blob([svgdata], { type: "text/plain;charset=utf-8" });
+                    saveAs(blob, "foo.svg");
+                }
+                break;
+            //
+            default: {
+                console.error("unhandled export case");
+            }
+        }
+    }
     function exportSvg() {
-        console.error("Not implemented");
+        // exportTimeline(exportType.Svg)
     }
     function exportPng() {
-        console.error("Not implemented");
+        // exportTimeline(exportType.Png);
     }
     //
     // load xml not async
@@ -230,6 +286,15 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         })();
     }
     // Util
+    //
+    // function toPng(svg) {
+    //     let x = new XMLSerializer();
+    //     let svgdata = x.serializeToString(svg)
+    //     let img = document.createElement("img")
+    //     img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
+    //
+    // }
+    //
     /**
      * Forms MAL API URL based on username.
      * @param name
@@ -255,6 +320,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         const yqlUrl = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
         return yqlUrl;
     }
+    //
     //make user input suitible for anime timeline
     //must not be null
     function fixDate(date, minmax) {
@@ -304,6 +370,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         const n = ~~Number(str);
         return (String(n) === str) && (n >= 0);
     }
+    //
     //http://stackoverflow.com/a/8486188/1993919
     function getJsonFromUrl(hashBased) {
         let query;
@@ -366,6 +433,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         window.history.replaceState(null, null, str);
     }
 });
+//
 /*
  function yqlTest() {
  //http://stackoverflow.com/questions/24377804/cross-domain-jsonp-xml-response/24399484#24399484

@@ -3,7 +3,8 @@
     "target": "es6",
     "sourceMap": true,
     "module": "amd",
-    "baseUrl": "js"
+    "baseUrl": "js",
+    "allowJs": true
   },
   "exclude": [
     "node_modules"
