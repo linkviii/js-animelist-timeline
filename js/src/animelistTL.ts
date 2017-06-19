@@ -32,6 +32,7 @@ export interface AnimeListTimelineConfig {
  * ```
  * const atl: AnimeListTimeline = ...;
  * const tln: Timeline = new Timeline(atl.data, "id");
+ * tln.build();
  * ```
  *
  */
@@ -44,11 +45,8 @@ export class AnimeListTimeline {
 
     public readonly data: AnimeListTimelineData;
 
+    public readonly userName: string;
 
-    // static dateInBounds(lb: MALDate, rb: MALDate, other: MALDate): boolean {
-    //
-    //     return false;
-    // }
 
     static filterInbounds(anime: MAL.Anime, lb: MAL.Mdate, rb: MAL.Mdate): MAL.Mdate[] {
         let dates: MAL.Mdate[] = [anime.myStartDate, anime.myFinishDate];
@@ -62,7 +60,7 @@ export class AnimeListTimeline {
             });
 
         // Make sure unique
-        if (dates.length && dates[0] == dates[1]){
+        if (dates.length && dates[0] == dates[1]) {
             dates = [dates[0]];
         }
 
@@ -70,6 +68,8 @@ export class AnimeListTimeline {
     }
 
     constructor(mal: MAL.AnimeList, tlConfig: AnimeListTimelineConfig) {
+
+        this.userName = mal.user.userName;
 
         this.firstDate = MAL.nullDate;
         this.lastDate = MAL.nullDate;
@@ -80,7 +80,6 @@ export class AnimeListTimeline {
         if (minDate.isNullDate() || maxDate.isNullDate() || tlConfig.maxDate.length == 0 || tlConfig.maxDate.length == 0) {
             throw ["Invalid config", tlConfig];
         }
-
 
 
         const callouts: TimelineCalloutV2[] = [];
@@ -143,7 +142,6 @@ export class AnimeListTimeline {
         }
 
 
-
         // Object to make an svg timeline
         this.data = {
             apiVersion: 2,
@@ -151,7 +149,7 @@ export class AnimeListTimeline {
             startDate: this.firstDate.fixedDateStr,
             endDate: this.lastDate.fixedDateStr,
             callouts: callouts,
-            tickFormat: "%Y-%m-%d"
+            tickFormat: "%Y-%m-%d "
         }
 
 
@@ -160,6 +158,10 @@ export class AnimeListTimeline {
     //Debug utility
     public getJson() {
         return JSON.stringify(this.data);
+    }
+
+    public getDescriptor(): string {
+        return [this.userName, this.firstDate.fixedDateStr, this.lastDate.fixedDateStr].join("_");
     }
 
     //

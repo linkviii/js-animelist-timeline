@@ -13,8 +13,15 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     //
     // Global data
     //
+    exports.debug = false;
+    // export const debug: boolean = true
     exports.usingTestData = false;
     // export const usingTestData: boolean = true
+    if (exports.debug || exports.usingTestData) {
+        console.warn("Don't commit debug!");
+    }
+    //
+    //
     const testData = "res/malappinfo.xml";
     const siteUrl = "https://linkviii.github.io/js-animelist-timeline/";
     const repoUrl = "https://github.com/linkviii/js-animelist-timeline";
@@ -192,18 +199,26 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         pngButton.setAttribute("title", "Save as png");
         pngButton.addEventListener("click", exportTimeline);
         pngButton.kind = exportType.Png;
+        const jsonButton = document.createElement("button");
+        jsonButton.textContent = "J";
+        jsonButton.setAttribute("title", "Save tln json");
+        jsonButton.addEventListener("click", exportTimeline);
+        jsonButton.kind = exportType.Json;
         //make list
         const controls = document.createElement("ul");
         controls.className = "buttonList";
         controls.appendChild(wrapListItem(removeButton));
         controls.appendChild(wrapListItem(svgButton));
         controls.appendChild(wrapListItem(pngButton));
+        if (exports.debug) {
+            controls.appendChild(wrapListItem(jsonButton));
+        }
         //make timeline container
         const tl = document.createElement("div");
         tl.className = "timeline";
         tl.id = "tl_" + timelineCount;
         timelineCount++;
-        tl.meta = [uname, tln.firstDate.rawDateStr, tln.lastDate.rawDateStr];
+        tl.meta = tln;
         // add to dom
         tlArea.appendChild(controls);
         tlArea.appendChild(tl);
@@ -253,6 +268,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
     (function (exportType) {
         exportType[exportType["Png"] = 0] = "Png";
         exportType[exportType["Svg"] = 1] = "Svg";
+        exportType[exportType["Json"] = 2] = "Json";
     })(exportType || (exportType = {}));
     class MyButton extends HTMLButtonElement {
     }
@@ -280,7 +296,7 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
         const div = this.parentElement.parentElement.parentElement;
         const container = div.getElementsByClassName("timeline")[0];
         const svg = container.firstElementChild;
-        const fileName = container.meta.join("_");
+        const fileName = container.meta.getDescriptor();
         const svgdata = new XMLSerializer().serializeToString(svg);
         switch (this.kind) {
             //
@@ -308,6 +324,12 @@ define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/M
                 {
                     const blob = new Blob([svgdata], { type: "image/svg+xml" });
                     saveAs(blob, fileName + ".svg");
+                }
+                break;
+            case exportType.Json:
+                {
+                    const blob = new Blob([container.meta.getJson()], { type: "application/json" });
+                    saveAs(blob, fileName + ".json");
                 }
                 break;
             //

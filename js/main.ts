@@ -36,8 +36,6 @@ import {NoDatedAnimeError} from "./src/animelistTL";
 
 //import MAL.ts
 import * as MAL from "./src/MAL";
-// import {MALAnimeList} from "./src/MAL";
-// import {BadUsernameError} from "./src/MAL";
 
 //import timeline.ts
 import {Timeline} from "./lib/timeline";
@@ -48,13 +46,12 @@ import * as $ from "jquery";
 
 //import FileSaver.js
 import FileSaver = require('./lib/FileSaver');
-// import *  as FileSaver from "./lib/file-saver";
 declare function saveAs(foo?, fooo?);
 console.info("init FileSaver???");
 console.info(FileSaver);
 console.info(saveAs);
 
-
+// Deprecated or something?
 declare function unescape(s: string): string;
 
 
@@ -62,8 +59,18 @@ declare function unescape(s: string): string;
 // Global data
 //
 
+export const debug: boolean = false;
+// export const debug: boolean = true
+
 export const usingTestData: boolean = false;
 // export const usingTestData: boolean = true
+
+if (debug || usingTestData) {
+    console.warn("Don't commit debug!");
+}
+
+//
+//
 
 const testData: string = "res/malappinfo.xml";
 
@@ -290,12 +297,22 @@ function displayTimeline(): void {
     pngButton.addEventListener("click", exportTimeline);
     pngButton.kind = exportType.Png;
 
+    const jsonButton: MyButton = document.createElement("button");
+    jsonButton.textContent = "J";
+    jsonButton.setAttribute("title", "Save tln json");
+    jsonButton.addEventListener("click", exportTimeline);
+    jsonButton.kind = exportType.Json;
+
     //make list
     const controls = document.createElement("ul");
     controls.className = "buttonList";
     controls.appendChild(wrapListItem(removeButton));
     controls.appendChild(wrapListItem(svgButton));
     controls.appendChild(wrapListItem(pngButton));
+    if (debug) {
+        controls.appendChild(wrapListItem(jsonButton));
+    }
+
 
     //make timeline container
     const tl: MyContainer = document.createElement("div");
@@ -303,7 +320,7 @@ function displayTimeline(): void {
     tl.id = "tl_" + timelineCount;
     timelineCount++;
 
-    tl.meta = [uname, tln.firstDate.rawDateStr, tln.lastDate.rawDateStr];
+    tl.meta = tln;
 
     // add to dom
     tlArea.appendChild(controls);
@@ -368,7 +385,8 @@ function giveFeedback(str: string, sec = 5) {
 
 enum exportType {
     Png,
-    Svg
+    Svg,
+    Json
 }
 
 class MyButton extends HTMLButtonElement {
@@ -376,8 +394,9 @@ class MyButton extends HTMLButtonElement {
 }
 
 class MyContainer extends HTMLDivElement {
-    meta?: string[];
+    meta?: AnimeListTimeline;
 }
+
 
 //
 // Buttons (other than submit)
@@ -407,7 +426,7 @@ function exportTimeline() {
     const container: MyContainer = div.getElementsByClassName("timeline")[0];
     const svg = container.firstElementChild;
 
-    const fileName: string = container.meta.join("_");
+    const fileName: string = container.meta.getDescriptor();
 
     const svgdata = new XMLSerializer().serializeToString(svg);
 
@@ -442,6 +461,13 @@ function exportTimeline() {
 
             const blob = new Blob([svgdata], {type: "image/svg+xml"});
             saveAs(blob, fileName + ".svg");
+        }
+            break;
+
+        case exportType.Json: {
+
+            const blob = new Blob([container.meta.getJson()], {type: "application/json"});
+            saveAs(blob, fileName + ".json");
         }
             break;
 

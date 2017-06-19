@@ -14,14 +14,11 @@ define(["require", "exports", "./MAL"], function (require, exports, MAL) {
      * ```
      * const atl: AnimeListTimeline = ...;
      * const tln: Timeline = new Timeline(atl.data, "id");
+     * tln.build();
      * ```
      *
      */
     class AnimeListTimeline {
-        // static dateInBounds(lb: MALDate, rb: MALDate, other: MALDate): boolean {
-        //
-        //     return false;
-        // }
         static filterInbounds(anime, lb, rb) {
             let dates = [anime.myStartDate, anime.myFinishDate];
             dates = dates.filter(
@@ -38,6 +35,7 @@ define(["require", "exports", "./MAL"], function (require, exports, MAL) {
             return dates;
         }
         constructor(mal, tlConfig) {
+            this.userName = mal.user.userName;
             this.firstDate = MAL.nullDate;
             this.lastDate = MAL.nullDate;
             const minDate = new MAL.Mdate(tlConfig.minDate);
@@ -95,12 +93,15 @@ define(["require", "exports", "./MAL"], function (require, exports, MAL) {
                 startDate: this.firstDate.fixedDateStr,
                 endDate: this.lastDate.fixedDateStr,
                 callouts: callouts,
-                tickFormat: "%Y-%m-%d"
+                tickFormat: "%Y-%m-%d "
             };
         } //End constructor
         //Debug utility
         getJson() {
             return JSON.stringify(this.data);
+        }
+        getDescriptor() {
+            return [this.userName, this.firstDate.fixedDateStr, this.lastDate.fixedDateStr].join("_");
         }
     }
     exports.AnimeListTimeline = AnimeListTimeline;
