@@ -45,11 +45,9 @@ import {Timeline} from "./lib/timeline";
 import * as $ from "jquery";
 
 //import FileSaver.js
-import FileSaver = require('./lib/FileSaver');
 declare function saveAs(foo?, fooo?);
-console.info("init FileSaver???");
-console.info(FileSaver);
-console.info(saveAs);
+// console.info("init FileSaver???");
+// console.info(saveAs);
 
 // Deprecated or something?
 declare function unescape(s: string): string;

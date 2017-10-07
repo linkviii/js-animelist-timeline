@@ -4,12 +4,9 @@
  * v0.1.1
  * 2017-04-06
  */
-define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery", "./lib/FileSaver"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $, FileSaver) {
+define(["require", "exports", "./src/animelistTL", "./src/animelistTL", "./src/MAL", "./lib/timeline", "jquery"], function (require, exports, animelistTL_1, animelistTL_2, MAL, timeline_1, $) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    console.info("init FileSaver???");
-    console.info(FileSaver);
-    console.info(saveAs);
     //
     // Global data
     //
