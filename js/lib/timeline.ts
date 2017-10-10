@@ -3,9 +3,9 @@
  * Based on https://github.com/jasonreisman/Timeline written in python.
  * Slightly documented: https://github.com/linkviii/Timeline
  *
- * Usage: `new Timeline(tlData, "timelineID").build();`
+ * See README.md
  *
- * v 2017-6-18
+ * v 2017-10-9
  *   (Try to change with new features. Not strict.)
  * 
  * MIT licenced
@@ -15,7 +15,6 @@
 /// <reference path="../lib/svgjs.d.ts"/>
 import * as SVG from "../lib/svgjs";
 
-/// <reference path="../lib/strftime" />
 declare function strftime(format: string, date: Date);
 
 // console.info("init strftime");
@@ -54,6 +53,7 @@ export type TimelineData = TimelineDataV1 | TimelineDataV2;
 //v1
 export type TimelineCalloutV1 = [string, string] | [string, string, string];
 export type TimelineEraV1 = [string, string, string] | [string, string, string, string];
+
 export interface TimelineDataV1 {
     width: number;
     start: string;
@@ -204,6 +204,8 @@ export class Timeline {
     public maxLabelHeight: number;
 
     public readonly width: number;
+    /** Width that is "dead" to accommodate long text on the far left */
+    public deadWidth: number;
 
     public readonly drawing;
     public readonly axisGroup;
@@ -221,6 +223,7 @@ export class Timeline {
 
 
         this.width = this.data.width;
+        this.deadWidth = 0;
 
         this.drawing = SVG(id);
         this.axisGroup = this.drawing.group();
@@ -245,6 +248,26 @@ export class Timeline {
         //# maxLabelHeight stores the max height of all axis labels
         //# and is used in the final height computation in build(self)
         this.maxLabelHeight = 0;
+
+        // Calculate how far oob callout text can go
+        // leftBoundary < 0 → oob
+        let minX: number = Infinity;
+        for (let callout of this.data.callouts) {
+            const calloutDate: Date = new Date(callout.date);
+            const x: number | OoBDate = this.dateToX(calloutDate);
+            if (x instanceof OoBDate) {
+                console.warn([callout, calloutDate, OoBDate]);
+                continue;
+            }
+
+            const leftBoundary: number = Timeline.calculateEventLeftBondary(callout.description, x);
+            minX = Math.min(minX, leftBoundary);
+        }
+
+        // clamp to a positive value
+        minX = Math.max(0, -minX);
+
+        this.deadWidth = minX;
     }
 
 
@@ -256,26 +279,18 @@ export class Timeline {
     }
 
 
-    /*
-     private datePercentWidth(date: Date): number {
-     return (date.valueOf() - this.date0) / 1000 / this.totalSeconds;
-     }
-     private percentWidthToX(percentWidth: number): number {
-     return Math.trunc(percentWidth * this.width + 0.5);
-     }
-     */
-
     private dateToX(date: Date): number | OoBDate {
-        // const percentWidth: number = this.datePercentWidth(date);
+
         const percentWidth: number = (date.valueOf() - this.date0) / 1000 / this.totalSeconds;
 
         if (percentWidth < 0 || percentWidth > 1) {
             // console.log(percentWidth)
+            // Assert not possible ?
             return new OoBDate("" + percentWidth);
         }
 
-        // return this.percentWidthToX(percentWidth);
-        return Math.trunc(percentWidth * this.width + 0.5);
+        const foo = 1.25;
+        return Math.trunc(percentWidth * (this.width - this.deadWidth * foo) + 0.5) + this.deadWidth * foo;
     }
 
 
@@ -285,7 +300,7 @@ export class Timeline {
         const fill: string = kw.fill || Colors.gray;
         let label: string;
         if (this.tickFormat) {
-            label = strftime (this.tickFormat, dt);
+            label = strftime(this.tickFormat, dt);
         } else {
             label = dt.toDateString();
         }
@@ -361,7 +376,7 @@ export class Timeline {
 
         const half = Math.floor(str.length / 2);
 
-        //TODO better?
+        //TO-DO better? idk. good enough I guess
         //split at closest space to the center of the word
         let bestSplitPoint: number = 0;
         let splitValue: number = Infinity;
@@ -480,7 +495,7 @@ export class Timeline {
 
             const x: number | OoBDate = this.dateToX(calloutDate);
             if (x instanceof OoBDate) {
-                console.warn([callout, calloutDate, OoBDate]);
+                // console.warn([callout, calloutDate, OoBDate]);
                 continue;
             }
 
@@ -509,8 +524,7 @@ export class Timeline {
             this.axisGroup.add(txt);
 
 
-            this.addAxisLabel(calloutDate,
-                {tick: false, fill: Colors.black});
+            this.addAxisLabel(calloutDate, {tick: false, fill: Colors.black});
 
             const circ = this.drawing.circle(8).attr({fill: 'white', cx: x, cy: 0, stroke: eventColor});
 
@@ -589,8 +603,10 @@ export class Timeline {
             //# create boundary lines
             //if date isn't in bounds, something interesting will happen
             //But that shouldn't be possible?
-            const x0: number = <number> this.dateToX(new Date(era.startDate));
-            const x1: number = <number> this.dateToX(new Date(era.endDate));
+            let t0 = new Date(era.startDate);
+            let t1 = new Date(era.endDate);
+            const x0: number = <number> this.dateToX(t0);
+            const x1: number = <number> this.dateToX(t1);
 
 
             // Shaded area
@@ -633,24 +649,10 @@ export class Timeline {
             this.drawing.add(txt);
 
             // axis dates
-            // todo move lables
-
-        }//end era loop
-    }
-
-    private createEraAxisLabels(): void {
-        if (!('eras' in this.data)) {
-            return;
-        }
-
-        const erasData: TimelineEraV2[] = this.data.eras;
-
-        for (let era of erasData) {
-            let t0 = new Date(era.startDate);
-            let t1 = new Date(era.endDate);
             this.addAxisLabel(t0);
             this.addAxisLabel(t1);
-        }
+
+        }//end era loop
     }
 
 
@@ -675,7 +677,6 @@ export class Timeline {
 
         //# create eras and labels using axis height and overall height
         this.createEras(yEra, yAxis, height);
-        this.createEraAxisLabels();
 
         //# translate the axis group and add it to the drawing
         this.axisGroup.translate(0, yAxis);

@@ -13,8 +13,5 @@
     "js/src/MAL.ts",
     "js/main.ts",
     "js/lib/timeline.ts"
-
-    //    ,"js/test/test.ts",
-    //    "js/test/rconfig.ts"
   ]
 }

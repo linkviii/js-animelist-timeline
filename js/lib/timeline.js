@@ -3,9 +3,9 @@
  * Based on https://github.com/jasonreisman/Timeline written in python.
  * Slightly documented: https://github.com/linkviii/Timeline
  *
- * Usage: `new Timeline(tlData, "timelineID").build();`
+ * See README.md
  *
- * v 2017-6-18
+ * v 2017-10-9
  *   (Try to change with new features. Not strict.)
  *
  * MIT licenced
@@ -104,6 +104,7 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
                 this.data = TimelineConverter.convertTimelineDataV1ToV2(data);
             }
             this.width = this.data.width;
+            this.deadWidth = 0;
             this.drawing = SVG(id);
             this.axisGroup = this.drawing.group();
             this.startDate = new Date(this.data.startDate);
@@ -119,29 +120,37 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
             //# maxLabelHeight stores the max height of all axis labels
             //# and is used in the final height computation in build(self)
             this.maxLabelHeight = 0;
+            // Calculate how far oob callout text can go
+            // leftBoundary < 0 → oob
+            let minX = Infinity;
+            for (let callout of this.data.callouts) {
+                const calloutDate = new Date(callout.date);
+                const x = this.dateToX(calloutDate);
+                if (x instanceof OoBDate) {
+                    console.warn([callout, calloutDate, OoBDate]);
+                    continue;
+                }
+                const leftBoundary = Timeline.calculateEventLeftBondary(callout.description, x);
+                minX = Math.min(minX, leftBoundary);
+            }
+            // clamp to a positive value
+            minX = Math.max(0, -minX);
+            this.deadWidth = minX;
         }
         createMainAxis() {
             //# draw main line
             this.axisGroup.add(this.drawing.line(0, 0, this.width, 0)
                 .stroke({ color: exports.Colors.black, width: 3 }));
         }
-        /*
-         private datePercentWidth(date: Date): number {
-         return (date.valueOf() - this.date0) / 1000 / this.totalSeconds;
-         }
-         private percentWidthToX(percentWidth: number): number {
-         return Math.trunc(percentWidth * this.width + 0.5);
-         }
-         */
         dateToX(date) {
-            // const percentWidth: number = this.datePercentWidth(date);
             const percentWidth = (date.valueOf() - this.date0) / 1000 / this.totalSeconds;
             if (percentWidth < 0 || percentWidth > 1) {
                 // console.log(percentWidth)
+                // Assert not possible ?
                 return new OoBDate("" + percentWidth);
             }
-            // return this.percentWidthToX(percentWidth);
-            return Math.trunc(percentWidth * this.width + 0.5);
+            const foo = 1.25;
+            return Math.trunc(percentWidth * (this.width - this.deadWidth * foo) + 0.5) + this.deadWidth * foo;
         }
         addAxisLabel(dt, kw) {
             kw = kw || {};
@@ -203,7 +212,7 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
             const cuttingRangeStart = Math.floor(str.length * 0.33);
             const cuttingRangeEnd = str.length * 0.66;
             const half = Math.floor(str.length / 2);
-            //TODO better?
+            //TO-DO better? idk. good enough I guess
             //split at closest space to the center of the word
             let bestSplitPoint = 0;
             let splitValue = Infinity;
@@ -288,7 +297,7 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
                 const calloutDate = new Date(callout.date);
                 const x = this.dateToX(calloutDate);
                 if (x instanceof OoBDate) {
-                    console.warn([callout, calloutDate, OoBDate]);
+                    // console.warn([callout, calloutDate, OoBDate]);
                     continue;
                 }
                 //# figure out what 'level" to make the callout on
@@ -365,8 +374,10 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
                 //# create boundary lines
                 //if date isn't in bounds, something interesting will happen
                 //But that shouldn't be possible?
-                const x0 = this.dateToX(new Date(era.startDate));
-                const x1 = this.dateToX(new Date(era.endDate));
+                let t0 = new Date(era.startDate);
+                let t1 = new Date(era.endDate);
+                const x0 = this.dateToX(t0);
+                const x1 = this.dateToX(t1);
                 // Shaded area
                 const rect = this.drawing.rect(x1 - x0, height);
                 rect.x(x0);
@@ -392,20 +403,9 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
                 txt.fill(fill);
                 this.drawing.add(txt);
                 // axis dates
-                // todo move lables
-            } //end era loop
-        }
-        createEraAxisLabels() {
-            if (!('eras' in this.data)) {
-                return;
-            }
-            const erasData = this.data.eras;
-            for (let era of erasData) {
-                let t0 = new Date(era.startDate);
-                let t1 = new Date(era.endDate);
                 this.addAxisLabel(t0);
                 this.addAxisLabel(t1);
-            }
+            } //end era loop
         }
         // Generates svg document
         build() {
@@ -423,7 +423,6 @@ define(["require", "exports", "../lib/svgjs"], function (require, exports, SVG) 
             const height = yAxis + this.maxLabelHeight + 4 * Timeline.textFudge[1];
             //# create eras and labels using axis height and overall height
             this.createEras(yEra, yAxis, height);
-            this.createEraAxisLabels();
             //# translate the axis group and add it to the drawing
             this.axisGroup.translate(0, yAxis);
             this.drawing.add(this.axisGroup);
