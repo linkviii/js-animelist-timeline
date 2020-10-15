@@ -1,8 +1,8 @@
 //import timeline.ts
-import {TimelineDataV2} from "../lib/timeline";
-import {TimelineCalloutV2} from "../lib/timeline";
+import {TimelineDataV2} from "../lib/timeline.js";
+import {TimelineCalloutV2} from "../lib/timeline.js";
 //import MAL.ts
-import * as MAL from "./MAL";
+import * as MAL from "./MAL.js";
 // import {MALAnime} from "./MAL";
 // import {MALAnimeList} from "./MAL";
 // import {MALStatus} from "./MAL";

@@ -12,8 +12,11 @@
  */
 
 
-/// <reference path="../lib/svgjs.d.ts"/>
-import * as SVG from "../lib/svgjs";
+/// - <reference path="../lib/svgjs.d.ts"/>
+// import * as SVG from "../lib/svgjs.js";
+
+declare function SVG();
+
 
 declare function strftime(format: string, date: Date);
 
@@ -225,7 +228,7 @@ export class Timeline {
         this.width = this.data.width;
         this.deadWidth = 0;
 
-        this.drawing = SVG(id);
+        this.drawing = SVG().addTo('#' + id);
         this.axisGroup = this.drawing.group();
 
         this.startDate = new Date(this.data.startDate);
@@ -335,7 +338,7 @@ export class Timeline {
 
         const txt = this.drawing.text(label);
         txt.font({family: 'Helevetica', size: '6pt', anchor: 'end'});
-        txt.transform({rotation: 270, cx: x, cy: 0});
+        txt.transform({rotate: 270, ox: x, oy: 0});
         txt.dx(x - 7).dy((-2 * dy) + 5);
 
         txt.fill(fill);
@@ -529,6 +532,7 @@ export class Timeline {
             const circ = this.drawing.circle(8).attr({fill: 'white', cx: x, cy: 0, stroke: eventColor});
 
             this.axisGroup.add(circ);
+
 
         }
 

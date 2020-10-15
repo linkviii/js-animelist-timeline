@@ -30,19 +30,20 @@
 //
 
 //import animelistTL.ts
-import {AnimeListTimeline} from "./src/animelistTL";
-import {AnimeListTimelineConfig} from "./src/animelistTL";
-import {NoDatedAnimeError} from "./src/animelistTL";
+import {AnimeListTimeline} from "./src/animelistTL.js";
+import {AnimeListTimelineConfig} from "./src/animelistTL.js";
+import {NoDatedAnimeError} from "./src/animelistTL.js";
 
 //import MAL.ts
-import * as MAL from "./src/MAL";
+import * as MAL from "./src/MAL.js";
 
 //import timeline.ts
-import {Timeline} from "./lib/timeline";
+import {Timeline} from "./lib/timeline.js";
 
 
 //import jquery
-import * as $ from "jquery";
+import  "./jquery.js";
+
 
 //import FileSaver.js
 declare function saveAs(foo?, fooo?);
@@ -57,11 +58,11 @@ declare function unescape(s: string): string;
 // Global data
 //
 
-export const debug: boolean = false;
-// export const debug: boolean = true
+// export const debug: boolean = false;
+export const debug: boolean = true
 
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -139,7 +140,7 @@ function listFormSubmit(): void {
 // main II
 // Form api requests and call
 function beforeAjax(): void {
-    uname = $("#listName").val().trim();
+    uname = ($("#listName").val() as string).trim();
 
     if (usingTestData) {
         console.info("Using test data");
@@ -210,15 +211,15 @@ function afterAjax(doc): void {
 // Use doc to build timeline
 function prepareTimeline(mal: MAL.AnimeList): void {
 
-    let startDate: string = $("#from").val().trim();
-    let endDate: string = $("#to").val().trim();
+    let startDate: string = ($("#from").val() as string).trim();
+    let endDate: string = ($("#to").val() as string).trim();
 
 
     startDate = fixDate(startDate, -1);
     endDate = fixDate(endDate, 1);
 
 
-    const widthStr: string = $("#width").val().trim();
+    const widthStr: string = ($("#width").val() as string).trim();
 
     let width: number;
     if (isNormalInteger(widthStr)) {
@@ -596,11 +597,11 @@ function replaceQueryParam(param: string, newval: string, search: string): strin
 
 function updateUri(param: AnimeListTimelineConfig): void {
 
-    let startDate: string = $("#from").val().trim();
+    let startDate: string = ($("#from").val() as string).trim();
     if (startDate == "") {
         startDate = "";
     }
-    let endDate: string = $("#to").val().trim();
+    let endDate: string = ($("#to").val() as string).trim();
     if (endDate == "") {
         endDate = "";
     }

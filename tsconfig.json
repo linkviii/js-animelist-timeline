@@ -2,16 +2,16 @@
   "compilerOptions": {
     "target": "es6",
     "sourceMap": true,
-    "module": "amd",
-    "baseUrl": "js"
+    "module": "es6",
+    "baseUrl": "./js"
   },
   "exclude": [
     "node_modules"
   ],
-  "files": [
-    "js/src/animelistTL.ts",
-    "js/src/MAL.ts",
-    "js/main.ts",
-    "js/lib/timeline.ts"
-  ]
+  // "files": [
+  //   "js/src/animelistTL.ts",
+  //   "js/src/MAL.ts",
+  //   "js/main.ts",
+  //   "js/lib/timeline.ts"
+  // ]
 }
