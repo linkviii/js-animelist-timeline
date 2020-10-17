@@ -46,88 +46,82 @@ export class BadUsernameError extends Error {
 }
 
 export class AnimeList {
-    public readonly user: User;
-    public readonly anime: Anime[];
+    public user: User;
+    public anime: Anime[];
 
-    constructor(MALXML: Element) {
 
-        //An invalid username's document will be `<myanimelist/>`
-        if (MALXML.childNodes[0].childNodes.length == 0) {
-            throw new BadUsernameError();
-        }
+}
 
-        let animeList: any = MALXML.getElementsByTagName('anime');
-        let userInfo = MALXML.getElementsByTagName('myinfo')[0];
-
-        this.user = new User(userInfo);
-        this.anime = [];
-
-        for (let anime of animeList) {
-            this.anime.push(new Anime(anime));
-        }
-
+export function animeListFromMalElm(MALXML: Element): AnimeList {
+    //An invalid username's document will be `<myanimelist/>`
+    if (MALXML.childNodes[0].childNodes.length == 0) {
+        throw new BadUsernameError();
     }
+
+    const animeList: any = MALXML.getElementsByTagName('anime');
+    const userInfo = MALXML.getElementsByTagName('myinfo')[0];
+
+    const user = userFromMalElm(userInfo);
+    const anime = [];
+
+    for (let elm of animeList) {
+        anime.push(animeFromMalElm(elm));
+    }
+
+    return { user: user, anime: anime };
+
+
 }
 
 export class User {
     public userId: number;
     public userName: string;
-    // public userExportType:number;
-    // public userTotalAnime:number;
-    // public userTotalWatching:number;
-    // public userTotalCompleted:number;
-    // public userTotalOnhold:number;
-    // public userTotalDropped:number;
-    // public userTotalPlantowatch:number;
+}
 
-    constructor(myinfo: Element) {
-
-        this.userId = parseInt(findText(myinfo, "user_id"));
-        this.userName = findText(myinfo, "user_name");
-        // this.userExportType = parseInt(findText(myinfo, "user_export_type"));
-        // this.userTotalAnime = parseInt(findText(myinfo, "user_total_anime"));
-        // this.userTotalWatching = parseInt(findText(myinfo, "user_total_watching"));
-        // this.userTotalCompleted = parseInt(findText(myinfo, "user_total_completed"));
-        // this.userTotalOnhold = parseInt(findText(myinfo, "user_total_onhold"));
-        // this.userTotalDropped = parseInt(findText(myinfo, "user_total_dropped"));
-        // this.userTotalPlantowatch = parseInt(findText(myinfo, "user_total_plantowatch"));
-
-    }
-
+function userFromMalElm(myinfo: Element): User {
+    return {
+        userId: parseInt(findText(myinfo, "user_id")),
+        userName: findText(myinfo, "user_name"),
+    };
 }
 
 //immutable
 export class Anime {
 
-    public readonly seriesAnimedbId: number;
-    public readonly seriesTitle: string;
-    public readonly seriesType: string;
-    public readonly seriesEpisodes: number;
-    public readonly myId: number;
-    public readonly myWatchedEpisodes: number;
-    public readonly myStartDate: Mdate;
-    public readonly myFinishDate: Mdate;
-    public readonly myScore: number;
-    public readonly myTags: string;
-    public readonly myRewatching: number;
-    public readonly myRewatchingEp: number;
-    public readonly myStatus: number;
+    public seriesAnimedbId: number;
+    public seriesTitle: string;
+    public seriesType: string;
+    public seriesEpisodes: number;
+    public myId: number;
+    public myWatchedEpisodes: number;
+    public myStartDate: Mdate;
+    public myFinishDate: Mdate;
+    public myScore: number;
+    public myTags: string;
+    public myRewatching: number;
+    public myRewatchingEp: number;
+    public myStatus: number;
 
-    constructor(anime: Element) {
-        this.seriesAnimedbId = parseInt(findText(anime, "series_animedb_id"));
-        this.seriesTitle = findText(anime, "series_title");
-        this.seriesType = findText(anime, "series_type");
-        this.seriesEpisodes = parseInt(findText(anime, "series_episodes"));
-        this.myId = parseInt(findText(anime, "my_id"));
-        this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
-        this.myStartDate = new Mdate(findText(anime, "my_start_date"));
-        this.myFinishDate = new Mdate(findText(anime, "my_finish_date"));
-        this.myScore = parseInt(findText(anime, "my_score"));
-        this.myStatus = parseInt(findText(anime, "my_status"));
-        this.myTags = findText(anime, "my_tags");
-        this.myRewatching = parseInt(findText(anime, "my_rewatching"));
-        this.myRewatchingEp = parseInt(findText(anime, "my_rewatching_ep"));
-    }
+
+
+}
+
+function animeFromMalElm(anime: Element): Anime {
+    return {
+        seriesAnimedbId: parseInt(findText(anime, "series_animedb_id")),
+        seriesTitle: findText(anime, "series_title"),
+        seriesType: findText(anime, "series_type"),
+        seriesEpisodes: parseInt(findText(anime, "series_episodes")),
+        myId: parseInt(findText(anime, "my_id")),
+        myWatchedEpisodes: parseInt(findText(anime, "my_watched_episodes")),
+        myStartDate: new Mdate(findText(anime, "my_start_date")),
+        myFinishDate: new Mdate(findText(anime, "my_finish_date")),
+        myScore: parseInt(findText(anime, "my_score")),
+        myStatus: parseInt(findText(anime, "my_status")),
+        myTags: findText(anime, "my_tags"),
+        myRewatching: parseInt(findText(anime, "my_rewatching")),
+        myRewatchingEp: parseInt(findText(anime, "my_rewatching_ep")),
+    };
 
 }
 
@@ -184,7 +178,7 @@ export class Mdate {
      * @param other
      * @returns {number}
      */
-    compare(other: string|Mdate): number {
+    compare(other: string | Mdate): number {
         let d2: Mdate;
         if (typeof other === "string") {
             d2 = new Mdate(other);
@@ -238,6 +232,6 @@ export class Mdate {
 
 }
 
-export const rawNullDate:string = "0000-00-00";
+export const rawNullDate: string = "0000-00-00";
 export const nullDate: Mdate = new Mdate(rawNullDate);
 

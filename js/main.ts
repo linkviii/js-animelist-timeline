@@ -191,7 +191,7 @@ function afterAjax(doc): void {
     let mal: MAL.AnimeList;
 
     try {
-        mal = new MAL.AnimeList(doc); // can throw BadUsernameError
+        mal = MAL.animeListFromMalElm(doc);
         userCache.set(uname, mal);
 
     } catch (err) {

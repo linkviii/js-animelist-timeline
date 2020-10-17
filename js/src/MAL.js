@@ -38,57 +38,48 @@ export var Status;
 export class BadUsernameError extends Error {
 }
 export class AnimeList {
-    constructor(MALXML) {
-        //An invalid username's document will be `<myanimelist/>`
-        if (MALXML.childNodes[0].childNodes.length == 0) {
-            throw new BadUsernameError();
-        }
-        let animeList = MALXML.getElementsByTagName('anime');
-        let userInfo = MALXML.getElementsByTagName('myinfo')[0];
-        this.user = new User(userInfo);
-        this.anime = [];
-        for (let anime of animeList) {
-            this.anime.push(new Anime(anime));
-        }
+}
+export function animeListFromMalElm(MALXML) {
+    //An invalid username's document will be `<myanimelist/>`
+    if (MALXML.childNodes[0].childNodes.length == 0) {
+        throw new BadUsernameError();
     }
+    const animeList = MALXML.getElementsByTagName('anime');
+    const userInfo = MALXML.getElementsByTagName('myinfo')[0];
+    const user = userFromMalElm(userInfo);
+    const anime = [];
+    for (let elm of animeList) {
+        anime.push(animeFromMalElm(elm));
+    }
+    return { user: user, anime: anime };
 }
 export class User {
-    // public userExportType:number;
-    // public userTotalAnime:number;
-    // public userTotalWatching:number;
-    // public userTotalCompleted:number;
-    // public userTotalOnhold:number;
-    // public userTotalDropped:number;
-    // public userTotalPlantowatch:number;
-    constructor(myinfo) {
-        this.userId = parseInt(findText(myinfo, "user_id"));
-        this.userName = findText(myinfo, "user_name");
-        // this.userExportType = parseInt(findText(myinfo, "user_export_type"));
-        // this.userTotalAnime = parseInt(findText(myinfo, "user_total_anime"));
-        // this.userTotalWatching = parseInt(findText(myinfo, "user_total_watching"));
-        // this.userTotalCompleted = parseInt(findText(myinfo, "user_total_completed"));
-        // this.userTotalOnhold = parseInt(findText(myinfo, "user_total_onhold"));
-        // this.userTotalDropped = parseInt(findText(myinfo, "user_total_dropped"));
-        // this.userTotalPlantowatch = parseInt(findText(myinfo, "user_total_plantowatch"));
-    }
+}
+function userFromMalElm(myinfo) {
+    return {
+        userId: parseInt(findText(myinfo, "user_id")),
+        userName: findText(myinfo, "user_name"),
+    };
 }
 //immutable
 export class Anime {
-    constructor(anime) {
-        this.seriesAnimedbId = parseInt(findText(anime, "series_animedb_id"));
-        this.seriesTitle = findText(anime, "series_title");
-        this.seriesType = findText(anime, "series_type");
-        this.seriesEpisodes = parseInt(findText(anime, "series_episodes"));
-        this.myId = parseInt(findText(anime, "my_id"));
-        this.myWatchedEpisodes = parseInt(findText(anime, "my_watched_episodes"));
-        this.myStartDate = new Mdate(findText(anime, "my_start_date"));
-        this.myFinishDate = new Mdate(findText(anime, "my_finish_date"));
-        this.myScore = parseInt(findText(anime, "my_score"));
-        this.myStatus = parseInt(findText(anime, "my_status"));
-        this.myTags = findText(anime, "my_tags");
-        this.myRewatching = parseInt(findText(anime, "my_rewatching"));
-        this.myRewatchingEp = parseInt(findText(anime, "my_rewatching_ep"));
-    }
+}
+function animeFromMalElm(anime) {
+    return {
+        seriesAnimedbId: parseInt(findText(anime, "series_animedb_id")),
+        seriesTitle: findText(anime, "series_title"),
+        seriesType: findText(anime, "series_type"),
+        seriesEpisodes: parseInt(findText(anime, "series_episodes")),
+        myId: parseInt(findText(anime, "my_id")),
+        myWatchedEpisodes: parseInt(findText(anime, "my_watched_episodes")),
+        myStartDate: new Mdate(findText(anime, "my_start_date")),
+        myFinishDate: new Mdate(findText(anime, "my_finish_date")),
+        myScore: parseInt(findText(anime, "my_score")),
+        myStatus: parseInt(findText(anime, "my_status")),
+        myTags: findText(anime, "my_tags"),
+        myRewatching: parseInt(findText(anime, "my_rewatching")),
+        myRewatchingEp: parseInt(findText(anime, "my_rewatching_ep")),
+    };
 }
 export class Mdate {
     constructor(date) {
