@@ -48,8 +48,8 @@ import "./jquery.js";
 //
 // export const debug: boolean = false;
 export const debug = true;
-// export const usingTestData: boolean = false;
-export const usingTestData = true;
+export const usingTestData = false;
+// export const usingTestData: boolean = true
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -63,8 +63,8 @@ const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 const userCache = new Map();
 let timelineCount = 0;
 // global for ease of testing. Used as globals.
-let uname;
-let tln;
+export let username;
+export let tln;
 //
 // Page load
 //
@@ -160,46 +160,52 @@ export function getAniList(userName) {
 // main I
 // Entry point from html form
 function listFormSubmit() {
-    beforeAjax();
+    beforeAjax().then();
     return;
 }
 // main II
 // Form api requests and call
 function beforeAjax() {
-    uname = $("#listName").val().trim();
-    if (usingTestData) {
-        console.info("Using test data");
-        let doc = loadTestData(testData); //ajax
-        afterAjax(doc);
-        return;
-    }
-    if (uname == "") {
-        reportNoUser();
-        return;
-    }
-    // check cache for name
-    // to skip ajax
-    const data = userCache.get(uname);
-    if (data) {
-        console.info([uname, "'s data loaded from cache."].join(""));
-        if (data instanceof MAL.AnimeList) {
-            prepareTimeline(data);
+    return __awaiter(this, void 0, void 0, function* () {
+        username = $("#listName").val().trim();
+        if (usingTestData) {
+            console.info("Using test data");
+            let doc = loadTestData(testData); //ajax
+            afterAjax(doc);
+            return;
         }
-        else {
+        if (username === "") {
+            reportNoUser();
+            return;
+        }
+        // check cache for name
+        // to skip ajax
+        const data = userCache.get(username);
+        if (data) {
+            console.info([username, "'s data loaded from cache."].join(""));
+            if (data instanceof MAL.BadUsernameError) {
+                reportBadUser();
+            }
+            else {
+                prepareTimeline(data);
+            }
+            return;
+        }
+        // TODO 
+        // call anilist api
+        // make animelist object
+        let aniList;
+        try {
+            aniList = yield getAniList(username);
+        }
+        catch (err) {
+            console.log(err);
             reportBadUser();
         }
-        return;
-    }
-    const malUrl = getMalApiUrl(uname);
-    //document.getElementById("inputOut").innerHTML = malUrl;//debug
-    const yqlURL = getYqlUrl(malUrl);
-    $.getJSON(yqlURL, ajaxData);
-}
-// main III
-// Transform yql response into an xml document
-function ajaxData(data) {
-    const thing = $.parseXML(data.results[0]);
-    afterAjax(thing);
+        const animeList = MAL.animeListFromAniList(aniList, username);
+        userCache.set(username, animeList);
+        prepareTimeline(animeList);
+    });
 }
 // main IV
 // Wrapper to handle errors in MAL response.
@@ -208,11 +214,11 @@ function afterAjax(doc) {
     let mal;
     try {
         mal = MAL.animeListFromMalElm(doc);
-        userCache.set(uname, mal);
+        userCache.set(username, mal);
     }
     catch (err) {
         if (err instanceof MAL.BadUsernameError) {
-            userCache.set(uname, err);
+            userCache.set(username, err);
             reportBadUser();
             return;
         }
@@ -333,7 +339,7 @@ function reportNoUser() {
     usernameFeedback("No username given.");
 }
 function reportBadUser() {
-    usernameFeedback(uname + " is not a valid MAL username.");
+    usernameFeedback(username + " is not a valid MAL username.");
 }
 function reportNoDated() {
     const str = ["None of the anime in the list contained watched dates. ",
@@ -551,7 +557,7 @@ function updateUri(param) {
         endDate = "";
     }
     let str = window.location.search;
-    str = replaceQueryParam("uname", uname, str);
+    str = replaceQueryParam("uname", username, str);
     str = replaceQueryParam("width", param.width.toString(), str);
     str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);

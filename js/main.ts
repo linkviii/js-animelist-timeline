@@ -61,8 +61,8 @@ declare function unescape(s: string): string;
 // export const debug: boolean = false;
 export const debug: boolean = true
 
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true
 
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -85,8 +85,8 @@ let timelineCount: number = 0;
 
 
 // global for ease of testing. Used as globals.
-let uname: string;
-let tln: AnimeListTimeline;
+export let username: string;
+export let tln: AnimeListTimeline;
 
 //
 // Page load
@@ -210,14 +210,14 @@ export async function getAniList(userName: string) {
 // main I
 // Entry point from html form
 function listFormSubmit(): void {
-    beforeAjax();
+    beforeAjax().then();
     return;
 }
 
 // main II
 // Form api requests and call
-function beforeAjax(): void {
-    uname = ($("#listName").val() as string).trim();
+async function beforeAjax() {
+    username = ($("#listName").val() as string).trim();
 
     if (usingTestData) {
         console.info("Using test data");
@@ -226,40 +226,41 @@ function beforeAjax(): void {
         return
     }
 
-    if (uname == "") {
+    if (username === "") {
         reportNoUser();
         return;
     }
 
     // check cache for name
     // to skip ajax
-    const data: MAL.AnimeList | MAL.BadUsernameError = userCache.get(uname);
+    const data: MAL.AnimeList | MAL.BadUsernameError = userCache.get(username);
     if (data) {
-        console.info([uname, "'s data loaded from cache."].join(""));
-        if (data instanceof MAL.AnimeList) {
-            prepareTimeline(data);
-        } else {
+        console.info([username, "'s data loaded from cache."].join(""));
+        if (data instanceof MAL.BadUsernameError) {
             reportBadUser();
+        } else {
+            prepareTimeline(data);
         }
         return;
     }
 
 
-    const malUrl: string = getMalApiUrl(uname);
-    //document.getElementById("inputOut").innerHTML = malUrl;//debug
-
-    const yqlURL: string = getYqlUrl(malUrl);
-
-    $.getJSON(yqlURL, ajaxData);
+    // TODO 
+    // call anilist api
+    // make animelist object
+    let aniList;
+    try { aniList = await getAniList(username); }
+    catch (err) {
+        console.log(err);
+        reportBadUser();
+    }
+    const animeList = MAL.animeListFromAniList(aniList, username);
+    userCache.set(username, animeList);
+    prepareTimeline(animeList);
 
 }
 
-// main III
-// Transform yql response into an xml document
-function ajaxData(data): void {
-    const thing = $.parseXML(data.results[0]);
-    afterAjax(thing);
-}
+
 
 // main IV
 // Wrapper to handle errors in MAL response.
@@ -269,11 +270,11 @@ function afterAjax(doc): void {
 
     try {
         mal = MAL.animeListFromMalElm(doc);
-        userCache.set(uname, mal);
+        userCache.set(username, mal);
 
     } catch (err) {
         if (err instanceof MAL.BadUsernameError) {
-            userCache.set(uname, err);
+            userCache.set(username, err);
             reportBadUser();
             return;
         } else {
@@ -424,7 +425,7 @@ function reportNoUser() {
 }
 
 function reportBadUser(): void {
-    usernameFeedback(uname + " is not a valid MAL username.");
+    usernameFeedback(username + " is not a valid MAL username.");
 }
 
 function reportNoDated() {
@@ -685,7 +686,7 @@ function updateUri(param: AnimeListTimelineConfig): void {
 
     let str = window.location.search;
 
-    str = replaceQueryParam("uname", uname, str);
+    str = replaceQueryParam("uname", username, str);
     str = replaceQueryParam("width", param.width.toString(), str);
     str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);

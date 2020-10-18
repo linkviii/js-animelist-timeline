@@ -42,8 +42,8 @@ export enum Status {
     PlanToWatch = 6
 }
 
-function statusFromAniList(status:string):Status {
-    switch (status){
+function statusFromAniList(status: string): Status {
+    switch (status) {
         case "CURRENT": return Status.Watching;
         case "PLANNING": return Status.PlanToWatch;
         case "COMPLETED": return Status.Completed;
@@ -51,7 +51,7 @@ function statusFromAniList(status:string):Status {
         case "PAUSED": return Status.OnHold;
         // Idk
         case "REPEATING": return Status.Completed;
-        
+
     }
 }
 
@@ -86,19 +86,19 @@ export function animeListFromMalElm(MALXML: Element): AnimeList {
 
 }
 
-export function animeListFromAniList(obj, userName:string): AnimeList{
+export function animeListFromAniList(obj, userName: string): AnimeList {
     const user = userFromAniList(obj.user, userName);
 
     const userLists = obj.lists;
     const allAnime = [];
 
-    for (let list of userLists){
+    for (let list of userLists) {
         const status = statusFromAniList(list.status);
         for (let anime of list.entries) {
             allAnime.push(animeFromAniList(anime, status));
         }
     }
-    return {user: user, anime: allAnime };
+    return { user: user, anime: allAnime };
 }
 
 export class User {
@@ -167,7 +167,7 @@ function animeFromMalElm(anime: Element): Anime {
 }
 
 function dateFromAniList(obj): Mdate {
-    const fmt = x => x.toString().padStart(2, "0");
+    const fmt = x => x ? x.toString().padStart(2, "0") : "00";
     const dstring = `${obj.year}-${fmt(obj.month)}-${fmt(obj.day)}`;
     return new Mdate(dstring);
 }

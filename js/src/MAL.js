@@ -118,7 +118,7 @@ function animeFromMalElm(anime) {
     };
 }
 function dateFromAniList(obj) {
-    const fmt = x => x.toString().padStart(2, "0");
+    const fmt = x => x ? x.toString().padStart(2, "0") : "00";
     const dstring = `${obj.year}-${fmt(obj.month)}-${fmt(obj.day)}`;
     return new Mdate(dstring);
 }
