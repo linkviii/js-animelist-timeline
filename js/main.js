@@ -4,6 +4,15 @@
  * v0.1.1
  * 2017-04-06
  */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 /*
  *
  * code outline:
@@ -83,6 +92,68 @@ function init() {
     removeAll.addEventListener("click", clearAllTimelines);
 }
 $(document).ready(init);
+/*
+ *
+ * --------------------------------
+ *
+ *
+ */
+export function getAniList(userName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const query = `
+    query ($userName: String) { # Define which variables will be used in the query (id)
+        MediaListCollection(userName: $userName, type: ANIME) {
+            hasNextChunk
+            user {
+              id
+            }
+            lists {
+              name
+              status
+              entries {
+                score
+                startedAt { year month day } 
+                completedAt { year month day }
+                media {
+                  title {
+                    userPreferred
+                  }
+                }
+              }
+            }
+        }
+    }
+    `;
+        const variables = {
+            userName: userName
+        };
+        // Define the config we'll need for our Api request
+        const url = 'https://graphql.anilist.co', options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+        const response = yield fetch(url, options);
+        const foo = yield response.json();
+        const data = foo.data;
+        if (data.hasNextChunk) {
+            console.warn("TODO: next chunk not implemented yet.");
+        }
+        return data.MediaListCollection;
+    });
+}
+/*
+*
+* --------------------------------
+*
+*
+*/
 //
 // main chain
 //

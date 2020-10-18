@@ -30,19 +30,19 @@
 //
 
 //import animelistTL.ts
-import {AnimeListTimeline} from "./src/animelistTL.js";
-import {AnimeListTimelineConfig} from "./src/animelistTL.js";
-import {NoDatedAnimeError} from "./src/animelistTL.js";
+import { AnimeListTimeline } from "./src/animelistTL.js";
+import { AnimeListTimelineConfig } from "./src/animelistTL.js";
+import { NoDatedAnimeError } from "./src/animelistTL.js";
 
 //import MAL.ts
 import * as MAL from "./src/MAL.js";
 
 //import timeline.ts
-import {Timeline} from "./lib/timeline.js";
+import { Timeline } from "./lib/timeline.js";
 
 
 //import jquery
-import  "./jquery.js";
+import "./jquery.js";
 
 
 //import FileSaver.js
@@ -116,7 +116,7 @@ function init(): void {
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
 
-    const removeAll = <HTMLButtonElement> document.getElementById("clearAllTimelines");
+    const removeAll = <HTMLButtonElement>document.getElementById("clearAllTimelines");
     removeAll.disabled = true;
     removeAll.addEventListener("click", clearAllTimelines);
 
@@ -124,6 +124,83 @@ function init(): void {
 
 
 $(document).ready(init);
+
+/*  
+ *
+ * --------------------------------
+ *
+ *
+ */
+
+
+export async function getAniList(userName: string) {
+
+    const query = `
+    query ($userName: String) { # Define which variables will be used in the query (id)
+        MediaListCollection(userName: $userName, type: ANIME) {
+            hasNextChunk
+            user {
+              id
+            }
+            lists {
+              name
+              status
+              entries {
+                score
+                startedAt { year month day } 
+                completedAt { year month day }
+                media {
+                  title {
+                    userPreferred
+                  }
+                }
+              }
+            }
+        }
+    }
+    `;
+
+    const variables = {
+        userName: userName
+    };
+
+
+    // Define the config we'll need for our Api request
+    const url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+
+    const response = await fetch(url, options);
+    const foo = await response.json();
+    const data = foo.data;
+
+    if (data.hasNextChunk) {
+        console.warn("TODO: next chunk not implemented yet.");
+    }
+
+
+    return data.MediaListCollection;
+
+}
+
+
+
+/*  
+*
+* --------------------------------
+*
+*
+*/
 
 
 //
@@ -329,7 +406,7 @@ function displayTimeline(): void {
     const svg: Timeline = new Timeline(tln.data, tl.id);
     svg.build();
 
-    const removeAll = <HTMLButtonElement> document.getElementById("clearAllTimelines");
+    const removeAll = <HTMLButtonElement>document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
 }
 
@@ -458,14 +535,14 @@ function exportTimeline() {
         //
         case exportType.Svg: {
 
-            const blob = new Blob([svgdata], {type: "image/svg+xml"});
+            const blob = new Blob([svgdata], { type: "image/svg+xml" });
             saveAs(blob, fileName + ".svg");
         }
             break;
 
         case exportType.Json: {
 
-            const blob = new Blob([container.meta.getJson()], {type: "application/json"});
+            const blob = new Blob([container.meta.getJson()], { type: "application/json" });
             saveAs(blob, fileName + ".json");
         }
             break;

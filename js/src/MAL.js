@@ -35,6 +35,17 @@ export var Status;
     Status[Status["Dropped"] = 4] = "Dropped";
     Status[Status["PlanToWatch"] = 6] = "PlanToWatch";
 })(Status || (Status = {}));
+function statusFromAniList(status) {
+    switch (status) {
+        case "CURRENT": return Status.Watching;
+        case "PLANNING": return Status.PlanToWatch;
+        case "COMPLETED": return Status.Completed;
+        case "DROPPED": return Status.Dropped;
+        case "PAUSED": return Status.OnHold;
+        // Idk
+        case "REPEATING": return Status.Completed;
+    }
+}
 export class BadUsernameError extends Error {
 }
 export class AnimeList {
@@ -53,6 +64,18 @@ export function animeListFromMalElm(MALXML) {
     }
     return { user: user, anime: anime };
 }
+export function animeListFromAniList(obj, userName) {
+    const user = userFromAniList(obj.user, userName);
+    const userLists = obj.lists;
+    const allAnime = [];
+    for (let list of userLists) {
+        const status = statusFromAniList(list.status);
+        for (let anime of list.entries) {
+            allAnime.push(animeFromAniList(anime, status));
+        }
+    }
+    return { user: user, anime: allAnime };
+}
 export class User {
 }
 function userFromMalElm(myinfo) {
@@ -61,8 +84,21 @@ function userFromMalElm(myinfo) {
         userName: findText(myinfo, "user_name"),
     };
 }
+function userFromAniList(obj, name) {
+    return { userId: obj.id, userName: name, };
+}
 //immutable
 export class Anime {
+}
+function animeFromAniList(anime, status) {
+    const tmp = {
+        seriesTitle: anime.media.title.userPreferred,
+        myStartDate: dateFromAniList(anime.startedAt),
+        myFinishDate: dateFromAniList(anime.completedAt),
+        myScore: anime.score,
+        myStatus: status,
+    };
+    return tmp;
 }
 function animeFromMalElm(anime) {
     return {
@@ -80,6 +116,11 @@ function animeFromMalElm(anime) {
         myRewatching: parseInt(findText(anime, "my_rewatching")),
         myRewatchingEp: parseInt(findText(anime, "my_rewatching_ep")),
     };
+}
+function dateFromAniList(obj) {
+    const fmt = x => x.toString().padStart(2, "0");
+    const dstring = `${obj.year}-${fmt(obj.month)}-${fmt(obj.day)}`;
+    return new Mdate(dstring);
 }
 export class Mdate {
     constructor(date) {

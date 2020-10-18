@@ -42,6 +42,19 @@ export enum Status {
     PlanToWatch = 6
 }
 
+function statusFromAniList(status:string):Status {
+    switch (status){
+        case "CURRENT": return Status.Watching;
+        case "PLANNING": return Status.PlanToWatch;
+        case "COMPLETED": return Status.Completed;
+        case "DROPPED": return Status.Dropped;
+        case "PAUSED": return Status.OnHold;
+        // Idk
+        case "REPEATING": return Status.Completed;
+        
+    }
+}
+
 export class BadUsernameError extends Error {
 }
 
@@ -73,6 +86,21 @@ export function animeListFromMalElm(MALXML: Element): AnimeList {
 
 }
 
+export function animeListFromAniList(obj, userName:string): AnimeList{
+    const user = userFromAniList(obj.user, userName);
+
+    const userLists = obj.lists;
+    const allAnime = [];
+
+    for (let list of userLists){
+        const status = statusFromAniList(list.status);
+        for (let anime of list.entries) {
+            allAnime.push(animeFromAniList(anime, status));
+        }
+    }
+    return {user: user, anime: allAnime };
+}
+
 export class User {
     public userId: number;
     public userName: string;
@@ -83,6 +111,10 @@ function userFromMalElm(myinfo: Element): User {
         userId: parseInt(findText(myinfo, "user_id")),
         userName: findText(myinfo, "user_name"),
     };
+}
+
+function userFromAniList(obj, name: string) {
+    return { userId: obj.id, userName: name, };
 }
 
 //immutable
@@ -102,8 +134,17 @@ export class Anime {
     public myRewatchingEp: number;
     public myStatus: number;
 
+}
 
-
+function animeFromAniList(anime, status: Status): Anime {
+    const tmp = {
+        seriesTitle: anime.media.title.userPreferred,
+        myStartDate: dateFromAniList(anime.startedAt),
+        myFinishDate: dateFromAniList(anime.completedAt),
+        myScore: anime.score,
+        myStatus: status,
+    };
+    return tmp as Anime;
 }
 
 function animeFromMalElm(anime: Element): Anime {
@@ -123,6 +164,12 @@ function animeFromMalElm(anime: Element): Anime {
         myRewatchingEp: parseInt(findText(anime, "my_rewatching_ep")),
     };
 
+}
+
+function dateFromAniList(obj): Mdate {
+    const fmt = x => x.toString().padStart(2, "0");
+    const dstring = `${obj.year}-${fmt(obj.month)}-${fmt(obj.day)}`;
+    return new Mdate(dstring);
 }
 
 export class Mdate {
