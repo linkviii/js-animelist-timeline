@@ -25,5 +25,4 @@ Timeline layout issues are probably for js-timeline.
 ## License
 Project is MIT licensed. Help would be cool but lol.
 
-## other
-Privacy note: MAL's api is proxied through yahoo's yql service. Some reason loading external xml is a no no but json is ok? Extracting raw xml from yql json response.
+ 
