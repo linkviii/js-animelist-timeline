@@ -46,8 +46,8 @@ import "./jquery.js";
 //
 // Global data
 //
-// export const debug: boolean = false;
-export const debug = true;
+export const debug = false;
+// export const debug: boolean = true
 export const usingTestData = false;
 // export const usingTestData: boolean = true
 if (debug || usingTestData) {

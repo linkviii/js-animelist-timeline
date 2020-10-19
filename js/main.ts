@@ -58,8 +58,8 @@ declare function unescape(s: string): string;
 // Global data
 //
 
-// export const debug: boolean = false;
-export const debug: boolean = true
+export const debug: boolean = false;
+// export const debug: boolean = true
 
 export const usingTestData: boolean = false;
 // export const usingTestData: boolean = true

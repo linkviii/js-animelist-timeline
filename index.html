@@ -33,15 +33,12 @@
                 <input id="width" type="number" value="1000" step="100" required/>
             </label>
         </span>
-        <!--Not bothering with type="date" because browsers all suck-->
         <label>From
-            <input id="from" placeholder="yyyy-mm-dd"
-                   pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
+            <input id="from" type="date"/>
         </label>
 
         <label>To
-            <input id="to" placeholder="yyyy-mm-dd"
-                   pattern="\d\d\d\d[\-\/\.]\d\d[\-\/\.]\d\d|\d\d\d\d\d\d\d\d"/>
+            <input id="to" type="date"/>
         </label>
 
         <button type="button" id="listFormSubmit" title="Generate timeline">Submit</button>
