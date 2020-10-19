@@ -33,13 +33,24 @@ export class AnimeListTimeline {
             if (anime.myStatus != MAL.Status.Completed) {
                 continue;
             }
-            const dates = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
+            const dates = AnimeListTimeline.filterInbounds(anime, minDate, maxDate)
+                .filter(x => x).filter(x => !x.isNullDate());
             if (dates.length == 0) {
                 continue;
             }
             for (let date of dates) { // 1 or 2 iterations
                 this.firstDate = date.extremeOfDates(this.firstDate, false);
                 this.lastDate = date.extremeOfDates(this.lastDate);
+            }
+            if (dates.length == 2) {
+                // Don't say started and stopped if it's the same day
+                const cmp = dates[0].compare(dates[1]);
+                if (cmp > 0) {
+                    console.log(anime.seriesTitle, ": Finished before start.");
+                }
+                if (cmp === 0) {
+                    dates.pop();
+                }
             }
             //make callout
             if (dates.length == 1) {

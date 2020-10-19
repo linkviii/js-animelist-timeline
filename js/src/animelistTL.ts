@@ -1,6 +1,6 @@
 //import timeline.ts
-import {TimelineDataV2} from "../lib/timeline.js";
-import {TimelineCalloutV2} from "../lib/timeline.js";
+import { TimelineDataV2 } from "../lib/timeline.js";
+import { TimelineCalloutV2 } from "../lib/timeline.js";
 //import MAL.ts
 import * as MAL from "./MAL.js";
 // import {MALAnime} from "./MAL";
@@ -93,7 +93,8 @@ export class AnimeListTimeline {
                 continue;
             }
 
-            const dates: MAL.Mdate[] = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
+            const dates: MAL.Mdate[] = AnimeListTimeline.filterInbounds(anime, minDate, maxDate)
+                .filter(x => x).filter(x => !x.isNullDate());
 
 
             if (dates.length == 0) {
@@ -105,6 +106,16 @@ export class AnimeListTimeline {
                 this.lastDate = date.extremeOfDates(this.lastDate);
             }
 
+            if (dates.length == 2) {
+                // Don't say started and stopped if it's the same day
+                const cmp = dates[0].compare(dates[1]);
+
+                if (cmp > 0) {
+                    console.log(anime.seriesTitle, ": Finished before start.");
+                }
+
+                if (cmp === 0) { dates.pop(); }
+            }
 
             //make callout
             if (dates.length == 1) {

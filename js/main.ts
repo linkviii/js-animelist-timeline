@@ -151,7 +151,7 @@ export async function getAniList(userName: string) {
                 completedAt { year month day }
                 media {
                   title {
-                    userPreferred
+                    romaji english native userPreferred
                   }
                 }
               }

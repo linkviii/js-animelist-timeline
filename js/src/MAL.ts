@@ -137,8 +137,14 @@ export class Anime {
 }
 
 function animeFromAniList(anime, status: Status): Anime {
+    // TODO both romaji and english
+    const titleObj = anime.media.title;
+    const titleList = [titleObj.english, titleObj.userPreferred, titleObj.romaji, titleObj.native];
+    // Use the first non null name
+    const title = titleList.filter(x => x)[0];
+
     const tmp = {
-        seriesTitle: anime.media.title.userPreferred,
+        seriesTitle: title,
         myStartDate: dateFromAniList(anime.startedAt),
         myFinishDate: dateFromAniList(anime.completedAt),
         myScore: anime.score,
@@ -168,7 +174,8 @@ function animeFromMalElm(anime: Element): Anime {
 
 function dateFromAniList(obj): Mdate {
     const fmt = x => x ? x.toString().padStart(2, "0") : "00";
-    const dstring = `${obj.year}-${fmt(obj.month)}-${fmt(obj.day)}`;
+    const year = obj.year || "0000";
+    const dstring = `${year}-${fmt(obj.month)}-${fmt(obj.day)}`;
     return new Mdate(dstring);
 }
 

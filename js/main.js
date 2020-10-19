@@ -116,7 +116,7 @@ export function getAniList(userName) {
                 completedAt { year month day }
                 media {
                   title {
-                    userPreferred
+                    romaji english native userPreferred
                   }
                 }
               }
