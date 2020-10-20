@@ -9,7 +9,8 @@ import * as MAL from "./MAL.js";
 
 
 const startColor: string = "#C0C0FF";//blueish
-const endColor: string = "#CD3F85";//redish
+const endColor: string = "#CD3F85";//reddish
+const bingeColor = "#FFBE89";  // golddish
 
 export class NoDatedAnimeError extends Error {
 }
@@ -108,6 +109,7 @@ export class AnimeListTimeline {
                 this.lastDate = date.extremeOfDates(this.lastDate);
             }
 
+            let binged = false;
             if (dates.length == 2) {
                 // Don't say started and stopped if it's the same day
                 const cmp = dates[0].compare(dates[1]);
@@ -116,9 +118,11 @@ export class AnimeListTimeline {
                     console.log(title, ": Finished before start.");
                 }
 
-                if (cmp === 0) { dates.pop(); }
+                if (cmp === 0) { binged = true; }
             }
 
+
+            // Todo: Figure out how to deal with known start/stop but out of range
 
             //make callout
             if (dates.length == 1) {
@@ -127,7 +131,16 @@ export class AnimeListTimeline {
                     date: dates[0].fixedDateStr
                 };
                 callouts.push(callout);
-            } else {
+            } else if (binged) {
+                const label: string = "Binged " + title;
+                const callout: TimelineCalloutV2 = {
+                    description: label,
+                    date: anime.myStartDate.fixedDateStr,
+                    color: bingeColor
+                };
+                callouts.push(callout);
+            }
+            else {
 
                 const startLabel: string = "Started " + title;
                 const finishLabel: string = "finished " + title;
