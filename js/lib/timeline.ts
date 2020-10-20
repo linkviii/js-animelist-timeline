@@ -8,7 +8,7 @@
  * v 2017-10-9
  *   (Try to change with new features. Not strict.)
  * 
- * MIT licenced
+ * MIT licensed
  */
 
 
@@ -41,7 +41,7 @@ function maxString(a: string, b: string): string {
 
 //
 
-export const Colors: { black: string, gray: string } = {black: '#000000', gray: '#C0C0C0'};
+export const Colors: { black: string, gray: string } = { black: '#000000', gray: '#C0C0C0' };
 
 //
 
@@ -182,13 +182,16 @@ class OoBDate extends Error {
 
 export class Timeline {
 
+    public static readonly fontSize = 6;
+    public static readonly fontFamily = 'Helvetica';
 
     public static readonly calloutProperties: { width: number, height: number, increment: number } = {
         width: 10,
         height: 15,
         increment: 10
     };
-    public static readonly textFudge: [number, number] = [3, 1.5]; //factor? [?, ?]
+    // x,y of adjustment of callout text
+    public static readonly textFudge: number = 3;
 
 
     public readonly data: TimelineDataV2;
@@ -263,7 +266,7 @@ export class Timeline {
                 continue;
             }
 
-            const leftBoundary: number = Timeline.calculateEventLeftBondary(callout.description, x);
+            const leftBoundary: number = Timeline.calculateEventLeftBoundary(callout.description, x);
             minX = Math.min(minX, leftBoundary);
         }
 
@@ -277,7 +280,7 @@ export class Timeline {
     private createMainAxis(): void {
         //# draw main line
         this.axisGroup.add(this.drawing.line(0, 0, this.width, 0)
-            .stroke({color: Colors.black, width: 3}));
+            .stroke({ color: Colors.black, width: 3 }));
 
     }
 
@@ -317,35 +320,35 @@ export class Timeline {
             return;
         }
 
-        const dy: number = 5;
+        const tickHeight: number = 5;
 
         // # add tick on line
         const addTick: boolean = kw.tick || true;
         if (addTick) {
             const stroke: string = kw.stroke || Colors.black;
-            const line = this.drawing.line(x, -dy, x, dy)
-                .stroke({color: stroke, width: 2});
+            const line = this.drawing.line(x, -tickHeight, x, tickHeight)
+                .stroke({ color: stroke, width: 2 });
 
             this.axisGroup.add(line);
         }
 
         // # add label
-        /*
-         #self.drawing.text(label, insert=(x, -2 * dy), stroke='none', fill=fill, font_family='Helevetica',
-         ##font_size='6pt', text_anchor='end', writing_mode='tb', transform=transform))
-         */
-        //writing mode?
+        // Offset to center the text on the tick
+        const bar = 1.2 * Timeline.fontSize;
+
+        // Distance between the x axis and text
+        const foo = 2 * tickHeight;
 
         const txt = this.drawing.text(label);
-        txt.font({family: 'Helevetica', size: '6pt', anchor: 'end'});
-        txt.transform({rotate: 270, ox: x, oy: 0});
-        txt.dx(x - 7).dy((-2 * dy) + 5);
+        txt.font({ family: Timeline.fontFamily, size: `${Timeline.fontSize}pt`, anchor: 'end' });
+        txt.transform({ rotate: 270, ox: x, oy: 0 });
+        txt.dx(x - foo).dy(-bar);
 
         txt.fill(fill);
 
         this.axisGroup.add(txt);
 
-        const h = Timeline.getTextWidth('Helevetica', 6, label) + 2 * dy;
+        const h = Timeline.getTextWidth(Timeline.fontFamily, Timeline.fontSize, label) + foo;
         this.maxLabelHeight = Math.max(this.maxLabelHeight, h);
 
     }
@@ -373,7 +376,7 @@ export class Timeline {
     // Approximates a place to break a string into two
     // pure fn
     // Returns two strings if a split is found, else null.
-    private static bifercateString(str: string): [string, string] | null {
+    private static bifurcateString(str: string): [string, string] | null {
         const cuttingRangeStart = Math.floor(str.length * 0.33);
         const cuttingRangeEnd = str.length * 0.66;
 
@@ -426,9 +429,10 @@ export class Timeline {
         return level;
     }
 
-    private static calculateEventLeftBondary(event: string, eventEndpoint: number): number {
-        const textWidth: number = Timeline.getTextWidth('Helevetica', 6, event);
-        const leftBoundary: number = eventEndpoint - (textWidth + Timeline.calloutProperties.width + Timeline.textFudge[0]);
+    private static calculateEventLeftBoundary(event: string, eventEndpoint: number): number {
+        const textWidth: number = Timeline.getTextWidth(Timeline.fontFamily, Timeline.fontSize, event);
+        const extraFudge = 4; // Why is this needed?
+        const leftBoundary: number = eventEndpoint - (textWidth + Timeline.calloutProperties.width + Timeline.textFudge + extraFudge);
 
         return leftBoundary;
     }
@@ -440,17 +444,17 @@ export class Timeline {
 
         //ensure text does not overlap with previous entries
 
-        const leftBoundary: number = Timeline.calculateEventLeftBondary(event, eventEndpoint);
+        const leftBoundary: number = Timeline.calculateEventLeftBoundary(event, eventEndpoint);
 
         let level: number = Timeline.calculateCalloutLevel(leftBoundary, prevEndpoints, prevLevels);
 
 
-        const bif = Timeline.bifercateString(event);
+        const bif = Timeline.bifurcateString(event);
         if (bif) {
 
             //longest of 2 stings
             const bifEvent: string = maxString(bif[0], bif[1]);
-            const bifBoundary: number = Timeline.calculateEventLeftBondary(bifEvent, eventEndpoint);
+            const bifBoundary: number = Timeline.calculateEventLeftBoundary(bifEvent, eventEndpoint);
             // occupying 2 lines → +1
             const bifLevel: number = Timeline.calculateCalloutLevel(bifBoundary, prevEndpoints, prevLevels) + 1;
             //compare levels somehow
@@ -489,6 +493,8 @@ export class Timeline {
         //vertical drawing up is negative ~= max height
         let minY = Infinity;
 
+        // Last place we drew an axis label
+        let lastLabelX = 0;
 
         for (let callout of this.data.callouts) {
 
@@ -511,25 +517,28 @@ export class Timeline {
             //svg elements
             const pathData: string = ['M', x, ',', 0, ' L', x, ',', y, ' L',
                 (x - Timeline.calloutProperties.width), ',', y].join("");
-            const pth = this.drawing.path(pathData).stroke({color: eventColor, width: 1, fill: "none"});
+            const pth = this.drawing.path(pathData).stroke({ color: eventColor, width: 1, fill: "none" });
             pth.fill("none", 0);
 
             this.axisGroup.add(pth);
 
-            const foo = 6;
+            const bar = Timeline.fontSize * 1.5;
 
             const txt = this.drawing.text(event);
-            txt.dx(x - Timeline.calloutProperties.width - Timeline.textFudge[0]);
-            txt.dy(y - 4 * Timeline.textFudge[1] - foo);
-            txt.font({family: 'Helevetica', size: '6pt', anchor: 'end'});
+            txt.dx(x - Timeline.calloutProperties.width - Timeline.textFudge);
+
+            // TODO wut
+            txt.dy(y - bar);
+            txt.font({ family: Timeline.fontFamily, size: `${Timeline.fontSize}pt`, anchor: 'end' });
             txt.fill(eventColor);
 
             this.axisGroup.add(txt);
 
-
-            this.addAxisLabel(calloutDate, {tick: false, fill: Colors.black});
-
-            const circ = this.drawing.circle(8).attr({fill: 'white', cx: x, cy: 0, stroke: eventColor});
+            if (x - lastLabelX > Timeline.fontSize) {
+                lastLabelX = x;
+                this.addAxisLabel(calloutDate, { tick: false, fill: Colors.black });
+            }
+            const circ = this.drawing.circle(8).attr({ fill: 'white', cx: x, cy: 0, stroke: eventColor });
 
             this.axisGroup.add(circ);
 
@@ -545,8 +554,8 @@ export class Timeline {
     ///
 
     private createDateTicks(): void {
-        this.addAxisLabel(this.startDate, {tick: true});
-        this.addAxisLabel(this.endDate, {tick: true});
+        this.addAxisLabel(this.startDate, { tick: true });
+        this.addAxisLabel(this.endDate, { tick: true });
 
         if ('numTicks' in this.data) {
             const timeRange = this.endDate.valueOf() - this.startDate.valueOf();
@@ -609,21 +618,21 @@ export class Timeline {
             //But that shouldn't be possible?
             let t0 = new Date(era.startDate);
             let t1 = new Date(era.endDate);
-            const x0: number = <number> this.dateToX(t0);
-            const x1: number = <number> this.dateToX(t1);
+            const x0: number = <number>this.dateToX(t0);
+            const x1: number = <number>this.dateToX(t1);
 
 
             // Shaded area
             const rect = this.drawing.rect(x1 - x0, height);
             rect.x(x0);
-            rect.fill({color: fill, opacity: 0.15});
+            rect.fill({ color: fill, opacity: 0.15 });
 
             this.drawing.add(rect);
 
             // Boundary lines
             const line0 = this.drawing.add(
                 this.drawing.line(x0, 0, x0, yAxis)
-                    .stroke({color: fill, width: 0.5})
+                    .stroke({ color: fill, width: 0.5 })
             );
 
             //TODO line0 line1 dash
@@ -633,7 +642,7 @@ export class Timeline {
 
             const line1 = this.drawing.add(
                 this.drawing.line(x1, 0, x1, yAxis)
-                    .stroke({color: fill, width: 0.5})
+                    .stroke({ color: fill, width: 0.5 })
             );
             //line1.dasharray([5, 5])
 
@@ -641,13 +650,13 @@ export class Timeline {
             //# create horizontal arrows and text
             const horz = this.drawing.add(
                 this.drawing.line(x0, yEra, x1, yEra)
-                    .stroke({color: fill, width: 0.75})
+                    .stroke({ color: fill, width: 0.75 })
             );
 
             // Era title
             const txt = this.drawing.text(name);
-            txt.font({family: 'Helevetica', size: '6pt', anchor: 'middle'});
-            txt.dx(0.5 * (x0 + x1)).dy(yEra - Timeline.textFudge[1] - 9);
+            txt.font({ family: Timeline.fontFamily, size: `${Timeline.fontSize}pt`, anchor: 'middle' });
+            txt.dx(0.5 * (x0 + x1)).dy(yEra - Timeline.fontSize * 2);
             txt.fill(fill);
 
             this.drawing.add(txt);
@@ -677,7 +686,8 @@ export class Timeline {
         const yAxis: number = yEra + Timeline.calloutProperties.height - yCallouts;
 
         //# determine height so that eras, callouts, axis, and labels just fit
-        const height: number = yAxis + this.maxLabelHeight + 4 * Timeline.textFudge[1];
+
+        const height: number = yAxis + this.maxLabelHeight + Timeline.fontSize;
 
         //# create eras and labels using axis height and overall height
         this.createEras(yEra, yAxis, height);
