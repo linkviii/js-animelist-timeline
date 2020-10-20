@@ -144,6 +144,10 @@ export function getAniList(userName) {
         };
         const response = yield fetch(url, options);
         const foo = yield response.json();
+        if (foo.errors) {
+            console.error(foo.errors);
+            return new MAL.BadUsernameError();
+        }
         const data = foo.data;
         if (data.hasNextChunk) {
             console.warn("TODO: next chunk not implemented yet.");
@@ -197,13 +201,11 @@ function beforeAjax() {
         // TODO 
         // call anilist api
         // make animelist object
-        let aniList;
-        try {
-            aniList = yield getAniList(username);
-        }
-        catch (err) {
-            console.log(err);
+        const aniList = yield getAniList(username);
+        if (aniList instanceof MAL.BadUsernameError) {
             reportBadUser();
+            userCache.set(username, aniList);
+            return;
         }
         const animeList = MAL.animeListFromAniList(aniList, username);
         userCache.set(username, animeList);
@@ -211,6 +213,7 @@ function beforeAjax() {
     });
 }
 // main IV
+// TODO: Trash this
 // Wrapper to handle errors in MAL response.
 // Currently only a bad username is expected
 function afterAjax(doc) {
@@ -346,7 +349,7 @@ function reportNoUser() {
     usernameFeedback("No username given.");
 }
 function reportBadUser() {
-    usernameFeedback(username + " is not a valid MAL username.");
+    usernameFeedback(username + " is not a valid AniList username.");
 }
 function reportNoDated() {
     const str = ["None of the anime in the list contained watched dates. ",
@@ -575,31 +578,6 @@ function updateUri(param) {
 //
 // API urls
 //
-/**
- * Forms MAL API URL based on username.
- * @param name
- * @returns {string}
- */
-function getMalApiUrl(name) {
-    const malUrlBase = "http://myanimelist.net/malappinfo.php?u=";
-    const malUrlFilter = "&status=all&type=anime";
-    return malUrlBase + name + malUrlFilter;
-}
-/**
- * Forms YQL URL based on MAL URL.
- * YQL is used to proxy the xml request as json.
- * @param malUrl
- * @returns {string}
- */
-function getYqlUrl(malUrl) {
-    const yqlUrlBase = "https://query.yahooapis.com/v1/public/yql";
-    const q = "?q=";
-    const query = "select * from xml where url='" + malUrl + "'";
-    const encodedQuery = encodeURIComponent(query);
-    const yqlUrlFilter = "&format=xml&callback=?";
-    const yqlUrl = [yqlUrlBase, q, encodedQuery, yqlUrlFilter].join("");
-    return yqlUrl;
-}
 //
 // test(ing) stuff
 //
