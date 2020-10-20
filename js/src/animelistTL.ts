@@ -25,6 +25,7 @@ export interface AnimeListTimelineConfig {
     //Cannot be rawNullDate
     minDate: string;
     maxDate: string;
+    lang: string;
 }
 
 /**
@@ -87,8 +88,9 @@ export class AnimeListTimeline {
 
         for (let anime of mal.anime) {
 
-            // Filter dates and find the extreme of completed anime
+            const title = anime.seriesTitle.preferred(tlConfig.lang);
 
+            // Filter dates and find the extreme of completed anime
             if (anime.myStatus != MAL.Status.Completed) {
                 continue;
             }
@@ -111,23 +113,24 @@ export class AnimeListTimeline {
                 const cmp = dates[0].compare(dates[1]);
 
                 if (cmp > 0) {
-                    console.log(anime.seriesTitle, ": Finished before start.");
+                    console.log(title, ": Finished before start.");
                 }
 
                 if (cmp === 0) { dates.pop(); }
             }
 
+
             //make callout
             if (dates.length == 1) {
                 const callout: TimelineCalloutV2 = {
-                    description: anime.seriesTitle,
+                    description: title,
                     date: dates[0].fixedDateStr
                 };
                 callouts.push(callout);
             } else {
 
-                const startLabel: string = "Started " + anime.seriesTitle;
-                const finishLabel: string = "finished " + anime.seriesTitle;
+                const startLabel: string = "Started " + title;
+                const finishLabel: string = "finished " + title;
 
                 const startCallout: TimelineCalloutV2 = {
                     description: startLabel,

@@ -112,6 +112,9 @@ function init(): void {
     if (param["maxDate"]) {
         $("#to").val(param["maxDate"]);
     }
+    if (param["lang"]) {
+        $("#language").val(param["lang"]);
+    }
 
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
@@ -299,6 +302,8 @@ function prepareTimeline(mal: MAL.AnimeList): void {
 
     const widthStr: string = ($("#width").val() as string).trim();
 
+    const language = $("#language").val() as string;
+
     let width: number;
     if (isNormalInteger(widthStr)) {
         width = parseInt(widthStr);
@@ -307,7 +312,10 @@ function prepareTimeline(mal: MAL.AnimeList): void {
     }
 
     const tlConfig: AnimeListTimelineConfig = {
-        width: width, minDate: startDate, maxDate: endDate
+        width: width, 
+        minDate: startDate, 
+        maxDate: endDate,
+        lang: language,
     };
 
     updateUri(tlConfig);
@@ -675,6 +683,7 @@ function replaceQueryParam(param: string, newval: string, search: string): strin
 
 function updateUri(param: AnimeListTimelineConfig): void {
 
+    // Why were these read from dom instead of `param`?
     let startDate: string = ($("#from").val() as string).trim();
     if (startDate == "") {
         startDate = "";
@@ -690,6 +699,7 @@ function updateUri(param: AnimeListTimelineConfig): void {
     str = replaceQueryParam("width", param.width.toString(), str);
     str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);
+    str = replaceQueryParam("lang", param.lang, str);
 
     window.history.replaceState(null, null, str);
 }

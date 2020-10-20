@@ -117,11 +117,57 @@ function userFromAniList(obj, name: string) {
     return { userId: obj.id, userName: name, };
 }
 
+interface ITitle {
+    english?: string;
+    userPreferred?: string;
+    romaji?: string;
+    native?: string;
+}
+
+export class Title implements ITitle {
+    public english?: string;
+    public userPreferred?: string;
+    public romaji?: string;
+    public native?: string;
+
+    constructor(it: ITitle) {
+        this.english = it.english;
+        this.userPreferred = it.userPreferred;
+        this.romaji = it.romaji;
+        this.native = it.native;
+    }
+
+    preferredEnglish(): string {
+        const order = [this.english, this.userPreferred, this.romaji, this.native];
+        return order.filter(x => x)[0];
+    }
+
+    preferredRomaji(): string {
+        const order = [this.romaji, this.userPreferred, this.english, this.native];
+        return order.filter(x => x)[0];
+    }
+
+    preferredNative(): string {
+        const order = [this.native, this.romaji, this.userPreferred, this.english];
+        return order.filter(x => x)[0];
+    }
+
+    preferred(key: string): string {
+        switch (key) {
+            case "english": return this.preferredEnglish();
+            case "romaji": return this.preferredRomaji();
+            case "native": return this.preferredNative();
+            default: throw "Key error";
+        }
+    }
+
+}
+
 //immutable
 export class Anime {
 
     public seriesAnimedbId: number;
-    public seriesTitle: string;
+    public seriesTitle: Title;
     public seriesType: string;
     public seriesEpisodes: number;
     public myId: number;
@@ -138,13 +184,11 @@ export class Anime {
 
 function animeFromAniList(anime, status: Status): Anime {
     // TODO both romaji and english
-    const titleObj = anime.media.title;
-    const titleList = [titleObj.english, titleObj.userPreferred, titleObj.romaji, titleObj.native];
-    // Use the first non null name
-    const title = titleList.filter(x => x)[0];
+    const titleObj = new Title(anime.media.title);
+
 
     const tmp = {
-        seriesTitle: title,
+        seriesTitle: titleObj,
         myStartDate: dateFromAniList(anime.startedAt),
         myFinishDate: dateFromAniList(anime.completedAt),
         myScore: anime.score,
@@ -156,7 +200,7 @@ function animeFromAniList(anime, status: Status): Anime {
 function animeFromMalElm(anime: Element): Anime {
     return {
         seriesAnimedbId: parseInt(findText(anime, "series_animedb_id")),
-        seriesTitle: findText(anime, "series_title"),
+        seriesTitle: new Title({ userPreferred: findText(anime, "series_title") }),
         seriesType: findText(anime, "series_type"),
         seriesEpisodes: parseInt(findText(anime, "series_episodes")),
         myId: parseInt(findText(anime, "my_id")),

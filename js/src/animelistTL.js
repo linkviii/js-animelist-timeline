@@ -29,6 +29,7 @@ export class AnimeListTimeline {
         }
         const callouts = [];
         for (let anime of mal.anime) {
+            const title = anime.seriesTitle.preferred(tlConfig.lang);
             // Filter dates and find the extreme of completed anime
             if (anime.myStatus != MAL.Status.Completed) {
                 continue;
@@ -46,7 +47,7 @@ export class AnimeListTimeline {
                 // Don't say started and stopped if it's the same day
                 const cmp = dates[0].compare(dates[1]);
                 if (cmp > 0) {
-                    console.log(anime.seriesTitle, ": Finished before start.");
+                    console.log(title, ": Finished before start.");
                 }
                 if (cmp === 0) {
                     dates.pop();
@@ -55,14 +56,14 @@ export class AnimeListTimeline {
             //make callout
             if (dates.length == 1) {
                 const callout = {
-                    description: anime.seriesTitle,
+                    description: title,
                     date: dates[0].fixedDateStr
                 };
                 callouts.push(callout);
             }
             else {
-                const startLabel = "Started " + anime.seriesTitle;
-                const finishLabel = "finished " + anime.seriesTitle;
+                const startLabel = "Started " + title;
+                const finishLabel = "finished " + title;
                 const startCallout = {
                     description: startLabel,
                     date: anime.myStartDate.fixedDateStr,

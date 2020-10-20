@@ -85,6 +85,9 @@ function init() {
     if (param["maxDate"]) {
         $("#to").val(param["maxDate"]);
     }
+    if (param["lang"]) {
+        $("#language").val(param["lang"]);
+    }
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
     const removeAll = document.getElementById("clearAllTimelines");
@@ -236,6 +239,7 @@ function prepareTimeline(mal) {
     startDate = fixDate(startDate, -1);
     endDate = fixDate(endDate, 1);
     const widthStr = $("#width").val().trim();
+    const language = $("#language").val();
     let width;
     if (isNormalInteger(widthStr)) {
         width = parseInt(widthStr);
@@ -244,7 +248,10 @@ function prepareTimeline(mal) {
         width = 1000;
     }
     const tlConfig = {
-        width: width, minDate: startDate, maxDate: endDate
+        width: width,
+        minDate: startDate,
+        maxDate: endDate,
+        lang: language,
     };
     updateUri(tlConfig);
     try {
@@ -548,6 +555,7 @@ function replaceQueryParam(param, newval, search) {
     return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
 function updateUri(param) {
+    // Why were these read from dom instead of `param`?
     let startDate = $("#from").val().trim();
     if (startDate == "") {
         startDate = "";
@@ -561,6 +569,7 @@ function updateUri(param) {
     str = replaceQueryParam("width", param.width.toString(), str);
     str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);
+    str = replaceQueryParam("lang", param.lang, str);
     window.history.replaceState(null, null, str);
 }
 //

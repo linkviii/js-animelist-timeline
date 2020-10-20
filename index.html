@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Animelist Timeline</title>
@@ -10,79 +11,85 @@
 
 <body>
 
-<div id="top">
+    <div id="top">
 
-    <header>
-        This is a work in progress. About/Source/Support:
-        <a href="https://github.com/linkviii/js-animelist-timeline">
-            https://github.com/linkviii/js-animelist-timeline
-        </a>
-    </header>
+        <header>
+            This is a work in progress. About/Source/Support:
+            <a href="https://github.com/linkviii/js-animelist-timeline">
+                https://github.com/linkviii/js-animelist-timeline
+            </a>
+        </header>
+
+        <br>
+
+        <p>Generate a timeline of when you watched anime from dates on your AniList.</p>
+
+        <form>
+            <span class="required">
+                <label>List username
+                    <input id="listName" required />
+                </label>
+            </span>
+            <span class="required">
+                <label> Width
+                    <input id="width" type="number" value="1000" step="100" required />
+                </label>
+            </span>
+            <label>From
+                <input id="from" type="date" />
+            </label>
+
+            <label>To
+                <input id="to" type="date" />
+            </label>
+
+            <label>Language
+                <select id="language">
+                    <option value="english">English</option>
+                    <option value="romaji">Romaji</option>
+                    <option value="native">Native</option>
+                </select></label>
+
+            <button type="button" id="listFormSubmit" title="Generate timeline">Submit</button>
+            <button type="reset" title="Clear form data">Clear</button>
+
+        </form>
+
+        <span id="feedback"> </span>
+
+        <br>
+
+
+
+    </div>
+
+    <!--debug out-->
+    <pre id="inputOut"></pre>
+    <p id="json"></p>
+
+
+    <button type="button" id="clearAllTimelines" title="Remove all generated timelines" disabled>Remove all</button>
 
     <br>
-
-    <p>Generate a timeline of when you watched anime from dates on your AniList.</p>
-
-    <form>
-        <span class="required">
-            <label>List username
-                <input id="listName" required/>
-            </label>
-        </span>
-        <span class="required">
-            <label> Width
-                <input id="width" type="number" value="1000" step="100" required/>
-            </label>
-        </span>
-        <label>From
-            <input id="from" type="date"/>
-        </label>
-
-        <label>To
-            <input id="to" type="date"/>
-        </label>
-
-        <button type="button" id="listFormSubmit" title="Generate timeline">Submit</button>
-        <button type="reset" title="Clear form data">Clear</button>
-
-    </form>
-
-    <span id="feedback"> </span>
-
     <br>
 
+    <!--Generate timeline here-->
+    <div id="tls"></div>
 
 
-</div>
+    <!---->
+    <script src="js/lib/strftime.js"></script>
+    <script src="js/lib/FileSaver.js"></script>
+    <script src="js/lib/svg.js"></script>
 
-<!--debug out-->
-<pre id="inputOut"></pre>
-<p id="json"></p>
-
-
-<button type="button" id="clearAllTimelines"
-        title="Remove all generated timelines" disabled>Remove all</button>
-
-<br>
-<br>
-
-<!--Generate timeline here-->
-<div id="tls"></div>
-
-
-<!---->
-<script src="js/lib/strftime.js"></script>
-<script src="js/lib/FileSaver.js"></script>
-<script src="js/lib/svg.js"></script> 
-
-<script type="module">
-import * as main from "./js/main.js"; 
-window.main = main;
-console.log("main module loaded");
-</script>
+    <script type="module">
+        import * as main from "./js/main.js";
+        window.main = main;
+        console.log("main module loaded");
+    </script>
 
 
 
 </body>
 
-</html> 
+</html>

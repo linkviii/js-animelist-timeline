@@ -8,10 +8,5 @@
   "exclude": [
     "node_modules"
   ],
-  // "files": [
-  //   "js/src/animelistTL.ts",
-  //   "js/src/MAL.ts",
-  //   "js/main.ts",
-  //   "js/lib/timeline.ts"
-  // ]
+
 }
