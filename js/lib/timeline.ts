@@ -215,7 +215,7 @@ export class Timeline {
     /** Width that is "dead" to accommodate long text on the far left */
     public deadWidth: number;
     public extraWidth: number;
-    
+
     public readonly drawing;
     public readonly axisGroup;
 
@@ -624,8 +624,8 @@ export class Timeline {
             //But that shouldn't be possible?
             let t0 = new Date(era.startDate);
             let t1 = new Date(era.endDate);
-            const x0: number = <number>this.dateToX(t0);
-            const x1: number = <number>this.dateToX(t1);
+            const x0: number = <number>this.dateToX(t0) + this.extraWidth;
+            const x1: number = <number>this.dateToX(t1) + this.extraWidth;
 
 
             // Shaded area
@@ -704,7 +704,7 @@ export class Timeline {
         this.drawing.add(this.axisGroup);
 
         // this.drawing.size(this.width, height);
-        this.drawing.size(this.width+this.extraWidth, height);
+        this.drawing.size(this.width + this.extraWidth, height);
 
     }
 

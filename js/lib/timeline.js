@@ -379,8 +379,8 @@ export class Timeline {
             //But that shouldn't be possible?
             let t0 = new Date(era.startDate);
             let t1 = new Date(era.endDate);
-            const x0 = this.dateToX(t0);
-            const x1 = this.dateToX(t1);
+            const x0 = this.dateToX(t0) + this.extraWidth;
+            const x1 = this.dateToX(t1) + this.extraWidth;
             // Shaded area
             const rect = this.drawing.rect(x1 - x0, height);
             rect.x(x0);
