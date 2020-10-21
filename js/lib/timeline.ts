@@ -33,11 +33,13 @@ function max<T>(x: T, y: T, fn: (val: T) => number): T {
     }
 }
 
-function maxString(a: string, b: string): string {
-    return max(a, b, function (val) {
-        return val.length;
-    });
+// This is not equal to longest display length
+// for non monospaced fonts
+function maxStringChars(a: string, b: string): string {
+    return max(a, b, val => val.length);
 }
+
+
 
 //
 
@@ -182,13 +184,13 @@ class OoBDate extends Error {
 
 export class Timeline {
 
-    public static readonly fontSize = 6;
+    public static readonly fontSize = 8;
     public static readonly fontFamily = 'Helvetica';
 
     public static readonly calloutProperties: { width: number, height: number, increment: number } = {
         width: 10,
         height: 15,
-        increment: 10
+        increment: Timeline.fontSize * 1.75
     };
     // x,y of adjustment of callout text
     public static readonly textFudge: number = 3;
@@ -212,7 +214,8 @@ export class Timeline {
     public readonly width: number;
     /** Width that is "dead" to accommodate long text on the far left */
     public deadWidth: number;
-
+    public extraWidth: number;
+    
     public readonly drawing;
     public readonly axisGroup;
 
@@ -273,7 +276,8 @@ export class Timeline {
         // clamp to a positive value
         minX = Math.max(0, -minX);
 
-        this.deadWidth = minX;
+        // this.deadWidth = minX;
+        this.extraWidth = minX;
     }
 
 
@@ -437,12 +441,12 @@ export class Timeline {
         return leftBoundary;
     }
 
-    //not pure fn
-    //modifies prev*
+    // not pure fn
+    // modifies prev*
     private static calculateCalloutHeight(eventEndpoint: number, prevEndpoints: number[], prevLevels: number[], event: string): [number, string] {
 
 
-        //ensure text does not overlap with previous entries
+        // ensure text does not overlap with previous entries
 
         const leftBoundary: number = Timeline.calculateEventLeftBoundary(event, eventEndpoint);
 
@@ -453,7 +457,9 @@ export class Timeline {
         if (bif) {
 
             //longest of 2 stings
-            const bifEvent: string = maxString(bif[0], bif[1]);
+            const bifEvent: string = max(bif[0], bif[1],
+                val => Timeline.getTextWidth(Timeline.fontFamily, Timeline.fontSize, val));
+
             const bifBoundary: number = Timeline.calculateEventLeftBoundary(bifEvent, eventEndpoint);
             // occupying 2 lines → +1
             const bifLevel: number = Timeline.calculateCalloutLevel(bifBoundary, prevEndpoints, prevLevels) + 1;
@@ -673,7 +679,7 @@ export class Timeline {
     public build(): void {
         //# MAGIC NUMBER: y_era
         //# draw era label and markers at this height
-        const yEra: number = 10;
+        const yEra: number = 5 + Timeline.fontSize;
 
         //# create main axis and callouts,
         //# keeping track of how high the callouts are
@@ -693,10 +699,12 @@ export class Timeline {
         this.createEras(yEra, yAxis, height);
 
         //# translate the axis group and add it to the drawing
-        this.axisGroup.translate(0, yAxis);
+        // this.axisGroup.translate(0, yAxis);
+        this.axisGroup.translate(this.extraWidth, yAxis);
         this.drawing.add(this.axisGroup);
 
-        this.drawing.size(this.width, height);
+        // this.drawing.size(this.width, height);
+        this.drawing.size(this.width+this.extraWidth, height);
 
     }
 
