@@ -147,11 +147,14 @@ function animeFromMalElm(anime) {
         myRewatchingEp: parseInt(findText(anime, "my_rewatching_ep")),
     };
 }
-function dateFromAniList(obj) {
+export function dateFromYMD(year, month, day) {
     const fmt = x => x ? x.toString().padStart(2, "0") : "00";
-    const year = obj.year || "0000";
-    const dstring = `${year}-${fmt(obj.month)}-${fmt(obj.day)}`;
+    const ys = year || "0000";
+    const dstring = `${ys}-${fmt(month)}-${fmt(day)}`;
     return new Mdate(dstring);
+}
+function dateFromAniList(obj) {
+    return dateFromYMD(obj.year, obj.month, obj.day);
 }
 export class Mdate {
     constructor(date) {
@@ -176,6 +179,10 @@ export class Mdate {
         if (d == '00')
             d = '01';
         return dateStr.slice(0, 5) + m + '-' + d;
+    }
+    year() {
+        // return this.date.getFullYear();
+        return parseInt(this.fixedDateStr.slice(0, 4));
     }
     /**
      *  this > other → +

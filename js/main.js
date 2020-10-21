@@ -250,11 +250,13 @@ function prepareTimeline(mal) {
     else { //default
         width = 1000;
     }
+    const showSeasons = $("#seasons")[0].checked;
     const tlConfig = {
         width: width,
         minDate: startDate,
         maxDate: endDate,
         lang: language,
+        seasons: showSeasons
     };
     updateUri(tlConfig);
     try {

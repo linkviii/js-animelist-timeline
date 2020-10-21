@@ -1,5 +1,6 @@
 //import timeline.ts
-import { Timeline, TimelineDataV2 } from "../lib/timeline.js";
+import { param } from "jquery";
+import { Timeline, TimelineDataV2, TimelineEraV2 as Era } from "../lib/timeline.js";
 import { TimelineCalloutV2 } from "../lib/timeline.js";
 //import MAL.ts
 import * as MAL from "./MAL.js";
@@ -12,6 +13,47 @@ const startColor: string = "#C0C0FF";//blueish
 const endColor: string = "#CD3F85";//reddish
 // const bingeColor = "#FFBE89";  // golddish
 const bingeColor = "#000000";  // just black
+
+enum Season {
+    WINTER = "Winter", SPRING = "Spring", SUMMER = "Summer", FALL = "Fall"
+}
+
+const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
+
+function seasonBounds(season: Season, year: number): [MAL.Mdate, MAL.Mdate] {
+    switch (season) {
+        // TODO better define
+        case Season.WINTER: return [MAL.dateFromYMD(year, 1, 1), MAL.dateFromYMD(year, 3, 31)];
+        case Season.SPRING: return [MAL.dateFromYMD(year, 4, 1), MAL.dateFromYMD(year, 6, 30)];
+        case Season.SUMMER: return [MAL.dateFromYMD(year, 7, 1), MAL.dateFromYMD(year, 9, 30)];
+        case Season.FALL: return [MAL.dateFromYMD(year, 10, 1), MAL.dateFromYMD(year, 12, 31)];
+    }
+}
+
+function seasonOf(date: MAL.Mdate): Season {
+    const year = date.year();
+    for (let season of allSeasons) {
+        const bounds = seasonBounds(season, year);
+        if (date.compare(bounds[1]) <= 0) {
+            return season;
+        }
+    }
+    console.log("Unexpected");
+    return Season.WINTER;
+}
+
+// function nextSeason(season: Season): Season {
+//     const i = (allSeasons.indexOf(season) + 1) % allSeasons.length;
+//     return allSeasons[i];
+// }
+function nextSeason(season: Season, year: number): [Season, number] {
+    const i = (allSeasons.indexOf(season) + 1);
+    if (i == allSeasons.length) {
+        return [allSeasons[0], year + 1];
+    } else {
+        return [allSeasons[i], year];
+    }
+}
 
 export class NoDatedAnimeError extends Error {
 }
@@ -28,6 +70,7 @@ export interface AnimeListTimelineConfig {
     minDate: string;
     maxDate: string;
     lang: string;
+    seasons: boolean;
 }
 
 /**
@@ -178,6 +221,31 @@ export class AnimeListTimeline {
             endDate: this.lastDate.fixedDateStr,
             callouts: callouts,
             tickFormat: "%Y-%m-%d "
+        }
+
+        if (tlConfig.seasons) {
+            const eras: Era[] = [];
+
+            let season = seasonOf(this.firstDate);
+            let year = this.firstDate.year();
+            let span: [Season, number] = [season, year];
+            let bounds = seasonBounds(season, year);
+
+            eras.push({
+                name: season,
+                startDate: this.firstDate.fixedDateStr,
+                endDate: bounds[1].extremeOfDates(this.lastDate, false).fixedDateStr
+            });
+            while (bounds[1].compare(this.lastDate) < 0) {
+                span = nextSeason(...span);
+                bounds = seasonBounds(...span);
+                eras.push({
+                    name: span[0],
+                    startDate: bounds[0].fixedDateStr,
+                    endDate: bounds[1].extremeOfDates(this.lastDate, false).fixedDateStr
+                });
+            }
+            this.data.eras = eras;
         }
 
 

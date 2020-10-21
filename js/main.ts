@@ -320,11 +320,14 @@ function prepareTimeline(mal: MAL.AnimeList): void {
         width = 1000;
     }
 
+    const showSeasons = ($("#seasons")[0] as HTMLInputElement).checked;
+
     const tlConfig: AnimeListTimelineConfig = {
         width: width,
         minDate: startDate,
         maxDate: endDate,
         lang: language,
+        seasons: showSeasons
     };
 
     updateUri(tlConfig);

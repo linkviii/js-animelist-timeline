@@ -7,6 +7,47 @@ const startColor = "#C0C0FF"; //blueish
 const endColor = "#CD3F85"; //reddish
 // const bingeColor = "#FFBE89";  // golddish
 const bingeColor = "#000000"; // just black
+var Season;
+(function (Season) {
+    Season["WINTER"] = "Winter";
+    Season["SPRING"] = "Spring";
+    Season["SUMMER"] = "Summer";
+    Season["FALL"] = "Fall";
+})(Season || (Season = {}));
+const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
+function seasonBounds(season, year) {
+    switch (season) {
+        // TODO better define
+        case Season.WINTER: return [MAL.dateFromYMD(year, 1, 1), MAL.dateFromYMD(year, 3, 31)];
+        case Season.SPRING: return [MAL.dateFromYMD(year, 4, 1), MAL.dateFromYMD(year, 6, 30)];
+        case Season.SUMMER: return [MAL.dateFromYMD(year, 7, 1), MAL.dateFromYMD(year, 9, 30)];
+        case Season.FALL: return [MAL.dateFromYMD(year, 10, 1), MAL.dateFromYMD(year, 12, 31)];
+    }
+}
+function seasonOf(date) {
+    const year = date.year();
+    for (let season of allSeasons) {
+        const bounds = seasonBounds(season, year);
+        if (date.compare(bounds[1]) <= 0) {
+            return season;
+        }
+    }
+    console.log("Unexpected");
+    return Season.WINTER;
+}
+// function nextSeason(season: Season): Season {
+//     const i = (allSeasons.indexOf(season) + 1) % allSeasons.length;
+//     return allSeasons[i];
+// }
+function nextSeason(season, year) {
+    const i = (allSeasons.indexOf(season) + 1);
+    if (i == allSeasons.length) {
+        return [allSeasons[0], year + 1];
+    }
+    else {
+        return [allSeasons[i], year];
+    }
+}
 export class NoDatedAnimeError extends Error {
 }
 /**
@@ -105,6 +146,28 @@ export class AnimeListTimeline {
             callouts: callouts,
             tickFormat: "%Y-%m-%d "
         };
+        if (tlConfig.seasons) {
+            const eras = [];
+            let season = seasonOf(this.firstDate);
+            let year = this.firstDate.year();
+            let span = [season, year];
+            let bounds = seasonBounds(season, year);
+            eras.push({
+                name: season,
+                startDate: this.firstDate.fixedDateStr,
+                endDate: bounds[1].extremeOfDates(this.lastDate, false).fixedDateStr
+            });
+            while (bounds[1].compare(this.lastDate) < 0) {
+                span = nextSeason(...span);
+                bounds = seasonBounds(...span);
+                eras.push({
+                    name: span[0],
+                    startDate: bounds[0].fixedDateStr,
+                    endDate: bounds[1].extremeOfDates(this.lastDate, false).fixedDateStr
+                });
+            }
+            this.data.eras = eras;
+        }
     } //End constructor
     static dateInBounds(date, lb, rb) {
         if (date.isNullDate())
