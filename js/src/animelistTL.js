@@ -3,7 +3,8 @@ import * as MAL from "./MAL.js";
 // import {MALAnime} from "./MAL";
 // import {MALAnimeList} from "./MAL";
 // import {MALStatus} from "./MAL";
-const startColor = "#C0C0FF"; //blueish
+const startColor1 = "#C0C0FF"; //blueish
+const startColor2 = "#0026FF"; //blueish
 const endColor = "#CD3F85"; //reddish
 // const bingeColor = "#FFBE89";  // golddish
 const bingeColor = "#000000"; // just black
@@ -71,10 +72,11 @@ export class AnimeListTimeline {
             throw ["Invalid config", tlConfig];
         }
         const callouts = [];
+        const startColor = !tlConfig.seasons ? startColor1 : startColor2;
         for (let anime of mal.anime) {
             const title = anime.seriesTitle.preferred(tlConfig.lang);
             // Filter dates and find the extreme of completed anime
-            if (anime.myStatus != MAL.Status.Completed) {
+            if (anime.myStatus != MAL.Status.Completed && anime.myStatus != MAL.Status.Watching) {
                 continue;
             }
             const bounds = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
