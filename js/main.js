@@ -88,6 +88,9 @@ function init() {
     if (param["lang"]) {
         $("#language").val(param["lang"]);
     }
+    if (param["era"]) {
+        $("#language")[0].checked = "true" == param["era"];
+    }
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
     const removeAll = document.getElementById("clearAllTimelines");
@@ -575,6 +578,7 @@ function updateUri(param) {
     str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);
     str = replaceQueryParam("lang", param.lang, str);
+    str = replaceQueryParam("era", param.seasons.toString(), str);
     window.history.replaceState(null, null, str);
 }
 //

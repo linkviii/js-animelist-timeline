@@ -115,6 +115,9 @@ function init(): void {
     if (param["lang"]) {
         $("#language").val(param["lang"]);
     }
+    if (param["era"]) {
+        ($("#language")[0] as HTMLInputElement).checked = "true" == param["era"];
+    }
 
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
@@ -712,6 +715,7 @@ function updateUri(param: AnimeListTimelineConfig): void {
     str = replaceQueryParam("minDate", startDate, str);
     str = replaceQueryParam("maxDate", endDate, str);
     str = replaceQueryParam("lang", param.lang, str);
+    str = replaceQueryParam("era", param.seasons.toString(), str);
 
     window.history.replaceState(null, null, str);
 }
