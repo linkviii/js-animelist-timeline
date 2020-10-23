@@ -116,7 +116,7 @@ function init(): void {
         $("#language").val(param["lang"]);
     }
     if (param["era"]) {
-        ($("#language")[0] as HTMLInputElement).checked = "true" == param["era"];
+        ($("#seasons")[0] as HTMLInputElement).checked = "true" == param["era"];
     }
 
     //buttons

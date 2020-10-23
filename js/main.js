@@ -89,7 +89,7 @@ function init() {
         $("#language").val(param["lang"]);
     }
     if (param["era"]) {
-        $("#language")[0].checked = "true" == param["era"];
+        $("#seasons")[0].checked = "true" == param["era"];
     }
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
