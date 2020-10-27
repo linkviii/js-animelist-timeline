@@ -32,7 +32,7 @@ export const STATUSES = {
 };
 
 /**
- * The API gives a number. What ever happened to 5?
+ * MAL API gives a number. What ever happened to 5?
  */
 export enum Status {
     Watching = 1,
@@ -170,6 +170,7 @@ export class Anime {
     public seriesTitle: Title;
     public seriesType: string;
     public seriesEpisodes: number;
+    public seriesEpisodesDuration: number;
     public myId: number;
     public myWatchedEpisodes: number;
     public myStartDate: Mdate;
@@ -193,6 +194,11 @@ function animeFromAniList(anime, status: Status): Anime {
         myFinishDate: dateFromAniList(anime.completedAt),
         myScore: anime.score,
         myStatus: status,
+        myId: anime.mediaId,
+        myWatchedEpisodes: anime.progress,
+        seriesEpisodes: anime.media.episodes,
+        seriesEpisodesDuration: anime.media.duration,
+
     };
     return tmp as Anime;
 }
@@ -203,6 +209,7 @@ function animeFromMalElm(anime: Element): Anime {
         seriesTitle: new Title({ userPreferred: findText(anime, "series_title") }),
         seriesType: findText(anime, "series_type"),
         seriesEpisodes: parseInt(findText(anime, "series_episodes")),
+        seriesEpisodesDuration: -1, // Was not present? 
         myId: parseInt(findText(anime, "my_id")),
         myWatchedEpisodes: parseInt(findText(anime, "my_watched_episodes")),
         myStartDate: new Mdate(findText(anime, "my_start_date")),

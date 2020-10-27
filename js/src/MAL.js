@@ -25,7 +25,7 @@ export const STATUSES = {
     planToWatch: "Plan to Watch"
 };
 /**
- * The API gives a number. What ever happened to 5?
+ * MAL API gives a number. What ever happened to 5?
  */
 export var Status;
 (function (Status) {
@@ -127,6 +127,10 @@ function animeFromAniList(anime, status) {
         myFinishDate: dateFromAniList(anime.completedAt),
         myScore: anime.score,
         myStatus: status,
+        myId: anime.mediaId,
+        myWatchedEpisodes: anime.progress,
+        seriesEpisodes: anime.media.episodes,
+        seriesEpisodesDuration: anime.media.duration,
     };
     return tmp;
 }
@@ -136,6 +140,7 @@ function animeFromMalElm(anime) {
         seriesTitle: new Title({ userPreferred: findText(anime, "series_title") }),
         seriesType: findText(anime, "series_type"),
         seriesEpisodes: parseInt(findText(anime, "series_episodes")),
+        seriesEpisodesDuration: -1,
         myId: parseInt(findText(anime, "my_id")),
         myWatchedEpisodes: parseInt(findText(anime, "my_watched_episodes")),
         myStartDate: new Mdate(findText(anime, "my_start_date")),

@@ -46,8 +46,8 @@ import "./jquery.js";
 //
 // Global data
 //
-// export const debug: boolean = false;
-export const debug = true;
+export const debug = false;
+// export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
 export const usingTestData = false;
@@ -66,6 +66,12 @@ let timelineCount = 0;
 // global for ease of testing. Used as globals.
 export let username;
 export let tln;
+// ██████╗  █████╗  ██████╗ ███████╗    ██╗      ██████╗  █████╗ ██████╗ 
+// ██╔══██╗██╔══██╗██╔════╝ ██╔════╝    ██║     ██╔═══██╗██╔══██╗██╔══██╗
+// ██████╔╝███████║██║  ███╗█████╗      ██║     ██║   ██║███████║██║  ██║
+// ██╔═══╝ ██╔══██║██║   ██║██╔══╝      ██║     ██║   ██║██╔══██║██║  ██║
+// ██║     ██║  ██║╚██████╔╝███████╗    ███████╗╚██████╔╝██║  ██║██████╔╝
+// ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝    ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 //
 // Page load
 //
@@ -124,11 +130,14 @@ export function getAniList(userName) {
                 name
                 status
                 entries {
+                    mediaId
                     score
+                    progress
                     startedAt { year month day } 
                     completedAt { year month day }
                     media {
                         duration
+                        episodes
                         title {
                             romaji english native userPreferred
                         }
@@ -172,6 +181,12 @@ export function getAniList(userName) {
 *
 *
 */
+// ███╗   ███╗ █████╗ ██╗███╗   ██╗
+// ████╗ ████║██╔══██╗██║████╗  ██║
+// ██╔████╔██║███████║██║██╔██╗ ██║
+// ██║╚██╔╝██║██╔══██║██║██║╚██╗██║
+// ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
+// ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
 //
 // main chain
 //
@@ -204,13 +219,14 @@ function beforeAjax() {
             return;
         }
         const aniList = yield getAniList(username);
-        debugData["list"] = aniList;
+        debugData["aniList"] = aniList;
         if (aniList instanceof MAL.BadUsernameError) {
             reportBadUser();
             userCache.set(username, aniList);
             return;
         }
         const animeList = MAL.animeListFromAniList(aniList, username);
+        debugData["list"] = animeList;
         userCache.set(username, animeList);
         prepareTimeline(animeList);
     });
@@ -325,6 +341,12 @@ function displayTimeline() {
 // ***
 // End main chain
 // ***
+// ███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗
+// ██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║ ██╔╝
+// █████╗  █████╗  █████╗  ██║  ██║██████╔╝███████║██║     █████╔╝ 
+// ██╔══╝  ██╔══╝  ██╔══╝  ██║  ██║██╔══██╗██╔══██║██║     ██╔═██╗ 
+// ██║     ███████╗███████╗██████╔╝██████╔╝██║  ██║╚██████╗██║  ██╗
+// ╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 //
 // feedback
 //
@@ -368,6 +390,12 @@ class MyButton extends HTMLButtonElement {
 }
 class MyContainer extends HTMLDivElement {
 }
+// ██████╗ ██╗   ██╗████████╗████████╗ ██████╗ ███╗   ██╗███████╗
+// ██╔══██╗██║   ██║╚══██╔══╝╚══██╔══╝██╔═══██╗████╗  ██║██╔════╝
+// ██████╔╝██║   ██║   ██║      ██║   ██║   ██║██╔██╗ ██║███████╗
+// ██╔══██╗██║   ██║   ██║      ██║   ██║   ██║██║╚██╗██║╚════██║
+// ██████╔╝╚██████╔╝   ██║      ██║   ╚██████╔╝██║ ╚████║███████║
+// ╚═════╝  ╚═════╝    ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 //
 // Buttons (other than submit)
 //
@@ -432,6 +460,12 @@ function exportTimeline() {
         }
     }
 }
+// ██╗   ██╗████████╗██╗██╗     ██╗████████╗██╗   ██╗
+// ██║   ██║╚══██╔══╝██║██║     ██║╚══██╔══╝╚██╗ ██╔╝
+// ██║   ██║   ██║   ██║██║     ██║   ██║    ╚████╔╝ 
+// ██║   ██║   ██║   ██║██║     ██║   ██║     ╚██╔╝  
+// ╚██████╔╝   ██║   ██║███████╗██║   ██║      ██║   
+//  ╚═════╝    ╚═╝   ╚═╝╚══════╝╚═╝   ╚═╝      ╚═╝   
 //
 // Util
 //
