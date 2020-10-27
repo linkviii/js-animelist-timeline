@@ -46,8 +46,10 @@ import "./jquery.js";
 //
 // Global data
 //
-export const debug = false;
-// export const debug: boolean = true
+// export const debug: boolean = false;
+export const debug = true;
+// Just throw things into this bag. It'll be fine.
+export let debugData = {};
 export const usingTestData = false;
 // export const usingTestData: boolean = true
 if (debug || usingTestData) {
@@ -55,7 +57,6 @@ if (debug || usingTestData) {
 }
 //
 //
-const testData = "res/malappinfo.xml";
 const siteUrl = "https://linkviii.github.io/js-animelist-timeline/";
 const repoUrl = "https://github.com/linkviii/js-animelist-timeline";
 const issueUrl = "https://github.com/linkviii/js-animelist-timeline/issues";
@@ -106,30 +107,37 @@ $(document).ready(init);
  */
 export function getAniList(userName) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (usingTestData) {
+            console.log("Using test data.");
+            const url = "res/anilist_example.json";
+            let job = yield fetch(url).then(response => response.json());
+            return job;
+        }
         const query = `
-    query ($userName: String) { # Define which variables will be used in the query (id)
+    query ($userName: String) { 
         MediaListCollection(userName: $userName, type: ANIME) {
             hasNextChunk
             user {
-              id
+                id
             }
             lists {
-              name
-              status
-              entries {
-                score
-                startedAt { year month day } 
-                completedAt { year month day }
-                media {
-                  title {
-                    romaji english native userPreferred
-                  }
+                name
+                status
+                entries {
+                    score
+                    startedAt { year month day } 
+                    completedAt { year month day }
+                    media {
+                        duration
+                        title {
+                            romaji english native userPreferred
+                        }
+                    }
                 }
-              }
             }
         }
     }
-    `;
+    `; // Could probably munch the whitespace with a regex but no real need to
         const variables = {
             userName: userName
         };
@@ -178,12 +186,6 @@ function listFormSubmit() {
 function beforeAjax() {
     return __awaiter(this, void 0, void 0, function* () {
         username = $("#listName").val().trim();
-        if (usingTestData) {
-            console.info("Using test data");
-            let doc = loadTestData(testData); //ajax
-            afterAjax(doc);
-            return;
-        }
         if (username === "") {
             reportNoUser();
             return;
@@ -201,10 +203,8 @@ function beforeAjax() {
             }
             return;
         }
-        // TODO 
-        // call anilist api
-        // make animelist object
         const aniList = yield getAniList(username);
+        debugData["list"] = aniList;
         if (aniList instanceof MAL.BadUsernameError) {
             reportBadUser();
             userCache.set(username, aniList);
@@ -214,28 +214,6 @@ function beforeAjax() {
         userCache.set(username, animeList);
         prepareTimeline(animeList);
     });
-}
-// main IV
-// TODO: Trash this
-// Wrapper to handle errors in MAL response.
-// Currently only a bad username is expected
-function afterAjax(doc) {
-    let mal;
-    try {
-        mal = MAL.animeListFromMalElm(doc);
-        userCache.set(username, mal);
-    }
-    catch (err) {
-        if (err instanceof MAL.BadUsernameError) {
-            userCache.set(username, err);
-            reportBadUser();
-            return;
-        }
-        else {
-            throw err;
-        }
-    }
-    prepareTimeline(mal);
 }
 // main V
 // Use doc to build timeline
@@ -474,7 +452,7 @@ function isNormalInteger(str) {
     const n = ~~Number(str);
     return (String(n) === str) && (n >= 0);
 }
-//make user input suitible for anime timeline
+//make user input suitable for anime timeline
 //must not be null
 function fixDate(date, minmax) {
     const minYear = 1980; //Nerds can change this in the future
@@ -587,21 +565,4 @@ function updateUri(param) {
 //
 // test(ing) stuff
 //
-// load xml not async
-function loadTestData(url) {
-    return (function () {
-        let xml = null;
-        $.ajax({
-            async: false,
-            crossDomain: true,
-            global: false,
-            url: url,
-            dataType: "xml",
-            success: function (data) {
-                xml = data;
-            }
-        });
-        return xml;
-    })();
-}
 //# sourceMappingURL=main.js.map

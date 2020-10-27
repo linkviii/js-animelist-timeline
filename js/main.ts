@@ -58,8 +58,10 @@ declare function unescape(s: string): string;
 // Global data
 //
 
-export const debug: boolean = false;
-// export const debug: boolean = true
+// export const debug: boolean = false;
+export const debug: boolean = true
+// Just throw things into this bag. It'll be fine.
+export let debugData = {};
 
 export const usingTestData: boolean = false;
 // export const usingTestData: boolean = true
@@ -71,7 +73,6 @@ if (debug || usingTestData) {
 //
 //
 
-const testData: string = "res/malappinfo.xml";
 
 const siteUrl: string = "https://linkviii.github.io/js-animelist-timeline/";
 const repoUrl: string = "https://github.com/linkviii/js-animelist-timeline";
@@ -141,30 +142,41 @@ $(document).ready(init);
 
 export async function getAniList(userName: string): Promise<any | MAL.BadUsernameError> {
 
+    if (usingTestData) {
+        console.log("Using test data.");
+
+        const url = "res/anilist_example.json";
+
+        let job = await fetch(url).then(response => response.json());
+        return job;
+
+    }
+
     const query = `
-    query ($userName: String) { # Define which variables will be used in the query (id)
+    query ($userName: String) { 
         MediaListCollection(userName: $userName, type: ANIME) {
             hasNextChunk
             user {
-              id
+                id
             }
             lists {
-              name
-              status
-              entries {
-                score
-                startedAt { year month day } 
-                completedAt { year month day }
-                media {
-                  title {
-                    romaji english native userPreferred
-                  }
+                name
+                status
+                entries {
+                    score
+                    startedAt { year month day } 
+                    completedAt { year month day }
+                    media {
+                        duration
+                        title {
+                            romaji english native userPreferred
+                        }
+                    }
                 }
-              }
             }
         }
     }
-    `;
+    `; // Could probably munch the whitespace with a regex but no real need to
 
     const variables = {
         userName: userName
@@ -231,12 +243,7 @@ function listFormSubmit(): void {
 async function beforeAjax() {
     username = ($("#listName").val() as string).trim();
 
-    if (usingTestData) {
-        console.info("Using test data");
-        let doc = loadTestData(testData);//ajax
-        afterAjax(doc);
-        return
-    }
+
 
     if (username === "") {
         reportNoUser();
@@ -257,10 +264,8 @@ async function beforeAjax() {
     }
 
 
-    // TODO 
-    // call anilist api
-    // make animelist object
     const aniList = await getAniList(username);
+    debugData["list"] = aniList;
 
     if (aniList instanceof MAL.BadUsernameError) {
         reportBadUser();
@@ -276,29 +281,6 @@ async function beforeAjax() {
 
 
 
-// main IV
-// TODO: Trash this
-// Wrapper to handle errors in MAL response.
-// Currently only a bad username is expected
-function afterAjax(doc): void {
-    let mal: MAL.AnimeList;
-
-    try {
-        mal = MAL.animeListFromMalElm(doc);
-        userCache.set(username, mal);
-
-    } catch (err) {
-        if (err instanceof MAL.BadUsernameError) {
-            userCache.set(username, err);
-            reportBadUser();
-            return;
-        } else {
-            throw err;
-        }
-    }
-
-    prepareTimeline(mal);
-}
 
 // main V
 // Use doc to build timeline
@@ -604,7 +586,7 @@ function isNormalInteger(str: string): boolean {
     return (String(n) === str) && (n >= 0);
 }
 
-//make user input suitible for anime timeline
+//make user input suitable for anime timeline
 //must not be null
 function fixDate(date: string, minmax: -1 | 1): string {
 
@@ -731,22 +713,3 @@ function updateUri(param: AnimeListTimelineConfig): void {
 // test(ing) stuff
 //
 
-// load xml not async
-function loadTestData(url: string): any /*xml*/ {
-    return (function () {
-        let xml = null;
-        $.ajax({
-            async: false,
-
-            crossDomain: true,
-
-            global: false,
-            url: url,
-            dataType: "xml",
-            success: function (data) {
-                xml = data;
-            }
-        });
-        return xml;
-    })();
-}
