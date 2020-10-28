@@ -25,6 +25,14 @@
  */
 
 
+//  ██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗███████╗
+//  ██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝
+//  ██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║   ███████╗
+//  ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════██║
+//  ██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║   ███████║
+//  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+
+
 //
 // imports
 //
@@ -52,6 +60,14 @@ declare function saveAs(foo?, fooo?);
 
 // Deprecated or something?
 declare function unescape(s: string): string;
+
+
+//  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
+// ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
+// ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
+// ██║   ██║██║     ██║   ██║██╔══██╗██╔══██║██║     ╚════██║    
+// ╚██████╔╝███████╗╚██████╔╝██████╔╝██║  ██║███████╗███████║    
+//  ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝    
 
 
 //
@@ -296,6 +312,7 @@ async function beforeAjax() {
     debugData["list"] = animeList;
 
     userCache.set(username, animeList);
+    drawHoursWatched(animeList);
     prepareTimeline(animeList);
 
 }
@@ -440,6 +457,46 @@ function displayTimeline(): void {
 // ***
 // End main chain
 // ***
+
+function drawHoursWatched(mal: MAL.AnimeList): void {
+    const anime: MAL.Anime[] = [];
+    const dateSet: Set<string> = new Set();
+    // const dateSet: Set<number> = new Set();
+    // Look for all the anime that are completed and have both start and finish dates
+    for (let entry of mal.anime) {
+        if (entry.myStatus != MAL.Status.Completed) {
+            continue;
+        }
+        if (entry.myStartDate.isNullDate() || entry.myFinishDate.isNullDate()) {
+            continue;
+        }
+        anime.push(entry);
+        dateSet.add(entry.myStartDate.fixedDateStr);
+        dateSet.add(entry.myFinishDate.fixedDateStr);
+    }
+
+    const dates = Array.from(dateSet);
+    dates.sort(); // Probably fine on date strings
+    // const watchTime:number[] = [];
+    const watchTime: Map<string, number> = new Map();
+    for (let d of dates) {
+        // watchTime.push(0);
+        watchTime.set(d, 0);
+    }
+
+    for (let entry of anime) {
+        const duration = entry.seriesEpisodes * entry.seriesEpisodesDuration;
+        watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
+    }
+
+    watchTime.delete(dates[0]);
+
+    const maxDay = [...watchTime.entries()]
+        .reduce((a, e) => e[1] > a[1] ? e : a);
+    
+    console.log(maxDay);
+
+}
 
 // ███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗
 // ██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║ ██╔╝

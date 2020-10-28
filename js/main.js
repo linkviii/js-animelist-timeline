@@ -31,6 +31,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
  * test(ing) stuff
  *
  */
+//  ██╗███╗   ███╗██████╗  ██████╗ ██████╗ ████████╗███████╗
+//  ██║████╗ ████║██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝
+//  ██║██╔████╔██║██████╔╝██║   ██║██████╔╝   ██║   ███████╗
+//  ██║██║╚██╔╝██║██╔═══╝ ██║   ██║██╔══██╗   ██║   ╚════██║
+//  ██║██║ ╚═╝ ██║██║     ╚██████╔╝██║  ██║   ██║   ███████║
+//  ╚═╝╚═╝     ╚═╝╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 //
 // imports
 //
@@ -43,6 +49,12 @@ import * as MAL from "./src/MAL.js";
 import { Timeline } from "./lib/timeline.js";
 //import jquery
 import "./jquery.js";
+//  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
+// ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
+// ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
+// ██║   ██║██║     ██║   ██║██╔══██╗██╔══██║██║     ╚════██║    
+// ╚██████╔╝███████╗╚██████╔╝██████╔╝██║  ██║███████╗███████║    
+//  ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝    
 //
 // Global data
 //
@@ -228,6 +240,7 @@ function beforeAjax() {
         const animeList = MAL.animeListFromAniList(aniList, username);
         debugData["list"] = animeList;
         userCache.set(username, animeList);
+        drawHoursWatched(animeList);
         prepareTimeline(animeList);
     });
 }
@@ -341,6 +354,39 @@ function displayTimeline() {
 // ***
 // End main chain
 // ***
+function drawHoursWatched(mal) {
+    const anime = [];
+    const dateSet = new Set();
+    // const dateSet: Set<number> = new Set();
+    // Look for all the anime that are completed and have both start and finish dates
+    for (let entry of mal.anime) {
+        if (entry.myStatus != MAL.Status.Completed) {
+            continue;
+        }
+        if (entry.myStartDate.isNullDate() || entry.myFinishDate.isNullDate()) {
+            continue;
+        }
+        anime.push(entry);
+        dateSet.add(entry.myStartDate.fixedDateStr);
+        dateSet.add(entry.myFinishDate.fixedDateStr);
+    }
+    const dates = Array.from(dateSet);
+    dates.sort(); // Probably fine on date strings
+    // const watchTime:number[] = [];
+    const watchTime = new Map();
+    for (let d of dates) {
+        // watchTime.push(0);
+        watchTime.set(d, 0);
+    }
+    for (let entry of anime) {
+        const duration = entry.seriesEpisodes * entry.seriesEpisodesDuration;
+        watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
+    }
+    watchTime.delete(dates[0]);
+    const maxDay = [...watchTime.entries()]
+        .reduce((a, e) => e[1] > a[1] ? e : a);
+    console.log(maxDay);
+}
 // ███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗
 // ██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║ ██╔╝
 // █████╗  █████╗  █████╗  ██║  ██║██████╔╝███████║██║     █████╔╝ 
