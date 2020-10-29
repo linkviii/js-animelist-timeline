@@ -98,7 +98,8 @@ const issueUrl: string = "https://github.com/linkviii/js-animelist-timeline/issu
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 
 
-const userCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Map();
+const userAnimeCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Map();
+const userMangaCache: Map<string, MAL.MangaList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
 
@@ -144,6 +145,9 @@ function init(): void {
     if (param["era"]) {
         ($("#seasons")[0] as HTMLInputElement).checked = "true" == param["era"];
     }
+    if (param["kind"]) {
+        $("#list-kind").val(param["kind"]);
+    }
 
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
@@ -163,6 +167,14 @@ $(document).ready(init);
  *
  *
  */
+
+//  ██╗     ██╗███████╗████████╗███████╗
+//  ██║     ██║██╔════╝╚══██╔══╝██╔════╝
+//  ██║     ██║███████╗   ██║   ███████╗
+//  ██║     ██║╚════██║   ██║   ╚════██║
+//  ███████╗██║███████║   ██║   ███████║
+//  ╚══════╝╚═╝╚══════╝   ╚═╝   ╚══════╝
+
 
 
 export async function getAniList(userName: string): Promise<any | MAL.BadUsernameError> {
@@ -234,17 +246,100 @@ export async function getAniList(userName: string): Promise<any | MAL.BadUsernam
         return new MAL.BadUsernameError();
     }
 
-    const data = foo.data;
+    const data = foo.data.MediaListCollection;
 
     if (data.hasNextChunk) {
         console.warn("TODO: next chunk not implemented yet.");
     }
 
 
-    return data.MediaListCollection;
+    return data;
 
 }
 
+
+
+
+
+export async function getMangaList(userName: string): Promise<any | MAL.BadUsernameError> {
+
+    if (usingTestData) {
+        console.log("Using test manga list data.");
+
+        const url = "res/TODO.json";
+
+        let job = await fetch(url).then(response => response.json());
+        return job;
+
+    }
+
+    const query = `
+    query ($userName: String) { 
+        MediaListCollection(userName: $userName, type: MANGA) {
+            hasNextChunk
+            user {
+                id
+            }
+            lists {
+                name
+                status
+                entries {
+                    mediaId
+                    score
+                    progress
+                    startedAt { year month day } 
+                    completedAt { year month day }
+                    media {
+                        duration
+                        episodes
+                        title {
+                            romaji english native userPreferred
+                        }
+                    }
+                }
+            }
+        }
+    }
+    `; // Could probably munch the whitespace with a regex but no real need to
+
+    const variables = {
+        userName: userName
+    };
+
+
+    // Define the config we'll need for our Api request
+    const url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+
+    const response = await fetch(url, options);
+    const foo = await response.json();
+
+    if (foo.errors) {
+        console.error(foo.errors);
+        return new MAL.BadUsernameError();
+    }
+
+    const data = foo.data.MediaListCollection;
+
+    if (data.hasNextChunk) {
+        console.warn("TODO: next chunk not implemented yet.");
+    }
+
+
+    return data;
+
+}
 
 
 /*  
@@ -277,6 +372,8 @@ function listFormSubmit(): void {
 // Form api requests and call
 async function beforeAjax() {
     username = ($("#listName").val() as string).trim();
+    const listKind = $("#list-kind").val() as string;
+
 
 
 
@@ -285,35 +382,75 @@ async function beforeAjax() {
         return;
     }
 
-    // check cache for name
-    // to skip ajax
-    const data: MAL.AnimeList | MAL.BadUsernameError = userCache.get(username);
-    if (data) {
-        console.info([username, "'s data loaded from cache."].join(""));
-        if (data instanceof MAL.BadUsernameError) {
-            reportBadUser();
-        } else {
-            prepareTimeline(data);
-        }
-        return;
+    switch (listKind) {
+        case "ANIME":
+            {     // check cache for name
+                // to skip ajax
+                const data: MAL.AnimeList | MAL.BadUsernameError = userAnimeCache.get(username);
+                if (data) {
+                    console.info([username, "'s data loaded from cache."].join(""));
+                    if (data instanceof MAL.BadUsernameError) {
+                        reportBadUser();
+                    } else {
+                        prepareTimeline(data);
+                    }
+                    return;
+                }
+
+
+                const aniList = await getAniList(username);
+                debugData["aniList"] = aniList;
+
+                if (aniList instanceof MAL.BadUsernameError) {
+                    reportBadUser();
+                    userAnimeCache.set(username, aniList);
+                    return;
+                }
+
+                const animeList = MAL.animeListFromAniList(aniList, username);
+                debugData["list"] = animeList;
+
+                userAnimeCache.set(username, animeList);
+                // drawHoursWatched(animeList);
+                prepareTimeline(animeList);
+            }
+            break;
+        case "MANGA":
+            {
+                const data: MAL.MangaList | MAL.BadUsernameError = userMangaCache.get(username);
+                if (data) {
+                    console.info([username, "'s data loaded from cache."].join(""));
+                    if (data instanceof MAL.BadUsernameError) {
+                        reportBadUser();
+                    } else {
+                        prepareTimeline(data);
+                    }
+                    return;
+                }
+
+
+                const aniList = await getMangaList(username);
+                debugData["aniList"] = aniList;
+
+                if (aniList instanceof MAL.BadUsernameError) {
+                    reportBadUser();
+                    userMangaCache.set(username, aniList);
+                    return;
+                }
+
+                const mangaList = MAL.mangaListFromAniList(aniList, username);
+                debugData["list"] = mangaList;
+
+                userMangaCache.set(username, mangaList);
+                prepareTimeline(mangaList);
+            }
+            break;
+        default:
+            console.error("Unexpected list-kind:", listKind);
     }
 
 
-    const aniList = await getAniList(username);
-    debugData["aniList"] = aniList;
 
-    if (aniList instanceof MAL.BadUsernameError) {
-        reportBadUser();
-        userCache.set(username, aniList);
-        return;
-    }
-
-    const animeList = MAL.animeListFromAniList(aniList, username);
-    debugData["list"] = animeList;
-
-    userCache.set(username, animeList);
-    drawHoursWatched(animeList);
-    prepareTimeline(animeList);
 
 }
 
@@ -322,7 +459,7 @@ async function beforeAjax() {
 
 // main V
 // Use doc to build timeline
-function prepareTimeline(mal: MAL.AnimeList): void {
+function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
 
     let startDate: string = ($("#from").val() as string).trim();
     let endDate: string = ($("#to").val() as string).trim();
@@ -493,7 +630,7 @@ function drawHoursWatched(mal: MAL.AnimeList): void {
 
     const maxDay = [...watchTime.entries()]
         .reduce((a, e) => e[1] > a[1] ? e : a);
-    
+
     console.log(maxDay);
 
 }
@@ -783,14 +920,17 @@ function replaceQueryParam(param: string, newval: string, search: string): strin
 function updateUri(param: AnimeListTimelineConfig): void {
 
     // Why were these read from dom instead of `param`?
+    // Was it because param squeezes the dates? (Does it?)
     let startDate: string = ($("#from").val() as string).trim();
-    if (startDate == "") {
+    if (startDate === "") {
         startDate = "";
     }
     let endDate: string = ($("#to").val() as string).trim();
-    if (endDate == "") {
+    if (endDate === "") {
         endDate = "";
     }
+
+    const kind = $("#list-kind").val() as string;
 
     let str = window.location.search;
 
@@ -800,6 +940,7 @@ function updateUri(param: AnimeListTimelineConfig): void {
     str = replaceQueryParam("maxDate", endDate, str);
     str = replaceQueryParam("lang", param.lang, str);
     str = replaceQueryParam("era", param.seasons.toString(), str);
+    str = replaceQueryParam("kind", kind, str);
 
     window.history.replaceState(null, null, str);
 }

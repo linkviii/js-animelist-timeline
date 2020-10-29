@@ -101,7 +101,7 @@ export class AnimeListTimeline {
         return date.compare(lb) >= 0 && date.compare(rb) <= 0;
     }
 
-    static filterInbounds(anime: MAL.Anime, lb: MAL.Mdate, rb: MAL.Mdate): [boolean, boolean] {
+    static filterInbounds(anime: MAL.Anime | MAL.Manga, lb: MAL.Mdate, rb: MAL.Mdate): [boolean, boolean] {
 
         return [AnimeListTimeline.dateInBounds(anime.myStartDate, lb, rb),
         AnimeListTimeline.dateInBounds(anime.myFinishDate, lb, rb)];
@@ -109,7 +109,7 @@ export class AnimeListTimeline {
 
 
 
-    constructor(mal: MAL.AnimeList, tlConfig: AnimeListTimelineConfig) {
+    constructor(mal: MAL.AnimeList | MAL.MangaList, tlConfig: AnimeListTimelineConfig) {
 
         this.userName = mal.user.userName;
 
@@ -191,7 +191,7 @@ export class AnimeListTimeline {
                 // const finishLabel: string = oobStar + "finished " + title;
                 const finishLabel: string = oobStar + "[F] " + title;
 
-                
+
 
                 const startCallout: TimelineCalloutV2 = {
                     description: startLabel,

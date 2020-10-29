@@ -61,8 +61,47 @@ export class BadUsernameError extends Error {
 export class AnimeList {
     public user: User;
     public anime: Anime[];
+}
+
+export class MangaList {
+    public user: User;
+    public anime: Manga[];
+}
+
+export class Manga {
+    public seriesTitle: Title;
+    public myStartDate: Mdate;
+    public myFinishDate: Mdate;
+    public myStatus: number;
+
+}
+
+function mangaFromAniList(obj, status: Status): Manga {
+    const titleObj = new Title(obj.media.title);
 
 
+    return {
+        seriesTitle: titleObj,
+        myStartDate: dateFromAniList(obj.startedAt),
+        myFinishDate: dateFromAniList(obj.completedAt),
+        myStatus: status,
+
+    }
+}
+
+export function mangaListFromAniList(obj, userName: string): MangaList {
+    const user = userFromAniList(obj.user, userName);
+
+    const userLists = obj.lists;
+    const allAnime = [];
+
+    for (let list of userLists) {
+        const status = statusFromAniList(list.status);
+        for (let anime of list.entries) {
+            allAnime.push(mangaFromAniList(anime, status));
+        }
+    }
+    return { user: user, anime: allAnime };
 }
 
 export function animeListFromMalElm(MALXML: Element): AnimeList {
@@ -184,7 +223,7 @@ export class Anime {
 }
 
 function animeFromAniList(anime, status: Status): Anime {
-    // TODO both romaji and english
+
     const titleObj = new Title(anime.media.title);
 
 

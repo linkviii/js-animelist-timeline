@@ -25,6 +25,12 @@
         <p>Generate a timeline of when you watched anime from dates on your AniList.</p>
 
         <form>
+            <label>List type
+                <select id="list-kind">
+                    <option value="ANIME">Anime</option>
+                    <option value="MANGA">Manga</option>
+                </select>
+            </label>
             <span class="required">
                 <label>List username
                     <input id="listName" required />
@@ -32,7 +38,7 @@
             </span>
             <span class="required">
                 <label> Width
-                    <input id="width" type="number" value="1000" step="100" required />
+                    <input id="width" type="number" value="1400" step="100" required />
                 </label>
             </span>
             <label>From

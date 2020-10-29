@@ -50,6 +50,31 @@ export class BadUsernameError extends Error {
 }
 export class AnimeList {
 }
+export class MangaList {
+}
+export class Manga {
+}
+function mangaFromAniList(obj, status) {
+    const titleObj = new Title(obj.media.title);
+    return {
+        seriesTitle: titleObj,
+        myStartDate: dateFromAniList(obj.startedAt),
+        myFinishDate: dateFromAniList(obj.completedAt),
+        myStatus: status,
+    };
+}
+export function mangaListFromAniList(obj, userName) {
+    const user = userFromAniList(obj.user, userName);
+    const userLists = obj.lists;
+    const allAnime = [];
+    for (let list of userLists) {
+        const status = statusFromAniList(list.status);
+        for (let anime of list.entries) {
+            allAnime.push(mangaFromAniList(anime, status));
+        }
+    }
+    return { user: user, anime: allAnime };
+}
 export function animeListFromMalElm(MALXML) {
     //An invalid username's document will be `<myanimelist/>`
     if (MALXML.childNodes[0].childNodes.length == 0) {
@@ -119,7 +144,6 @@ export class Title {
 export class Anime {
 }
 function animeFromAniList(anime, status) {
-    // TODO both romaji and english
     const titleObj = new Title(anime.media.title);
     const tmp = {
         seriesTitle: titleObj,

@@ -73,7 +73,8 @@ const siteUrl = "https://linkviii.github.io/js-animelist-timeline/";
 const repoUrl = "https://github.com/linkviii/js-animelist-timeline";
 const issueUrl = "https://github.com/linkviii/js-animelist-timeline/issues";
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
-const userCache = new Map();
+const userAnimeCache = new Map();
+const userMangaCache = new Map();
 let timelineCount = 0;
 // global for ease of testing. Used as globals.
 export let username;
@@ -110,6 +111,9 @@ function init() {
     if (param["era"]) {
         $("#seasons")[0].checked = "true" == param["era"];
     }
+    if (param["kind"]) {
+        $("#list-kind").val(param["kind"]);
+    }
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
     const removeAll = document.getElementById("clearAllTimelines");
@@ -123,6 +127,12 @@ $(document).ready(init);
  *
  *
  */
+//  ██╗     ██╗███████╗████████╗███████╗
+//  ██║     ██║██╔════╝╚══██╔══╝██╔════╝
+//  ██║     ██║███████╗   ██║   ███████╗
+//  ██║     ██║╚════██║   ██║   ╚════██║
+//  ███████╗██║███████║   ██║   ███████║
+//  ╚══════╝╚═╝╚══════╝   ╚═╝   ╚══════╝
 export function getAniList(userName) {
     return __awaiter(this, void 0, void 0, function* () {
         if (usingTestData) {
@@ -180,11 +190,75 @@ export function getAniList(userName) {
             console.error(foo.errors);
             return new MAL.BadUsernameError();
         }
-        const data = foo.data;
+        const data = foo.data.MediaListCollection;
         if (data.hasNextChunk) {
             console.warn("TODO: next chunk not implemented yet.");
         }
-        return data.MediaListCollection;
+        return data;
+    });
+}
+export function getMangaList(userName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (usingTestData) {
+            console.log("Using test manga list data.");
+            const url = "res/TODO.json";
+            let job = yield fetch(url).then(response => response.json());
+            return job;
+        }
+        const query = `
+    query ($userName: String) { 
+        MediaListCollection(userName: $userName, type: MANGA) {
+            hasNextChunk
+            user {
+                id
+            }
+            lists {
+                name
+                status
+                entries {
+                    mediaId
+                    score
+                    progress
+                    startedAt { year month day } 
+                    completedAt { year month day }
+                    media {
+                        duration
+                        episodes
+                        title {
+                            romaji english native userPreferred
+                        }
+                    }
+                }
+            }
+        }
+    }
+    `; // Could probably munch the whitespace with a regex but no real need to
+        const variables = {
+            userName: userName
+        };
+        // Define the config we'll need for our Api request
+        const url = 'https://graphql.anilist.co', options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+        const response = yield fetch(url, options);
+        const foo = yield response.json();
+        if (foo.errors) {
+            console.error(foo.errors);
+            return new MAL.BadUsernameError();
+        }
+        const data = foo.data.MediaListCollection;
+        if (data.hasNextChunk) {
+            console.warn("TODO: next chunk not implemented yet.");
+        }
+        return data;
     });
 }
 /*
@@ -213,35 +287,69 @@ function listFormSubmit() {
 function beforeAjax() {
     return __awaiter(this, void 0, void 0, function* () {
         username = $("#listName").val().trim();
+        const listKind = $("#list-kind").val();
         if (username === "") {
             reportNoUser();
             return;
         }
-        // check cache for name
-        // to skip ajax
-        const data = userCache.get(username);
-        if (data) {
-            console.info([username, "'s data loaded from cache."].join(""));
-            if (data instanceof MAL.BadUsernameError) {
-                reportBadUser();
-            }
-            else {
-                prepareTimeline(data);
-            }
-            return;
+        switch (listKind) {
+            case "ANIME":
+                { // check cache for name
+                    // to skip ajax
+                    const data = userAnimeCache.get(username);
+                    if (data) {
+                        console.info([username, "'s data loaded from cache."].join(""));
+                        if (data instanceof MAL.BadUsernameError) {
+                            reportBadUser();
+                        }
+                        else {
+                            prepareTimeline(data);
+                        }
+                        return;
+                    }
+                    const aniList = yield getAniList(username);
+                    debugData["aniList"] = aniList;
+                    if (aniList instanceof MAL.BadUsernameError) {
+                        reportBadUser();
+                        userAnimeCache.set(username, aniList);
+                        return;
+                    }
+                    const animeList = MAL.animeListFromAniList(aniList, username);
+                    debugData["list"] = animeList;
+                    userAnimeCache.set(username, animeList);
+                    // drawHoursWatched(animeList);
+                    prepareTimeline(animeList);
+                }
+                break;
+            case "MANGA":
+                {
+                    const data = userMangaCache.get(username);
+                    if (data) {
+                        console.info([username, "'s data loaded from cache."].join(""));
+                        if (data instanceof MAL.BadUsernameError) {
+                            reportBadUser();
+                        }
+                        else {
+                            prepareTimeline(data);
+                        }
+                        return;
+                    }
+                    const aniList = yield getMangaList(username);
+                    debugData["aniList"] = aniList;
+                    if (aniList instanceof MAL.BadUsernameError) {
+                        reportBadUser();
+                        userMangaCache.set(username, aniList);
+                        return;
+                    }
+                    const mangaList = MAL.mangaListFromAniList(aniList, username);
+                    debugData["list"] = mangaList;
+                    userMangaCache.set(username, mangaList);
+                    prepareTimeline(mangaList);
+                }
+                break;
+            default:
+                console.error("Unexpected list-kind:", listKind);
         }
-        const aniList = yield getAniList(username);
-        debugData["aniList"] = aniList;
-        if (aniList instanceof MAL.BadUsernameError) {
-            reportBadUser();
-            userCache.set(username, aniList);
-            return;
-        }
-        const animeList = MAL.animeListFromAniList(aniList, username);
-        debugData["list"] = animeList;
-        userCache.set(username, animeList);
-        drawHoursWatched(animeList);
-        prepareTimeline(animeList);
     });
 }
 // main V
@@ -622,14 +730,16 @@ function replaceQueryParam(param, newval, search) {
 }
 function updateUri(param) {
     // Why were these read from dom instead of `param`?
+    // Was it because param squeezes the dates? (Does it?)
     let startDate = $("#from").val().trim();
-    if (startDate == "") {
+    if (startDate === "") {
         startDate = "";
     }
     let endDate = $("#to").val().trim();
-    if (endDate == "") {
+    if (endDate === "") {
         endDate = "";
     }
+    const kind = $("#list-kind").val();
     let str = window.location.search;
     str = replaceQueryParam("uname", username, str);
     str = replaceQueryParam("width", param.width.toString(), str);
@@ -637,6 +747,7 @@ function updateUri(param) {
     str = replaceQueryParam("maxDate", endDate, str);
     str = replaceQueryParam("lang", param.lang, str);
     str = replaceQueryParam("era", param.seasons.toString(), str);
+    str = replaceQueryParam("kind", kind, str);
     window.history.replaceState(null, null, str);
 }
 //
