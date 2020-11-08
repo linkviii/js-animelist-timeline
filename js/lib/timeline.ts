@@ -273,7 +273,7 @@ export class Timeline {
             this.endDate = new Date(this.endDate.valueOf() + 10000);
         }
 
-        if (this.endDate.valueOf() < this.startDate.valueOf()){
+        if (this.endDate.valueOf() < this.startDate.valueOf()) {
             throw new Error("startDate is ahead of endDate");
         }
 
@@ -827,6 +827,9 @@ export class Timeline {
             rect.x(x0);
             rect.fill({ color: fill, opacity: 0.15 });
 
+            // Keep callout text on top
+            rect.back();
+
 
             // Boundary lines
             //  line0 
@@ -880,7 +883,6 @@ export class Timeline {
         const height: number = yAxis + this.maxLabelHeight + this.fontHeight;
 
         //# create eras and labels using axis height and overall height
-        // TODO Move eras under other elm
         this.createEras(yEra, yAxis, height);
 
         //# translate the axis group and add it to the drawing

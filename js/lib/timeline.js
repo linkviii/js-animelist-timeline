@@ -535,6 +535,8 @@ export class Timeline {
             const rect = this.drawing.rect(x1 - x0, height);
             rect.x(x0);
             rect.fill({ color: fill, opacity: 0.15 });
+            // Keep callout text on top
+            rect.back();
             // Boundary lines
             //  line0 
             this.drawing.line(x0, 0, x0, yAxis)
@@ -571,7 +573,6 @@ export class Timeline {
         //# determine height so that eras, callouts, axis, and labels just fit
         const height = yAxis + this.maxLabelHeight + this.fontHeight;
         //# create eras and labels using axis height and overall height
-        // TODO Move eras under other elm
         this.createEras(yEra, yAxis, height);
         //# translate the axis group and add it to the drawing
         // this.axisGroup.translate(0, yAxis);
