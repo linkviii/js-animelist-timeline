@@ -132,7 +132,7 @@ function init(): void {
     listField.select();
 
     if (param[keys.userName]) {
-        listField.val(keys.userName);
+        listField.val(param[keys.userName]);
     }
     if (param[keys.width]) {
         $("#width").val(param[keys.width]);
