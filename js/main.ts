@@ -519,13 +519,13 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
         }
     }
 
-    displayTimeline();
+    displayTimeline(tlConfig);
 }
 
 // main VI
 // write the timeline to the document
 // pre: tln is a valid AnimeListTimeline object
-function displayTimeline(): void {
+function displayTimeline(tlConfig: AnimeListTimelineConfig): void {
 
     /*
      This comment could lie
@@ -545,10 +545,13 @@ function displayTimeline(): void {
      */
 
 
-    //Allways add new timeline on top
+    //Always add new timeline on top
     const tlArea = document.createElement("div");
     $("#tls").prepend(tlArea);
 
+    // Label
+    const label = document.createElement("h3");
+    label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
 
     //make buttons
     const removeButton = document.createElement("button");
@@ -594,6 +597,7 @@ function displayTimeline(): void {
     tl.meta = tln;
 
     // add to dom
+    tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
 

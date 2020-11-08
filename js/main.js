@@ -384,12 +384,12 @@ function prepareTimeline(mal) {
             throw err;
         }
     }
-    displayTimeline();
+    displayTimeline(tlConfig);
 }
 // main VI
 // write the timeline to the document
 // pre: tln is a valid AnimeListTimeline object
-function displayTimeline() {
+function displayTimeline(tlConfig) {
     /*
      This comment could lie
      and so could any other
@@ -406,9 +406,12 @@ function displayTimeline() {
      `` → single
 
      */
-    //Allways add new timeline on top
+    //Always add new timeline on top
     const tlArea = document.createElement("div");
     $("#tls").prepend(tlArea);
+    // Label
+    const label = document.createElement("h3");
+    label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
     //make buttons
     const removeButton = document.createElement("button");
     removeButton.textContent = "X";
@@ -445,6 +448,7 @@ function displayTimeline() {
     timelineCount++;
     tl.meta = tln;
     // add to dom
+    tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
     //make timeline after it has a valid anchor in the doc
