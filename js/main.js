@@ -617,7 +617,7 @@ function exportTimeline() {
 //
 // Util
 //
-function wrapListItem(elm) {
+export function wrapListItem(elm) {
     const li = document.createElement("li");
     li.appendChild(elm);
     return li;
@@ -630,13 +630,13 @@ function wrapListItem(elm) {
  * @param str
  * @returns {boolean}
  */
-function isNormalInteger(str) {
+export function isNormalInteger(str) {
     const n = ~~Number(str);
     return (String(n) === str) && (n >= 0);
 }
 //make user input suitable for anime timeline
 //must not be null
-function fixDate(date, minmax) {
+export function fixDate(date, minmax) {
     const minYear = 1980; //Nerds can change this in the future
     const maxYear = 2030; //For now its sane
     const test = dateRegex.test(date);
@@ -678,7 +678,7 @@ function fixDate(date, minmax) {
 // url query manipulation
 //
 //http://stackoverflow.com/a/8486188/1993919
-function getJsonFromUrl(hashBased) {
+export function getJsonFromUrl(hashBased) {
     let query;
     if (hashBased) {
         let pos = location.href.indexOf("?");
@@ -715,14 +715,14 @@ function getJsonFromUrl(hashBased) {
     return result;
 }
 //http://stackoverflow.com/a/19472410/1993919
-function replaceQueryParam(param, newval, search) {
+export function replaceQueryParam(param, newval, search) {
     // Could default but probably not intended.
     //search = search || window.location.search;
     const regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
     const query = search.replace(regex, "$1").replace(/&$/, '');
     return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
-function updateUri(param) {
+export function updateUri(param) {
     // Why were these read from dom instead of `param`?
     // Was it because param squeezes the dates? (Does it?)
     let startDate = $("#from").val().trim();

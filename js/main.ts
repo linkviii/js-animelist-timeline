@@ -819,7 +819,7 @@ function exportTimeline() {
 // Util
 //
 
-function wrapListItem(elm: Element) {
+export function wrapListItem(elm: Element) {
     const li = document.createElement("li");
     li.appendChild(elm);
     return li;
@@ -834,14 +834,14 @@ function wrapListItem(elm: Element) {
  * @param str
  * @returns {boolean}
  */
-function isNormalInteger(str: string): boolean {
+export function isNormalInteger(str: string): boolean {
     const n: number = ~~Number(str);
     return (String(n) === str) && (n >= 0);
 }
 
 //make user input suitable for anime timeline
 //must not be null
-function fixDate(date: string, minmax: -1 | 1): string {
+export function fixDate(date: string, minmax: -1 | 1): string {
 
     const minYear = 1980;//Nerds can change this in the future
     const maxYear = 2030;//For now its sane
@@ -890,7 +890,7 @@ function fixDate(date: string, minmax: -1 | 1): string {
 //
 
 //http://stackoverflow.com/a/8486188/1993919
-function getJsonFromUrl(hashBased?): any {
+export function getJsonFromUrl(hashBased?): any {
     let query;
     if (hashBased) {
         let pos = location.href.indexOf("?");
@@ -921,7 +921,7 @@ function getJsonFromUrl(hashBased?): any {
 }
 
 //http://stackoverflow.com/a/19472410/1993919
-function replaceQueryParam(param: string, newval: string, search: string): string {
+export function replaceQueryParam(param: string, newval: string, search: string): string {
     // Could default but probably not intended.
     //search = search || window.location.search;
 
@@ -931,7 +931,7 @@ function replaceQueryParam(param: string, newval: string, search: string): strin
     return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
 
-function updateUri(param: AnimeListTimelineConfig): void {
+export function updateUri(param: AnimeListTimelineConfig): void {
 
     // Why were these read from dom instead of `param`?
     // Was it because param squeezes the dates? (Does it?)
