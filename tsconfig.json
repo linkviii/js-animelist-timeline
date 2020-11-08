@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES2017",
     "sourceMap": true,
     "module": "es6",
     "baseUrl": "./js"

@@ -18,7 +18,10 @@
 declare function SVG();
 
 
-declare function strftime(format: string, date: Date);
+// declare function strftime(format: string, date: Date);
+declare namespace strftime {
+    function utc(): (format: string, date: Date) => string;
+}
 
 // console.info("init strftime");
 // console.info(strftime);
@@ -99,6 +102,8 @@ export interface TimelineEraV2 {
 export interface TimelineDataV2 {
     apiVersion: 2;
     width: number;
+    fontSize?: number;
+    fontFamily?: string;
     startDate: string;
     endDate: string;
     numTicks?: number;
@@ -195,8 +200,8 @@ class OoBDate extends Error {
 
 export class Timeline {
 
-    public readonly fontSize = 8;
-    public readonly fontFamily = 'Helvetica';
+    public readonly fontSize;
+    public readonly fontFamily;
     readonly fontHeight: number;
 
     public readonly calloutProperties: { width: number, height: number, increment: number };
@@ -211,8 +216,14 @@ export class Timeline {
     public readonly startDate: Date;
     public readonly endDate: Date;
 
+    /** 
+     * The very beginning and end of the axis.
+     * date0 -> x = 0
+     * date1 -> x = width
+     */
     public readonly date0: number;
     public readonly date1: number;
+
     public readonly totalSeconds: number;
 
 
@@ -229,6 +240,9 @@ export class Timeline {
     public readonly drawing;
     public readonly axisGroup;
 
+    //
+    private strfutc = strftime.utc();
+
     // initializes data for timeline
     // Call `build` to generate svg
     constructor(data: TimelineData, id: string) {
@@ -240,6 +254,9 @@ export class Timeline {
 
         }
 
+        this.fontSize = this.data.fontSize || 8;
+        this.fontFamily = this.data.fontFamily || 'Helvetica';
+
 
         this.width = this.data.width;
         this.deadWidth = 0;
@@ -250,8 +267,22 @@ export class Timeline {
         this.startDate = new Date(this.data.startDate);
         this.endDate = new Date(this.data.endDate);
 
-        const delta: number = (this.endDate.valueOf() - this.startDate.valueOf());
-        const padding: number = (new Date(delta * 0.1)).valueOf();
+        // Create space if otherwise there would be none.
+        if (this.startDate.valueOf() === this.endDate.valueOf()) {
+            this.startDate = new Date(this.startDate.valueOf() - 10000);
+            this.endDate = new Date(this.endDate.valueOf() + 10000);
+        }
+
+        if (this.endDate.valueOf() < this.startDate.valueOf()){
+            throw new Error("startDate is ahead of endDate");
+        }
+
+        const timeWindowSpan: number = (this.endDate.valueOf() - this.startDate.valueOf());
+
+        // Use the same number of pixels regardless of how wide the timeline is
+        const paddingScale = 1000 / this.width;
+        const timeScale = 0.1;
+        const padding: number = (new Date(timeWindowSpan * timeScale * paddingScale)).valueOf();
 
         this.date0 = this.startDate.valueOf() - padding;
         this.date1 = this.endDate.valueOf() + padding;
@@ -261,6 +292,7 @@ export class Timeline {
         this.tickFormat = this.data.tickFormat;
 
         //TODO use a map instead
+        // Also what are these
         this.markers = {};
 
         //
@@ -288,6 +320,8 @@ export class Timeline {
         //# maxLabelHeight stores the max height of all axis labels
         //# and is used in the final height computation in build(self)
         this.maxLabelHeight = 0;
+
+        this.data.callouts = this.data.callouts || [];
 
         // Calculate how far oob callout text can go
         // leftBoundary < 0 → oob
@@ -341,7 +375,7 @@ export class Timeline {
         const fill: string = kw.fill || Colors.gray;
         let label: string;
         if (this.tickFormat) {
-            label = strftime(this.tickFormat, dt);
+            label = this.strfutc(this.tickFormat, dt);
         } else {
             label = dt.toDateString();
         }
@@ -475,6 +509,7 @@ export class Timeline {
 
     // not pure fn
     // modifies prev*
+    /** Layout callouts so that text will not overlap with vertical lines. */
     private calculateCalloutHeight(eventEndpoint: number, prevEndpoints: number[], prevLevels: number[], event: string): [number, string] {
 
 
@@ -570,7 +605,7 @@ export class Timeline {
 
             for (let levI = 1; levI < endpointMap.length; levI++) {
 
-                if (isGood(endpointMap[levI-1]) &&isGood(endpointMap[levI]) && isGood(endpointMap[levI + 1])) {
+                if (isGood(endpointMap[levI - 1]) && isGood(endpointMap[levI]) && isGood(endpointMap[levI + 1])) {
                     bifLevel = levI + 1;
                     break;
                 }
@@ -691,6 +726,10 @@ export class Timeline {
 
 
 
+        }
+
+        if (!isFinite(minY)) {
+            minY = 10;
         }
 
         return minY;
@@ -872,11 +911,58 @@ export class Timeline {
     }
 
 
-
-
 }
 
 
+// Test linear spacing of callouts
+export function makeTestPattern1(width: number): TimelineDataV2 {
+    const testPattern_1: TimelineDataV2 = {
+        apiVersion: 2,
+        width: width,
+        tickFormat: "%Y-%m-%d ",
+        startDate: "2019-01-01",
+        endDate: "2019-01-10",
+        callouts: function () {
+            const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const callouts: TimelineCalloutV2[] = [];
+            for (let i = 0; i < 8; ++i) {
+                callouts.push({
+                    description: alpha[i],
+                    date: `2019-01-${(i + 2).toString().padStart(2, "0")}`,
+                });
+            }
+            return callouts;
+        }(),
+
+    };
+    return testPattern_1;
+
+}
+
+// Test no callouts
+export function makeTestPattern2(): TimelineDataV2 {
+    const tln: TimelineDataV2 = {
+        apiVersion: 2,
+        width: 1000,
+        tickFormat: "%Y-%m-%d ",
+        startDate: "2019-01-01",
+        endDate: "2019-01-03",
+    };
+
+    return tln;
+}
 
 
+export function makeTestPattern3(): TimelineDataV2 {
+    const tln: TimelineDataV2 = {
+        apiVersion: 2,
+        width: 1000,
+        tickFormat: "%Y-%m-%d ",
+        startDate: "2019-01-01",
+        endDate: "2019-01-01",
+        callouts: [{ description: "ahh", date: "2019-01-01" }],
+    };
+
+    return tln;
+}
 
