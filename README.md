@@ -2,7 +2,7 @@
 
 Generate an SVG timeline chronologizing when you watched anime. https://linkviii.github.io/js-animelist-timeline/
 
-Test it with Username: linkviii, Width: 2000, From: 2016-01-01, To: 2016-06-01. https://linkviii.github.io/js-animelist-timeline/?uname=linkviii&width=2000&minDate=2016-01-01&maxDate=2016-06-01
+Test it with Username: linkviii, Width: 2000, From: 2016-01-01, To: 2016-06-01. https://linkviii.github.io/js-animelist-timeline/?n=linkviii&w=1400&dtS=2020-10-01&dtF=2020-11-07&lang=english&era=false&kind=ANIME&fs=8
 
 
 ## Build

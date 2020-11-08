@@ -25,40 +25,57 @@
         <p>Generate a timeline of when you watched anime from dates on your AniList.</p>
 
         <form>
-            <label>List type
-                <select id="list-kind">
-                    <option value="ANIME">Anime</option>
-                    <option value="MANGA">Manga</option>
-                </select>
-            </label>
-            <span class="required">
-                <label>List username
-                    <input id="listName" required />
-                </label>
-            </span>
-            <span class="required">
-                <label> Width
-                    <input id="width" type="number" value="1400" step="100" required />
-                </label>
-            </span>
-            <label>From
-                <input id="from" type="date" />
-            </label>
+            <fieldset style="display: inline;">
+                <legend>List</legend>
+                <span class="required">
+                    <label>Username
+                        <input id="listName" required />
+                    </label>
+                </span>
 
-            <label>To
-                <input id="to" type="date" />
-            </label>
+                <label>Media
+                    <select id="list-kind">
+                        <option value="ANIME">Anime</option>
+                        <option value="MANGA">Manga</option>
+                    </select>
+                </label>
 
-            <label>Language
-                <select id="language">
-                    <option value="english">English</option>
-                    <option value="romaji">Romaji</option>
-                    <option value="native">Native</option>
-                </select>
-            </label>
-            <label>Seasons
-                <input id="seasons" type="checkbox" />
-            </label>
+            </fieldset>
+
+            <fieldset style="display: inline;"> 
+                <legend>Dates</legend>
+                <label>From
+                    <input id="from" type="date" />
+                </label>
+
+                <label>To
+                    <input id="to" type="date" />
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <label>Language
+                    <select id="language">
+                        <option value="english">English</option>
+                        <option value="romaji">Romaji</option>
+                        <option value="native">Native</option>
+                    </select>
+                </label>
+                <label>Seasons
+                    <input id="seasons" type="checkbox" />
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <label>Font Size
+                    <input id="font-size" type="number" value="8" size="2" required>
+                </label>
+                <span class="required">
+                    <label> Width
+                        <input id="width" type="number" value="1400" step="100" required />
+                    </label>
+                </span>
+            </fieldset>
 
             <button type="button" id="listFormSubmit" title="Generate timeline">Submit</button>
             <button type="reset" title="Clear form data">Clear</button>

@@ -51,6 +51,19 @@ function nextSeason(season, year) {
 }
 export class NoDatedAnimeError extends Error {
 }
+// Be semi human readable serialization, but use as short of keys as reasonable.
+// Do not want the url to be unreasonably long.
+// Changing these values will break existing links
+export const AnimeListTimelineConfigKeys = {
+    userName: "n",
+    width: "w",
+    minDate: "dtS",
+    maxDate: "dtF",
+    lang: "lang",
+    seasons: "era",
+    fontSize: "fs",
+    listKind: "kind",
+};
 /**
  * Data to be used for a js-timeline
  * ```
@@ -170,6 +183,7 @@ export class AnimeListTimeline {
             }
             this.data.eras = eras;
         }
+        this.data.fontSize = tlConfig.fontSize;
     } //End constructor
     static dateInBounds(date, lb, rb) {
         if (date.isNullDate())

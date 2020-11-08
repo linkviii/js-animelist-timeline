@@ -38,9 +38,11 @@
 //
 
 //import animelistTL.ts
-import { AnimeListTimeline } from "./src/animelistTL.js";
-import { AnimeListTimelineConfig } from "./src/animelistTL.js";
-import { NoDatedAnimeError } from "./src/animelistTL.js";
+import {
+    AnimeListTimeline, //
+    AnimeListTimelineConfig, AnimeListTimelineConfigKeys, //
+    NoDatedAnimeError
+} from "./src/animelistTL.js";
 
 //import MAL.ts
 import * as MAL from "./src/MAL.js";
@@ -121,32 +123,37 @@ export let tln: AnimeListTimeline;
 
 function init(): void {
 
+    const keys = AnimeListTimelineConfigKeys;
+
     // form fields
     const param = getJsonFromUrl();
 
     const listField = $("#listName");
     listField.select();
 
-    if (param["uname"]) {
-        listField.val(param["uname"]);
+    if (param[keys.userName]) {
+        listField.val(keys.userName);
     }
-    if (param["width"]) {
-        $("#width").val(param["width"]);
+    if (param[keys.width]) {
+        $("#width").val(param[keys.width]);
     }
-    if (param["minDate"]) {
-        $("#from").val(param["minDate"]);
+    if (param[keys.minDate]) {
+        $("#from").val(param[keys.minDate]);
     }
-    if (param["maxDate"]) {
-        $("#to").val(param["maxDate"]);
+    if (param[keys.maxDate]) {
+        $("#to").val(param[keys.maxDate]);
     }
-    if (param["lang"]) {
-        $("#language").val(param["lang"]);
+    if (param[keys.lang]) {
+        $("#language").val(param[keys.lang]);
     }
-    if (param["era"]) {
-        ($("#seasons")[0] as HTMLInputElement).checked = "true" == param["era"];
+    if (param[keys.seasons]) {
+        ($("#seasons")[0] as HTMLInputElement).checked = "true" == param[keys.seasons];
     }
-    if (param["kind"]) {
-        $("#list-kind").val(param["kind"]);
+    if (param[keys.listKind]) {
+        $("#list-kind").val(param[keys.listKind]);
+    }
+    if (param[keys.fontSize]) {
+        $("#font-size").val(param[keys.fontSize]);
     }
 
     //buttons
@@ -461,6 +468,8 @@ async function beforeAjax() {
 // Use doc to build timeline
 function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
 
+    const listKind = $("#list-kind").val() as string;
+
     let startDate: string = ($("#from").val() as string).trim();
     let endDate: string = ($("#to").val() as string).trim();
 
@@ -482,12 +491,17 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const showSeasons = ($("#seasons")[0] as HTMLInputElement).checked;
 
+    const fontSize = ($("#font-size")).val() as number;
+
     const tlConfig: AnimeListTimelineConfig = {
+        userName: username,
         width: width,
         minDate: startDate,
         maxDate: endDate,
         lang: language,
-        seasons: showSeasons
+        seasons: showSeasons,
+        fontSize: fontSize,
+        listKind: listKind,
     };
 
     updateUri(tlConfig);
@@ -932,15 +946,19 @@ function updateUri(param: AnimeListTimelineConfig): void {
 
     const kind = $("#list-kind").val() as string;
 
+    const keys = AnimeListTimelineConfigKeys;
+
     let str = window.location.search;
 
-    str = replaceQueryParam("uname", username, str);
-    str = replaceQueryParam("width", param.width.toString(), str);
-    str = replaceQueryParam("minDate", startDate, str);
-    str = replaceQueryParam("maxDate", endDate, str);
-    str = replaceQueryParam("lang", param.lang, str);
-    str = replaceQueryParam("era", param.seasons.toString(), str);
-    str = replaceQueryParam("kind", kind, str);
+
+    str = replaceQueryParam(keys.userName, username, str);
+    str = replaceQueryParam(keys.width, param.width.toString(), str);
+    str = replaceQueryParam(keys.minDate, startDate, str);
+    str = replaceQueryParam(keys.maxDate, endDate, str);
+    str = replaceQueryParam(keys.lang, param.lang, str);
+    str = replaceQueryParam(keys.seasons, param.seasons.toString(), str);
+    str = replaceQueryParam(keys.listKind, kind, str);
+    str = replaceQueryParam(keys.fontSize, param.fontSize.toString(), str);
 
     window.history.replaceState(null, null, str);
 }

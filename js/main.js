@@ -4,15 +4,6 @@
  * v0.1.1
  * 2017-04-06
  */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 /*
  *
  * code outline:
@@ -41,8 +32,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // imports
 //
 //import animelistTL.ts
-import { AnimeListTimeline } from "./src/animelistTL.js";
-import { NoDatedAnimeError } from "./src/animelistTL.js";
+import { AnimeListTimeline, AnimeListTimelineConfigKeys, //
+NoDatedAnimeError } from "./src/animelistTL.js";
 //import MAL.ts
 import * as MAL from "./src/MAL.js";
 //import timeline.ts
@@ -89,30 +80,34 @@ export let tln;
 // Page load
 //
 function init() {
+    const keys = AnimeListTimelineConfigKeys;
     // form fields
     const param = getJsonFromUrl();
     const listField = $("#listName");
     listField.select();
-    if (param["uname"]) {
-        listField.val(param["uname"]);
+    if (param[keys.userName]) {
+        listField.val(keys.userName);
     }
-    if (param["width"]) {
-        $("#width").val(param["width"]);
+    if (param[keys.width]) {
+        $("#width").val(param[keys.width]);
     }
-    if (param["minDate"]) {
-        $("#from").val(param["minDate"]);
+    if (param[keys.minDate]) {
+        $("#from").val(param[keys.minDate]);
     }
-    if (param["maxDate"]) {
-        $("#to").val(param["maxDate"]);
+    if (param[keys.maxDate]) {
+        $("#to").val(param[keys.maxDate]);
     }
-    if (param["lang"]) {
-        $("#language").val(param["lang"]);
+    if (param[keys.lang]) {
+        $("#language").val(param[keys.lang]);
     }
-    if (param["era"]) {
-        $("#seasons")[0].checked = "true" == param["era"];
+    if (param[keys.seasons]) {
+        $("#seasons")[0].checked = "true" == param[keys.seasons];
     }
-    if (param["kind"]) {
-        $("#list-kind").val(param["kind"]);
+    if (param[keys.listKind]) {
+        $("#list-kind").val(param[keys.listKind]);
+    }
+    if (param[keys.fontSize]) {
+        $("#font-size").val(param[keys.fontSize]);
     }
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
@@ -133,15 +128,14 @@ $(document).ready(init);
 //  ██║     ██║╚════██║   ██║   ╚════██║
 //  ███████╗██║███████║   ██║   ███████║
 //  ╚══════╝╚═╝╚══════╝   ╚═╝   ╚══════╝
-export function getAniList(userName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (usingTestData) {
-            console.log("Using test data.");
-            const url = "res/anilist_example.json";
-            let job = yield fetch(url).then(response => response.json());
-            return job;
-        }
-        const query = `
+export async function getAniList(userName) {
+    if (usingTestData) {
+        console.log("Using test data.");
+        const url = "res/anilist_example.json";
+        let job = await fetch(url).then(response => response.json());
+        return job;
+    }
+    const query = `
     query ($userName: String) { 
         MediaListCollection(userName: $userName, type: ANIME) {
             hasNextChunk
@@ -169,43 +163,41 @@ export function getAniList(userName) {
         }
     }
     `; // Could probably munch the whitespace with a regex but no real need to
-        const variables = {
-            userName: userName
-        };
-        // Define the config we'll need for our Api request
-        const url = 'https://graphql.anilist.co', options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        };
-        const response = yield fetch(url, options);
-        const foo = yield response.json();
-        if (foo.errors) {
-            console.error(foo.errors);
-            return new MAL.BadUsernameError();
-        }
-        const data = foo.data.MediaListCollection;
-        if (data.hasNextChunk) {
-            console.warn("TODO: next chunk not implemented yet.");
-        }
-        return data;
-    });
+    const variables = {
+        userName: userName
+    };
+    // Define the config we'll need for our Api request
+    const url = 'https://graphql.anilist.co', options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            query: query,
+            variables: variables
+        })
+    };
+    const response = await fetch(url, options);
+    const foo = await response.json();
+    if (foo.errors) {
+        console.error(foo.errors);
+        return new MAL.BadUsernameError();
+    }
+    const data = foo.data.MediaListCollection;
+    if (data.hasNextChunk) {
+        console.warn("TODO: next chunk not implemented yet.");
+    }
+    return data;
 }
-export function getMangaList(userName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (usingTestData) {
-            console.log("Using test manga list data.");
-            const url = "res/TODO.json";
-            let job = yield fetch(url).then(response => response.json());
-            return job;
-        }
-        const query = `
+export async function getMangaList(userName) {
+    if (usingTestData) {
+        console.log("Using test manga list data.");
+        const url = "res/TODO.json";
+        let job = await fetch(url).then(response => response.json());
+        return job;
+    }
+    const query = `
     query ($userName: String) { 
         MediaListCollection(userName: $userName, type: MANGA) {
             hasNextChunk
@@ -233,33 +225,32 @@ export function getMangaList(userName) {
         }
     }
     `; // Could probably munch the whitespace with a regex but no real need to
-        const variables = {
-            userName: userName
-        };
-        // Define the config we'll need for our Api request
-        const url = 'https://graphql.anilist.co', options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        };
-        const response = yield fetch(url, options);
-        const foo = yield response.json();
-        if (foo.errors) {
-            console.error(foo.errors);
-            return new MAL.BadUsernameError();
-        }
-        const data = foo.data.MediaListCollection;
-        if (data.hasNextChunk) {
-            console.warn("TODO: next chunk not implemented yet.");
-        }
-        return data;
-    });
+    const variables = {
+        userName: userName
+    };
+    // Define the config we'll need for our Api request
+    const url = 'https://graphql.anilist.co', options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            query: query,
+            variables: variables
+        })
+    };
+    const response = await fetch(url, options);
+    const foo = await response.json();
+    if (foo.errors) {
+        console.error(foo.errors);
+        return new MAL.BadUsernameError();
+    }
+    const data = foo.data.MediaListCollection;
+    if (data.hasNextChunk) {
+        console.warn("TODO: next chunk not implemented yet.");
+    }
+    return data;
 }
 /*
 *
@@ -284,77 +275,76 @@ function listFormSubmit() {
 }
 // main II
 // Form api requests and call
-function beforeAjax() {
-    return __awaiter(this, void 0, void 0, function* () {
-        username = $("#listName").val().trim();
-        const listKind = $("#list-kind").val();
-        if (username === "") {
-            reportNoUser();
-            return;
-        }
-        switch (listKind) {
-            case "ANIME":
-                { // check cache for name
-                    // to skip ajax
-                    const data = userAnimeCache.get(username);
-                    if (data) {
-                        console.info([username, "'s data loaded from cache."].join(""));
-                        if (data instanceof MAL.BadUsernameError) {
-                            reportBadUser();
-                        }
-                        else {
-                            prepareTimeline(data);
-                        }
-                        return;
-                    }
-                    const aniList = yield getAniList(username);
-                    debugData["aniList"] = aniList;
-                    if (aniList instanceof MAL.BadUsernameError) {
+async function beforeAjax() {
+    username = $("#listName").val().trim();
+    const listKind = $("#list-kind").val();
+    if (username === "") {
+        reportNoUser();
+        return;
+    }
+    switch (listKind) {
+        case "ANIME":
+            { // check cache for name
+                // to skip ajax
+                const data = userAnimeCache.get(username);
+                if (data) {
+                    console.info([username, "'s data loaded from cache."].join(""));
+                    if (data instanceof MAL.BadUsernameError) {
                         reportBadUser();
-                        userAnimeCache.set(username, aniList);
-                        return;
                     }
-                    const animeList = MAL.animeListFromAniList(aniList, username);
-                    debugData["list"] = animeList;
-                    userAnimeCache.set(username, animeList);
-                    // drawHoursWatched(animeList);
-                    prepareTimeline(animeList);
+                    else {
+                        prepareTimeline(data);
+                    }
+                    return;
                 }
-                break;
-            case "MANGA":
-                {
-                    const data = userMangaCache.get(username);
-                    if (data) {
-                        console.info([username, "'s data loaded from cache."].join(""));
-                        if (data instanceof MAL.BadUsernameError) {
-                            reportBadUser();
-                        }
-                        else {
-                            prepareTimeline(data);
-                        }
-                        return;
-                    }
-                    const aniList = yield getMangaList(username);
-                    debugData["aniList"] = aniList;
-                    if (aniList instanceof MAL.BadUsernameError) {
+                const aniList = await getAniList(username);
+                debugData["aniList"] = aniList;
+                if (aniList instanceof MAL.BadUsernameError) {
+                    reportBadUser();
+                    userAnimeCache.set(username, aniList);
+                    return;
+                }
+                const animeList = MAL.animeListFromAniList(aniList, username);
+                debugData["list"] = animeList;
+                userAnimeCache.set(username, animeList);
+                // drawHoursWatched(animeList);
+                prepareTimeline(animeList);
+            }
+            break;
+        case "MANGA":
+            {
+                const data = userMangaCache.get(username);
+                if (data) {
+                    console.info([username, "'s data loaded from cache."].join(""));
+                    if (data instanceof MAL.BadUsernameError) {
                         reportBadUser();
-                        userMangaCache.set(username, aniList);
-                        return;
                     }
-                    const mangaList = MAL.mangaListFromAniList(aniList, username);
-                    debugData["list"] = mangaList;
-                    userMangaCache.set(username, mangaList);
-                    prepareTimeline(mangaList);
+                    else {
+                        prepareTimeline(data);
+                    }
+                    return;
                 }
-                break;
-            default:
-                console.error("Unexpected list-kind:", listKind);
-        }
-    });
+                const aniList = await getMangaList(username);
+                debugData["aniList"] = aniList;
+                if (aniList instanceof MAL.BadUsernameError) {
+                    reportBadUser();
+                    userMangaCache.set(username, aniList);
+                    return;
+                }
+                const mangaList = MAL.mangaListFromAniList(aniList, username);
+                debugData["list"] = mangaList;
+                userMangaCache.set(username, mangaList);
+                prepareTimeline(mangaList);
+            }
+            break;
+        default:
+            console.error("Unexpected list-kind:", listKind);
+    }
 }
 // main V
 // Use doc to build timeline
 function prepareTimeline(mal) {
+    const listKind = $("#list-kind").val();
     let startDate = $("#from").val().trim();
     let endDate = $("#to").val().trim();
     startDate = fixDate(startDate, -1);
@@ -369,12 +359,16 @@ function prepareTimeline(mal) {
         width = 1000;
     }
     const showSeasons = $("#seasons")[0].checked;
+    const fontSize = ($("#font-size")).val();
     const tlConfig = {
+        userName: username,
         width: width,
         minDate: startDate,
         maxDate: endDate,
         lang: language,
-        seasons: showSeasons
+        seasons: showSeasons,
+        fontSize: fontSize,
+        listKind: listKind,
     };
     updateUri(tlConfig);
     try {
@@ -740,14 +734,16 @@ function updateUri(param) {
         endDate = "";
     }
     const kind = $("#list-kind").val();
+    const keys = AnimeListTimelineConfigKeys;
     let str = window.location.search;
-    str = replaceQueryParam("uname", username, str);
-    str = replaceQueryParam("width", param.width.toString(), str);
-    str = replaceQueryParam("minDate", startDate, str);
-    str = replaceQueryParam("maxDate", endDate, str);
-    str = replaceQueryParam("lang", param.lang, str);
-    str = replaceQueryParam("era", param.seasons.toString(), str);
-    str = replaceQueryParam("kind", kind, str);
+    str = replaceQueryParam(keys.userName, username, str);
+    str = replaceQueryParam(keys.width, param.width.toString(), str);
+    str = replaceQueryParam(keys.minDate, startDate, str);
+    str = replaceQueryParam(keys.maxDate, endDate, str);
+    str = replaceQueryParam(keys.lang, param.lang, str);
+    str = replaceQueryParam(keys.seasons, param.seasons.toString(), str);
+    str = replaceQueryParam(keys.listKind, kind, str);
+    str = replaceQueryParam(keys.fontSize, param.fontSize.toString(), str);
     window.history.replaceState(null, null, str);
 }
 //
