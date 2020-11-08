@@ -131,6 +131,7 @@ $(document).ready(init);
 export async function getAniList(userName) {
     if (usingTestData) {
         console.log("Using test data.");
+        giveFeedback("Using test data");
         const url = "res/anilist_example.json";
         let job = await fetch(url).then(response => response.json());
         return job;
@@ -411,6 +412,7 @@ function displayTimeline(tlConfig) {
     $("#tls").prepend(tlArea);
     // Label
     const label = document.createElement("h3");
+    // I don't think this is an xss risk? 
     label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
     //make buttons
     const removeButton = document.createElement("button");
@@ -511,8 +513,7 @@ function reportBadUser() {
 function reportNoDated() {
     const str = ["None of the anime in the list contained watched dates. ",
         "Try removing date filters. ",
-        "If the list does contain watched dates and you see this error, please report an issue at ",
-        issueUrl]
+    ]
         .join("");
     giveFeedback(str, 14);
 }

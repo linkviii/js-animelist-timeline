@@ -1,3 +1,8 @@
+body {
+    /* Slightly off white. I guess. */
+    background-color: azure;
+}
+
 .required:before {
     content: " *";
     color: red;
@@ -12,7 +17,7 @@ input:valid {
 }
 
 div#top {
-    background-color: lightgray;
+    background-color: #86eeff;
 }
 
 span#feedback {

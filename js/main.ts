@@ -188,6 +188,7 @@ export async function getAniList(userName: string): Promise<any | MAL.BadUsernam
 
     if (usingTestData) {
         console.log("Using test data.");
+        giveFeedback("Using test data");
 
         const url = "res/anilist_example.json";
 
@@ -371,6 +372,7 @@ export async function getMangaList(userName: string): Promise<any | MAL.BadUsern
 // main I
 // Entry point from html form
 function listFormSubmit(): void {
+
     beforeAjax().then();
     return;
 }
@@ -551,6 +553,7 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig): void {
 
     // Label
     const label = document.createElement("h3");
+    // I don't think this is an xss risk? 
     label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
 
     //make buttons
@@ -677,8 +680,7 @@ function reportBadUser(): void {
 function reportNoDated() {
     const str = ["None of the anime in the list contained watched dates. ",
         "Try removing date filters. ",
-        "If the list does contain watched dates and you see this error, please report an issue at ",
-        issueUrl]
+        ]
         .join("");
     giveFeedback(str, 14);
 }

@@ -24,14 +24,19 @@
 
         <p>Generate a timeline of when you watched anime from dates on your AniList.</p>
 
-        <form>
+        <!-- 
+            Submit to an invisible iframe to prevent page refresh on submit.
+            Submitting lets username autocomplete.
+            https://stackoverflow.com/a/29885896/1993919
+         -->
+        <iframe name="💾" style="display:none" src="about:blank"></iframe>
+        <form id="form" target="💾" autocomplete="on">
             <fieldset style="display: inline;">
                 <legend>List</legend>
-                <span class="required">
-                    <label>Username
-                        <input id="listName" required />
-                    </label>
-                </span>
+
+                <label>Username
+                    <input id="listName" spellcheck="false" required />
+                </label>
 
                 <label>Media
                     <select id="list-kind">
@@ -42,8 +47,9 @@
 
             </fieldset>
 
-            <fieldset style="display: inline;"> 
-                <legend>Dates</legend>
+            <fieldset style="display: inline;">
+                <legend>Dates (optional)</legend>
+
                 <label>From
                     <input id="from" type="date" />
                 </label>
@@ -68,17 +74,15 @@
 
             <fieldset>
                 <label>Font Size
-                    <input id="font-size" type="number" value="8" size="2" required>
+                    <input id="font-size" type="number" value="8" size="2" required />
                 </label>
-                <span class="required">
-                    <label> Width
-                        <input id="width" type="number" value="1400" step="100" size="4"  required />
-                    </label>
-                </span>
+                <label> Width
+                    <input id="width" type="number" value="1400" step="100" size="4" required />
+                </label>
             </fieldset>
 
-            <button type="button" id="listFormSubmit" title="Generate timeline">Submit</button>
-            <button type="reset" title="Clear form data">Clear</button>
+            <button type="submit" id="listFormSubmit" title="Submit">New Timeline</button>
+            <button type="reset" title="Clear form data">Clear Form</button>
 
         </form>
 
