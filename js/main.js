@@ -40,6 +40,7 @@ import * as MAL from "./src/MAL.js";
 import { Timeline } from "./lib/timeline.js";
 //import jquery
 import "./jquery.js";
+import "./lib/jquery-ui/jquery-ui.min.js";
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
 // ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
@@ -80,16 +81,22 @@ export let tln;
 // Page load
 //
 function init() {
+    if (usingTestData) {
+        const warn = document.createElement("h1");
+        warn.textContent = "Using test data !!!";
+        document.getElementById("top").prepend(warn);
+    }
     const keys = AnimeListTimelineConfigKeys;
     // form fields
     const param = getJsonFromUrl();
     const listField = $("#listName");
     listField.select();
+    const width = $("#width");
     if (param[keys.userName]) {
         listField.val(param[keys.userName]);
     }
     if (param[keys.width]) {
-        $("#width").val(param[keys.width]);
+        width.val(param[keys.width]);
     }
     if (param[keys.minDate]) {
         $("#from").val(param[keys.minDate]);
@@ -109,6 +116,27 @@ function init() {
     if (param[keys.fontSize]) {
         $("#font-size").val(param[keys.fontSize]);
     }
+    // Use jqueary-ui to make number input with steps that aren't validated
+    width.spinner({
+        step: 100,
+    });
+    //
+    const widthSlider = $("#width-slider");
+    widthSlider.on("change", function (e) {
+        let val = parseInt(this.value) / 100 * $(this).width();
+        val = Math.ceil(val);
+        // $("#width-disp").text(val);
+        width.val(val);
+    });
+    width.on("spin", function (event, ui) {
+        const percentWidth = Math.floor(parseInt(ui.value) / widthSlider.width() * 100);
+        // const percentWidth = Math.floor(parseInt(this.value) / widthSlider.width() * 100);
+        widthSlider.val(percentWidth.toString());
+    });
+    const percentWidth = Math.floor(parseInt(width.val()) / widthSlider.width() * 100);
+    console.log(percentWidth, "%");
+    widthSlider.val(percentWidth.toString());
+    //
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
     const removeAll = document.getElementById("clearAllTimelines");
@@ -270,7 +298,10 @@ export async function getMangaList(userName) {
 //
 // main I
 // Entry point from html form
-function listFormSubmit() {
+function listFormSubmit(e) {
+    // validate?
+    const width = $("#width");
+    // 
     beforeAjax().then();
     return;
 }

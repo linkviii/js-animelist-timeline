@@ -6,6 +6,9 @@
     <title>Animelist Timeline</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <link rel="stylesheet" type="text/css" href="./res/root.css">
+    <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.theme.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.structure.min.css"> -->
 </head>
 
 
@@ -29,8 +32,11 @@
             Submitting lets username autocomplete.
             https://stackoverflow.com/a/29885896/1993919
          -->
+
         <iframe name="💾" style="display:none" src="about:blank"></iframe>
-        <form id="form" target="💾" autocomplete="on">
+
+        <form id="form" target="💾" action="about:blank">
+
             <fieldset style="display: inline;">
                 <legend>List</legend>
 
@@ -77,8 +83,12 @@
                     <input id="font-size" type="number" value="8" size="2" required />
                 </label>
                 <label> Width
-                    <input id="width" type="number" value="1400" step="100" size="4" required />
+                    <!-- <input id="width" type="number" value="1400" min="200" step="1"  size="4" required /> -->
+                    <!-- Use jqueary-ui spinner for non validated step -->
+                    <input id="width" value="1400" min="200" max="9999" size="4" required />
                 </label>
+                <input id="width-slider" type="range" style="display: block; width: 100%;">
+                <!-- <p id="width-disp">val</p> -->
             </fieldset>
 
             <button type="submit" id="listFormSubmit" title="Submit">New Timeline</button>
@@ -116,7 +126,7 @@
     <script type="module">
         import * as main from "./js/main.js";
         window.main = main;
-        console.log("main module loaded");
+        console.log("main module loaded", new Date().toLocaleTimeString());
     </script>
 
 

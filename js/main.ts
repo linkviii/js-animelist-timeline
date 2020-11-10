@@ -53,6 +53,7 @@ import { Timeline } from "./lib/timeline.js";
 
 //import jquery
 import "./jquery.js";
+import "./lib/jquery-ui/jquery-ui.min.js";
 
 
 //import FileSaver.js
@@ -123,6 +124,12 @@ export let tln: AnimeListTimeline;
 
 function init(): void {
 
+    if (usingTestData) {
+        const warn = document.createElement("h1");
+        warn.textContent = "Using test data !!!";
+        document.getElementById("top").prepend(warn);
+    }
+
     const keys = AnimeListTimelineConfigKeys;
 
     // form fields
@@ -130,12 +137,13 @@ function init(): void {
 
     const listField = $("#listName");
     listField.select();
+    const width = $("#width") as JQuery<HTMLInputElement>;
 
     if (param[keys.userName]) {
         listField.val(param[keys.userName]);
     }
     if (param[keys.width]) {
-        $("#width").val(param[keys.width]);
+        width.val(param[keys.width]);
     }
     if (param[keys.minDate]) {
         $("#from").val(param[keys.minDate]);
@@ -155,6 +163,38 @@ function init(): void {
     if (param[keys.fontSize]) {
         $("#font-size").val(param[keys.fontSize]);
     }
+
+    // Use jqueary-ui to make number input with steps that aren't validated
+    (<any>width).spinner({
+        step: 100,
+    });
+
+
+
+    //
+    const widthSlider = $("#width-slider") as JQuery<HTMLInputElement>;
+    widthSlider.on("change", function (e) {
+        let val = parseInt(this.value) / 100 * $(this).width();
+        val = Math.ceil(val);
+        // $("#width-disp").text(val);
+
+        width.val(val);
+    });
+
+    width.on("spin", function (event, ui) {
+        const percentWidth = Math.floor(parseInt(ui.value) / widthSlider.width() * 100);
+        // const percentWidth = Math.floor(parseInt(this.value) / widthSlider.width() * 100);
+        widthSlider.val(percentWidth.toString());
+
+    });
+
+    const percentWidth = Math.floor(parseInt(<string>width.val()) / widthSlider.width() * 100);
+    console.log(percentWidth, "%")
+
+    widthSlider.val(percentWidth.toString());
+
+
+    //
 
     //buttons
     $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
@@ -371,8 +411,12 @@ export async function getMangaList(userName: string): Promise<any | MAL.BadUsern
 
 // main I
 // Entry point from html form
-function listFormSubmit(): void {
+function listFormSubmit(e: Event): void {
+    // validate?
+    const width = $("#width") as JQuery<HTMLInputElement>;
 
+
+    // 
     beforeAjax().then();
     return;
 }
@@ -680,7 +724,7 @@ function reportBadUser(): void {
 function reportNoDated() {
     const str = ["None of the anime in the list contained watched dates. ",
         "Try removing date filters. ",
-        ]
+    ]
         .join("");
     giveFeedback(str, 14);
 }
