@@ -92,6 +92,9 @@ function init() {
     const listField = $("#listName");
     listField.select();
     const width = $("#width");
+    const from = $("#from");
+    const to = $("#to");
+    const focus = $("#focus-year");
     if (param[keys.userName]) {
         listField.val(param[keys.userName]);
     }
@@ -99,10 +102,10 @@ function init() {
         width.val(param[keys.width]);
     }
     if (param[keys.minDate]) {
-        $("#from").val(param[keys.minDate]);
+        from.val(param[keys.minDate]);
     }
     if (param[keys.maxDate]) {
-        $("#to").val(param[keys.maxDate]);
+        to.val(param[keys.maxDate]);
     }
     if (param[keys.lang]) {
         $("#language").val(param[keys.lang]);
@@ -116,6 +119,32 @@ function init() {
     if (param[keys.fontSize]) {
         $("#font-size").val(param[keys.fontSize]);
     }
+    // Default focus to be cleared. No state to be preserved.
+    focus.val("");
+    //
+    // Center to and from around this year
+    focus.on("change", function (e) {
+        if (this.value.length != 4)
+            return;
+        const y = parseInt(this.value);
+        const y0 = (y - 1).toString();
+        const y1 = (y + 1).toString();
+        from.val(`${y0}-12-01`);
+        to.val(`${y1}-02-01`);
+    });
+    // Snap to the current year when first focused
+    focus.on("click", function (e) {
+        if (this.value.length != 4) {
+            this.value = new Date().getFullYear().toString();
+        }
+    });
+    // Invalidate focus if dates are otherwise modified
+    to.on("change", function (e) {
+        focus.val("");
+    });
+    from.on("change", function (e) {
+        focus.val("");
+    });
     // Use jqueary-ui to make number input with steps that aren't validated
     width.spinner({
         step: 100,
