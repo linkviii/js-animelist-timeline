@@ -51,6 +51,35 @@
                     </select>
                 </label>
 
+                <!-- Only show the list for the current Media kind -->
+                <fieldset id="anime-format">
+                    <legend>Format</legend>
+                    <!-- Copying descriptions from the api docs. Could tool tip them or something. -->
+                    <!-- Anime broadcast on television -->
+                    <label>TV <input type="checkbox" id="format-tv" checked></label>
+                    <!-- Anime which are under 15 minutes in length and broadcast on television -->
+                    <label>Short <input type="checkbox" id="format-short" checked></label>
+                    <!-- Anime movies with a theatrical release -->
+                    <label>Movie <input type="checkbox" id="format-movie" checked></label>
+                    <!-- Special episodes that have been included in DVD/Blu-ray releases, picture dramas, pilots, etc -->
+                    <label>Special <input type="checkbox" id="format-special" checked></label>
+                    <!-- (Original Video Animation) Anime that have been released directly on DVD/Blu-ray without originally going through a theatrical release or television broadcast -->
+                    <label>OVA <input type="checkbox" id="format-ova" checked></label>
+                    <!-- (Original Net Animation) Anime that have been originally released online or are only available through streaming services. -->
+                    <label>ONA <input type="checkbox" id="format-ona" checked></label>
+                    <!-- Short anime released as a music video -->
+                    <label>Music <input type="checkbox" id="format-music" checked></label>
+                </fieldset>
+                <fieldset id="manga-format">
+                    <legend>Format</legend>
+                    <!-- Professionally published manga with more than one chapter -->
+                    <label>Manga <input type="checkbox" id="format-manga" checked></label>
+                    <!-- Written books released as a series of light novels -->
+                    <label>Novel <input type="checkbox" id="format-novel" checked></label>
+                    <!-- Manga with just one chapter -->
+                    <label>One Shot <input type="checkbox" id="format-one-shot" checked></label>
+                </fieldset>
+
             </fieldset>
 
             <fieldset style="display: inline;">

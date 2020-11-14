@@ -64,6 +64,53 @@ export interface AnimeListTimelineData extends TimelineDataV2 {
     callouts: TimelineCalloutV2[];
 }
 
+export interface AnimeFormatSelection {
+    tv: boolean;
+    short: boolean;
+    movie: boolean;
+    special: boolean;
+    ova: boolean;
+    ona: boolean;
+    music: boolean;
+}
+
+export interface MangaFormatSelection {
+    manga: boolean;
+    novel: boolean;
+    oneShot: boolean;
+}
+
+function filterFormat(format: string, formatSelection?: AnimeFormatSelection | MangaFormatSelection) {
+    if (formatSelection) {
+        // Idk how to make types happy.
+        const selection = formatSelection as any;
+        switch (format) {
+            case "TV":
+                return selection.tv;
+            case "TV_SHORT":
+                return selection.short;
+            case "MOVIE":
+                return selection.movie;
+            case "SPECIAL":
+                return selection.special;
+            case "OVA":
+                return selection.ova;
+            case "ONA":
+                return selection.ona;
+            case "MUSIC":
+                return selection.music;
+            case "MANGA":
+                return selection.manga;
+            case "NOVEL":
+                return selection.novel;
+            case "ONE_SHOT":
+                return selection.oneShot;
+        }
+    } else {
+        return false;
+    }
+}
+
 export interface AnimeListTimelineConfig {
     userName: string;
     width: number;
@@ -75,6 +122,8 @@ export interface AnimeListTimelineConfig {
     seasons: boolean;
     fontSize: number;
     listKind: string;
+    animeFormat?: AnimeFormatSelection;
+    mangaFormat?: MangaFormatSelection;
 }
 
 // Be semi human readable serialization, but use as short of keys as reasonable.
@@ -150,10 +199,15 @@ export class AnimeListTimeline {
 
         for (let anime of mal.anime) {
 
+            // Put this first for the sake of debugging.
             const title = anime.seriesTitle.preferred(tlConfig.lang);
 
             // Filter dates and find the extreme of completed anime
             if (anime.myStatus != MAL.Status.Completed && anime.myStatus != MAL.Status.Watching) {
+                continue;
+            }
+
+            if (!filterFormat(anime.seriesType, tlConfig.animeFormat) && !filterFormat(anime.seriesType, tlConfig.mangaFormat)) {
                 continue;
             }
 

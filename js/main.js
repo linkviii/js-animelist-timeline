@@ -54,8 +54,8 @@ export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
-export const usingTestData = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData = true;
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -95,6 +95,9 @@ function init() {
     const from = $("#from");
     const to = $("#to");
     const focus = $("#focus-year");
+    const listKind = $("#list-kind");
+    const animeFormat = $("#anime-format");
+    const mangaFormat = $("#manga-format");
     if (param[keys.userName]) {
         listField.val(param[keys.userName]);
     }
@@ -114,11 +117,28 @@ function init() {
         $("#seasons")[0].checked = "true" == param[keys.seasons];
     }
     if (param[keys.listKind]) {
-        $("#list-kind").val(param[keys.listKind]);
+        listKind.val(param[keys.listKind]);
     }
     if (param[keys.fontSize]) {
         $("#font-size").val(param[keys.fontSize]);
     }
+    //
+    const showMediaKinds = function (kind) {
+        switch (kind) {
+            case "ANIME":
+                animeFormat.show();
+                mangaFormat.hide();
+                break;
+            case "MANGA":
+                animeFormat.hide();
+                mangaFormat.show();
+                break;
+            default:
+                console.error("Unexpected list-kind:", kind);
+        }
+    };
+    showMediaKinds(listKind.val());
+    listKind.on("change", (e) => showMediaKinds(e.target.value));
     // Default focus to be cleared. No state to be preserved.
     focus.val("");
     //
@@ -163,7 +183,7 @@ function init() {
         widthSlider.val(percentWidth.toString());
     });
     const percentWidth = Math.floor(parseInt(width.val()) / widthSlider.width() * 100);
-    console.log(percentWidth, "%");
+    // console.log(percentWidth, "%")
     widthSlider.val(percentWidth.toString());
     //
     //buttons
@@ -212,6 +232,7 @@ export async function getAniList(userName) {
                     media {
                         duration
                         episodes
+                        format
                         title {
                             romaji english native userPreferred
                         }
@@ -274,6 +295,7 @@ export async function getMangaList(userName) {
                     media {
                         duration
                         episodes
+                        format
                         title {
                             romaji english native userPreferred
                         }
@@ -431,6 +453,32 @@ function prepareTimeline(mal) {
         fontSize: fontSize,
         listKind: listKind,
     };
+    const getVal = function (id) {
+        const el = $(`#format-${id}`)[0];
+        return el.checked;
+    };
+    switch (listKind) {
+        case "ANIME":
+            const aFormats = {
+                tv: getVal("tv"),
+                short: getVal("short"),
+                movie: getVal("movie"),
+                special: getVal("special"),
+                ova: getVal("ova"),
+                ona: getVal("ona"),
+                music: getVal("music"),
+            };
+            tlConfig.animeFormat = aFormats;
+            break;
+        case "MANGA":
+            const mFormats = {
+                manga: getVal("manga"),
+                novel: getVal("novel"),
+                oneShot: getVal("one-shot")
+            };
+            tlConfig.mangaFormat = mFormats;
+            break;
+    }
     updateUri(tlConfig);
     try {
         //global

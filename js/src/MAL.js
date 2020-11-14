@@ -58,6 +58,7 @@ function mangaFromAniList(obj, status) {
     const titleObj = new Title(obj.media.title);
     return {
         seriesTitle: titleObj,
+        seriesType: obj.media.format,
         myStartDate: dateFromAniList(obj.startedAt),
         myFinishDate: dateFromAniList(obj.completedAt),
         myStatus: status,
@@ -147,6 +148,7 @@ function animeFromAniList(anime, status) {
     const titleObj = new Title(anime.media.title);
     const tmp = {
         seriesTitle: titleObj,
+        seriesType: anime.media.format,
         myStartDate: dateFromAniList(anime.startedAt),
         myFinishDate: dateFromAniList(anime.completedAt),
         myScore: anime.score,

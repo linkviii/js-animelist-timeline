@@ -44,6 +44,9 @@ import {
     NoDatedAnimeError
 } from "./src/animelistTL.js";
 
+import * as ATL from "./src/animelistTL.js";
+
+
 //import MAL.ts
 import * as MAL from "./src/MAL.js";
 
@@ -83,8 +86,8 @@ export const debug: boolean = false;
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
 
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -141,6 +144,10 @@ function init(): void {
     const from = $("#from") as JQuery<HTMLInputElement>;
     const to = $("#to") as JQuery<HTMLInputElement>;
     const focus = $("#focus-year") as JQuery<HTMLInputElement>;
+    const listKind = $("#list-kind") as JQuery<HTMLInputElement>;
+
+    const animeFormat = $("#anime-format");
+    const mangaFormat = $("#manga-format");
 
     if (param[keys.userName]) {
         listField.val(param[keys.userName]);
@@ -161,11 +168,34 @@ function init(): void {
         ($("#seasons")[0] as HTMLInputElement).checked = "true" == param[keys.seasons];
     }
     if (param[keys.listKind]) {
-        $("#list-kind").val(param[keys.listKind]);
+        listKind.val(param[keys.listKind]);
     }
     if (param[keys.fontSize]) {
         $("#font-size").val(param[keys.fontSize]);
     }
+
+    //
+    const showMediaKinds = function (kind: string) {
+
+        switch (kind) {
+            case "ANIME":
+                animeFormat.show();
+                mangaFormat.hide();
+                break;
+            case "MANGA":
+                animeFormat.hide();
+                mangaFormat.show();
+                break;
+            default:
+                console.error("Unexpected list-kind:", kind);
+
+        }
+
+    };
+
+    showMediaKinds(<string>listKind.val());
+
+    listKind.on("change", (e: Event) => showMediaKinds((<any>e.target).value));
 
     // Default focus to be cleared. No state to be preserved.
     focus.val("");
@@ -227,7 +257,7 @@ function init(): void {
     });
 
     const percentWidth = Math.floor(parseInt(<string>width.val()) / widthSlider.width() * 100);
-    console.log(percentWidth, "%")
+    // console.log(percentWidth, "%")
 
     widthSlider.val(percentWidth.toString());
 
@@ -265,7 +295,7 @@ $(document).ready(init);
 export async function getAniList(userName: string): Promise<any | MAL.BadUsernameError> {
 
     if (usingTestData) {
-        console.log("Using test data.");
+        console.warn("Using test data.");
         giveFeedback("Using test data");
 
         const url = "res/anilist_example.json";
@@ -294,6 +324,7 @@ export async function getAniList(userName: string): Promise<any | MAL.BadUsernam
                     media {
                         duration
                         episodes
+                        format
                         title {
                             romaji english native userPreferred
                         }
@@ -350,7 +381,7 @@ export async function getAniList(userName: string): Promise<any | MAL.BadUsernam
 export async function getMangaList(userName: string): Promise<any | MAL.BadUsernameError> {
 
     if (usingTestData) {
-        console.log("Using test manga list data.");
+        console.warn("Using test manga list data.");
 
         const url = "res/TODO.json";
 
@@ -378,6 +409,7 @@ export async function getMangaList(userName: string): Promise<any | MAL.BadUsern
                     media {
                         duration
                         episodes
+                        format
                         title {
                             romaji english native userPreferred
                         }
@@ -577,6 +609,10 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const fontSize = ($("#font-size")).val() as number;
 
+
+
+
+
     const tlConfig: AnimeListTimelineConfig = {
         userName: username,
         width: width,
@@ -587,6 +623,35 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
         fontSize: fontSize,
         listKind: listKind,
     };
+
+    const getVal = function (id: string): boolean {
+        const el = $(`#format-${id}`)[0] as HTMLInputElement;
+        return el.checked;
+    }
+
+    switch (listKind) {
+        case "ANIME":
+            const aFormats: ATL.AnimeFormatSelection = {
+                tv: getVal("tv"),
+                short: getVal("short"),
+                movie: getVal("movie"),
+                special: getVal("special"),
+                ova: getVal("ova"),
+                ona: getVal("ona"),
+                music: getVal("music"),
+            };
+            tlConfig.animeFormat = aFormats;
+            break;
+        case "MANGA":
+            const mFormats: ATL.MangaFormatSelection = {
+                manga: getVal("manga"),
+                novel: getVal("novel"),
+                oneShot: getVal("one-shot")
+            };
+            tlConfig.mangaFormat = mFormats;
+            break;
+    }
+
 
     updateUri(tlConfig);
 

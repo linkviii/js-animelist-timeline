@@ -25,6 +25,7 @@
                     "media": {
                         "duration": 33,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Bleach: The Sealed Sword Frenzy",
                             "english": null,
@@ -50,6 +51,7 @@
                     "media": {
                         "duration": 29,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Bleach: Memories in the Rain",
                             "english": "Bleach: Memories in the Rain",
@@ -75,6 +77,7 @@
                     "media": {
                         "duration": 12,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Bleach Colorful!: Gotei Juusan Yatai Daisakusen!",
                             "english": null,
@@ -100,6 +103,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Angel Beats!",
                             "english": "Angel Beats!",
@@ -125,6 +129,7 @@
                     "media": {
                         "duration": 22,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "Ano Hi Mita Hana no Namae wo Bokutachi wa Mada Shiranai.",
                             "english": "Anohana: The Flower We Saw That Day",
@@ -150,6 +155,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Another",
                             "english": "Another",
@@ -175,6 +181,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Another: The Other - Inga",
                             "english": "Another: The Other",
@@ -200,6 +207,7 @@
                     "media": {
                         "duration": 13,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Asobi Asobase OVA",
                             "english": "Asobi Asobase -workshop of fun- OVA",
@@ -225,6 +233,7 @@
                     "media": {
                         "duration": 6,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Asobi Asobase Specials",
                             "english": "Asobi Asobase Specials",
@@ -250,6 +259,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 13,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Bananya",
                             "english": "Bananya",
@@ -275,6 +285,7 @@
                     "media": {
                         "duration": 12,
                         "episodes": 6,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Batman: Gotham Knight",
                             "english": null,
@@ -300,6 +311,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Beck",
                             "english": "Beck: Mongolian Chop Squad",
@@ -325,6 +337,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 366,
+                        "format": "TV",
                         "title": {
                             "romaji": "Bleach",
                             "english": "Bleach",
@@ -350,6 +363,7 @@
                     "media": {
                         "duration": 87,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Bleach: Memories of Nobody",
                             "english": "Bleach the Movie: Memories of Nobody",
@@ -375,6 +389,7 @@
                     "media": {
                         "duration": 92,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Bleach: The DiamondDust Rebellion - Mou Hitotsu no Hyourinmaru",
                             "english": "Bleach the Movie 2: The DiamondDust Rebellion",
@@ -400,6 +415,7 @@
                     "media": {
                         "duration": 94,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Bleach: Fade to Black - Kimi no Na wo Yobu",
                             "english": "Bleach the Movie 3: Fade to Black",
@@ -425,6 +441,7 @@
                     "media": {
                         "duration": 93,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Bleach: Jigoku-hen",
                             "english": "Bleach the Movie 4: Hell Verse",
@@ -450,6 +467,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Boku Dake ga Inai Machi",
                             "english": "ERASED",
@@ -475,6 +493,7 @@
                     "media": {
                         "duration": 22,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "C: The Money of Soul and Possibility Control",
                             "english": "[C] - CONTROL - The Money and Soul of Possibility",
@@ -500,6 +519,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Charlotte",
                             "english": null,
@@ -525,6 +545,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Chaos;Child",
                             "english": "Chaos;Child",
@@ -550,6 +571,7 @@
                     "media": {
                         "duration": 50,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Chaos;Child: Silent Sky",
                             "english": null,
@@ -575,6 +597,7 @@
                     "media": {
                         "duration": 27,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "ChäoS;HEAd",
                             "english": "ChäoS;HEAd",
@@ -600,6 +623,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 23,
+                        "format": "TV",
                         "title": {
                             "romaji": "Clannad",
                             "english": "Clannad",
@@ -625,6 +649,7 @@
                     "media": {
                         "duration": 94,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Clannad Movie",
                             "english": "Clannad: The Motion Picture",
@@ -650,6 +675,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Clannad: After Story",
                             "english": "Clannad: After Story",
@@ -675,6 +701,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Code Geass: Hangyaku no Lelouch",
                             "english": "Code Geass: Lelouch of the Rebellion",
@@ -700,6 +727,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Cowboy Bebop",
                             "english": "Cowboy Bebop",
@@ -725,6 +753,7 @@
                     "media": {
                         "duration": 115,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Cowboy Bebop: Tengoku no Tobira",
                             "english": "Cowboy Bebop: The Movie - Knockin' on Heaven's Door",
@@ -750,6 +779,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "D-Frag!",
                             "english": null,
@@ -775,6 +805,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 37,
+                        "format": "TV",
                         "title": {
                             "romaji": "Death Note",
                             "english": "Death Note",
@@ -800,6 +831,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Druaga no Tou: The Aegis of Uruk",
                             "english": "Tower of Druaga: The Aegis of Uruk",
@@ -825,6 +857,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Druaga no Tou: The Sword of Uruk",
                             "english": "Tower of Druaga: The Sword of Uruk",
@@ -850,6 +883,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Durarara!!",
                             "english": "Durarara!!",
@@ -875,6 +909,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Durarara!!x2 Ketsu",
                             "english": "Durarara!! X2 The Third Arc",
@@ -900,6 +935,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Durarara!!x2 Shou",
                             "english": "Durarara!! X2",
@@ -925,6 +961,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Durarara!!x2 Shou: Watashi no Kokoro wa Nabe Moyou",
                             "english": "Durarara!! X2: Watashi no Kokoro wa Nabe Moyou",
@@ -950,6 +987,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Durarara!!x2 Ten",
                             "english": "Durarara!! X2 The Second Arc",
@@ -975,6 +1013,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Durarara!!x2 Ten: Onoroke Chakapoko",
                             "english": "Durarara!! X2 The Second Arc: Onoroke Chakapoko",
@@ -1000,6 +1039,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fate/stay night",
                             "english": "Fate/stay night",
@@ -1025,6 +1065,7 @@
                     "media": {
                         "duration": 100,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Fate/stay night: Unlimited Blade Works (Movie)",
                             "english": "Fate/stay night: Unlimited Blade Works (Movie)",
@@ -1050,6 +1091,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fate/stay night: Unlimited Blade Works",
                             "english": "Fate/stay night: Unlimited Blade Works",
@@ -1075,6 +1117,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fate/stay night: Unlimited Blade Works 2nd Season",
                             "english": "Fate/stay night: Unlimited Blade Works 2nd Season",
@@ -1100,6 +1143,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fate/Zero",
                             "english": "Fate/Zero",
@@ -1125,6 +1169,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fate/Zero 2nd Season",
                             "english": "Fate/Zero Season 2",
@@ -1150,6 +1195,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 6,
+                        "format": "OVA",
                         "title": {
                             "romaji": "FLCL",
                             "english": "FLCL",
@@ -1175,6 +1221,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Flip Flappers",
                             "english": null,
@@ -1200,6 +1247,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 51,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hagane no Renkinjutsushi",
                             "english": "Fullmetal Alchemist",
@@ -1225,6 +1273,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 64,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hagane no Renkinjutsushi: Fullmetal Alchemist",
                             "english": "Fullmetal Alchemist: Brotherhood",
@@ -1250,6 +1299,7 @@
                     "media": {
                         "duration": 105,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Hagane no Renkinjutsushi: Shamballa wo Yuku Mono",
                             "english": "Fullmetal Alchemist: The Movie - Conqueror of Shamballa",
@@ -1275,6 +1325,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Gabriel Dropout",
                             "english": "Gabriel DropOut",
@@ -1300,6 +1351,7 @@
                     "media": {
                         "duration": 15,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Gabriel Dropout Specials",
                             "english": null,
@@ -1325,6 +1377,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Gate: Jieitai Kanochi nite, Kaku Tatakaeri",
                             "english": "Gate",
@@ -1350,6 +1403,7 @@
                     "media": {
                         "duration": 46,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "GJ-bu@",
                             "english": null,
@@ -1375,6 +1429,7 @@
                     "media": {
                         "duration": 67,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Glass no Hana to Kowasu Sekai",
                             "english": "Garakowa -Restore the World-",
@@ -1400,6 +1455,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Gochuumon wa Usagi Desu ka?",
                             "english": "Is the Order a Rabbit?",
@@ -1425,6 +1481,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Gochuumon wa Usagi Desu ka??",
                             "english": "Is the Order a Rabbit?? Season 2",
@@ -1450,6 +1507,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Grisaia no Kajitsu",
                             "english": "The Fruit of Grisaia",
@@ -1475,6 +1533,7 @@
                     "media": {
                         "duration": 48,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Grisaia no Meikyuu",
                             "english": "The Labyrinth of Grisaia",
@@ -1500,6 +1559,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Grisaia no Rakuen",
                             "english": "The Eden of Grisaia",
@@ -1525,6 +1585,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hai to Gensou no Grimgar",
                             "english": "Grimgar of Fantasy and Ash",
@@ -1550,6 +1611,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 5,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Henkei Shoujo",
                             "english": null,
@@ -1575,6 +1637,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hentai Ouji to Warawanai Neko.",
                             "english": "The \"Hentai\" Prince and the Stony Cat.",
@@ -1600,6 +1663,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "Higashi no Eden",
                             "english": "Eden of The East",
@@ -1625,6 +1689,7 @@
                     "media": {
                         "duration": 82,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Higashi no Eden Movie I: The King of Eden",
                             "english": "Eden of The East the Movie I: The King of Eden",
@@ -1650,6 +1715,7 @@
                     "media": {
                         "duration": 92,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Higashi no Eden Movie II: Paradise Lost",
                             "english": "Eden of The East the Movie II: Paradise Lost",
@@ -1675,6 +1741,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni",
                             "english": "When They Cry",
@@ -1700,6 +1767,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni Kai",
                             "english": "When They Cry Kai",
@@ -1725,6 +1793,7 @@
                     "media": {
                         "duration": 52,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni Kaku: Outbreak",
                             "english": null,
@@ -1750,6 +1819,7 @@
                     "media": {
                         "duration": 29,
                         "episodes": 4,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni Kira",
                             "english": null,
@@ -1775,6 +1845,7 @@
                     "media": {
                         "duration": 30,
                         "episodes": 5,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni Rei",
                             "english": "When They Cry Rei",
@@ -1800,6 +1871,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni: Nekogoroshi-hen",
                             "english": null,
@@ -1825,6 +1897,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hitsugi no Chaika",
                             "english": "Chaika -The Coffin Princess-",
@@ -1850,6 +1923,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hitsugi no Chaika: Avenging Battle",
                             "english": "Chaika -The Coffin Princess- AVENGING BATTLE",
@@ -1875,6 +1949,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Inu x Boku SS",
                             "english": "Inu X Boku Secret Service",
@@ -1900,6 +1975,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kakegurui",
                             "english": "Kakegurui",
@@ -1925,6 +2001,7 @@
                     "media": {
                         "duration": 50,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Katanagatari",
                             "english": "Katanagatari",
@@ -1950,6 +2027,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kiniro Mosaic",
                             "english": "KINMOZA!",
@@ -1975,6 +2053,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kitakubu Katsudou Kiroku",
                             "english": "Chronicles of the Going Home Club",
@@ -2000,6 +2079,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kobayashi-san Chi no Maidragon",
                             "english": "Miss Kobayashi's Dragon Maid",
@@ -2025,6 +2105,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 7,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Kobayashi-san Chi no Marumaru Dragon",
                             "english": "Miss Kobayashi's Dragon Something",
@@ -2050,6 +2131,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kono Bijutsu-bu ni wa Mondai ga Aru!",
                             "english": "This Art Club Has a Problem!",
@@ -2075,6 +2157,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Koukaku no Pandora",
                             "english": "Pandora in the Crimson Shell Ghost Urn",
@@ -2100,6 +2183,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Log Horizon",
                             "english": "Log Horizon",
@@ -2125,6 +2209,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Magi: Sinbad no Bouken",
                             "english": "Magi: Adventures of Sinbad",
@@ -2150,6 +2235,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Magi: The Kingdom of Magic",
                             "english": null,
@@ -2175,6 +2261,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Magi: The Labyrinth of Magic",
                             "english": "Magi: The Labyrinth of Magic",
@@ -2200,6 +2287,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Mahou Shoujo Madoka☆Magica",
                             "english": "Puella Magi Madoka Magica",
@@ -2225,6 +2313,7 @@
                     "media": {
                         "duration": 118,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Mahou Shoujo Madoka☆Magica: Hangyaku no Monogatari",
                             "english": "Puella Magi Madoka Magica the Movie Part III: Rebellion",
@@ -2250,6 +2339,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Mahou Shoujo Nante Mou Ii Desu kara.",
                             "english": "Mahou Shoujo Nante Mouiidesukara",
@@ -2275,6 +2365,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Mahoujin Guru Guru (2017)",
                             "english": "MAGICAL CIRCLE GURU-GURU",
@@ -2300,6 +2391,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Mob Psycho 100",
                             "english": "Mob Psycho 100",
@@ -2325,6 +2417,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 16,
+                        "format": "TV",
                         "title": {
                             "romaji": "Nagato Yuki-chan no Shoushitsu",
                             "english": "The Disappearance of Nagato Yuki-chan",
@@ -2350,6 +2443,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Nanatsu no Taizai",
                             "english": "The Seven Deadly Sins",
@@ -2375,6 +2469,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 4,
+                        "format": "TV",
                         "title": {
                             "romaji": "Nanatsu no Taizai: Seisen no Shirushi",
                             "english": "The Seven Deadly Sins: Signs of A Holy War",
@@ -2400,6 +2495,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 220,
+                        "format": "TV",
                         "title": {
                             "romaji": "Naruto",
                             "english": "Naruto",
@@ -2425,6 +2521,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shin Seiki Evangelion",
                             "english": "Neon Genesis Evangelion",
@@ -2450,6 +2547,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Noir",
                             "english": null,
@@ -2475,6 +2573,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Noragami",
                             "english": "Noragami",
@@ -2500,6 +2599,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Noragami Aragoto",
                             "english": "Noragami Aragoto",
@@ -2525,6 +2625,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 13,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Nyoro-n☆Churuya-san",
                             "english": null,
@@ -2550,6 +2651,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Ore no Imouto ga Konna ni Kawaii Wake ga Nai",
                             "english": "Oreimo",
@@ -2575,6 +2677,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Ore no Imouto ga Konna ni Kawaii Wake ga Nai.",
                             "english": "Oreimo 2",
@@ -2600,6 +2703,7 @@
                     "media": {
                         "duration": 90,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Paprika",
                             "english": "Paprika",
@@ -2625,6 +2729,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Rakudai Kishi no Cavalry",
                             "english": "Chivalry of a Failed Knight",
@@ -2650,6 +2755,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 22,
+                        "format": "TV",
                         "title": {
                             "romaji": "Robotics;Notes",
                             "english": "Robotics;Notes",
@@ -2675,6 +2781,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Rokka no Yuusha",
                             "english": "Rokka -Braves of the Six Flowers-",
@@ -2700,6 +2807,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Sabagebu!",
                             "english": "Sabagebu! - Survival Game Club!",
@@ -2725,6 +2833,7 @@
                     "media": {
                         "duration": 10,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Sabagebu! OVA Special Mission",
                             "english": "Sabagebu! - Survival Game Club! - OVA Special Mission",
@@ -2750,6 +2859,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Saijaku Muhai no Bahamut",
                             "english": "Undefeated Bahamut Chronicle",
@@ -2775,6 +2885,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Sakurako-san no Ashimoto ni wa Shitai ga Umatteiru",
                             "english": "Beautiful Bones -Sakurako's Investigation-",
@@ -2800,6 +2911,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Sakurasou no Pet na Kanojo",
                             "english": "The Pet Girl of Sakurasou",
@@ -2825,6 +2937,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
                             "english": "Rascal Does Not Dream of Bunny Girl Senpai",
@@ -2850,6 +2963,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Serial Experiments Lain",
                             "english": "Serial Experiments Lain",
@@ -2875,6 +2989,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shakunetsu no Takkyuu Musume",
                             "english": "Scorching Ping Pong Girls",
@@ -2900,6 +3015,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shimoneta to Iu Gainen ga Sonzai Shinai Taikutsu na Sekai",
                             "english": "SHIMONETA: A Boring World Where the Concept of Dirty Jokes Doesn’t Exist",
@@ -2925,6 +3041,7 @@
                     "media": {
                         "duration": 26,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shouwa Genroku Rakugo Shinjuu",
                             "english": "Showa Genroku Rakugo Shinju",
@@ -2950,6 +3067,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shuumatsu Nani Shitemasu ka? Isogashii desu ka? Sukutte Moratte Ii desu ka?",
                             "english": "WorldEnd: What are you doing at the end of the world? Are you busy? Will you save us?",
@@ -2975,6 +3093,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Steins;Gate",
                             "english": "Steins;Gate",
@@ -3000,6 +3119,7 @@
                     "media": {
                         "duration": 90,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Steins;Gate: Fuka Ryouiki no Déjà vu",
                             "english": "Steins;Gate The Movie – Load Region of Déjà Vu",
@@ -3025,6 +3145,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 4,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Steins;Gate: Soumei Eichi no Cognitive Computing",
                             "english": null,
@@ -3050,6 +3171,7 @@
                     "media": {
                         "duration": 162,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Suzumiya Haruhi no Shoushitsu",
                             "english": "The Disappearance of Haruhi Suzumiya",
@@ -3075,6 +3197,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 14,
+                        "format": "TV",
                         "title": {
                             "romaji": "Suzumiya Haruhi no Yuuutsu",
                             "english": "The Melancholy of Haruhi Suzumiya",
@@ -3100,6 +3223,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 14,
+                        "format": "TV",
                         "title": {
                             "romaji": "Suzumiya Haruhi no Yuuutsu (2009)",
                             "english": "The Melancholy of Haruhi Suzumiya (2009)",
@@ -3125,6 +3249,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 25,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Suzumiya Haruhi-chan no Yuuutsu",
                             "english": "The Melancholy of Haruhi-chan Suzumiya",
@@ -3150,6 +3275,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Takamiya Nasuno Desu!: Teekyuu Spin-off",
                             "english": null,
@@ -3175,6 +3301,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Tanaka-kun wa Itsumo Kedaruge",
                             "english": "Tanaka-kun is Always Listless",
@@ -3200,6 +3327,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 7,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Tanaka-kun wa Itsumo Kedaruge Tokuten",
                             "english": "Tanaka-kun is Always Listless Tokuten",
@@ -3225,6 +3353,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 35,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Tanaka-kun wa Kyou mo Kedaruge",
                             "english": "Tanaka-kun wa Kyou mo Kedaruge",
@@ -3250,6 +3379,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu",
                             "english": "Teekyuu",
@@ -3275,6 +3405,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 2",
                             "english": "Teekyuu 2",
@@ -3300,6 +3431,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 3",
                             "english": "Teekyuu 3",
@@ -3325,6 +3457,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 4",
                             "english": "Teekyuu 4",
@@ -3350,6 +3483,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 5",
                             "english": "Teekyuu 5",
@@ -3375,6 +3509,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 6",
                             "english": "Teekyuu 6",
@@ -3400,6 +3535,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 7",
                             "english": "Teekyuu 7",
@@ -3425,6 +3561,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 8",
                             "english": "Teekyuu 8",
@@ -3450,6 +3587,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Teekyuu 9",
                             "english": "Teekyuu 9",
@@ -3475,6 +3613,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun",
                             "english": "A Certain Scientific Railgun",
@@ -3500,6 +3639,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Toaru Majutsu no Index",
                             "english": "A Certain Magical Index",
@@ -3525,6 +3665,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Toaru Majutsu no Index II",
                             "english": "A Certain Magical Index II",
@@ -3550,6 +3691,7 @@
                     "media": {
                         "duration": 90,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Toaru Majutsu no Index: Endymion no Kiseki",
                             "english": "A Certain Magical Index: The Miracle of Endymion",
@@ -3575,6 +3717,7 @@
                     "media": {
                         "duration": 8,
                         "episodes": 21,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Tonari no Seki-kun",
                             "english": "Tonari no Seki-kun: The Master of Killing Time",
@@ -3600,6 +3743,7 @@
                     "media": {
                         "duration": 13,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Tonari no Seki-kun OVA",
                             "english": "The Master of Killing Time OVA",
@@ -3625,6 +3769,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Trinity Seven",
                             "english": "TRINITY SEVEN",
@@ -3650,6 +3795,7 @@
                     "media": {
                         "duration": 56,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Trinity Seven Movie - Yuukyuu Toshokan to Renkinjutsu Shoujo",
                             "english": "Trinity Seven: Eternal Library & Alchemic Girl",
@@ -3675,6 +3821,7 @@
                     "media": {
                         "duration": 60,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Trinity Seven Movie - Tenkuu Toshokan to Shinku no Maou",
                             "english": "Trinity Seven: Heavens Library & Crimson Lord",
@@ -3700,6 +3847,7 @@
                     "media": {
                         "duration": 27,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Trinity Seven: Nanatsu no Taizai to Nana Madoushi",
                             "english": null,
@@ -3725,6 +3873,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Umineko no Naku Koro ni",
                             "english": "Umineko: When They Cry",
@@ -3750,6 +3899,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Usakame",
                             "english": null,
@@ -3775,6 +3925,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Watashi ga Motenai no wa Dou Kangaetemo Omaera ga Warui!",
                             "english": "WATAMOTE ~No Matter How I Look at It, It’s You Guys Fault I’m Not Popular!~",
@@ -3800,6 +3951,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Witch Craft Works",
                             "english": "Witch Craft Works",
@@ -3825,6 +3977,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Witch Craft Works: Takamiya-kun to Imouto no Warudakumi",
                             "english": "Witch Craft Works OVA",
@@ -3850,6 +4003,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Yakusoku no Neverland",
                             "english": "The Promised Neverland",
@@ -3875,6 +4029,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Asobi Asobase",
                             "english": "Asobi Asobase - workshop of fun -",
@@ -3900,6 +4055,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Last Period: Owarinaki Rasen no Monogatari",
                             "english": "Last Period: the journey to the end of the despair",
@@ -3925,6 +4081,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "No.6",
                             "english": "No.6",
@@ -3950,6 +4107,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "GJ-bu",
                             "english": "GJ Club",
@@ -3975,6 +4133,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Saki",
                             "english": "Saki",
@@ -4000,6 +4159,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Mob Psycho 100 II",
                             "english": "Mob Psycho 100 II",
@@ -4025,6 +4185,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Comic Girls",
                             "english": "Comic Girls",
@@ -4050,6 +4211,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shouwa Genroku Rakugo Shinjuu: Sukeroku Futatabi-hen",
                             "english": "Descending Stories: Showa Genroku Rakugo Shinju",
@@ -4075,6 +4237,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Demi-chan wa Kataritai",
                             "english": "Interviews with Monster Girls",
@@ -4100,6 +4263,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Demi-chan wa Kataritai: Demi-chan no Natsuyasumi",
                             "english": "Interviews with Monster Girls: The Demi-chans' Summer Break",
@@ -4125,6 +4289,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Tonari no Kyuuketsuki-san",
                             "english": "Ms. vampire who lives in my neighborhood.",
@@ -4150,6 +4315,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Mahou Shoujo Ikusei Keikaku",
                             "english": "Magical Girl Raising Project",
@@ -4175,6 +4341,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Zombie Land Saga",
                             "english": "ZOMBIE LAND SAGA",
@@ -4200,6 +4367,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shoujo Shuumatsu Ryokou",
                             "english": "Girls' Last Tour",
@@ -4225,6 +4393,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Net-juu no Susume",
                             "english": "Recovery of an MMO Junkie",
@@ -4250,6 +4419,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Net-juu no Susume OVA",
                             "english": "Recovery of an MMO Junkie OVA",
@@ -4275,6 +4445,7 @@
                     "media": {
                         "duration": 12,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Gaikotsu Shotenin Honda-san",
                             "english": "Skull-face Bookseller Honda-san",
@@ -4300,6 +4471,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "NEW GAME!",
                             "english": "NEW GAME!",
@@ -4325,6 +4497,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Black Bullet",
                             "english": null,
@@ -4350,6 +4523,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Punch Line",
                             "english": null,
@@ -4375,6 +4549,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Grimms Notes The Animation",
                             "english": "Grimm's Notes The Animation",
@@ -4400,6 +4575,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Youjo Senki",
                             "english": "Saga of Tanya the Evil",
@@ -4425,6 +4601,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "NEW GAME!: Watashi, Shain Ryokou tte Hajimete nano de…",
                             "english": null,
@@ -4450,6 +4627,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Gakusen Toshi Asterisk",
                             "english": "The Asterisk War",
@@ -4475,6 +4653,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Made in Abyss",
                             "english": "Made in Abyss",
@@ -4500,6 +4679,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 13,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Bananya: Fushigi na Nakama-tachi",
                             "english": "Bananya and the Curious Bunch",
@@ -4525,6 +4705,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Mahou Shoujo Nante Mou Ii Desu kara. 2",
                             "english": "Mahou Shoujo Nante Mouiidesukara Second Season",
@@ -4550,6 +4731,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Gakusen Toshi Asterisk 2",
                             "english": "The Asterisk War 2",
@@ -4575,6 +4757,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 13,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Hentai Ouji to Warawanai Neko.: Henneko BBS",
                             "english": "The \"Hentai\" Prince and the Stony Cat.: Henneko BBS",
@@ -4600,6 +4783,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 13,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Youjo Shenki",
                             "english": null,
@@ -4625,6 +4809,7 @@
                     "media": {
                         "duration": 105,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Youjo Senki Movie",
                             "english": "Saga of Tanya the Evil - the Movie -",
@@ -4650,6 +4835,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "UN-GO",
                             "english": "UN-GO",
@@ -4675,6 +4861,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Tasogare Otome x Amnesia",
                             "english": "Dusk Maiden of Amnesia",
@@ -4700,6 +4887,7 @@
                     "media": {
                         "duration": 48,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "UN-GO episode:0 Inga-ron",
                             "english": "UN-GO MOVIE",
@@ -4725,6 +4913,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Tasogare Otome x Amnesia: Taima Otome",
                             "english": "Dusk Maiden of Amnesia: \"Ghost Girl\"",
@@ -4750,6 +4939,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 15,
+                        "format": "TV",
                         "title": {
                             "romaji": "Bakemonogatari",
                             "english": "Bakemonogatari",
@@ -4775,6 +4965,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Jingai-san no Yome",
                             "english": null,
@@ -4800,6 +4991,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
                             "english": "KONOSUBA -God's blessing on this wonderful world!",
@@ -4825,6 +5017,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Kono Subarashii Sekai ni Shukufuku wo!: Kono Subarashii Choker ni Shufuku wo!",
                             "english": "KONOSUBA -God's blessing on this wonderful world!: God's Blessings On This Wonderful Choker!",
@@ -4850,6 +5043,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kakegurui ××",
                             "english": "Kakegurui xx",
@@ -4875,6 +5069,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hello!! Kiniro Mosaic",
                             "english": "Hello!! KINMOZA!",
@@ -4900,6 +5095,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Watashi ni Tenshi ga Maiorita!",
                             "english": "WATATEN!: an Angel Flew Down to Me",
@@ -4925,6 +5121,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Watashi ni Tenshi ga Maiorita! OVA",
                             "english": "WATATEN!: an Angel Flew Down to Me: You Never Let Us Down / Always Growing Closer / Let's Change You Into This! / I'm Your Big Sister",
@@ -4950,6 +5147,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Fushigi na Somera-chan",
                             "english": "Magical Somera-chan",
@@ -4975,6 +5173,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Occultic;Nine",
                             "english": "Occultic;Nine",
@@ -5000,6 +5199,7 @@
                     "media": {
                         "duration": 93,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Yoru wa Mijikashi Arukeyo Otome",
                             "english": "The Night is Short, Walk on Girl",
@@ -5025,6 +5225,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "Nisemonogatari",
                             "english": "Nisemonogatari",
@@ -5050,6 +5251,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 4,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Mahou Shoujo Madoka★Magica Movie 3: Hangyaku no Monogatari - Magica Quartet x Nisioisin",
                             "english": "Puella Magi Madoka Magica the Movie Part III: Rebellion - Magica Quartet x Nisioisin",
@@ -5075,6 +5277,7 @@
                     "media": {
                         "duration": 27,
                         "episodes": 4,
+                        "format": "TV",
                         "title": {
                             "romaji": "Nekomonogatari (Kuro)",
                             "english": "Nekomonogatari Black",
@@ -5100,6 +5303,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kyousougiga (TV)",
                             "english": "Kyousougiga",
@@ -5125,6 +5329,7 @@
                     "media": {
                         "duration": 30,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Arata naru Sekai: Mirai-hen",
                             "english": "World's End",
@@ -5150,6 +5355,7 @@
                     "media": {
                         "duration": 64,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Kizumonogatari I: Tekketsu-hen",
                             "english": "Kizumonogatari Part 1: Tekketsu",
@@ -5175,6 +5381,7 @@
                     "media": {
                         "duration": 83,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Koukaku Kidoutai",
                             "english": "Ghost in the Shell",
@@ -5200,6 +5407,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hitoribocchi no Marumaru Seikatsu",
                             "english": "Hitoribocchi no Marumaruseikatsu",
@@ -5225,6 +5433,7 @@
                     "media": {
                         "duration": 26,
                         "episodes": 3,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Kyousougiga (TV) Specials",
                             "english": "Kyousougiga (TV) Specials",
@@ -5250,6 +5459,7 @@
                     "media": {
                         "duration": 68,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Kizumonogatari II: Nekketsu-hen",
                             "english": "Kizumonogatari Part 2: Nekketsu",
@@ -5275,6 +5485,7 @@
                     "media": {
                         "duration": 82,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Kizumonogatari III: Reiketsu-hen",
                             "english": "Kizumonogatari Part 3: Reiketsu",
@@ -5300,6 +5511,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Seirei Tsukai no Blade Dance",
                             "english": "Bladedance of Elementalers",
@@ -5325,6 +5537,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Yuru Camp△",
                             "english": "Laid-Back Camp",
@@ -5350,6 +5563,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Vividred Operation",
                             "english": "Vividred Operation",
@@ -5375,6 +5589,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Monogatari Series: Second Season",
                             "english": "Monogatari Series Second Season",
@@ -5400,6 +5615,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 13,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Choboraunyopomi Gekijou Dai Ni Maku ai mai mi",
                             "english": "Ai-Mai-Mi",
@@ -5425,6 +5641,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun S",
                             "english": "A Certain Scientific Railgun S",
@@ -5450,6 +5667,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 1,
+                        "format": "MUSIC",
                         "title": {
                             "romaji": "ribbon",
                             "english": "ribbon",
@@ -5475,6 +5693,7 @@
                     "media": {
                         "duration": 87,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Sennen Joyuu",
                             "english": "Millennium Actress",
@@ -5500,6 +5719,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Choboraunyopomi Gekijou Dai Ni Maku ai mai mi: Mousou Catastrophe",
                             "english": "Ai-Mai-Mi Mousou Catastrophe",
@@ -5525,6 +5745,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 5,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hanamonogatari",
                             "english": "Hanamonogatari",
@@ -5550,6 +5771,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Yuyushiki",
                             "english": null,
@@ -5575,6 +5797,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Yuyushiki: Nyanyashiki",
                             "english": null,
@@ -5600,6 +5823,7 @@
                     "media": {
                         "duration": 28,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Yuyushiki OVA: Komarasetari, Komarasaretari",
                             "english": null,
@@ -5625,6 +5849,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Aiura",
                             "english": "AIURA",
@@ -5650,6 +5875,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fukumenkei Noise",
                             "english": "Anonymous Noise",
@@ -5675,6 +5901,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 9,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Haiyoru! Nyaruani",
                             "english": "Haiyoru! Nyaruani",
@@ -5700,6 +5927,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 11,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Haiyoru! Nyaruani: Remember My Love(craft-sensei)",
                             "english": "Haiyoru! Nyaruani: Remember My Mr. Lovecraft",
@@ -5725,6 +5953,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Haiyoru! Nyaruani: Remember My Love(craft-sensei) Special",
                             "english": "Haiyoru! Nyaruani: Remember My Mr. Lovecraft",
@@ -5750,6 +5979,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kyoukai no Kanata",
                             "english": "Beyond the Boundary",
@@ -5775,6 +6005,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kanojo ga Flag wo Oraretara",
                             "english": "Kanojo ga Flag wo Oraretara (If Her Flag Breaks)",
@@ -5800,6 +6031,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Girls und Panzer",
                             "english": "Girls und Panzer",
@@ -5825,6 +6057,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Choboraunyopomi Gekijou Dai Ni Maku ai mai mi: Surgical Friends",
                             "english": "Ai-Mai-Mi Surgical Friends",
@@ -5850,6 +6083,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Haiyore! Nyaruko-san",
                             "english": "Nyaruko: Crawling with Love!",
@@ -5875,6 +6109,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Youjo Senki Movie: Manner Movie",
                             "english": null,
@@ -5900,6 +6135,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 4,
+                        "format": "TV",
                         "title": {
                             "romaji": "Tsukimonogatari",
                             "english": "Tsukimonogatari",
@@ -5925,6 +6161,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shinsekai yori",
                             "english": "From the New World",
@@ -5950,6 +6187,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Death March Kara Hajimaru Isekai Kyousoukyoku",
                             "english": "Death March to the Parallel World Rhapsody",
@@ -5975,6 +6213,7 @@
                     "media": {
                         "duration": 14,
                         "episodes": 12,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Koyomimonogatari",
                             "english": "Koyomimonogatari",
@@ -6000,6 +6239,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Strike the Blood",
                             "english": "Strike the Blood",
@@ -6025,6 +6265,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Saki Biyori Animation",
                             "english": null,
@@ -6050,6 +6291,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 13,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Pugyuru",
                             "english": null,
@@ -6075,6 +6317,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Houseki no Kuni",
                             "english": "Land of the Lustrous",
@@ -6100,6 +6343,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Haiyore! Nyaruko-san W",
                             "english": "Nyaruko-san: Another Crawling Chaos W",
@@ -6125,6 +6369,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "KochinPa!",
                             "english": "Aira",
@@ -6150,6 +6395,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 26,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "KochinPa! Dainiki",
                             "english": null,
@@ -6175,6 +6421,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Nyanko Days",
                             "english": "Nyanko Days",
@@ -6200,6 +6447,7 @@
                     "media": {
                         "duration": 15,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Haiyore! Nyaruko-san W OVA",
                             "english": null,
@@ -6225,6 +6473,7 @@
                     "media": {
                         "duration": 15,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Haiyore! Nyaruko-san: Yasashii Teki no Shitome-kata",
                             "english": null,
@@ -6250,6 +6499,7 @@
                     "media": {
                         "duration": 27,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Haiyore! Nyaruko-san F",
                             "english": "Nyarko-san: Another Crawling Chaos F",
@@ -6275,6 +6525,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Owarimonogatari",
                             "english": "Owarimonogatari",
@@ -6300,6 +6551,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 7,
+                        "format": "TV",
                         "title": {
                             "romaji": "Owarimonogatari (Ge)",
                             "english": "Owarimonogatari Second Season",
@@ -6325,6 +6577,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hangyaku-sei Million Arthur",
                             "english": "Million Arthur",
@@ -6350,6 +6603,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Eromanga Sensei",
                             "english": "Eromanga Sensei",
@@ -6375,6 +6629,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 2,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Eromanga Sensei OVA",
                             "english": null,
@@ -6400,6 +6655,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Fate/kaleid liner Prisma☆Illya 3rei!!",
                             "english": "Fate/kaleid liner Prisma☆Illya 3rei!!",
@@ -6425,6 +6681,7 @@
                     "media": {
                         "duration": 6,
                         "episodes": 13,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Senyuu.",
                             "english": "Senyuu",
@@ -6450,6 +6707,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
                             "english": "Re:ZERO -Starting Life in Another World-",
@@ -6475,6 +6733,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Akikan!",
                             "english": null,
@@ -6500,6 +6759,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 10,
+                        "format": "ONA",
                         "title": {
                             "romaji": "UN-GO: Inga Nikki",
                             "english": null,
@@ -6525,6 +6785,7 @@
                     "media": {
                         "duration": 82,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Kyoukai no Kanata Movie: I'LL BE HERE - Kako-hen",
                             "english": "Beyond the Boundary -I'LL BE HERE-: Past",
@@ -6550,6 +6811,7 @@
                     "media": {
                         "duration": 90,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Kyoukai no Kanata Movie: I'LL BE HERE - Mirai-hen",
                             "english": "Beyond the Boundary -I'LL BE HERE-: Future",
@@ -6575,6 +6837,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Val x Love",
                             "english": "Val x Love",
@@ -6600,6 +6863,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Seirei Tsukai no Kenbu: Blade Dance Specials",
                             "english": "Bladedance of Elementalers Specials",
@@ -6625,6 +6889,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Rifle Is Beautiful",
                             "english": "Chidori RSC",
@@ -6650,6 +6915,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Machikado Mazoku",
                             "english": "The Demon Girl Next Door",
@@ -6675,6 +6941,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Akikan! OVA",
                             "english": null,
@@ -6700,6 +6967,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "RELEASE THE SPYCE",
                             "english": "RELEASE THE SPYCE",
@@ -6725,6 +6993,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch",
                             "english": "Hidamari Sketch",
@@ -6750,6 +7019,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Durarara!!x2 Ketsu: DuFuFuFu!!",
                             "english": "Durarara!! X2 The Third Arc: DuFuFuFu!!",
@@ -6775,6 +7045,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Joshikousei no Mudazukai",
                             "english": "Wasteful Days of High School Girls",
@@ -6800,6 +7071,7 @@
                     "media": {
                         "duration": 6,
                         "episodes": 7,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Kyoukai no Kanata: Mini Gekijou",
                             "english": "Beyond the Boundary: Mini Theater",
@@ -6825,6 +7097,7 @@
                     "media": {
                         "duration": 8,
                         "episodes": 5,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Kyoukai no Kanata: Idol Saiban! Mayoi Nagara mo Kimi wo Sabaku Tami",
                             "english": null,
@@ -6850,6 +7123,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Hidamari Sketch Specials",
                             "english": "Hidamari Sketch Specials",
@@ -6875,6 +7149,7 @@
                     "media": {
                         "duration": 22,
                         "episodes": 1,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Armed Blue Gunvolt",
                             "english": "Azure Striker Gunvolt",
@@ -6900,6 +7175,7 @@
                     "media": {
                         "duration": 6,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Azumanga Daioh: Gekijou Tanpen",
                             "english": "Azumanga Daioh: The Very Short Movie",
@@ -6925,6 +7201,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch x 365",
                             "english": "Hidamari Sketch: x365",
@@ -6950,6 +7227,7 @@
                     "media": {
                         "duration": 13,
                         "episodes": 6,
+                        "format": "ONA",
                         "title": {
                             "romaji": "OBSOLETE",
                             "english": "OBSOLETE",
@@ -6975,6 +7253,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Urara Meirochou",
                             "english": null,
@@ -7000,6 +7279,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 3,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Zekkyou Gakkyuu",
                             "english": null,
@@ -7025,6 +7305,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Zekkyou Gakkyuu: Tensei",
                             "english": null,
@@ -7050,6 +7331,7 @@
                     "media": {
                         "duration": 6,
                         "episodes": 13,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Senyuu. 2",
                             "english": null,
@@ -7075,6 +7357,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 5,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Senyuu. Specials",
                             "english": null,
@@ -7100,6 +7383,7 @@
                     "media": {
                         "duration": 10,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Girls und Panzer Specials",
                             "english": "Girls und Panzer OVA",
@@ -7125,6 +7409,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Alice or Alice: Siscon Niisan to Futago no Imouto",
                             "english": "Alice or Alice",
@@ -7150,6 +7435,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch x ☆☆☆",
                             "english": "Hidamari Sketch: xHoshimittsu",
@@ -7175,6 +7461,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hakumei to Mikochi",
                             "english": "Hakumei and Mikochi",
@@ -7200,6 +7487,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Hakumei to Mikochi: Neji to Bed to Irori to Bakuchi",
                             "english": null,
@@ -7225,6 +7513,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Code Geass: Hangyaku no Lelouch R2",
                             "english": "Code Geass: Lelouch of the Rebellion R2",
@@ -7250,6 +7539,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai!",
                             "english": "Love, Chunibyo & Other Delusions",
@@ -7275,6 +7565,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai!: Kirameki no… Slapstick Noel",
                             "english": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
@@ -7300,6 +7591,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Mawaru Penguindrum",
                             "english": "Penguindrum",
@@ -7325,6 +7617,7 @@
                     "media": {
                         "duration": 6,
                         "episodes": 6,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai! Lite",
                             "english": "Love, Chunibyo & Other Delusions Lite",
@@ -7350,6 +7643,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai! Ren",
                             "english": "Love, Chunibyo & Other Delusions - Heart Throb -",
@@ -7375,6 +7669,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kuusen Madoushi Kouhosei no Kyoukan",
                             "english": "Sky Wizards Academy",
@@ -7400,6 +7695,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 6,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai! Ren Lite",
                             "english": "Love, Chunibyo & Other Delusions - Heart Throb - Lite",
@@ -7425,6 +7721,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Kuusen Madoushi Kouhosei no Kyoukan: Lecty no, Ikimonogatari",
                             "english": "Sky Wizards Academy OVA",
@@ -7450,6 +7747,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 7,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai!: Depth of Field - Ai to Nikushimi Gekijou",
                             "english": "Love, Chunibyo & Other Delusions: Depth of Field - Ai to Nikushimi Gekijou",
@@ -7475,6 +7773,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Teekyuu 5 Specials",
                             "english": "Teekyuu 5 Specials",
@@ -7500,6 +7799,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Teekyuu 7 Specials",
                             "english": "Teekyuu 7 Specials",
@@ -7525,6 +7825,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Hitsugi no Chaika OVA",
                             "english": "Chaika -The Coffin Princess- OVA",
@@ -7550,6 +7851,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Kanojo ga Flag wo Oraretara OVA",
                             "english": "Kanojo ga Flag wo Oraretara (If Her Flag Breaks) OVA",
@@ -7575,6 +7877,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 5,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Grisaia no Rakuen: Grisaia no Tokuten",
                             "english": "The Eden of Grisaia: Grisaia no Tokuten",
@@ -7600,6 +7903,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Grisaia no Meikyuu: Takizono Basket-bu no Nama Cream Party!",
                             "english": "The Labyrinth of Grisaia: Takizono Basket-bu no Nama Cream Party!",
@@ -7625,6 +7929,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Grisaia no Kajitsu: Grisaia no Tokuten",
                             "english": "The Fruit of Grisaia: Grisaia no Tokuten",
@@ -7650,6 +7955,7 @@
                     "media": {
                         "duration": 13,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Tonari no Seki-kun Specials",
                             "english": "The Master of Killing Time Specials",
@@ -7675,6 +7981,7 @@
                     "media": {
                         "duration": 7,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Mob Psycho mini",
                             "english": null,
@@ -7700,9 +8007,10 @@
                     "media": {
                         "duration": 1,
                         "episodes": 24,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Higurashi no Naku Koro ni Kai Specials",
-                            "english": "When They Cry Specials",
+                            "english": null,
                             "native": "うら☆ひぐ",
                             "userPreferred": "Higurashi no Naku Koro ni Kai Specials"
                         }
@@ -7725,6 +8033,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch x Honeycomb",
                             "english": "Hidamari Sketch: xHoneycomb",
@@ -7750,6 +8059,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 2,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Noragami Aragoto OVA",
                             "english": null,
@@ -7775,6 +8085,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 14,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Re:Petit kara Hajimeru Isekai Seikatsu",
                             "english": "Re:PETIT ~Re: Starting Life in Another World From PETIT~",
@@ -7800,6 +8111,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 11,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time)",
                             "english": "Re:ZERO ~Starting Break Time From Zero~",
@@ -7825,6 +8137,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai! Ren: Saisei no... Jaou Shingan Mokushiroku",
                             "english": "Love, Chunibyo & Other Delusions - Heart Throb -: The Rikka Wars/ Apocalypse of the Wicked Lord Shingan Reborn",
@@ -7850,6 +8163,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 6,
+                        "format": "TV",
                         "title": {
                             "romaji": "Shinigami no Ballad",
                             "english": "Momo, the Girl God of Death",
@@ -7875,6 +8189,7 @@
                     "media": {
                         "duration": 38,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Girls und Panzer: Kore ga Hontou no Anzio-sen Desu!",
                             "english": "Girls und Panzer: This is the Real Anzio Battle!",
@@ -7900,6 +8215,7 @@
                     "media": {
                         "duration": 26,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season",
                             "english": "Re:ZERO -Starting Life in Another World- Season 2",
@@ -7925,6 +8241,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "SHIROBAKO",
                             "english": "SHIROBAKO",
@@ -7950,6 +8267,7 @@
                     "media": {
                         "duration": 30,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Quiz Magic Academy: The Original Animation",
                             "english": null,
@@ -7975,6 +8293,7 @@
                     "media": {
                         "duration": 30,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Quiz Magic Academy: The Original Animation 2",
                             "english": null,
@@ -8000,6 +8319,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Cross Road",
                             "english": null,
@@ -8025,6 +8345,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Zero kara Hajimeru Mahou no Sho",
                             "english": "Grimoire of Zero",
@@ -8050,6 +8371,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 1,
+                        "format": "MUSIC",
                         "title": {
                             "romaji": "Yume no Ukiyo ni Saitemina",
                             "english": null,
@@ -8075,6 +8397,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kannazuki no Miko",
                             "english": "Destiny of the Shrine Maiden",
@@ -8100,6 +8423,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 11,
+                        "format": "TV",
                         "title": {
                             "romaji": "Jashin-chan Dropkick",
                             "english": "Dropkick on my Devil!",
@@ -8125,6 +8449,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "SHIROBAKO Specials",
                             "english": null,
@@ -8150,11 +8475,12 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "ONA",
                         "title": {
-                            "romaji": "Jashin-chan Dropkick: Episode 12",
+                            "romaji": "Jashin-chan Dropkick ONA",
                             "english": "Dropkick on my Devil! Episode 12",
-                            "native": "邪神ちゃんドロップキック 第12話",
-                            "userPreferred": "Jashin-chan Dropkick: Episode 12"
+                            "native": "邪神ちゃんドロップキックONA",
+                            "userPreferred": "Jashin-chan Dropkick ONA"
                         }
                     }
                 },
@@ -8175,6 +8501,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 10,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kono Subarashii Sekai ni Shukufuku wo! 2",
                             "english": "KONOSUBA -God's blessing on this wonderful world! 2",
@@ -8200,6 +8527,7 @@
                     "media": {
                         "duration": 26,
                         "episodes": 6,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Zoku Owarimonogatari",
                             "english": "Zoku Owarimonogatari",
@@ -8225,6 +8553,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Kyoukai no Kanata Episode 0: Shinonome",
                             "english": "Beyond the Boundary: Shinonome",
@@ -8250,6 +8579,7 @@
                     "media": {
                         "duration": 29,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Kono Subarashii Sekai ni Shukufuku wo! 2: Kono Subarashii Geijutsu ni Shukufuku wo!",
                             "english": "KONOSUBA -God's blessing on this wonderful world! 2: God's Blessings on These Wonderful Works of Art!",
@@ -8275,6 +8605,7 @@
                     "media": {
                         "duration": 90,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Kono Subarashii Sekai ni Shukufuku wo! Kurenai Densetsu",
                             "english": "KONOSUBA -God's blessing on this wonderful world!- Legend of Crimson",
@@ -8300,6 +8631,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Overlord",
                             "english": "Overlord",
@@ -8325,6 +8657,7 @@
                     "media": {
                         "duration": 12,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Isekai Quartet",
                             "english": "ISEKAI QUARTET",
@@ -8350,6 +8683,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 26,
+                        "format": "TV",
                         "title": {
                             "romaji": "Toaru Majutsu no Index III",
                             "english": "A Certain Magical Index III",
@@ -8375,6 +8709,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Toaru Kagaku no Accelerator",
                             "english": "A Certain Scientific Accelerator",
@@ -8400,6 +8735,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Busou Shoujo Machiavellianism",
                             "english": "Armed Girl's Machiavellism",
@@ -8425,6 +8761,7 @@
                     "media": {
                         "duration": 97,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Takanashi Rikka Kai: Chuunibyou demo Koi ga Shitai! Movie",
                             "english": "Love, Chunibyo & Other Delusions: Rikka Version",
@@ -8450,6 +8787,7 @@
                     "media": {
                         "duration": 68,
                         "episodes": 2,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu OVA",
                             "english": "Re:ZERO -Starting Life in Another World- OVA",
@@ -8470,11 +8808,12 @@
                     "completedAt": {
                         "year": 2020,
                         "month": 10,
-                        "day": 12
+                        "day": 11
                     },
                     "media": {
                         "duration": 23,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "Jinrui wa Suitai Shimashita",
                             "english": "Humanity Has Declined",
@@ -8490,7 +8829,7 @@
                     "startedAt": {
                         "year": 2020,
                         "month": 10,
-                        "day": 11
+                        "day": 12
                     },
                     "completedAt": {
                         "year": 2020,
@@ -8500,6 +8839,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 13,
+                        "format": "TV",
                         "title": {
                             "romaji": "Hangyaku-sei Million Arthur 2",
                             "english": "Million Arthur 2",
@@ -8525,6 +8865,7 @@
                     "media": {
                         "duration": 21,
                         "episodes": 3,
+                        "format": "ONA",
                         "title": {
                             "romaji": "BURN THE WITCH",
                             "english": "BURN THE WITCH",
@@ -8550,6 +8891,7 @@
                     "media": {
                         "duration": 13,
                         "episodes": 12,
+                        "format": "TV_SHORT",
                         "title": {
                             "romaji": "Takunomi.",
                             "english": null,
@@ -8575,6 +8917,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Hidamari Sketch x SP",
                             "english": null,
@@ -8600,11 +8943,194 @@
                     "media": {
                         "duration": 98,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai!: Take on Me",
                             "english": "Love, Chunibyo & Other Delusions: Take on Me",
                             "native": "映画 中二病でも恋がしたい！ -Take On Me-",
                             "userPreferred": "Chuunibyou demo Koi ga Shitai!: Take on Me"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 21688,
+                    "score": 8,
+                    "progress": 3,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 10,
+                        "day": 27
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 10,
+                        "day": 27
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 3,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Mahoutsukai no Yome: Hoshi Matsu Hito",
+                            "english": "The Ancient Magus' Bride: Those Awaiting a Star",
+                            "native": "魔法使いの嫁 星待つひと",
+                            "userPreferred": "Mahoutsukai no Yome: Hoshi Matsu Hito"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20534,
+                    "score": 6.9,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 10,
+                        "day": 28
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 5
+                    },
+                    "media": {
+                        "duration": 23,
+                        "episodes": 13,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Gokukoku no Brynhildr",
+                            "english": "Brynhildr in the Darkness",
+                            "native": "極黒のブリュンヒルデ",
+                            "userPreferred": "Gokukoku no Brynhildr"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 9337,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 10,
+                        "day": 14
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 10,
+                        "day": 14
+                    },
+                    "media": {
+                        "duration": 5,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Mayo Elle Otoko no Ko",
+                            "english": null,
+                            "native": "迷elleオトコノ娘",
+                            "userPreferred": "Mayo Elle Otoko no Ko"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 9943,
+                    "score": 0,
+                    "progress": 14,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 10,
+                        "day": 23
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 4
+                    },
+                    "media": {
+                        "duration": 11,
+                        "episodes": 14,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Ore-sama Kingdom",
+                            "english": null,
+                            "native": "オレ様キングダム",
+                            "userPreferred": "Ore-sama Kingdom"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20866,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 5
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 5
+                    },
+                    "media": {
+                        "duration": 20,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Gokukoku no Brynhildr OVA",
+                            "english": "Brynhildr in the Darkness OVA",
+                            "native": "極黒のブリュンヒルデ OVA",
+                            "userPreferred": "Gokukoku no Brynhildr OVA"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 98436,
+                    "score": 9,
+                    "progress": 24,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 5
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 10
+                    },
+                    "media": {
+                        "duration": 25,
+                        "episodes": 24,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Mahoutsukai no Yome",
+                            "english": "The Ancient Magus' Bride",
+                            "native": "魔法使いの嫁",
+                            "userPreferred": "Mahoutsukai no Yome"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 124337,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 10
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 10
+                    },
+                    "media": {
+                        "duration": 3,
+                        "episodes": 1,
+                        "format": "ONA",
+                        "title": {
+                            "romaji": "Mahoutsukai no Yome: Gakuin-hen ",
+                            "english": null,
+                            "native": "魔法使いの嫁 学院篇",
+                            "userPreferred": "Mahoutsukai no Yome: Gakuin-hen "
                         }
                     }
                 }
@@ -8631,6 +9157,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Angel Beats!: Another Epilogue",
                             "english": null,
@@ -8656,6 +9183,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Charlotte: Tsuyoimono-tachi",
                             "english": "Charlotte: Strong People",
@@ -8681,6 +9209,7 @@
                     "media": {
                         "duration": 10,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Fate/stay night: Unlimited Blade Works 2nd Season - sunny day",
                             "english": "Fate/stay night: Unlimited Blade Works 2nd Season - sunny day",
@@ -8706,6 +9235,7 @@
                     "media": {
                         "duration": 45,
                         "episodes": 2,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Grisaia: Phantom Trigger - The Animation",
                             "english": null,
@@ -8731,6 +9261,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 24,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Guru Guru Puchi Anime Gekijou",
                             "english": "Guru Guru Puchi Anime Gekijou",
@@ -8756,6 +9287,7 @@
                     "media": {
                         "duration": 123,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Higashi no Eden Soushuuhen: Air Communication",
                             "english": "Eden of The East Compilation: Air Communication",
@@ -8781,6 +9313,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 1,
+                        "format": "MUSIC",
                         "title": {
                             "romaji": "Higashi no Eden: Falling Down",
                             "english": "Eden of the East: Falling Down",
@@ -8806,6 +9339,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Inu x Boku SS Special",
                             "english": "Inu X Boku Secret Service Special",
@@ -8831,6 +9365,7 @@
                     "media": {
                         "duration": 47,
                         "episodes": 1,
+                        "format": "MOVIE",
                         "title": {
                             "romaji": "Koukaku no Pandora: Ghost Urn",
                             "english": "Pandora in the Crimson Shell: Ghost Urn",
@@ -8856,6 +9391,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Witch Craft Works Specials",
                             "english": null,
@@ -8881,6 +9417,7 @@
                     "media": {
                         "duration": 12,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Mahou Tsukai Nara Miso wo Kue!",
                             "english": null,
@@ -8906,6 +9443,7 @@
                     "media": {
                         "duration": 10,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Fushigi na Somera-chan Special",
                             "english": null,
@@ -8931,6 +9469,7 @@
                     "media": {
                         "duration": 25,
                         "episodes": 1,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Kyousougiga",
                             "english": null,
@@ -8956,6 +9495,7 @@
                     "media": {
                         "duration": 10,
                         "episodes": 5,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Kyousougiga (2012)",
                             "english": null,
@@ -8981,6 +9521,7 @@
                     "media": {
                         "duration": 9,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun S: Motto Marutto Railgun",
                             "english": "A Certain Scientific Railgun S Specials",
@@ -9006,6 +9547,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun: Entenka no Satsuei Model mo Raku Ja Arimasen wa ne.",
                             "english": null,
@@ -9031,6 +9573,7 @@
                     "media": {
                         "duration": 8,
                         "episodes": 2,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun: Motto Marutto Railgun",
                             "english": null,
@@ -9056,6 +9599,7 @@
                     "media": {
                         "duration": 34,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun: Misaka-san wa Ima Chuumoku no Mato Desukara",
                             "english": null,
@@ -9081,6 +9625,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Toaru Kagaku no Railgun S: Daiji na Koto wa Zenbu Sentou ni Osowatta",
                             "english": "A Certain Scientific Railgun S: All the Important Things I Learned in a Bathhouse",
@@ -9106,6 +9651,7 @@
                     "media": {
                         "duration": 4,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Choboraunyopomi Gekijou Dai Ni Maku ai mai mi: Mousou Catastrophe Shoujo Kuriya",
                             "english": "Ai-Mai-Mi: Mousou Catastrophe Shojo Kuriya",
@@ -9131,6 +9677,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 1,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Nisekoimonogatari",
                             "english": "Nisekoimonogatari",
@@ -9156,6 +9703,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Cowboy Bebop: Ein no Natsuyasumi",
                             "english": "Ein's Summer Vacation",
@@ -9181,6 +9729,7 @@
                     "media": {
                         "duration": 1,
                         "episodes": 36,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Machikado Mazoku Mini",
                             "english": null,
@@ -9206,6 +9755,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 1,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Hidamari Sketch Chou Hidamatsuri Special",
                             "english": "August 26: Super Hidamari Festival",
@@ -9231,6 +9781,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 3,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Hidamari Sketch x 365 Specials",
                             "english": null,
@@ -9256,6 +9807,7 @@
                     "media": {
                         "duration": 3,
                         "episodes": 7,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai! Ren Specials",
                             "english": "Love, Chunibyo & Other Delusions - Heart Throb - Specials",
@@ -9281,6 +9833,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 1,
+                        "format": "OVA",
                         "title": {
                             "romaji": "Busou Shoujo Machiavellianism OVA",
                             "english": "Armed Girl's Machiavellism OVA",
@@ -9306,6 +9859,7 @@
                     "media": {
                         "duration": 2,
                         "episodes": 6,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Jinrui wa Suitai Shimashita Specials",
                             "english": "Humanity Has Declined Specials",
@@ -9331,6 +9885,7 @@
                     "media": {
                         "duration": 7,
                         "episodes": 1,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Jinrui wa Suitai Shimashita: Ningen-san no, Yousei-san Memo",
                             "english": null,
@@ -9356,6 +9911,7 @@
                     "media": {
                         "duration": 5,
                         "episodes": 3,
+                        "format": "SPECIAL",
                         "title": {
                             "romaji": "Eiga Chuunibyou demo Koi ga Shitai! Take On Me Kotatsu DE Photo Session",
                             "english": null,
@@ -9381,11 +9937,38 @@
                     "media": {
                         "duration": 1,
                         "episodes": 24,
+                        "format": "ONA",
                         "title": {
                             "romaji": "Chuunibyou demo Koi ga Shitai! Movie: Take On Me Mini-Drama - Koukai Chokuzen no... Kaiko Gekijou",
                             "english": "Love, Chunibyou and Other Delusions Take On Me Mini-Theater",
                             "native": "「映画 中二病でも恋がしたい！ -Take On Me-」ミニドラマ『公開直前の・・・回顧劇場』",
                             "userPreferred": "Chuunibyou demo Koi ga Shitai! Movie: Take On Me Mini-Drama - Koukai Chokuzen no... Kaiko Gekijou"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 100256,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 1,
+                        "episodes": 25,
+                        "format": "ONA",
+                        "title": {
+                            "romaji": "Mahoyome",
+                            "english": null,
+                            "native": "まほよめ",
+                            "userPreferred": "Mahoyome"
                         }
                     }
                 }
@@ -9412,6 +9995,7 @@
                     "media": {
                         "duration": 22,
                         "episodes": 25,
+                        "format": "TV",
                         "title": {
                             "romaji": "Kimi ni Todoke",
                             "english": "Kimi ni Todoke: From Me to You",
@@ -9437,6 +10021,7 @@
                     "media": {
                         "duration": 23,
                         "episodes": 500,
+                        "format": "TV",
                         "title": {
                             "romaji": "Naruto: Shippuuden",
                             "english": "Naruto: Shippuden",
@@ -9462,6 +10047,7 @@
                     "media": {
                         "duration": 24,
                         "episodes": 24,
+                        "format": "TV",
                         "title": {
                             "romaji": "Sunabouzu",
                             "english": "Desert Punk",
@@ -9487,11 +10073,96 @@
                     "media": {
                         "duration": 25,
                         "episodes": 12,
+                        "format": "TV",
                         "title": {
                             "romaji": "High Score Girl",
                             "english": "Hi Score Girl",
                             "native": "ハイスコアガール",
                             "userPreferred": "High Score Girl"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Watching",
+            "status": "CURRENT",
+            "entries": [
+                {
+                    "mediaId": 21108,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 5
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 8,
+                        "episodes": 13,
+                        "format": "TV_SHORT",
+                        "title": {
+                            "romaji": "Wakaba＊Girl",
+                            "english": null,
+                            "native": "わかば＊ガール",
+                            "userPreferred": "Wakaba＊Girl"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20033,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 11
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 4,
+                        "episodes": 13,
+                        "format": "TV_SHORT",
+                        "title": {
+                            "romaji": "Miss Monochrome - The Animation",
+                            "english": "Miss Monochrome - The Animation",
+                            "native": "ミス・モノクローム -The Animation-",
+                            "userPreferred": "Miss Monochrome - The Animation"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 97821,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 11
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 25,
+                        "episodes": 12,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Alice to Zouroku",
+                            "english": "Alice & Zoroku",
+                            "native": "アリスと蔵六",
+                            "userPreferred": "Alice to Zouroku"
                         }
                     }
                 }

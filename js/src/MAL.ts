@@ -70,6 +70,7 @@ export class MangaList {
 
 export class Manga {
     public seriesTitle: Title;
+    public seriesType: string;
     public myStartDate: Mdate;
     public myFinishDate: Mdate;
     public myStatus: number;
@@ -82,6 +83,7 @@ function mangaFromAniList(obj, status: Status): Manga {
 
     return {
         seriesTitle: titleObj,
+        seriesType: obj.media.format,
         myStartDate: dateFromAniList(obj.startedAt),
         myFinishDate: dateFromAniList(obj.completedAt),
         myStatus: status,
@@ -229,6 +231,7 @@ function animeFromAniList(anime, status: Status): Anime {
 
     const tmp = {
         seriesTitle: titleObj,
+        seriesType: anime.media.format,
         myStartDate: dateFromAniList(anime.startedAt),
         myFinishDate: dateFromAniList(anime.completedAt),
         myScore: anime.score,
