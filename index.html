@@ -2,12 +2,12 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Animelist Timeline</title>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
-    <link rel="stylesheet" type="text/css" href="./res/root.css">
-    <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.min.css">
-    <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.theme.min.css">
+    <link href="favicon.png" rel="shortcut icon" type="image/x-icon">
+    <link href="./res/root.css" rel="stylesheet" type="text/css">
+    <link href="./js/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="./js/lib/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
     <!-- <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.structure.min.css"> -->
 </head>
 
@@ -35,51 +35,60 @@
             https://stackoverflow.com/a/29885896/1993919
          -->
 
-        <iframe name="💾" style="display:none" src="about:blank"></iframe>
+        <iframe name="💾" src="about:blank" style="display:none"></iframe>
 
-        <form id="form" target="💾" action="about:blank">
+        <form action="about:blank" id="form" target="💾">
 
             <fieldset style="display: inline;">
                 <legend>List</legend>
 
-                <label>Username
-                    <input id="listName" spellcheck="false" required />
-                </label>
+                <label for="listName">Username</label>
+                <input id="listName" required="" spellcheck="false">
 
-                <label>Media
-                    <select id="list-kind">
-                        <option value="ANIME">Anime</option>
-                        <option value="MANGA">Manga</option>
-                    </select>
-                </label>
+                <label for="list-kind">Media</label>
+                <select id="list-kind">
+                    <option value="ANIME">Anime</option>
+                    <option value="MANGA">Manga</option>
+                </select>
+
 
                 <!-- Only show the list for the current Media kind -->
                 <fieldset id="anime-format">
                     <legend>Format</legend>
                     <!-- Copying descriptions from the api docs. Could tool tip them or something. -->
                     <!-- Anime broadcast on television -->
-                    <label>TV <input type="checkbox" id="format-tv" checked></label>
+                    <label for="format-tv">TV</label>
+                    <input checked="" id="format-tv" type="checkbox">
                     <!-- Anime which are under 15 minutes in length and broadcast on television -->
-                    <label>Short <input type="checkbox" id="format-short" checked></label>
+                    <label for="format-short">Short</label>
+                    <input checked="" id="format-short" type="checkbox">
                     <!-- Anime movies with a theatrical release -->
-                    <label>Movie <input type="checkbox" id="format-movie" checked></label>
+                    <label for="format-movie">Movie</label>
+                    <input checked="" id="format-movie" type="checkbox">
                     <!-- Special episodes that have been included in DVD/Blu-ray releases, picture dramas, pilots, etc -->
-                    <label>Special <input type="checkbox" id="format-special" checked></label>
+                    <label for="format-special">Special</label>
+                    <input checked="" id="format-special" type="checkbox">
                     <!-- (Original Video Animation) Anime that have been released directly on DVD/Blu-ray without originally going through a theatrical release or television broadcast -->
-                    <label>OVA <input type="checkbox" id="format-ova" checked></label>
+                    <label for="format-ova">OVA</label>
+                    <input checked="" id="format-ova" type="checkbox">
                     <!-- (Original Net Animation) Anime that have been originally released online or are only available through streaming services. -->
-                    <label>ONA <input type="checkbox" id="format-ona" checked></label>
+                    <label for="format-ona">ONA</label>
+                    <input checked="" id="format-ona" type="checkbox">
                     <!-- Short anime released as a music video -->
-                    <label>Music <input type="checkbox" id="format-music" checked></label>
+                    <label for="format-music">Music</label>
+                    <input checked="" id="format-music" type="checkbox">
                 </fieldset>
                 <fieldset id="manga-format">
                     <legend>Format</legend>
                     <!-- Professionally published manga with more than one chapter -->
-                    <label>Manga <input type="checkbox" id="format-manga" checked></label>
+                    <label for="format-manga">Manga</label>
+                    <input checked="" id="format-manga" type="checkbox">
                     <!-- Written books released as a series of light novels -->
-                    <label>Novel <input type="checkbox" id="format-novel" checked></label>
+                    <label for="format-novel">Novel</label>
+                    <input checked="" id="format-novel" type="checkbox">
                     <!-- Manga with just one chapter -->
-                    <label>One Shot <input type="checkbox" id="format-one-shot" checked></label>
+                    <label for="format-one-shot">One Shot</label>
+                    <input checked="" id="format-one-shot" type="checkbox">
                 </fieldset>
 
             </fieldset>
@@ -87,48 +96,41 @@
             <fieldset style="display: inline;">
                 <legend>Dates (optional)</legend>
 
-                <label>From
-                    <input id="from" type="date" />
-                </label>
+                <label for="from">From</label>
+                <input id="from" type="date">
 
-                <label>To
-                    <input id="to" type="date" />
-                </label>
+                <label for="to">To</label>
+                <input id="to" type="date">
 
-                <label>Focus on year
-                    <input type="number" id="focus-year" size="4" placeholder="20xx">
-                </label>
+                <label for="focus-year">Focus on year</label>
+                <input id="focus-year" placeholder="20xx" size="4" type="number">
 
             </fieldset>
 
             <fieldset>
-                <label>Language
-                    <select id="language">
-                        <option value="english">English</option>
-                        <option value="romaji">Romaji</option>
-                        <option value="native">Native</option>
-                    </select>
-                </label>
-                <label>Seasons
-                    <input id="seasons" type="checkbox" />
-                </label>
+                <label for="language">Language</label>
+
+                <select id="language">
+                    <option value="english">English</option>
+                    <option value="romaji">Romaji</option>
+                    <option value="native">Native</option>
+                </select>
+
+                <label for="seasons">Seasons</label>
+                <input id="seasons" type="checkbox">
             </fieldset>
 
             <fieldset>
-                <label>Font Size
-                    <input id="font-size" type="number" value="8" size="2" required />
-                </label>
-                <label> Width
-                    <!-- <input id="width" type="number" value="1400" min="200" step="1"  size="4" required /> -->
-                    <!-- Use jqueary-ui spinner for non validated step -->
-                    <input id="width" value="1400" min="200" max="9999" size="4" required />
-                </label>
-                <input id="width-slider" type="range" style="display: block; width: 100%;">
+                <label for="font-size">Font Size</label>
+                <input id="font-size" required="" size="2" type="number" value="8">
+                <label for="width">Width</label>
+                <input id="width" max="9999" min="200" required="" size="4" value="1400">
+                <input id="width-slider" style="display: block; width: 100%;" type="range">
                 <!-- <p id="width-disp">val</p> -->
             </fieldset>
 
-            <button type="submit" id="listFormSubmit" title="Submit">New Timeline</button>
-            <button type="reset" title="Clear form data">Clear Form</button>
+            <button id="listFormSubmit" title="Submit" type="submit">New Timeline</button>
+            <button title="Clear form data" type="reset">Clear Form</button>
 
         </form>
 
@@ -145,7 +147,7 @@
     <p id="json"></p>
 
 
-    <button type="button" id="clearAllTimelines" title="Remove all generated timelines" disabled>Remove all</button>
+    <button disabled="" id="clearAllTimelines" title="Remove all generated timelines" type="button">Remove all</button>
 
     <br>
     <br>
@@ -164,6 +166,8 @@
         window.main = main;
         console.log("main module loaded", new Date().toLocaleTimeString());
     </script>
+
+
 
 
 

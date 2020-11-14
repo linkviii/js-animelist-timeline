@@ -46,3 +46,6 @@ input[type="range"]::-moz-range-progress {
     background-color: rgb(162, 162, 253);
 }
 
+label::after {
+    content: ":";
+}
