@@ -54,8 +54,8 @@ export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
-// export const usingTestData: boolean = false;
-export const usingTestData = true;
+export const usingTestData = false;
+// export const usingTestData: boolean = true
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -207,7 +207,7 @@ $(document).ready(init);
 //  ╚══════╝╚═╝╚══════╝   ╚═╝   ╚══════╝
 export async function getAniList(userName) {
     if (usingTestData) {
-        console.log("Using test data.");
+        console.warn("Using test data.");
         giveFeedback("Using test data");
         const url = "res/anilist_example.json";
         let job = await fetch(url).then(response => response.json());
@@ -271,7 +271,7 @@ export async function getAniList(userName) {
 }
 export async function getMangaList(userName) {
     if (usingTestData) {
-        console.log("Using test manga list data.");
+        console.warn("Using test manga list data.");
         const url = "res/TODO.json";
         let job = await fetch(url).then(response => response.json());
         return job;
