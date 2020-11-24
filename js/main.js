@@ -565,7 +565,8 @@ function displayTimeline(tlConfig, tln) {
     statsDiv.appendChild(statsList);
     let statsLi = document.createElement("li");
     statsList.appendChild(statsLi);
-    statsLi.textContent = `${tln.mediaSet.length} ${tlConfig.listKind.toLowerCase()}`;
+    const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
+    statsLi.textContent = `${tln.mediaSet.length} ${tlConfig.listKind.toLowerCase()} across ${elapsedDays} days`;
     if (ATL.isAnimeList(tln.boundedSet, tlConfig.listKind)) {
         let boundedMinutes = 0;
         for (let media of tln.boundedSet) {
@@ -776,6 +777,13 @@ export function minutesToString(min) {
             return `${h}H ${m}M`;
     }
     return `${m} minutes`;
+}
+export function daysBetween(first, second) {
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    const diff = (second.valueOf() - first.valueOf());
+    const milliInDay = (1000 * 60 * 60 * 24);
+    return Math.abs(Math.round(diff / milliInDay));
 }
 //
 // Data cleaning
