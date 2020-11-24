@@ -162,6 +162,13 @@ export class AnimeListTimeline {
 
     public readonly userName: string;
 
+    // All the anime in the timeline
+    public mediaSet: Array<MAL.Media>;
+    // Start and End date in date range
+    public boundedSet: Array<MAL.Media>;
+    // Not that
+    public unboundedSet: Array<MAL.Media>;
+
 
     static dateInBounds(date: MAL.Mdate, lb: MAL.Mdate, rb: MAL.Mdate): boolean {
         if (date.isNullDate())
@@ -177,7 +184,12 @@ export class AnimeListTimeline {
 
 
 
-    constructor(mal: MAL.AnimeList | MAL.MangaList, tlConfig: AnimeListTimelineConfig) {
+    constructor(mal: MAL.MediaList, tlConfig: AnimeListTimelineConfig) {
+
+
+        this.mediaSet = [];
+        this.boundedSet = [];
+        this.unboundedSet = [];
 
         this.userName = mal.user.userName;
 
@@ -219,6 +231,8 @@ export class AnimeListTimeline {
                 continue;
             }
 
+
+
             if (bounds[0]) {
                 this.firstDate = anime.myStartDate.extremeOfDates(this.firstDate, false);
                 this.lastDate = anime.myStartDate.extremeOfDates(this.lastDate);
@@ -228,10 +242,14 @@ export class AnimeListTimeline {
                 this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
             }
 
+            this.mediaSet.push(anime);
 
 
             let binged = false;
             if (boundsCount == 2) {
+
+                this.boundedSet.push(anime);
+
                 const cmp = anime.myStartDate.compare(anime.myFinishDate);
 
                 if (cmp > 0) {
@@ -239,6 +257,9 @@ export class AnimeListTimeline {
                 }
 
                 if (cmp === 0) { binged = true; }
+            } else {
+                this.unboundedSet.push(anime);
+
             }
 
 
@@ -341,6 +362,10 @@ export class AnimeListTimeline {
     }
 
     //
+}
+
+export function isAnimeList(list: MAL.MediaArray, listKind: string): list is MAL.Anime[] {
+    return listKind === "ANIME";
 }
 
 //

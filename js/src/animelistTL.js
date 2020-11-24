@@ -106,6 +106,9 @@ export const AnimeListTimelineConfigKeys = {
  */
 export class AnimeListTimeline {
     constructor(mal, tlConfig) {
+        this.mediaSet = [];
+        this.boundedSet = [];
+        this.unboundedSet = [];
         this.userName = mal.user.userName;
         this.firstDate = MAL.nullDate;
         this.lastDate = MAL.nullDate;
@@ -140,8 +143,10 @@ export class AnimeListTimeline {
                 this.firstDate = anime.myFinishDate.extremeOfDates(this.firstDate, false);
                 this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
             }
+            this.mediaSet.push(anime);
             let binged = false;
             if (boundsCount == 2) {
+                this.boundedSet.push(anime);
                 const cmp = anime.myStartDate.compare(anime.myFinishDate);
                 if (cmp > 0) {
                     console.log(title, ": Finished before start.");
@@ -149,6 +154,9 @@ export class AnimeListTimeline {
                 if (cmp === 0) {
                     binged = true;
                 }
+            }
+            else {
+                this.unboundedSet.push(anime);
             }
             // Todo: Figure out how to deal with known start/stop but out of range
             if (binged) {
@@ -236,6 +244,9 @@ export class AnimeListTimeline {
     getDescriptor() {
         return [this.userName, this.firstDate.fixedDateStr, this.lastDate.fixedDateStr].join("_");
     }
+}
+export function isAnimeList(list, listKind) {
+    return listKind === "ANIME";
 }
 //
 //# sourceMappingURL=animelistTL.js.map

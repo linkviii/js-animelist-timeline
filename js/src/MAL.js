@@ -62,6 +62,7 @@ function mangaFromAniList(obj, status) {
         myStartDate: dateFromAniList(obj.startedAt),
         myFinishDate: dateFromAniList(obj.completedAt),
         myStatus: status,
+        myId: obj.mediaId,
     };
 }
 export function mangaListFromAniList(obj, userName) {

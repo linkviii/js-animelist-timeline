@@ -34,6 +34,7 @@
 //import animelistTL.ts
 import { AnimeListTimeline, AnimeListTimelineConfigKeys, //
 NoDatedAnimeError } from "./src/animelistTL.js";
+import * as ATL from "./src/animelistTL.js";
 //import MAL.ts
 import * as MAL from "./src/MAL.js";
 //import timeline.ts
@@ -69,8 +70,8 @@ const userAnimeCache = new Map();
 const userMangaCache = new Map();
 let timelineCount = 0;
 // global for ease of testing. Used as globals.
-export let username;
-export let tln;
+// export let username: string;
+// export let tln: AnimeListTimeline;
 // ██████╗  █████╗  ██████╗ ███████╗    ██╗      ██████╗  █████╗ ██████╗ 
 // ██╔══██╗██╔══██╗██╔════╝ ██╔════╝    ██║     ██╔═══██╗██╔══██╗██╔══██╗
 // ██████╔╝███████║██║  ███╗█████╗      ██║     ██║   ██║███████║██║  ██║
@@ -359,7 +360,7 @@ function listFormSubmit(e) {
 // main II
 // Form api requests and call
 async function beforeAjax() {
-    username = $("#listName").val().trim();
+    const username = $("#listName").val().trim();
     const listKind = $("#list-kind").val();
     if (username === "") {
         reportNoUser();
@@ -373,7 +374,7 @@ async function beforeAjax() {
                 if (data) {
                     console.info([username, "'s data loaded from cache."].join(""));
                     if (data instanceof MAL.BadUsernameError) {
-                        reportBadUser();
+                        reportBadUser(username);
                     }
                     else {
                         prepareTimeline(data);
@@ -383,7 +384,7 @@ async function beforeAjax() {
                 const aniList = await getAniList(username);
                 debugData["aniList"] = aniList;
                 if (aniList instanceof MAL.BadUsernameError) {
-                    reportBadUser();
+                    reportBadUser(username);
                     userAnimeCache.set(username, aniList);
                     return;
                 }
@@ -400,7 +401,7 @@ async function beforeAjax() {
                 if (data) {
                     console.info([username, "'s data loaded from cache."].join(""));
                     if (data instanceof MAL.BadUsernameError) {
-                        reportBadUser();
+                        reportBadUser(username);
                     }
                     else {
                         prepareTimeline(data);
@@ -410,7 +411,7 @@ async function beforeAjax() {
                 const aniList = await getMangaList(username);
                 debugData["aniList"] = aniList;
                 if (aniList instanceof MAL.BadUsernameError) {
-                    reportBadUser();
+                    reportBadUser(username);
                     userMangaCache.set(username, aniList);
                     return;
                 }
@@ -434,6 +435,7 @@ function prepareTimeline(mal) {
     endDate = fixDate(endDate, 1);
     const widthStr = $("#width").val().trim();
     const language = $("#language").val();
+    const username = $("#listName").val().trim();
     let width;
     if (isNormalInteger(widthStr)) {
         width = parseInt(widthStr);
@@ -482,7 +484,9 @@ function prepareTimeline(mal) {
     updateUri(tlConfig);
     try {
         //global
-        tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+        const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+        displayTimeline(tlConfig, tln);
+        return;
     }
     catch (err) {
         if (err instanceof NoDatedAnimeError) {
@@ -493,12 +497,11 @@ function prepareTimeline(mal) {
             throw err;
         }
     }
-    displayTimeline(tlConfig);
 }
 // main VI
 // write the timeline to the document
 // pre: tln is a valid AnimeListTimeline object
-function displayTimeline(tlConfig) {
+function displayTimeline(tlConfig, tln) {
     /*
      This comment could lie
      and so could any other
@@ -551,6 +554,31 @@ function displayTimeline(tlConfig) {
     if (debug) {
         controls.appendChild(wrapListItem(jsonButton));
     }
+    // stats
+    const statsDetails = document.createElement("details");
+    const statsSummary = document.createElement("summary");
+    statsDetails.appendChild(statsSummary);
+    statsSummary.textContent = "Stats";
+    const statsDiv = document.createElement("div");
+    statsDetails.appendChild(statsDiv);
+    const statsList = document.createElement("ul");
+    statsDiv.appendChild(statsList);
+    let statsLi = document.createElement("li");
+    statsList.appendChild(statsLi);
+    statsLi.textContent = `${tln.mediaSet.length} ${tlConfig.listKind.toLowerCase()}`;
+    if (ATL.isAnimeList(tln.boundedSet, tlConfig.listKind)) {
+        let boundedMinutes = 0;
+        for (let media of tln.boundedSet) {
+            if (media.seriesEpisodes && media.seriesEpisodesDuration) {
+                const mediaMin = media.seriesEpisodes * media.seriesEpisodesDuration;
+                boundedMinutes += mediaMin;
+            }
+        }
+        statsLi = document.createElement("li");
+        statsList.appendChild(statsLi);
+        statsLi.textContent = `${minutesToString(boundedMinutes)} watched`;
+    }
+    //
     //make timeline container
     const tl = document.createElement("div");
     tl.className = "timeline";
@@ -561,6 +589,7 @@ function displayTimeline(tlConfig) {
     tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
+    tlArea.appendChild(statsDetails);
     //make timeline after it has a valid anchor in the doc
     const svg = new Timeline(tln.data, tl.id);
     svg.build();
@@ -615,7 +644,7 @@ function drawHoursWatched(mal) {
 function reportNoUser() {
     usernameFeedback("No username given.");
 }
-function reportBadUser() {
+function reportBadUser(username) {
     usernameFeedback(username + " is not a valid AniList username.");
 }
 function reportNoDated() {
@@ -735,6 +764,19 @@ export function wrapListItem(elm) {
     li.appendChild(elm);
     return li;
 }
+export function minutesToString(min) {
+    let h = Math.floor(min / 60);
+    const d = Math.floor(h / 24);
+    h = h % 24;
+    const m = min % 60;
+    if (h > 0) {
+        if (d > 0)
+            return `${d}D ${h}H ${m}M`;
+        else
+            return `${h}H ${m}M`;
+    }
+    return `${m} minutes`;
+}
 //
 // Data cleaning
 //
@@ -849,7 +891,7 @@ export function updateUri(param) {
     const kind = $("#list-kind").val();
     const keys = AnimeListTimelineConfigKeys;
     let str = window.location.search;
-    str = replaceQueryParam(keys.userName, username, str);
+    str = replaceQueryParam(keys.userName, param.userName, str);
     str = replaceQueryParam(keys.width, param.width.toString(), str);
     str = replaceQueryParam(keys.minDate, startDate, str);
     str = replaceQueryParam(keys.maxDate, endDate, str);

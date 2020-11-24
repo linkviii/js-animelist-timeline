@@ -110,8 +110,8 @@ let timelineCount: number = 0;
 
 
 // global for ease of testing. Used as globals.
-export let username: string;
-export let tln: AnimeListTimeline;
+// export let username: string;
+// export let tln: AnimeListTimeline;
 
 // ██████╗  █████╗  ██████╗ ███████╗    ██╗      ██████╗  █████╗ ██████╗ 
 // ██╔══██╗██╔══██╗██╔════╝ ██╔════╝    ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -494,7 +494,7 @@ function listFormSubmit(e: Event): void {
 // main II
 // Form api requests and call
 async function beforeAjax() {
-    username = ($("#listName").val() as string).trim();
+    const username = ($("#listName").val() as string).trim();
     const listKind = $("#list-kind").val() as string;
 
 
@@ -513,7 +513,7 @@ async function beforeAjax() {
                 if (data) {
                     console.info([username, "'s data loaded from cache."].join(""));
                     if (data instanceof MAL.BadUsernameError) {
-                        reportBadUser();
+                        reportBadUser(username);
                     } else {
                         prepareTimeline(data);
                     }
@@ -525,7 +525,7 @@ async function beforeAjax() {
                 debugData["aniList"] = aniList;
 
                 if (aniList instanceof MAL.BadUsernameError) {
-                    reportBadUser();
+                    reportBadUser(username);
                     userAnimeCache.set(username, aniList);
                     return;
                 }
@@ -544,7 +544,7 @@ async function beforeAjax() {
                 if (data) {
                     console.info([username, "'s data loaded from cache."].join(""));
                     if (data instanceof MAL.BadUsernameError) {
-                        reportBadUser();
+                        reportBadUser(username);
                     } else {
                         prepareTimeline(data);
                     }
@@ -556,7 +556,7 @@ async function beforeAjax() {
                 debugData["aniList"] = aniList;
 
                 if (aniList instanceof MAL.BadUsernameError) {
-                    reportBadUser();
+                    reportBadUser(username);
                     userMangaCache.set(username, aniList);
                     return;
                 }
@@ -597,6 +597,9 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
     const widthStr: string = ($("#width").val() as string).trim();
 
     const language = $("#language").val() as string;
+
+    const username = ($("#listName").val() as string).trim();
+
 
     let width: number;
     if (isNormalInteger(widthStr)) {
@@ -657,7 +660,9 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
 
     try {
         //global
-        tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+        const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+        displayTimeline(tlConfig, tln);
+        return;
 
     } catch (err) {
         if (err instanceof NoDatedAnimeError) {
@@ -668,13 +673,12 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
         }
     }
 
-    displayTimeline(tlConfig);
 }
 
 // main VI
 // write the timeline to the document
 // pre: tln is a valid AnimeListTimeline object
-function displayTimeline(tlConfig: AnimeListTimelineConfig): void {
+function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeline): void {
 
     /*
      This comment could lie
@@ -738,6 +742,39 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig): void {
     }
 
 
+    // stats
+    const statsDetails = document.createElement("details");
+
+    const statsSummary = document.createElement("summary");
+    statsDetails.appendChild(statsSummary);
+    statsSummary.textContent = "Stats";
+
+    const statsDiv = document.createElement("div");
+    statsDetails.appendChild(statsDiv);
+
+    const statsList = document.createElement("ul");
+    statsDiv.appendChild(statsList);
+
+    let statsLi = document.createElement("li");
+    statsList.appendChild(statsLi);
+    statsLi.textContent = `${tln.mediaSet.length} ${tlConfig.listKind.toLowerCase()}`;
+
+    if (ATL.isAnimeList(tln.boundedSet, tlConfig.listKind)) {
+        let boundedMinutes = 0;
+        for (let media of tln.boundedSet) {
+            if (media.seriesEpisodes && media.seriesEpisodesDuration) {
+                const mediaMin = media.seriesEpisodes * media.seriesEpisodesDuration;
+                boundedMinutes += mediaMin;
+            }
+        }
+        statsLi = document.createElement("li");
+        statsList.appendChild(statsLi);
+        statsLi.textContent = `${minutesToString(boundedMinutes)} watched`
+    }
+
+
+    //
+
     //make timeline container
     const tl: MyContainer = document.createElement("div");
     tl.className = "timeline";
@@ -750,6 +787,7 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig): void {
     tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
+    tlArea.appendChild(statsDetails);
 
     //make timeline after it has a valid anchor in the doc
     const svg: Timeline = new Timeline(tln.data, tl.id);
@@ -820,7 +858,7 @@ function reportNoUser() {
     usernameFeedback("No username given.");
 }
 
-function reportBadUser(): void {
+function reportBadUser(username: string): void {
     usernameFeedback(username + " is not a valid AniList username.");
 }
 
@@ -978,6 +1016,23 @@ export function wrapListItem(elm: Element) {
     return li;
 }
 
+export function minutesToString(min: number): string {
+    let h = Math.floor(min / 60);
+    const d = Math.floor(h / 24);
+    h = h % 24;
+
+    const m = min % 60;
+
+    if (h > 0) {
+        if (d > 0)
+            return `${d}D ${h}H ${m}M`;
+        else
+            return `${h}H ${m}M`;
+    }
+    return `${m} minutes`;
+
+}
+
 //
 // Data cleaning
 //
@@ -1104,7 +1159,7 @@ export function updateUri(param: AnimeListTimelineConfig): void {
     let str = window.location.search;
 
 
-    str = replaceQueryParam(keys.userName, username, str);
+    str = replaceQueryParam(keys.userName, param.userName, str);
     str = replaceQueryParam(keys.width, param.width.toString(), str);
     str = replaceQueryParam(keys.minDate, startDate, str);
     str = replaceQueryParam(keys.maxDate, endDate, str);

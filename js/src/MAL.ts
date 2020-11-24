@@ -74,6 +74,8 @@ export class Manga {
     public myStartDate: Mdate;
     public myFinishDate: Mdate;
     public myStatus: number;
+    // public seriesAnimedbId: number;
+    public myId: number;
 
 }
 
@@ -87,7 +89,7 @@ function mangaFromAniList(obj, status: Status): Manga {
         myStartDate: dateFromAniList(obj.startedAt),
         myFinishDate: dateFromAniList(obj.completedAt),
         myStatus: status,
-
+        myId: obj.mediaId,
     }
 }
 
@@ -390,3 +392,7 @@ export class Mdate {
 export const rawNullDate: string = "0000-00-00";
 export const nullDate: Mdate = new Mdate(rawNullDate);
 
+
+export type Media = Anime | Manga;
+export type MediaArray = Anime[] | Manga[];
+export type MediaList = AnimeList | MangaList;
