@@ -42,6 +42,7 @@ import { Timeline } from "./lib/timeline.js";
 //import jquery
 import "./jquery.js";
 import "./lib/jquery-ui/jquery-ui.min.js";
+import "./lib/chartjs/Chart.bundle.js";
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
 // ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
@@ -391,8 +392,8 @@ async function beforeAjax() {
                 const animeList = MAL.animeListFromAniList(aniList, username);
                 debugData["list"] = animeList;
                 userAnimeCache.set(username, animeList);
-                // drawHoursWatched(animeList);
-                prepareTimeline(animeList);
+                drawHoursWatched(animeList);
+                // prepareTimeline(animeList);
             }
             break;
         case "MANGA":
@@ -601,6 +602,11 @@ function displayTimeline(tlConfig, tln) {
 // End main chain
 // ***
 function drawHoursWatched(mal) {
+    const dateFormat = (date) => strftime.utc()("%Y-%m-%d", date);
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 500;
+    document.getElementById("tls").appendChild(canvas);
     const anime = [];
     const dateSet = new Set();
     // const dateSet: Set<number> = new Set();
@@ -615,7 +621,14 @@ function drawHoursWatched(mal) {
         anime.push(entry);
         dateSet.add(entry.myStartDate.fixedDateStr);
         dateSet.add(entry.myFinishDate.fixedDateStr);
+        const before = new Date(entry.myStartDate.date);
+        const after = new Date(entry.myFinishDate.date);
+        before.setDate(before.getDate() - 1);
+        after.setDate(after.getDate() + 1);
+        dateSet.add(dateFormat(before));
+        // dateSet.add(dateFormat(after));
     }
+    anime.sort((a, b) => a.myStartDate.fixedDateStr.localeCompare(b.myStartDate.fixedDateStr));
     const dates = Array.from(dateSet);
     dates.sort(); // Probably fine on date strings
     // const watchTime:number[] = [];
@@ -624,14 +637,141 @@ function drawHoursWatched(mal) {
         // watchTime.push(0);
         watchTime.set(d, 0);
     }
+    // Dump all the minutes into the start day
+    // for (let entry of anime) {
+    //     const duration = entry.seriesEpisodes * entry.seriesEpisodesDuration;
+    //     watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
+    // }
+    // Average out time by day?
     for (let entry of anime) {
         const duration = entry.seriesEpisodes * entry.seriesEpisodesDuration;
-        watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
+        // let entryDays = daysBetween(entry.myStartDate.date, entry.myFinishDate.date);
+        let entryDays = daysBetween(entry.myStartDate.date, entry.myFinishDate.date) + 1;
+        // if (entryDays < 1) entryDays = 1;
+        const minPerDay = duration / entryDays;
+        // let prevDay = entry.myStartDate.fixedDateStr;
+        let prevDay = dates[0];
+        let deb = false;
+        const debugName = entry.seriesTitle.preferredEnglish();
+        if (debugName === "Steins;Gate") {
+            console.debug(debugName);
+            console.debug("start: ", entry.myStartDate.fixedDateStr);
+            console.debug("finish:", entry.myFinishDate.fixedDateStr);
+            deb = true;
+        }
+        // const sortedKeys = Array.from(watchTime.keys()).sort();
+        if (entry.myStartDate.fixedDateStr === entry.myFinishDate.fixedDateStr) {
+            const value = duration / 60;
+            updateKey(watchTime, entry.myFinishDate.fixedDateStr, value);
+        }
+        else
+            for (let keyDate of dates) {
+                if (entry.myStartDate.compare(keyDate) > 0) {
+                    prevDay = keyDate;
+                    continue;
+                }
+                else if (entry.myFinishDate.compare(keyDate) < 0) {
+                    break;
+                }
+                // let days = daysBetween(prevDay, keyDate) + 1;
+                let days = daysBetween(prevDay, keyDate);
+                if (deb) {
+                    console.debug("Prev:", prevDay);
+                    console.debug("now: ", keyDate);
+                    console.debug("change:", days);
+                }
+                let value = 0;
+                if (days != 0) {
+                    value = minPerDay / 60;
+                    // value = days * minPerDay / 60;
+                    // value = days / entryDays * minPerDay / 60;
+                    // value = entryDays / days * minPerDay / 60;
+                }
+                updateKey(watchTime, keyDate, value);
+                prevDay = keyDate;
+            }
+        // watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
     }
-    watchTime.delete(dates[0]);
+    // watchTime.delete(dates[0]);
+    let chartData = [];
+    const sortedEntries = Array.from(watchTime.entries());
+    sortedEntries.sort((a, b) => a[0].localeCompare(b[0]));
+    for (let i = 0; i < sortedEntries.length; ++i) {
+        const [date, mins] = sortedEntries[i];
+        const t = new Date(date);
+        t.setMinutes(t.getMinutes() + t.getTimezoneOffset());
+        chartData.push({ t: t, y: mins });
+        const t2 = new Date(t);
+        t2.setHours(t2.getHours() + 23);
+        chartData.push({ t: t2, y: mins });
+        if (i < sortedEntries.length - 1) {
+            // const dayAfter = new Date(date);
+            // dayAfter.setDate(dayAfter.getDate() + 1);
+            const next = sortedEntries[i + 1];
+            // if (next[0] !== dateFormat(dayAfter)) {
+            //     chartData.push({ t: dayAfter, y: next[1] });
+            // }
+            const t3 = new Date(t2);
+            t3.setMinutes(t3.getMinutes() + 30);
+            chartData.push({ t: t3, y: next[1] });
+        }
+    }
+    // chartData = [{t: new Date("2016-01-01"), y:1},{t: new Date("2016-01-02"), y:0},{t: new Date("2016-01-03"), y:2},]
     const maxDay = [...watchTime.entries()]
         .reduce((a, e) => e[1] > a[1] ? e : a);
     console.log(maxDay);
+    const chart = new Chart(canvas, {
+        type: 'line',
+        // label: 'Watch time',
+        data: {
+            datasets: [{
+                    label: 'Anime',
+                    data: chartData,
+                    lineTension: 0,
+                    pointRadius: 0,
+                }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                        type: 'time',
+                        time: {
+                            minUnit: 'day',
+                        },
+                        ticks: {
+                            min: $("#from").val(),
+                            max: $("#to").val(),
+                        },
+                    }],
+                yAxes: [{
+                        ticks: {
+                        // max: 18,
+                        }
+                    }],
+            },
+            tooltips: {
+                intersect: false,
+                callbacks: {
+                    title: function (tooltipItem, data) {
+                        const index = tooltipItem[0].index;
+                        const point = data.datasets[0].data[index];
+                        const date = point.t || point.x;
+                        return date.toDateString();
+                    },
+                    label: function (tooltipItem, data) {
+                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        // label += Math.round(tooltipItem.yLabel * 100) / 100;
+                        label += minutesToString(tooltipItem.yLabel * 60);
+                        return label;
+                    },
+                },
+            },
+        }
+    });
+    console.log("made plot?");
 }
 // ███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗
 // ██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝██║ ██╔╝
@@ -766,6 +906,7 @@ export function wrapListItem(elm) {
     return li;
 }
 export function minutesToString(min) {
+    min = Math.round(min);
     let h = Math.floor(min / 60);
     const d = Math.floor(h / 24);
     h = h % 24;
@@ -778,7 +919,16 @@ export function minutesToString(min) {
     }
     return `${m} minutes`;
 }
+export function updateKey(map, key, value) {
+    map.set(key, map.get(key) + value);
+}
 export function daysBetween(first, second) {
+    if (typeof first === 'string') {
+        first = new Date(first);
+    }
+    if (typeof second === 'string') {
+        second = new Date(second);
+    }
     // Take the difference between the dates and divide by milliseconds per day.
     // Round to nearest whole number to deal with DST.
     const diff = (second.valueOf() - first.valueOf());
