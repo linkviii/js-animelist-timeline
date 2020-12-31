@@ -56,8 +56,8 @@ export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
-export const usingTestData = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData = true;
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -378,7 +378,7 @@ async function beforeAjax() {
                         reportBadUser(username);
                     }
                     else {
-                        prepareTimeline(data);
+                        preparePlot(data);
                     }
                     return;
                 }
@@ -392,8 +392,7 @@ async function beforeAjax() {
                 const animeList = MAL.animeListFromAniList(aniList, username);
                 debugData["list"] = animeList;
                 userAnimeCache.set(username, animeList);
-                drawHoursWatched(animeList);
-                // prepareTimeline(animeList);
+                preparePlot(animeList);
             }
             break;
         case "MANGA":
@@ -405,7 +404,7 @@ async function beforeAjax() {
                         reportBadUser(username);
                     }
                     else {
-                        prepareTimeline(data);
+                        preparePlot(data);
                     }
                     return;
                 }
@@ -419,7 +418,7 @@ async function beforeAjax() {
                 const mangaList = MAL.mangaListFromAniList(aniList, username);
                 debugData["list"] = mangaList;
                 userMangaCache.set(username, mangaList);
-                prepareTimeline(mangaList);
+                preparePlot(mangaList);
             }
             break;
         default:
@@ -428,7 +427,7 @@ async function beforeAjax() {
 }
 // main V
 // Use doc to build timeline
-function prepareTimeline(mal) {
+function preparePlot(mal) {
     const listKind = $("#list-kind").val();
     let startDate = $("#from").val().trim();
     let endDate = $("#to").val().trim();
@@ -437,6 +436,7 @@ function prepareTimeline(mal) {
     const widthStr = $("#width").val().trim();
     const language = $("#language").val();
     const username = $("#listName").val().trim();
+    const plotKind = document.querySelector('input[name="plot"]:checked').id;
     let width;
     if (isNormalInteger(widthStr)) {
         width = parseInt(widthStr);
@@ -483,20 +483,25 @@ function prepareTimeline(mal) {
             break;
     }
     updateUri(tlConfig);
-    try {
-        //global
-        const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
-        displayTimeline(tlConfig, tln);
-        return;
-    }
-    catch (err) {
-        if (err instanceof NoDatedAnimeError) {
-            reportNoDated();
+    if (plotKind === "timeline") {
+        try {
+            //global
+            const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+            displayTimeline(tlConfig, tln);
             return;
         }
-        else {
-            throw err;
+        catch (err) {
+            if (err instanceof NoDatedAnimeError) {
+                reportNoDated();
+                return;
+            }
+            else {
+                throw err;
+            }
         }
+    }
+    else {
+        drawHoursWatched(tlConfig, mal);
     }
 }
 // main VI
@@ -601,12 +606,25 @@ function displayTimeline(tlConfig, tln) {
 // ***
 // End main chain
 // ***
-function drawHoursWatched(mal) {
+function drawHoursWatched(tlConfig, mal) {
     const dateFormat = (date) => strftime.utc()("%Y-%m-%d", date);
     const canvas = document.createElement("canvas");
     canvas.width = 1200;
-    canvas.height = 500;
-    document.getElementById("tls").appendChild(canvas);
+    canvas.height = 500; // Uhhhh
+    const tlArea = document.createElement("div");
+    const label = document.createElement("h3");
+    label.textContent = `${tlConfig.userName}'s hours watched`;
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "X";
+    removeButton.setAttribute("title", "Remove graph from the page");
+    removeButton.addEventListener("click", removeTl);
+    const controls = document.createElement("ul");
+    controls.className = "buttonList";
+    controls.appendChild(wrapListItem(removeButton));
+    tlArea.appendChild(label);
+    tlArea.appendChild(controls);
+    tlArea.appendChild(canvas);
+    document.getElementById("tls").prepend(tlArea);
     const anime = [];
     const dateSet = new Set();
     // const dateSet: Set<number> = new Set();
@@ -654,9 +672,9 @@ function drawHoursWatched(mal) {
         let deb = false;
         const debugName = entry.seriesTitle.preferredEnglish();
         if (debugName === "Steins;Gate") {
-            console.debug(debugName);
-            console.debug("start: ", entry.myStartDate.fixedDateStr);
-            console.debug("finish:", entry.myFinishDate.fixedDateStr);
+            // console.debug(debugName);
+            // console.debug("start: ", entry.myStartDate.fixedDateStr)
+            // console.debug("finish:", entry.myFinishDate.fixedDateStr)
             deb = true;
         }
         // const sortedKeys = Array.from(watchTime.keys()).sort();
@@ -676,9 +694,9 @@ function drawHoursWatched(mal) {
                 // let days = daysBetween(prevDay, keyDate) + 1;
                 let days = daysBetween(prevDay, keyDate);
                 if (deb) {
-                    console.debug("Prev:", prevDay);
-                    console.debug("now: ", keyDate);
-                    console.debug("change:", days);
+                    // console.debug("Prev:", prevDay)
+                    // console.debug("now: ", keyDate)
+                    // console.debug("change:", days)
                 }
                 let value = 0;
                 if (days != 0) {
@@ -690,9 +708,7 @@ function drawHoursWatched(mal) {
                 updateKey(watchTime, keyDate, value);
                 prevDay = keyDate;
             }
-        // watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
     }
-    // watchTime.delete(dates[0]);
     let chartData = [];
     const sortedEntries = Array.from(watchTime.entries());
     sortedEntries.sort((a, b) => a[0].localeCompare(b[0]));
@@ -717,9 +733,9 @@ function drawHoursWatched(mal) {
         }
     }
     // chartData = [{t: new Date("2016-01-01"), y:1},{t: new Date("2016-01-02"), y:0},{t: new Date("2016-01-03"), y:2},]
-    const maxDay = [...watchTime.entries()]
-        .reduce((a, e) => e[1] > a[1] ? e : a);
-    console.log(maxDay);
+    // const maxDay = [...watchTime.entries()]
+    //     .reduce((a, e) => e[1] > a[1] ? e : a);
+    // console.log(maxDay);
     const chart = new Chart(canvas, {
         type: 'line',
         // label: 'Watch time',
@@ -954,6 +970,7 @@ export function fixDate(date, minmax) {
     const maxYear = 2030; //For now its sane
     const test = dateRegex.test(date);
     if (!test) {
+        // Return an error instead?
         date = MAL.rawNullDate;
     }
     let ys;

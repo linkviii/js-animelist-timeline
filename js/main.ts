@@ -98,8 +98,8 @@ export const debug: boolean = false;
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
 
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -527,7 +527,7 @@ async function beforeAjax() {
                     if (data instanceof MAL.BadUsernameError) {
                         reportBadUser(username);
                     } else {
-                        prepareTimeline(data);
+                        preparePlot(data);
                     }
                     return;
                 }
@@ -546,8 +546,8 @@ async function beforeAjax() {
                 debugData["list"] = animeList;
 
                 userAnimeCache.set(username, animeList);
-                drawHoursWatched(animeList);
-                // prepareTimeline(animeList);
+                preparePlot(animeList);
+
             }
             break;
         case "MANGA":
@@ -558,7 +558,7 @@ async function beforeAjax() {
                     if (data instanceof MAL.BadUsernameError) {
                         reportBadUser(username);
                     } else {
-                        prepareTimeline(data);
+                        preparePlot(data);
                     }
                     return;
                 }
@@ -577,7 +577,7 @@ async function beforeAjax() {
                 debugData["list"] = mangaList;
 
                 userMangaCache.set(username, mangaList);
-                prepareTimeline(mangaList);
+                preparePlot(mangaList);
             }
             break;
         default:
@@ -594,7 +594,7 @@ async function beforeAjax() {
 
 // main V
 // Use doc to build timeline
-function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
+function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const listKind = $("#list-kind").val() as string;
 
@@ -611,6 +611,8 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
     const language = $("#language").val() as string;
 
     const username = ($("#listName").val() as string).trim();
+
+    const plotKind = document.querySelector('input[name="plot"]:checked').id;
 
 
     let width: number;
@@ -670,19 +672,24 @@ function prepareTimeline(mal: MAL.AnimeList | MAL.MangaList): void {
 
     updateUri(tlConfig);
 
-    try {
-        //global
-        const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
-        displayTimeline(tlConfig, tln);
-        return;
+    if (plotKind === "timeline") {
 
-    } catch (err) {
-        if (err instanceof NoDatedAnimeError) {
-            reportNoDated();
+        try {
+            //global
+            const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+            displayTimeline(tlConfig, tln);
             return;
-        } else {
-            throw err;
+
+        } catch (err) {
+            if (err instanceof NoDatedAnimeError) {
+                reportNoDated();
+                return;
+            } else {
+                throw err;
+            }
         }
+    } else {
+        drawHoursWatched(tlConfig, <MAL.AnimeList>mal);
     }
 
 }
@@ -815,16 +822,39 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 // End main chain
 // ***
 
-function drawHoursWatched(mal: MAL.AnimeList): void {
+function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList): void {
 
 
     const dateFormat = (date: Date) => strftime.utc()("%Y-%m-%d", date);
 
     const canvas = document.createElement("canvas");
     canvas.width = 1200;
-    canvas.height = 500;
+    canvas.height = 500; // Uhhhh
 
-    document.getElementById("tls").appendChild(canvas);
+    const tlArea = document.createElement("div");
+
+
+    const label = document.createElement("h3");
+    label.textContent = `${tlConfig.userName}'s hours watched`;
+
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "X";
+    removeButton.setAttribute("title", "Remove graph from the page");
+    removeButton.addEventListener("click", removeTl);
+
+    const controls = document.createElement("ul");
+    controls.className = "buttonList";
+
+    controls.appendChild(wrapListItem(removeButton));
+
+
+
+    tlArea.appendChild(label);
+    tlArea.appendChild(controls);
+    tlArea.appendChild(canvas);
+
+
+    document.getElementById("tls").prepend(tlArea);
 
     const anime: MAL.Anime[] = [];
     const dateSet: Set<string> = new Set();
@@ -883,9 +913,9 @@ function drawHoursWatched(mal: MAL.AnimeList): void {
         let deb = false;
         const debugName = entry.seriesTitle.preferredEnglish();
         if (debugName === "Steins;Gate") {
-            console.debug(debugName);
-            console.debug("start: ", entry.myStartDate.fixedDateStr)
-            console.debug("finish:", entry.myFinishDate.fixedDateStr)
+            // console.debug(debugName);
+            // console.debug("start: ", entry.myStartDate.fixedDateStr)
+            // console.debug("finish:", entry.myFinishDate.fixedDateStr)
             deb = true;
         }
 
@@ -907,9 +937,9 @@ function drawHoursWatched(mal: MAL.AnimeList): void {
             // let days = daysBetween(prevDay, keyDate) + 1;
             let days = daysBetween(prevDay, keyDate);
             if (deb) {
-                console.debug("Prev:", prevDay)
-                console.debug("now: ", keyDate)
-                console.debug("change:", days)
+                // console.debug("Prev:", prevDay)
+                // console.debug("now: ", keyDate)
+                // console.debug("change:", days)
             }
 
             let value = 0;
@@ -927,10 +957,9 @@ function drawHoursWatched(mal: MAL.AnimeList): void {
 
         }
 
-        // watchTime.set(entry.myStartDate.fixedDateStr, watchTime.get(entry.myStartDate.fixedDateStr) + duration);
     }
 
-    // watchTime.delete(dates[0]);
+
 
     let chartData = [];
 
@@ -973,10 +1002,10 @@ function drawHoursWatched(mal: MAL.AnimeList): void {
     // chartData = [{t: new Date("2016-01-01"), y:1},{t: new Date("2016-01-02"), y:0},{t: new Date("2016-01-03"), y:2},]
 
 
-    const maxDay = [...watchTime.entries()]
-        .reduce((a, e) => e[1] > a[1] ? e : a);
+    // const maxDay = [...watchTime.entries()]
+    //     .reduce((a, e) => e[1] > a[1] ? e : a);
 
-    console.log(maxDay);
+    // console.log(maxDay);
 
     const chart = new Chart(canvas, {
         type: 'line',
@@ -1279,6 +1308,7 @@ export function fixDate(date: string, minmax: -1 | 1): string {
 
     const test: boolean = dateRegex.test(date);
     if (!test) {
+        // Return an error instead?
         date = MAL.rawNullDate;
     }
     let ys: string;

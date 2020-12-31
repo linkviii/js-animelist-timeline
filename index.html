@@ -52,6 +52,7 @@
                 </select>
 
 
+
                 <!-- Only show the list for the current Media kind -->
                 <fieldset id="anime-format">
                     <legend>Format</legend>
@@ -78,6 +79,7 @@
                     <label for="format-music">Music</label>
                     <input checked="" id="format-music" type="checkbox">
                 </fieldset>
+
                 <fieldset id="manga-format">
                     <legend>Format</legend>
                     <!-- Professionally published manga with more than one chapter -->
@@ -90,6 +92,14 @@
                     <label for="format-one-shot">One Shot</label>
                     <input checked="" id="format-one-shot" type="checkbox">
                 </fieldset>
+
+            </fieldset>
+            <fieldset style="display:inline;">
+                <legend>Plot</legend>
+                <label for="timeline">Timeline</label>
+                <input type="radio" name="plot" id="timeline" checked>
+                <label for="watch-time">Watch time</label>
+                <input type="radio" name="plot" id="watch-time">
 
             </fieldset>
 
