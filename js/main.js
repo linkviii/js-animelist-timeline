@@ -56,8 +56,8 @@ export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
-// export const usingTestData: boolean = false;
-export const usingTestData = true;
+export const usingTestData = false;
+// export const usingTestData: boolean = true
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }

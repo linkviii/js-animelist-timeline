@@ -4,6 +4,8 @@ Generate an SVG timeline chronologizing when you watched anime. https://linkviii
 
 Test it with Username: linkviii, Width: 2000, From: 2016-01-01, To: 2016-06-01. https://linkviii.github.io/js-animelist-timeline/?n=linkviii&w=1400&dtS=2020-10-01&dtF=2020-11-07&lang=english&era=false&kind=ANIME&fs=8
 
+Anilist Forum thread: https://anilist.co/forum/thread/18603/1
+
 
 ## Build
 ```Bash
@@ -19,6 +21,7 @@ tsc
   * [strftime](https://github.com/samsonjs/strftime): Copyright 2010 - 2016 Sami Samhuri sami@samhuri.net - MIT license
 * https://github.com/eligrey/FileSaver.js/ - MIT license
 * jquery - MIT license
+* Chart.js - MIT license
 
 Timeline layout issues are probably for js-timeline. 
 
