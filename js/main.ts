@@ -1179,6 +1179,7 @@ function exportTimeline() {
     switch (this.kind) {
         //
         case exportType.Png: {
+            // See https://github.com/Linkviii/js-animelist-timeline/issues/3
             const img = document.createElement("img");
             img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
 
@@ -1186,8 +1187,11 @@ function exportTimeline() {
             const ctx = canvas.getContext("2d");
 
             const svgSize = svg.getBoundingClientRect();
-            canvas.width = svgSize.width * 3;
-            canvas.height = svgSize.height * 3;
+            
+            // With 8pt font, at 1x scale the text is blurry 
+            const scale = 2;
+            canvas.width = svgSize.width * scale;
+            canvas.height = svgSize.height * scale;
 
             ctx.fillStyle = "white";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
