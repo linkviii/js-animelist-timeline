@@ -142,6 +142,7 @@ function init(): void {
     if (usingTestData) {
         const warn = document.createElement("h1");
         warn.textContent = "Using test data !!!";
+        warn.setAttribute("style", "color: red");
         document.getElementById("top").prepend(warn);
     }
 
@@ -728,25 +729,25 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
     //make buttons
     const removeButton = document.createElement("button");
-    removeButton.textContent = "X";
+    removeButton.textContent = "❌Remove";
     removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
 
     const svgButton: MyButton = document.createElement("button");
-    svgButton.textContent = "S";
+    svgButton.textContent = "Save SVG";
     svgButton.setAttribute("title", "Save as svg");
     svgButton.addEventListener("click", exportTimeline);
     svgButton.kind = exportType.Svg;
 
     const pngButton: MyButton = document.createElement("button");
-    pngButton.textContent = "P";
-    pngButton.setAttribute("title", "Save as png");
+    pngButton.textContent = "Save PNG";
+    pngButton.setAttribute("title", "Save as PNG image");
     pngButton.addEventListener("click", exportTimeline);
     pngButton.kind = exportType.Png;
 
     const jsonButton: MyButton = document.createElement("button");
-    jsonButton.textContent = "J";
-    jsonButton.setAttribute("title", "Save tln json");
+    jsonButton.textContent = "Save JSON";
+    jsonButton.setAttribute("title", "Debug: Save tln json");
     jsonButton.addEventListener("click", exportTimeline);
     jsonButton.kind = exportType.Json;
 

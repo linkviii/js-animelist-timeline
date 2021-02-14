@@ -36,8 +36,13 @@ ul.buttonList {
     list-style-type: none;
 }
 
-div.timeline{
-    margin-left: 40px;
+.buttonList button {
+    width: 100%;
+}
+
+div.timeline svg {
+    /* Allow button list to fill in space. */
+    margin-left: -100px;
 }
 
 

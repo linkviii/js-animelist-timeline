@@ -52,8 +52,8 @@ import "./lib/chartjs/Chart.bundle.js";
 //
 // Global data
 //
-export const debug = false;
-// export const debug: boolean = true
+// export const debug: boolean = false;
+export const debug = true;
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
 export const usingTestData = false;
@@ -86,6 +86,7 @@ function init() {
     if (usingTestData) {
         const warn = document.createElement("h1");
         warn.textContent = "Using test data !!!";
+        warn.setAttribute("style", "color: red");
         document.getElementById("top").prepend(warn);
     }
     const keys = AnimeListTimelineConfigKeys;
@@ -533,17 +534,17 @@ function displayTimeline(tlConfig, tln) {
     label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
     //make buttons
     const removeButton = document.createElement("button");
-    removeButton.textContent = "X";
+    removeButton.textContent = "❌Remove";
     removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
     const svgButton = document.createElement("button");
-    svgButton.textContent = "S";
+    svgButton.textContent = "Save SVG";
     svgButton.setAttribute("title", "Save as svg");
     svgButton.addEventListener("click", exportTimeline);
     svgButton.kind = exportType.Svg;
     const pngButton = document.createElement("button");
-    pngButton.textContent = "P";
-    pngButton.setAttribute("title", "Save as png");
+    pngButton.textContent = "Save PNG";
+    pngButton.setAttribute("title", "Save as PNG image");
     pngButton.addEventListener("click", exportTimeline);
     pngButton.kind = exportType.Png;
     const jsonButton = document.createElement("button");
