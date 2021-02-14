@@ -288,7 +288,7 @@
                         "format": "OVA",
                         "title": {
                             "romaji": "Batman: Gotham Knight",
-                            "english": null,
+                            "english": "Batman: Gotham Knight",
                             "native": null,
                             "userPreferred": "Batman: Gotham Knight"
                         }
@@ -469,10 +469,10 @@
                         "episodes": 12,
                         "format": "TV",
                         "title": {
-                            "romaji": "Boku Dake ga Inai Machi",
+                            "romaji": "Boku dake ga Inai Machi",
                             "english": "ERASED",
                             "native": "僕だけがいない街",
-                            "userPreferred": "Boku Dake ga Inai Machi"
+                            "userPreferred": "Boku dake ga Inai Machi"
                         }
                     }
                 },
@@ -1067,10 +1067,10 @@
                         "episodes": 1,
                         "format": "MOVIE",
                         "title": {
-                            "romaji": "Fate/stay night: Unlimited Blade Works (Movie)",
+                            "romaji": "Fate/stay night Movie: Unlimited Blade Works",
                             "english": "Fate/stay night: Unlimited Blade Works (Movie)",
                             "native": "劇場版 Fate/stay night: UNLIMITED BLADE WORKS",
-                            "userPreferred": "Fate/stay night: Unlimited Blade Works (Movie)"
+                            "userPreferred": "Fate/stay night Movie: Unlimited Blade Works"
                         }
                     }
                 },
@@ -2628,7 +2628,7 @@
                         "format": "ONA",
                         "title": {
                             "romaji": "Nyoro-n☆Churuya-san",
-                            "english": null,
+                            "english": "Nyoron! Churuya-san",
                             "native": "にょろーん☆ちゅるやさん",
                             "userPreferred": "Nyoro-n☆Churuya-san"
                         }
@@ -2967,7 +2967,7 @@
                         "title": {
                             "romaji": "Serial Experiments Lain",
                             "english": "Serial Experiments Lain",
-                            "native": "シリアルエクスペリメンツレイン",
+                            "native": "serial experiments lain",
                             "userPreferred": "Serial Experiments Lain"
                         }
                     }
@@ -3359,32 +3359,6 @@
                             "english": "Tanaka-kun wa Kyou mo Kedaruge",
                             "native": "田中くんは今日もけだるげ",
                             "userPreferred": "Tanaka-kun wa Kyou mo Kedaruge"
-                        }
-                    }
-                },
-                {
-                    "mediaId": 15125,
-                    "score": 6,
-                    "progress": 12,
-                    "startedAt": {
-                        "year": 2018,
-                        "month": 5,
-                        "day": 16
-                    },
-                    "completedAt": {
-                        "year": 2018,
-                        "month": 5,
-                        "day": 17
-                    },
-                    "media": {
-                        "duration": 2,
-                        "episodes": 12,
-                        "format": "TV_SHORT",
-                        "title": {
-                            "romaji": "Teekyuu",
-                            "english": "Teekyuu",
-                            "native": "てーきゅう",
-                            "userPreferred": "Teekyuu"
                         }
                     }
                 },
@@ -4500,7 +4474,7 @@
                         "format": "TV",
                         "title": {
                             "romaji": "Black Bullet",
-                            "english": null,
+                            "english": "Black Bullet",
                             "native": "ブラック・ブレット",
                             "userPreferred": "Black Bullet"
                         }
@@ -5922,7 +5896,7 @@
                     "completedAt": {
                         "year": 2020,
                         "month": 2,
-                        "day": 13
+                        "day": 12
                     },
                     "media": {
                         "duration": 4,
@@ -5948,7 +5922,7 @@
                     "completedAt": {
                         "year": 2020,
                         "month": 2,
-                        "day": 13
+                        "day": 12
                     },
                     "media": {
                         "duration": 5,
@@ -6372,7 +6346,7 @@
                         "format": "TV_SHORT",
                         "title": {
                             "romaji": "KochinPa!",
-                            "english": "Aira",
+                            "english": null,
                             "native": "コチンPa！",
                             "userPreferred": "KochinPa!"
                         }
@@ -6787,10 +6761,10 @@
                         "episodes": 1,
                         "format": "MOVIE",
                         "title": {
-                            "romaji": "Kyoukai no Kanata Movie: I'LL BE HERE - Kako-hen",
+                            "romaji": "Kyoukai no Kanata: I'LL BE HERE - Kako-hen",
                             "english": "Beyond the Boundary -I'LL BE HERE-: Past",
                             "native": "劇場版 境界の彼方 I'LL BE HERE 過去篇",
-                            "userPreferred": "Kyoukai no Kanata Movie: I'LL BE HERE - Kako-hen"
+                            "userPreferred": "Kyoukai no Kanata: I'LL BE HERE - Kako-hen"
                         }
                     }
                 },
@@ -6813,10 +6787,10 @@
                         "episodes": 1,
                         "format": "MOVIE",
                         "title": {
-                            "romaji": "Kyoukai no Kanata Movie: I'LL BE HERE - Mirai-hen",
+                            "romaji": "Kyoukai no Kanata: I'LL BE HERE - Mirai-hen",
                             "english": "Beyond the Boundary -I'LL BE HERE-: Future",
                             "native": "劇場版 境界の彼方 I'LL BE HERE 未来篇",
-                            "userPreferred": "Kyoukai no Kanata Movie: I'LL BE HERE - Mirai-hen"
+                            "userPreferred": "Kyoukai no Kanata: I'LL BE HERE - Mirai-hen"
                         }
                     }
                 },
@@ -7204,7 +7178,7 @@
                         "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch x 365",
-                            "english": "Hidamari Sketch: x365",
+                            "english": "Hidamari Sketch x 365",
                             "native": "ひだまりスケッチ×３６５",
                             "userPreferred": "Hidamari Sketch x 365"
                         }
@@ -7438,7 +7412,7 @@
                         "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch x ☆☆☆",
-                            "english": "Hidamari Sketch: xHoshimittsu",
+                            "english": "Hidamari Sketch x Hoshimittsu",
                             "native": "ひだまりスケッチ x ☆☆☆",
                             "userPreferred": "Hidamari Sketch x ☆☆☆"
                         }
@@ -7545,32 +7519,6 @@
                             "english": "Love, Chunibyo & Other Delusions",
                             "native": "中二病でも恋がしたい!",
                             "userPreferred": "Chuunibyou demo Koi ga Shitai!"
-                        }
-                    }
-                },
-                {
-                    "mediaId": 16934,
-                    "score": 0,
-                    "progress": 1,
-                    "startedAt": {
-                        "year": 2020,
-                        "month": 6,
-                        "day": 27
-                    },
-                    "completedAt": {
-                        "year": 2020,
-                        "month": 6,
-                        "day": 28
-                    },
-                    "media": {
-                        "duration": 24,
-                        "episodes": 1,
-                        "format": "OVA",
-                        "title": {
-                            "romaji": "Chuunibyou demo Koi ga Shitai!: Kirameki no… Slapstick Noel",
-                            "english": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
-                            "native": "中二病でも恋がしたい! 煌めきの... 聖爆誕祭（スラップステック・ノエル）",
-                            "userPreferred": "Chuunibyou demo Koi ga Shitai!: Kirameki no… Slapstick Noel"
                         }
                     }
                 },
@@ -8036,7 +7984,7 @@
                         "format": "TV",
                         "title": {
                             "romaji": "Hidamari Sketch x Honeycomb",
-                            "english": "Hidamari Sketch: xHoneycomb",
+                            "english": "Hidamari Sketch x Honeycomb",
                             "native": "ひだまりスケッチ×ハニカム",
                             "userPreferred": "Hidamari Sketch x Honeycomb"
                         }
@@ -8920,7 +8868,7 @@
                         "format": "SPECIAL",
                         "title": {
                             "romaji": "Hidamari Sketch x SP",
-                            "english": null,
+                            "english": "Hidamari Sketch x SP",
                             "native": "ひだまりスケッチ×SP",
                             "userPreferred": "Hidamari Sketch x SP"
                         }
@@ -9109,6 +9057,32 @@
                     }
                 },
                 {
+                    "mediaId": 21108,
+                    "score": 6,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 5
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 18
+                    },
+                    "media": {
+                        "duration": 8,
+                        "episodes": 13,
+                        "format": "TV_SHORT",
+                        "title": {
+                            "romaji": "Wakaba＊Girl",
+                            "english": null,
+                            "native": "わかば＊ガール",
+                            "userPreferred": "Wakaba＊Girl"
+                        }
+                    }
+                },
+                {
                     "mediaId": 124337,
                     "score": 0,
                     "progress": 1,
@@ -9131,6 +9105,682 @@
                             "english": null,
                             "native": "魔法使いの嫁 学院篇",
                             "userPreferred": "Mahoutsukai no Yome: Gakuin-hen "
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20033,
+                    "score": 0,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 11
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 20
+                    },
+                    "media": {
+                        "duration": 4,
+                        "episodes": 13,
+                        "format": "TV_SHORT",
+                        "title": {
+                            "romaji": "Miss Monochrome - The Animation",
+                            "english": "Miss Monochrome - The Animation",
+                            "native": "ミス・モノクローム -The Animation-",
+                            "userPreferred": "Miss Monochrome - The Animation"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 97821,
+                    "score": 8,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 11
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 22
+                    },
+                    "media": {
+                        "duration": 25,
+                        "episodes": 12,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Alice to Zouroku",
+                            "english": "Alice & Zoroku",
+                            "native": "アリスと蔵六",
+                            "userPreferred": "Alice to Zouroku"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 11867,
+                    "score": 5,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 16
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 16
+                    },
+                    "media": {
+                        "duration": 41,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Cipher",
+                            "english": "Cipher",
+                            "native": "CIPHER",
+                            "userPreferred": "Cipher"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 98448,
+                    "score": 9,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 22
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 29
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 12,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Kino no Tabi -the Beautiful World- the Animated Series",
+                            "english": "Kino's Journey -the Beautiful World- the Animated Series",
+                            "native": "キノの旅 -the Beautiful World- the Animated Series",
+                            "userPreferred": "Kino no Tabi -the Beautiful World- the Animated Series"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 3466,
+                    "score": 8,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 29
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 11,
+                        "day": 29
+                    },
+                    "media": {
+                        "duration": 13,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Kino no Tabi: The Beautiful World - Tou no Kuni: Free Lance",
+                            "english": null,
+                            "native": "キノの旅 -the Beautiful World- 塔の国",
+                            "userPreferred": "Kino no Tabi: The Beautiful World - Tou no Kuni: Free Lance"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 4224,
+                    "score": 7,
+                    "progress": 25,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 1
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 25
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 25,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Toradora!",
+                            "english": "Toradora!",
+                            "native": "とらドラ！",
+                            "userPreferred": "Toradora!"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 21238,
+                    "score": 7,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 1
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 29
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 12,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Anne Happy♪",
+                            "english": "Anne-Happy",
+                            "native": "あんハピ♪",
+                            "userPreferred": "Anne Happy♪"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 18617,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 1
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 11
+                    },
+                    "media": {
+                        "duration": 120,
+                        "episodes": 1,
+                        "format": "MOVIE",
+                        "title": {
+                            "romaji": "Girls und Panzer der Film",
+                            "english": "Girls und Panzer der Film",
+                            "native": "ガールズ＆パンツァー　劇場版",
+                            "userPreferred": "Girls und Panzer der Film"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 104749,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 22
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 22
+                    },
+                    "media": {
+                        "duration": 51,
+                        "episodes": 1,
+                        "format": "MOVIE",
+                        "title": {
+                            "romaji": "Kud Wafter",
+                            "english": null,
+                            "native": "クドわふたー",
+                            "userPreferred": "Kud Wafter"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 124896,
+                    "score": 0,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 30
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 30
+                    },
+                    "media": {
+                        "duration": 1,
+                        "episodes": 12,
+                        "format": "ONA",
+                        "title": {
+                            "romaji": "Bear Bear Bear Kuma!",
+                            "english": null,
+                            "native": "べあべあべあくまー！",
+                            "userPreferred": "Bear Bear Bear Kuma!"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 12437,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 31
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 31
+                    },
+                    "media": {
+                        "duration": 28,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Yuri Seijin Naoko-san (2012)",
+                            "english": null,
+                            "native": "百合星人ナオコサン",
+                            "userPreferred": "Yuri Seijin Naoko-san (2012)"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 9608,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 31
+                    },
+                    "completedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 31
+                    },
+                    "media": {
+                        "duration": 6,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Yuri Seijin Naoko-san",
+                            "english": null,
+                            "native": "百合星人ナオコサン",
+                            "userPreferred": "Yuri Seijin Naoko-san"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 19575,
+                    "score": 0,
+                    "progress": 2,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 3
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 3
+                    },
+                    "media": {
+                        "duration": 16,
+                        "episodes": 2,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Kobayashi ga Kawai Sugite Tsurai!!",
+                            "english": null,
+                            "native": "小林が可愛すぎてツライっ!!",
+                            "userPreferred": "Kobayashi ga Kawai Sugite Tsurai!!"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 100269,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 4
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 4
+                    },
+                    "media": {
+                        "duration": 62,
+                        "episodes": 1,
+                        "format": "OVA",
+                        "title": {
+                            "romaji": "Fate/kaleid liner Prisma☆Illya: Prisma☆Phantasm",
+                            "english": "Fate/kaleid liner Prisma☆Illya: Prisma☆Phantasm",
+                            "native": "Fate/kaleid liner プリズマ☆イリヤ~プリズマ☆ファンタズム~",
+                            "userPreferred": "Fate/kaleid liner Prisma☆Illya: Prisma☆Phantasm"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 98292,
+                    "score": 7,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 5
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 11
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 12,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "NEW GAME!!",
+                            "english": "NEW GAME!!",
+                            "native": "NEW GAME!!",
+                            "userPreferred": "NEW GAME!!"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 112301,
+                    "score": 7,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2020,
+                        "month": 12,
+                        "day": 31
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 3
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 13,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou",
+                            "english": "The Misfit of Demon King Academy: History’s Strongest Demon King Reincarnates and Goes to School with His Descendants",
+                            "native": "魔王学院の不適合者 ～史上最強の魔王の始祖、転生して子孫たちの学校へ通う～",
+                            "userPreferred": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 7768,
+                    "score": 7,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 7
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 24
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 12,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Tantei Opera Milky Holmes",
+                            "english": "Detective Opera Milky Holmes",
+                            "native": "探偵オペラ ミルキィホームズ",
+                            "userPreferred": "Tantei Opera Milky Holmes"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 21465,
+                    "score": 0,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 11
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 11
+                    },
+                    "media": {
+                        "duration": 9,
+                        "episodes": 1,
+                        "format": "SPECIAL",
+                        "title": {
+                            "romaji": "Wakaba＊Girl: Onsen Tsukaritai",
+                            "english": null,
+                            "native": "わかば＊ガール 「温泉つかりたい」",
+                            "userPreferred": "Wakaba＊Girl: Onsen Tsukaritai"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20458,
+                    "score": 7,
+                    "progress": 26,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 12
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 14
+                    },
+                    "media": {
+                        "duration": 23,
+                        "episodes": 26,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Mahouka Koukou no Rettousei",
+                            "english": "The Irregular at Magic High School ",
+                            "native": "魔法科高校の劣等生",
+                            "userPreferred": "Mahouka Koukou no Rettousei"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 101773,
+                    "score": 7,
+                    "progress": 12,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 14
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 17
+                    },
+                    "media": {
+                        "duration": 12,
+                        "episodes": 12,
+                        "format": "TV_SHORT",
+                        "title": {
+                            "romaji": "Ueno-san wa Bukiyou",
+                            "english": "How Clumsy you are, Miss Ueno",
+                            "native": "上野さんは不器用",
+                            "userPreferred": "Ueno-san wa Bukiyou"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 486,
+                    "score": 8,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 19
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 20
+                    },
+                    "media": {
+                        "duration": 25,
+                        "episodes": 13,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Kino no Tabi: The Beautiful World",
+                            "english": "Kino's Journey",
+                            "native": "キノの旅 -the Beautiful World-",
+                            "userPreferred": "Kino no Tabi: The Beautiful World"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 1379,
+                    "score": 8,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 21
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 21
+                    },
+                    "media": {
+                        "duration": 30,
+                        "episodes": 1,
+                        "format": "MOVIE",
+                        "title": {
+                            "romaji": "Kino no Tabi: The Beautiful World - Nanika wo Suru Tame ni: Life Goes On.",
+                            "english": null,
+                            "native": "劇場版 キノの旅 -the Beautiful World- 何かをするために -life goes on.-",
+                            "userPreferred": "Kino no Tabi: The Beautiful World - Nanika wo Suru Tame ni: Life Goes On."
+                        }
+                    }
+                },
+                {
+                    "mediaId": 2175,
+                    "score": 8,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 21
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 21
+                    },
+                    "media": {
+                        "duration": 29,
+                        "episodes": 1,
+                        "format": "MOVIE",
+                        "title": {
+                            "romaji": "Kino no Tabi: The Beautiful World - Byouki no Kuni: For You",
+                            "english": null,
+                            "native": "キノの旅 -the Beautiful World- 病気の国 -For You-",
+                            "userPreferred": "Kino no Tabi: The Beautiful World - Byouki no Kuni: For You"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20872,
+                    "score": 7,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 22
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 28
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 13,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Plastic Memories",
+                            "english": "Plastic Memories",
+                            "native": "プラスティックメモリーズ",
+                            "userPreferred": "Plastic Memories"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 10923,
+                    "score": 7,
+                    "progress": 1,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 25
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 25
+                    },
+                    "media": {
+                        "duration": 25,
+                        "episodes": 1,
+                        "format": "SPECIAL",
+                        "title": {
+                            "romaji": "Tantei Opera Milky Holmes: Summer Special",
+                            "english": "Detective Opera Milky Holmes: Summer Special",
+                            "native": "探偵オペラ ミルキィホームズ サマー・スペシャル",
+                            "userPreferred": "Tantei Opera Milky Holmes: Summer Special"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 16123,
+                    "score": 6,
+                    "progress": 13,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 28
+                    },
+                    "completedAt": {
+                        "year": 2021,
+                        "month": 2,
+                        "day": 6
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 13,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Saki: Zenkoku-hen",
+                            "english": "Saki: The Nationals",
+                            "native": "咲-Saki-全国編",
+                            "userPreferred": "Saki: Zenkoku-hen"
                         }
                     }
                 }
@@ -9971,6 +10621,136 @@
                             "userPreferred": "Mahoyome"
                         }
                     }
+                },
+                {
+                    "mediaId": 20365,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 4,
+                        "episodes": 1,
+                        "format": "MUSIC",
+                        "title": {
+                            "romaji": "Another: Misaki Mei - Shizuka ni",
+                            "english": "Another Special",
+                            "native": "しずかに Another 見崎　鳴",
+                            "userPreferred": "Another: Misaki Mei - Shizuka ni"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20679,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 3,
+                        "episodes": 8,
+                        "format": "ONA",
+                        "title": {
+                            "romaji": "Mahouka Koukou no Rettousei: Yoku Wakaru Mahouka",
+                            "english": "The Irregular at Magic High School: Yoku Wakaru Mahouka",
+                            "native": "魔法科高校の劣等生 よくわかる魔法科！",
+                            "userPreferred": "Mahouka Koukou no Rettousei: Yoku Wakaru Mahouka"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 19165,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 10,
+                        "episodes": 2,
+                        "format": "MOVIE",
+                        "title": {
+                            "romaji": "Fate/Zero Cafe",
+                            "english": "Fate/Zero Cafe",
+                            "native": "Fate/ゼロカフェ",
+                            "userPreferred": "Fate/Zero Cafe"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 13263,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 15,
+                        "episodes": 6,
+                        "format": "SPECIAL",
+                        "title": {
+                            "romaji": "Fate/Zero: Onegai! Einzbern Soudanshitsu",
+                            "english": "Fate/Zero: Please! Einzbern Counseling Room",
+                            "native": "お願い!アインツベルン相談室",
+                            "userPreferred": "Fate/Zero: Onegai! Einzbern Soudanshitsu"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 20660,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 5,
+                        "episodes": 1,
+                        "format": "SPECIAL",
+                        "title": {
+                            "romaji": "Takanashi Rikka Kai: Chuunibyou demo Koi ga Shitai! Movie Lite",
+                            "english": "Love, Chunibyo, & Other Delusions! Rikka Version Lite",
+                            "native": "映画中二病でも恋がしたい!Lite",
+                            "userPreferred": "Takanashi Rikka Kai: Chuunibyou demo Koi ga Shitai! Movie Lite"
+                        }
+                    }
                 }
             ]
         },
@@ -10081,6 +10861,32 @@
                             "userPreferred": "High Score Girl"
                         }
                     }
+                },
+                {
+                    "mediaId": 21727,
+                    "score": 0,
+                    "progress": 35,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 1,
+                        "day": 18
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 5,
+                        "episodes": null,
+                        "format": "TV_SHORT",
+                        "title": {
+                            "romaji": "Aware! Meisaku-kun",
+                            "english": "Aware! Meisaku-kun",
+                            "native": "あはれ！名作くん",
+                            "userPreferred": "Aware! Meisaku-kun"
+                        }
+                    }
                 }
             ]
         },
@@ -10089,13 +10895,13 @@
             "status": "CURRENT",
             "entries": [
                 {
-                    "mediaId": 21108,
+                    "mediaId": 11341,
                     "score": 0,
                     "progress": 0,
                     "startedAt": {
-                        "year": 2020,
-                        "month": 11,
-                        "day": 5
+                        "year": 2021,
+                        "month": 1,
+                        "day": 28
                     },
                     "completedAt": {
                         "year": null,
@@ -10103,66 +10909,40 @@
                         "day": null
                     },
                     "media": {
-                        "duration": 8,
-                        "episodes": 13,
-                        "format": "TV_SHORT",
-                        "title": {
-                            "romaji": "Wakaba＊Girl",
-                            "english": null,
-                            "native": "わかば＊ガール",
-                            "userPreferred": "Wakaba＊Girl"
-                        }
-                    }
-                },
-                {
-                    "mediaId": 20033,
-                    "score": 0,
-                    "progress": 0,
-                    "startedAt": {
-                        "year": 2020,
-                        "month": 11,
-                        "day": 11
-                    },
-                    "completedAt": {
-                        "year": null,
-                        "month": null,
-                        "day": null
-                    },
-                    "media": {
-                        "duration": 4,
-                        "episodes": 13,
-                        "format": "TV_SHORT",
-                        "title": {
-                            "romaji": "Miss Monochrome - The Animation",
-                            "english": "Miss Monochrome - The Animation",
-                            "native": "ミス・モノクローム -The Animation-",
-                            "userPreferred": "Miss Monochrome - The Animation"
-                        }
-                    }
-                },
-                {
-                    "mediaId": 97821,
-                    "score": 0,
-                    "progress": 0,
-                    "startedAt": {
-                        "year": 2020,
-                        "month": 11,
-                        "day": 11
-                    },
-                    "completedAt": {
-                        "year": null,
-                        "month": null,
-                        "day": null
-                    },
-                    "media": {
-                        "duration": 25,
+                        "duration": 24,
                         "episodes": 12,
                         "format": "TV",
                         "title": {
-                            "romaji": "Alice to Zouroku",
-                            "english": "Alice & Zoroku",
-                            "native": "アリスと蔵六",
-                            "userPreferred": "Alice to Zouroku"
+                            "romaji": "Tantei Opera Milky Holmes Dai 2 Maku",
+                            "english": "Detective Opera Milky Holmes 2",
+                            "native": "探偵オペラ ミルキィホームズ 第2幕",
+                            "userPreferred": "Tantei Opera Milky Holmes Dai 2 Maku"
+                        }
+                    }
+                },
+                {
+                    "mediaId": 603,
+                    "score": 0,
+                    "progress": 0,
+                    "startedAt": {
+                        "year": 2021,
+                        "month": 2,
+                        "day": 7
+                    },
+                    "completedAt": {
+                        "year": null,
+                        "month": null,
+                        "day": null
+                    },
+                    "media": {
+                        "duration": 24,
+                        "episodes": 49,
+                        "format": "TV",
+                        "title": {
+                            "romaji": "Futari wa Precure",
+                            "english": "Pretty Cure",
+                            "native": "ふたりはプリキュア",
+                            "userPreferred": "Futari wa Precure"
                         }
                     }
                 }
