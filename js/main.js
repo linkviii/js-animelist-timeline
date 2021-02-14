@@ -52,8 +52,8 @@ import "./lib/chartjs/Chart.bundle.js";
 //
 // Global data
 //
-// export const debug: boolean = false;
-export const debug = true;
+export const debug = false;
+// export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export let debugData = {};
 export const usingTestData = false;
@@ -548,8 +548,8 @@ function displayTimeline(tlConfig, tln) {
     pngButton.addEventListener("click", exportTimeline);
     pngButton.kind = exportType.Png;
     const jsonButton = document.createElement("button");
-    jsonButton.textContent = "J";
-    jsonButton.setAttribute("title", "Save tln json");
+    jsonButton.textContent = "Save JSON";
+    jsonButton.setAttribute("title", "Debug: Save tln json");
     jsonButton.addEventListener("click", exportTimeline);
     jsonButton.kind = exportType.Json;
     //make list
