@@ -105,6 +105,7 @@ export class Timeline {
     constructor(data, id) {
         //
         this.strfutc = strftime.utc();
+        this.debugMap = [];
         if (data.apiVersion == 2) {
             this.data = data;
         }
@@ -143,6 +144,7 @@ export class Timeline {
         // Needs to happen after initializing drawing
         const tmpTxt = this.drawing.text("|").font({ family: this.fontFamily, size: `${this.fontSize}pt`, anchor: 'end' });
         const tmpBox = tmpTxt.bbox();
+        tmpTxt.remove();
         this.fontHeight = Math.ceil(tmpBox.height);
         this.calloutProperties = {
             width: 10,
@@ -161,7 +163,7 @@ export class Timeline {
         this.data.callouts = this.data.callouts || [];
         // Calculate how far oob callout text can go
         // leftBoundary < 0 → oob
-        let minX = Infinity;
+        // let minX: number = Infinity;
         for (let callout of this.data.callouts) {
             const calloutDate = new Date(callout.date);
             const x = this.dateToX(calloutDate);
@@ -169,13 +171,14 @@ export class Timeline {
                 console.warn([callout, calloutDate, OoBDate]);
                 continue;
             }
-            const leftBoundary = this.calculateEventLeftBoundary(callout.description, x);
-            minX = Math.min(minX, leftBoundary);
+            // const leftBoundary: number = this.calculateEventLeftBoundary(callout.description, x);
+            // minX = Math.min(minX, leftBoundary);
         }
         // clamp to a positive value
-        minX = Math.max(0, -minX);
+        // minX = Math.max(0, -minX);
         // this.deadWidth = minX;
-        this.extraWidth = minX;
+        // this.extraWidth = minX;
+        this.extraWidth = 0;
     }
     createMainAxis() {
         //# draw main line
@@ -320,13 +323,25 @@ export class Timeline {
         prevLevels.push(level);
         return [calloutHeight, event];
     }
-    /* endpointMap: For each level, the list of endpoints on that level*/
+    putInDebugMap(str, level, point) {
+        while (level >= this.debugMap.length) {
+            this.debugMap.push({});
+        }
+        if (this.debugMap[level][point]) {
+            console.error("Overwrote ", level, ",", point);
+            console.log("Was: ", this.debugMap[level][point]);
+            console.log("Now: ", str);
+        }
+        this.debugMap[level][point] = str;
+    }
+    /* endpointMap (mut): For each level (row), the list of endpoints on that level */
     calculateCalloutHeight2(eventEndpoint, endpointMap, event) {
         // TODO: Clean this up. It's nasty down here
         // ensure text does not overlap with previous entries
         const leftPad = this.calloutProperties.width;
         const leftBoundary = this.calculateEventLeftBoundary(event, eventEndpoint) - leftPad;
         let level = 0; // Valid levels start at 1
+        // Good if the left boundary of this event does not intersect the nearest event to the left
         const isGood = function (row) {
             if (row) {
                 if (row.length == 0 || row[row.length - 1] < leftBoundary) {
@@ -338,27 +353,32 @@ export class Timeline {
             }
             else {
                 return true;
-            }
+            } // If the row doesn't exist yet, then there are no problems using it
         };
         //
+        // Find the first level for which this event will not intersect another.
+        // Also make sure that if drawing under an event there is 1 line of space.
         for (let levI = 0; levI < endpointMap.length; levI++) {
             if (isGood(endpointMap[levI]) && isGood(endpointMap[levI + 1])) {
                 level = levI + 1;
                 break;
             }
         }
+        // If space couldn't be found on an existing level, make a new level for it
         if (level == 0) {
             level = endpointMap.length;
         }
         // ---------
+        // Do the same checks as above but this time with a bifurcated event
         const bif = Timeline.bifurcateString(event);
         let bifLevel = 0;
+        let bifLeftBoundary;
         if (bif) {
             const bifEvent = max(bif[0], bif[1], val => this.getTextWidth2(val));
-            const leftBoundary = this.calculateEventLeftBoundary(bifEvent, eventEndpoint) - leftPad;
+            bifLeftBoundary = this.calculateEventLeftBoundary(bifEvent, eventEndpoint) - leftPad;
             const isGood = function (row) {
                 if (row) {
-                    if (row.length == 0 || row[row.length - 1] < leftBoundary) {
+                    if (row.length == 0 || row[row.length - 1] < bifLeftBoundary) {
                         return true;
                     }
                     else {
@@ -370,36 +390,45 @@ export class Timeline {
                 }
             };
             for (let levI = 1; levI < endpointMap.length; levI++) {
+                // Same as above now with bifurcated boundary + the line below.
+                // Level is the top line of text.
                 if (isGood(endpointMap[levI - 1]) && isGood(endpointMap[levI]) && isGood(endpointMap[levI + 1])) {
                     bifLevel = levI + 1;
                     break;
                 }
             }
             if (bifLevel == 0) {
-                bifLevel = endpointMap.length;
+                bifLevel = endpointMap.length + 1;
             }
         }
         // Select level
         //
-        if (bifLevel != 0 && bifLevel < level) {
+        const maxEventWidth = 50; // char... Dangerous with unicode?
+        let useBifurcated = bifLevel != 0 && (bifLevel <= level
+            || event.length > maxEventWidth);
+        // 
+        if (useBifurcated) {
             while (bifLevel >= endpointMap.length) {
                 endpointMap.push([]);
             }
             endpointMap[bifLevel - 1].push(eventEndpoint);
+            this.putInDebugMap(bif[0], bifLevel, eventEndpoint);
             if (bifLevel != 1) {
                 endpointMap[bifLevel - 2].push(eventEndpoint);
+                this.putInDebugMap(bif[1], bifLevel - 1, eventEndpoint);
             }
             const calloutHeight = bifLevel * this.calloutProperties.increment;
             event = bif.join("\n");
-            return [calloutHeight, event];
+            return [bifLeftBoundary, calloutHeight, event];
         }
         else {
             while (level >= endpointMap.length) {
                 endpointMap.push([]);
             }
             endpointMap[level - 1].push(eventEndpoint);
+            this.putInDebugMap(event, level, eventEndpoint);
             const calloutHeight = level * this.calloutProperties.increment;
-            return [calloutHeight, event];
+            return [leftBoundary, calloutHeight, event];
         }
     }
     /**
@@ -418,6 +447,7 @@ export class Timeline {
         let endpointMap = [[]];
         //vertical drawing up is negative ~= max height
         let minY = Infinity;
+        let minX = Infinity;
         // Last place we drew an axis label
         let lastLabelX = 0;
         for (let callout of this.data.callouts) {
@@ -437,9 +467,10 @@ export class Timeline {
             const bgFill = { color: bgColor, opacity: 1 };
             //# figure out what 'level" to make the callout on
             // const [calloutHeight, event]: [number, string] = this.calculateCalloutHeight(x, prevX, prevLevel, callout.description);
-            const [calloutHeight, event] = this.calculateCalloutHeight2(x, endpointMap, callout.description);
+            const [leftBound, calloutHeight, event] = this.calculateCalloutHeight2(x, endpointMap, callout.description);
             const y = 0 - this.calloutProperties.height - calloutHeight;
             minY = Math.min(minY, y);
+            minX = Math.min(minX, leftBound);
             //svg elements
             const pathData = ['M', x, ',', 0, ' L', x, ',', y, ' L',
                 (x - this.calloutProperties.width), ',', y].join("");
@@ -461,6 +492,12 @@ export class Timeline {
         }
         if (!isFinite(minY)) {
             minY = 10;
+        }
+        if (!isFinite(minX)) {
+            minX = 0;
+        }
+        if (minX < 0) {
+            this.extraWidth = Math.abs(minX);
         }
         return minY;
     }
