@@ -603,6 +603,7 @@ function displayTimeline(tlConfig, tln) {
     svg.build();
     const removeAll = document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
+    debugData["lastTimelineSvg"] = svg;
 }
 // ***
 // End main chain
@@ -931,7 +932,7 @@ export function minutesToString(min) {
     const d = Math.floor(h / 24);
     h = h % 24;
     const m = min % 60;
-    if (h > 0) {
+    if (h > 0 || d > 0) {
         if (d > 0)
             return `${d}D ${h}H ${m}M`;
         else

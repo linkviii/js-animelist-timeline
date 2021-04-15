@@ -817,6 +817,8 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
     const removeAll = <HTMLButtonElement>document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
+
+    debugData["lastTimelineSvg"] = svg;
 }
 
 // ***
@@ -1258,7 +1260,7 @@ export function minutesToString(min: number): string {
 
     const m = min % 60;
 
-    if (h > 0) {
+    if (h > 0 || d > 0) {
         if (d > 0)
             return `${d}D ${h}H ${m}M`;
         else
