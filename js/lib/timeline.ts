@@ -5,7 +5,7 @@
  *
  * See README.md
  *
- * v 2017-10-9
+ * v 2021-04-16
  *   (Try to change with new features. Not strict.)
  * 
  * MIT licensed
@@ -15,7 +15,8 @@
 /// - <reference path="../lib/svgjs.d.ts"/>
 // import * as SVG from "../lib/svgjs.js";
 
-declare function SVG();
+// declare function SVG();
+declare var SVG;
 
 
 // declare function strftime(format: string, date: Date);
@@ -828,18 +829,18 @@ export class Timeline {
         return [startMarker, endMarker]
     };
 
+
     giveTxtBackground(txt, fill): any {
         const bbox = txt.bbox();
-        // let rect = this.drawing.rect(bbox.width, bbox.height).fill(fill);
         let rect = txt.parent().rect(bbox.width, bbox.height).fill(fill);
         rect.move(txt.x(), txt.y());
         rect.backward();
-        // rect.put(txt);
 
-        // txt.replace(rect);
         rect.radius(2);
         return rect;
     }
+
+
 
     private createEras(yEra: number, yAxis: number, height: number): void {
         if (!('eras' in this.data)) {
@@ -944,7 +945,7 @@ export class Timeline {
     //
 
 
-    getTextWidth2(text: string, anchor?: string): number {
+    getTextWidth_Slow(text: string, anchor?: string): number {
         anchor = anchor || 'end';
         const txt = this.drawing.text(text);
         txt.font({ family: this.fontFamily, size: `${this.fontSize}pt`, anchor: anchor });
@@ -955,6 +956,31 @@ export class Timeline {
         // The box seems fuzzy so lets give a small amount of padding.
         return Math.ceil(box.width) + 1;
     }
+
+
+    private canvas = document.createElement("canvas");
+    getTextDim(text: string): TextMetrics {
+        /*
+         * Using SVG.Text's bbox was a performance bottleneck.
+         * Canvas performs faster, at least when you don't need the actual text object.
+         * When using `pt` as the font unit, you get the same result.
+         */
+
+        const canvas = this.canvas;
+        const context = canvas.getContext("2d");
+        context.font = `${this.fontSize}pt ${this.fontFamily}`;
+        const metrics = context.measureText(text);
+        return metrics;
+    };
+
+    getTextWidth2(text: string): number {
+
+        const metrics = this.getTextDim(text);
+        return Math.ceil(metrics.width);
+
+
+    }
+
 
 
 }

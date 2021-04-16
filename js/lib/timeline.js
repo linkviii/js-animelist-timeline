@@ -5,7 +5,7 @@
  *
  * See README.md
  *
- * v 2017-10-9
+ * v 2021-04-16
  *   (Try to change with new features. Not strict.)
  *
  * MIT licensed
@@ -106,6 +106,7 @@ export class Timeline {
         //
         this.strfutc = strftime.utc();
         this.debugMap = [];
+        this.canvas = document.createElement("canvas");
         if (data.apiVersion == 2) {
             this.data = data;
         }
@@ -541,12 +542,9 @@ export class Timeline {
     ;
     giveTxtBackground(txt, fill) {
         const bbox = txt.bbox();
-        // let rect = this.drawing.rect(bbox.width, bbox.height).fill(fill);
         let rect = txt.parent().rect(bbox.width, bbox.height).fill(fill);
         rect.move(txt.x(), txt.y());
         rect.backward();
-        // rect.put(txt);
-        // txt.replace(rect);
         rect.radius(2);
         return rect;
     }
@@ -620,7 +618,7 @@ export class Timeline {
     //
     //
     //
-    getTextWidth2(text, anchor) {
+    getTextWidth_Slow(text, anchor) {
         anchor = anchor || 'end';
         const txt = this.drawing.text(text);
         txt.font({ family: this.fontFamily, size: `${this.fontSize}pt`, anchor: anchor });
@@ -628,6 +626,23 @@ export class Timeline {
         txt.remove();
         // The box seems fuzzy so lets give a small amount of padding.
         return Math.ceil(box.width) + 1;
+    }
+    getTextDim(text) {
+        /*
+         * Using SVG.Text's bbox was a performance bottleneck.
+         * Canvas performs faster, at least when you don't need the actual text object.
+         * When using `pt` as the font unit, you get the same result.
+         */
+        const canvas = this.canvas;
+        const context = canvas.getContext("2d");
+        context.font = `${this.fontSize}pt ${this.fontFamily}`;
+        const metrics = context.measureText(text);
+        return metrics;
+    }
+    ;
+    getTextWidth2(text) {
+        const metrics = this.getTextDim(text);
+        return Math.ceil(metrics.width);
     }
 }
 // x,y of adjustment of callout text
