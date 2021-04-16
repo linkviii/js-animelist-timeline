@@ -98,6 +98,7 @@
                 <legend>Plot</legend>
                 <label for="timeline">Timeline</label>
                 <input type="radio" name="plot" id="timeline" checked>
+                <br>
                 <label for="watch-time">Watch time</label>
                 <input type="radio" name="plot" id="watch-time">
 
@@ -106,11 +107,17 @@
             <fieldset style="display: inline;">
                 <legend>Dates (optional)</legend>
 
-                <label for="from">From</label>
-                <input id="from" type="date">
+                <div style="
+                    display: inline-grid;
+                    grid-template-columns: auto auto;
+                ">
 
-                <label for="to">To</label>
-                <input id="to" type="date">
+                    <label for="from">From</label>
+                    <input id="from" type="date">
+
+                    <label for="to">To</label>
+                    <input id="to" type="date">
+                </div>
 
                 <label for="focus-year">Focus on year</label>
                 <input id="focus-year" placeholder="20xx" size="4" type="number">

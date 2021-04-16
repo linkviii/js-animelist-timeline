@@ -146,19 +146,23 @@ function init() {
     focus.val("");
     //
     // Center to and from around this year
-    focus.on("change", function (e) {
-        if (this.value.length != 4)
-            return;
-        const y = parseInt(this.value);
+    function focusYear(value) {
+        const y = parseInt(value);
         const y0 = (y - 1).toString();
         const y1 = (y + 1).toString();
         from.val(`${y0}-12-01`);
         to.val(`${y1}-02-01`);
+    }
+    focus.on("change", function (e) {
+        if (this.value.length != 4)
+            return;
+        focusYear(this.value);
     });
     // Snap to the current year when first focused
     focus.on("click", function (e) {
         if (this.value.length != 4) {
             this.value = new Date().getFullYear().toString();
+            focusYear(this.value);
         }
     });
     // Invalidate focus if dates are otherwise modified
@@ -599,8 +603,10 @@ function displayTimeline(tlConfig, tln) {
     tlArea.appendChild(tl);
     tlArea.appendChild(statsDetails);
     //make timeline after it has a valid anchor in the doc
+    // console.time()
     const svg = new Timeline(tln.data, tl.id);
     svg.build();
+    // console.timeEnd()
     const removeAll = document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
     debugData["lastTimelineSvg"] = svg;

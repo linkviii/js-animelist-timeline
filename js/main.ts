@@ -216,15 +216,19 @@ function init(): void {
     //
 
     // Center to and from around this year
-    focus.on("change", function (e) {
-        if (this.value.length != 4) return;
-
-        const y = parseInt(this.value);
+    function focusYear(value) {
+        const y = parseInt(value);
         const y0 = (y - 1).toString();
         const y1 = (y + 1).toString();
 
         from.val(`${y0}-12-01`);
         to.val(`${y1}-02-01`);
+    }
+
+    focus.on("change", function (e) {
+        if (this.value.length != 4) return;
+
+        focusYear(this.value);
 
     });
 
@@ -232,6 +236,7 @@ function init(): void {
     focus.on("click", function (e) {
         if (this.value.length != 4) {
             this.value = new Date().getFullYear().toString();
+            focusYear(this.value);
         }
     });
 
@@ -812,8 +817,10 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
     tlArea.appendChild(statsDetails);
 
     //make timeline after it has a valid anchor in the doc
+    // console.time()
     const svg: Timeline = new Timeline(tln.data, tl.id);
     svg.build();
+    // console.timeEnd()
 
     const removeAll = <HTMLButtonElement>document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
@@ -1190,7 +1197,7 @@ function exportTimeline() {
             const ctx = canvas.getContext("2d");
 
             const svgSize = svg.getBoundingClientRect();
-            
+
             // With 8pt font, at 1x scale the text is blurry 
             const scale = 2;
             canvas.width = svgSize.width * scale;
