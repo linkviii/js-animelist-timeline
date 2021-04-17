@@ -55,7 +55,7 @@ import "./lib/chartjs/Chart.bundle.js";
 export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
-export let debugData = {};
+export const debugData = {};
 export const usingTestData = false;
 // export const usingTestData: boolean = true
 if (debug || usingTestData) {
@@ -82,6 +82,144 @@ let timelineCount = 0;
 //
 // Page load
 //
+class InputForm {
+    constructor() {
+        this.listField = $("#listName");
+        this.language = $("#language");
+        this.seasonsToggle = $("#seasons");
+        this.width = $("#width");
+        this.widthSlider = $("#width-slider");
+        this.fontSize = $("#font-size");
+        this.from = $("#from");
+        this.to = $("#to");
+        this.focusYear = $("#focus-year");
+        this.lastN = $("#last-n");
+        this.lastNToggle = $("#enable-last-n");
+        this.listKind = $("#list-kind");
+        this.animeFormat = $("#anime-format");
+        this.mangaFormat = $("#manga-format");
+        this.submitButton = $("#listFormSubmit");
+    }
+    /*------------------------------------------------------------------------------- */
+    initParams() {
+        const keys = AnimeListTimelineConfigKeys;
+        const param = getJsonFromUrl();
+        if (param[keys.userName]) {
+            this.listField.val(param[keys.userName]);
+        }
+        if (param[keys.width]) {
+            this.width.val(param[keys.width]);
+        }
+        if (param[keys.minDate]) {
+            this.from.val(param[keys.minDate]);
+        }
+        if (param[keys.maxDate]) {
+            this.to.val(param[keys.maxDate]);
+        }
+        if (param[keys.lang]) {
+            this.language.val(param[keys.lang]);
+        }
+        if (param[keys.seasons]) {
+            this.seasonsToggle[0].checked = "true" == param[keys.seasons];
+        }
+        if (param[keys.listKind]) {
+            this.listKind.val(param[keys.listKind]);
+        }
+        if (param[keys.fontSize]) {
+            this.fontSize.val(param[keys.fontSize]);
+        }
+    }
+    initListeners() {
+        const input = this;
+        function showMediaKinds(kind) {
+            switch (kind) {
+                case "ANIME":
+                    input.animeFormat.show();
+                    input.mangaFormat.hide();
+                    break;
+                case "MANGA":
+                    input.animeFormat.hide();
+                    input.mangaFormat.show();
+                    break;
+                default:
+                    console.error("Unexpected list-kind:", kind);
+            }
+        }
+        ;
+        showMediaKinds(input.listKind.val());
+        input.listKind.on("change", (e) => showMediaKinds(e.target.value));
+        //
+        // FocusYear
+        //
+        // Default focus to be cleared. No state to be preserved.
+        input.focusYear.val("");
+        // Center to and from around this year
+        function setFocusYear(value) {
+            const y = parseInt(value);
+            const y0 = (y - 1).toString();
+            const y1 = (y + 1).toString();
+            input.from.val(`${y0}-12-01`);
+            input.to.val(`${y1}-02-01`);
+        }
+        // 
+        input.focusYear.on("change", function (e) {
+            if (this.value.length != 4)
+                return;
+            setFocusYear(this.value);
+        });
+        // Snap to the current year when first focused
+        input.focusYear.on("click", function (e) {
+            if (this.value.length != 4) {
+                this.value = new Date().getFullYear().toString();
+                setFocusYear(this.value);
+            }
+        });
+        // Invalidate focus if dates are otherwise modified
+        input.to.on("change", function (e) {
+            input.focusYear.val("");
+        });
+        input.from.on("change", function (e) {
+            input.focusYear.val("");
+        });
+        //
+        // Last n
+        //
+        function enableLastN(value) {
+            input.from.prop('disabled', value);
+            input.lastN.prop('disabled', !value);
+        }
+        input.lastNToggle.on("change", function (e) {
+            // console.log(this.checked);
+            enableLastN(this.checked);
+        });
+        enableLastN(input.lastNToggle[0].checked);
+        //
+        // Width
+        //
+        // Use jqueary-ui to make number input with steps that aren't validated
+        input.width.spinner({
+            step: 100,
+        });
+        //
+        input.widthSlider.on("change", function (e) {
+            let val = parseInt(this.value) / 100 * $(this).width();
+            val = Math.ceil(val);
+            // $("#width-disp").text(val);
+            input.width.val(val);
+        });
+        input.width.on("spin", function (event, ui) {
+            const percentWidth = Math.floor(parseInt(ui.value) / input.widthSlider.width() * 100);
+            input.widthSlider.val(percentWidth.toString());
+        });
+        const percentWidth = Math.floor(parseInt(input.width.val()) / input.widthSlider.width() * 100);
+        input.widthSlider.val(percentWidth.toString());
+        //
+        //
+        //buttons
+        input.submitButton[0].addEventListener("click", listFormSubmit);
+    }
+}
+export const input = new InputForm();
 function init() {
     if (usingTestData) {
         const warn = document.createElement("h1");
@@ -89,115 +227,16 @@ function init() {
         warn.setAttribute("style", "color: red");
         document.getElementById("top").prepend(warn);
     }
-    const keys = AnimeListTimelineConfigKeys;
     // form fields
-    const param = getJsonFromUrl();
-    const listField = $("#listName");
-    listField.select();
-    const width = $("#width");
-    const from = $("#from");
-    const to = $("#to");
-    const focus = $("#focus-year");
-    const listKind = $("#list-kind");
-    const animeFormat = $("#anime-format");
-    const mangaFormat = $("#manga-format");
-    if (param[keys.userName]) {
-        listField.val(param[keys.userName]);
-    }
-    if (param[keys.width]) {
-        width.val(param[keys.width]);
-    }
-    if (param[keys.minDate]) {
-        from.val(param[keys.minDate]);
-    }
-    if (param[keys.maxDate]) {
-        to.val(param[keys.maxDate]);
-    }
-    if (param[keys.lang]) {
-        $("#language").val(param[keys.lang]);
-    }
-    if (param[keys.seasons]) {
-        $("#seasons")[0].checked = "true" == param[keys.seasons];
-    }
-    if (param[keys.listKind]) {
-        listKind.val(param[keys.listKind]);
-    }
-    if (param[keys.fontSize]) {
-        $("#font-size").val(param[keys.fontSize]);
-    }
+    input.listField.select();
+    input.initParams();
+    input.initListeners();
     //
-    const showMediaKinds = function (kind) {
-        switch (kind) {
-            case "ANIME":
-                animeFormat.show();
-                mangaFormat.hide();
-                break;
-            case "MANGA":
-                animeFormat.hide();
-                mangaFormat.show();
-                break;
-            default:
-                console.error("Unexpected list-kind:", kind);
-        }
-    };
-    showMediaKinds(listKind.val());
-    listKind.on("change", (e) => showMediaKinds(e.target.value));
-    // Default focus to be cleared. No state to be preserved.
-    focus.val("");
     //
-    // Center to and from around this year
-    function focusYear(value) {
-        const y = parseInt(value);
-        const y0 = (y - 1).toString();
-        const y1 = (y + 1).toString();
-        from.val(`${y0}-12-01`);
-        to.val(`${y1}-02-01`);
-    }
-    focus.on("change", function (e) {
-        if (this.value.length != 4)
-            return;
-        focusYear(this.value);
-    });
-    // Snap to the current year when first focused
-    focus.on("click", function (e) {
-        if (this.value.length != 4) {
-            this.value = new Date().getFullYear().toString();
-            focusYear(this.value);
-        }
-    });
-    // Invalidate focus if dates are otherwise modified
-    to.on("change", function (e) {
-        focus.val("");
-    });
-    from.on("change", function (e) {
-        focus.val("");
-    });
-    // Use jqueary-ui to make number input with steps that aren't validated
-    width.spinner({
-        step: 100,
-    });
-    //
-    const widthSlider = $("#width-slider");
-    widthSlider.on("change", function (e) {
-        let val = parseInt(this.value) / 100 * $(this).width();
-        val = Math.ceil(val);
-        // $("#width-disp").text(val);
-        width.val(val);
-    });
-    width.on("spin", function (event, ui) {
-        const percentWidth = Math.floor(parseInt(ui.value) / widthSlider.width() * 100);
-        // const percentWidth = Math.floor(parseInt(this.value) / widthSlider.width() * 100);
-        widthSlider.val(percentWidth.toString());
-    });
-    const percentWidth = Math.floor(parseInt(width.val()) / widthSlider.width() * 100);
-    // console.log(percentWidth, "%")
-    widthSlider.val(percentWidth.toString());
-    //
-    //buttons
-    $("#listFormSubmit")[0].addEventListener("click", listFormSubmit);
     const removeAll = document.getElementById("clearAllTimelines");
     removeAll.disabled = true;
     removeAll.addEventListener("click", clearAllTimelines);
+    //
 }
 $(document).ready(init);
 /*
@@ -433,14 +472,14 @@ async function beforeAjax() {
 // main V
 // Use doc to build timeline
 function preparePlot(mal) {
-    const listKind = $("#list-kind").val();
-    let startDate = $("#from").val().trim();
-    let endDate = $("#to").val().trim();
+    const listKind = input.listKind.val();
+    let startDate = input.from.val().trim();
+    let endDate = input.to.val().trim();
     startDate = fixDate(startDate, -1);
     endDate = fixDate(endDate, 1);
-    const widthStr = $("#width").val().trim();
-    const language = $("#language").val();
-    const username = $("#listName").val().trim();
+    const widthStr = input.width.val().trim();
+    const language = input.language.val();
+    const username = input.listField.val().trim();
     const plotKind = document.querySelector('input[name="plot"]:checked').id;
     let width;
     if (isNormalInteger(widthStr)) {
@@ -449,8 +488,8 @@ function preparePlot(mal) {
     else { //default
         width = 1000;
     }
-    const showSeasons = $("#seasons")[0].checked;
-    const fontSize = ($("#font-size")).val();
+    const showSeasons = input.seasonsToggle[0].checked;
+    const fontSize = input.fontSize.val();
     const tlConfig = {
         userName: username,
         width: width,
@@ -821,7 +860,7 @@ function reportNoDated() {
 }
 function usernameFeedback(str) {
     giveFeedback(str);
-    $("#listName").select();
+    input.listField.select();
 }
 function giveFeedback(str, sec = 5) {
     const time = sec * 1000;
@@ -1066,15 +1105,15 @@ export function replaceQueryParam(param, newval, search) {
 export function updateUri(param) {
     // Why were these read from dom instead of `param`?
     // Was it because param squeezes the dates? (Does it?)
-    let startDate = $("#from").val().trim();
+    let startDate = input.from.val().trim();
     if (startDate === "") {
         startDate = "";
     }
-    let endDate = $("#to").val().trim();
+    let endDate = input.to.val().trim();
     if (endDate === "") {
         endDate = "";
     }
-    const kind = $("#list-kind").val();
+    const kind = input.listKind.val();
     const keys = AnimeListTimelineConfigKeys;
     let str = window.location.search;
     str = replaceQueryParam(keys.userName, param.userName, str);

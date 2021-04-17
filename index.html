@@ -118,9 +118,15 @@
                     <label for="to">To</label>
                     <input id="to" type="date">
                 </div>
-
+                <span>•</span>
+                
                 <label for="focus-year">Focus on year</label>
-                <input id="focus-year" placeholder="20xx" size="4" type="number">
+                <input id="focus-year" placeholder="20xx" style="width: 4em;" type="number">
+                <span>•</span>
+
+                <label for="last-n">Show n most recent</label>
+                <input type="number"  id="last-n" value="30" min="5" step="5" style="width: 3em;">
+                <input type="checkbox"  id="enable-last-n" checked>
 
             </fieldset>
 
@@ -139,9 +145,9 @@
 
             <fieldset>
                 <label for="font-size">Font Size</label>
-                <input id="font-size" required="" size="2" type="number" value="8">
+                <input id="font-size" required="" style="width: 3em;" type="number" value="10">
                 <label for="width">Width</label>
-                <input id="width" max="9999" min="200" required="" size="4" value="1400">
+                <input id="width" max="9999" min="200" required="" value="1400" style="width: 4em;">
                 <input id="width-slider" style="display: block; width: 100%;" type="range">
                 <!-- <p id="width-disp">val</p> -->
             </fieldset>
