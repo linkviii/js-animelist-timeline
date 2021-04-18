@@ -240,6 +240,9 @@ export class Timeline {
     sortCallouts() {
         this.data.callouts.sort((a, b) => compareDateStr(a.date, b.date));
     }
+    static sortCallouts(callouts) {
+        callouts.sort((a, b) => compareDateStr(a.date, b.date));
+    }
     eraOfDate(date) {
         if (this.data.eras) {
             for (let era of this.data.eras) {

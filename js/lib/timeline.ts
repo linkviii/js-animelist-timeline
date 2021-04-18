@@ -432,8 +432,10 @@ export class Timeline {
 
     private sortCallouts(): void {
         this.data.callouts.sort((a, b) => compareDateStr(a.date, b.date));
+    }
 
-
+    static sortCallouts(callouts: TimelineCalloutV2[]): void {
+        callouts.sort((a, b) => compareDateStr(a.date, b.date));
     }
 
     eraOfDate(date: Date): TimelineEraV2 | null {
