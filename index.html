@@ -125,7 +125,7 @@
                 <span>•</span>
 
                 <label for="last-n">Show n most recent</label>
-                <input type="number"  id="last-n" value="30" min="5" step="5" style="width: 3em;">
+                <input type="number"  id="last-n" value="25" min="5" step="5" style="width: 3em;">
                 <input type="checkbox"  id="enable-last-n" checked>
 
             </fieldset>
@@ -153,10 +153,12 @@
             </fieldset>
 
             <button id="listFormSubmit" title="Submit" type="submit">New Timeline</button>
-            <button title="Clear form data" type="reset">Clear Form</button>
+            <!-- js calls form.reset() and then reinits other things. -->
+            <button id="clear-form" title="Clear form data" >Clear Form</button>
 
         </form>
 
+        <!-- Place for js to fill in messages to the user -->
         <span id="feedback"> </span>
 
         <br>

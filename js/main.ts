@@ -1,8 +1,8 @@
 /**
- * MIT licenced
+ * MIT licensed
  *
- * v0.1.1
- * 2017-04-06
+ * v0.2.1
+ * 2021-04-18
  */
 
 /*
@@ -138,6 +138,10 @@ let timelineCount: number = 0;
 //
 
 class InputForm {
+
+    // Would be awkward to have both `form` and `from` fields
+    readonly inputForm = $("#form") as JQuery<HTMLFormElement>;
+
     readonly listField = $("#listName") as JQuery<HTMLInputElement>;
 
     readonly language = $("#language") as JQuery<HTMLInputElement>;
@@ -162,6 +166,7 @@ class InputForm {
     readonly mangaFormat = $("#manga-format") as JQuery<HTMLFieldSetElement>;
 
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
+    readonly clearButton = $("#clear-form") as JQuery<HTMLButtonElement>;
 
     /*------------------------------------------------------------------------------- */
 
@@ -271,6 +276,7 @@ class InputForm {
         function enableLastN(value: boolean) {
 
             input.from.prop('disabled', value);
+            input.focusYear.prop('disabled', value);
             input.lastN.prop('disabled', !value);
 
         }
@@ -280,7 +286,6 @@ class InputForm {
             enableLastN(this.checked);
         });
 
-        enableLastN(input.lastNToggle[0].checked);
 
 
 
@@ -309,9 +314,20 @@ class InputForm {
 
         });
 
-        const percentWidth = Math.floor(parseInt(<string>input.width.val()) / input.widthSlider.width() * 100);
 
-        input.widthSlider.val(percentWidth.toString());
+        function resetUI() {
+
+
+            const percentWidth = Math.floor(parseInt(<string>input.width.val()) / input.widthSlider.width() * 100);
+
+            input.widthSlider.val(percentWidth.toString());
+
+            enableLastN(input.lastNToggle[0].checked);
+
+            input.listField.select();
+
+
+        }
 
         //
         //
@@ -319,8 +335,13 @@ class InputForm {
         //buttons
         input.submitButton[0].addEventListener("click", listFormSubmit);
 
+        input.clearButton.on("click", function () {
+            input.inputForm[0].reset();
+            resetUI();
+        });
 
-
+        //
+        resetUI();
     }
 
 }
@@ -337,9 +358,8 @@ function init(): void {
     }
 
 
-    // form fields
+    // 
 
-    input.listField.select();
 
     input.initParams();
     input.initListeners();
@@ -678,6 +698,13 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
     let startDate: string = (input.from.val() as string).trim();
     let endDate: string = (input.to.val() as string).trim();
 
+    let lastN = 0;
+    if (input.lastNToggle[0].checked) {
+        lastN = input.lastN.val() as number;
+        // Ignore start date if using lastN filter
+        startDate = MAL.rawNullDate;
+    }
+
 
     startDate = fixDate(startDate, -1);
     endDate = fixDate(endDate, 1);
@@ -693,7 +720,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
 
     let width: number;
-    if (isNormalInteger(widthStr)) {
+    if (isPositiveInteger(widthStr)) {
         width = parseInt(widthStr);
     } else {//default
         width = 1000;
@@ -703,18 +730,17 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const fontSize = input.fontSize.val() as number;
 
-
-
-
+    //
 
     const tlConfig: AnimeListTimelineConfig = {
         userName: username,
-        width: width,
         minDate: startDate,
         maxDate: endDate,
+        lastN: lastN,
         lang: language,
         seasons: showSeasons,
         fontSize: fontSize,
+        width: width,
         listKind: listKind,
     };
 
@@ -754,6 +780,18 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
         try {
             //global
             const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+
+            // This feels kinda wrong
+            if (tlConfig.lastN) {
+                // Update from date to match the filter of lastN
+                tlConfig.minDate = tln.firstDate.fixedDateStr;
+                updateUri(tlConfig);
+
+                input.from.val(tlConfig.minDate);
+
+            }
+
+            debugData["lastAnimeTimeline"] = tln;
             displayTimeline(tlConfig, tln);
             return;
 
@@ -1374,6 +1412,9 @@ export function daysBetween(first: Date | string, second: Date | string): number
 // Data cleaning
 //
 
+// I don't remember why I wanted this, but I might of had a good reason.
+// Could probably find this on SO
+
 /**
  * Returns if the string represents a non negative integer.
  * @param str
@@ -1384,8 +1425,25 @@ export function isNormalInteger(str: string): boolean {
     return (String(n) === str) && (n >= 0);
 }
 
+/**
+ * Returns if the string represents a non negative integer.
+ * @param str
+ * @returns {boolean}
+ */
+export function isPositiveInteger(str: string): boolean {
+    const n: number = ~~Number(str);
+    return (String(n) === str) && (n > 0);
+}
+
+
 //make user input suitable for anime timeline
-//must not be null
+
+/**
+ * Clamps date into a useful value
+ * @param date May be rawNullDate
+ * @param minmax -1: clamp min; 1 clamp max
+ * @returns YYYY-MM-DD str
+ */
 export function fixDate(date: string, minmax: -1 | 1): string {
 
     const minYear = 1980;//Nerds can change this in the future
@@ -1393,7 +1451,10 @@ export function fixDate(date: string, minmax: -1 | 1): string {
 
     const test: boolean = dateRegex.test(date);
     if (!test) {
-        // Return an error instead?
+        // Maybe should return or throw an error?
+        if (null !== date && "" !== date)
+            console.error("Unexpected date format from:", date);
+        // Pretend all invalid input is equivalent to null date
         date = MAL.rawNullDate;
     }
     let ys: string;

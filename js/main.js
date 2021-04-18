@@ -1,8 +1,8 @@
 /**
- * MIT licenced
+ * MIT licensed
  *
- * v0.1.1
- * 2017-04-06
+ * v0.2.1
+ * 2021-04-18
  */
 /*
  *
@@ -84,6 +84,8 @@ let timelineCount = 0;
 //
 class InputForm {
     constructor() {
+        // Would be awkward to have both `form` and `from` fields
+        this.inputForm = $("#form");
         this.listField = $("#listName");
         this.language = $("#language");
         this.seasonsToggle = $("#seasons");
@@ -99,6 +101,7 @@ class InputForm {
         this.animeFormat = $("#anime-format");
         this.mangaFormat = $("#manga-format");
         this.submitButton = $("#listFormSubmit");
+        this.clearButton = $("#clear-form");
     }
     /*------------------------------------------------------------------------------- */
     initParams() {
@@ -186,13 +189,13 @@ class InputForm {
         //
         function enableLastN(value) {
             input.from.prop('disabled', value);
+            input.focusYear.prop('disabled', value);
             input.lastN.prop('disabled', !value);
         }
         input.lastNToggle.on("change", function (e) {
             // console.log(this.checked);
             enableLastN(this.checked);
         });
-        enableLastN(input.lastNToggle[0].checked);
         //
         // Width
         //
@@ -211,12 +214,22 @@ class InputForm {
             const percentWidth = Math.floor(parseInt(ui.value) / input.widthSlider.width() * 100);
             input.widthSlider.val(percentWidth.toString());
         });
-        const percentWidth = Math.floor(parseInt(input.width.val()) / input.widthSlider.width() * 100);
-        input.widthSlider.val(percentWidth.toString());
+        function resetUI() {
+            const percentWidth = Math.floor(parseInt(input.width.val()) / input.widthSlider.width() * 100);
+            input.widthSlider.val(percentWidth.toString());
+            enableLastN(input.lastNToggle[0].checked);
+            input.listField.select();
+        }
         //
         //
         //buttons
         input.submitButton[0].addEventListener("click", listFormSubmit);
+        input.clearButton.on("click", function () {
+            input.inputForm[0].reset();
+            resetUI();
+        });
+        //
+        resetUI();
     }
 }
 export const input = new InputForm();
@@ -227,8 +240,7 @@ function init() {
         warn.setAttribute("style", "color: red");
         document.getElementById("top").prepend(warn);
     }
-    // form fields
-    input.listField.select();
+    // 
     input.initParams();
     input.initListeners();
     //
@@ -475,6 +487,12 @@ function preparePlot(mal) {
     const listKind = input.listKind.val();
     let startDate = input.from.val().trim();
     let endDate = input.to.val().trim();
+    let lastN = 0;
+    if (input.lastNToggle[0].checked) {
+        lastN = input.lastN.val();
+        // Ignore start date if using lastN filter
+        startDate = MAL.rawNullDate;
+    }
     startDate = fixDate(startDate, -1);
     endDate = fixDate(endDate, 1);
     const widthStr = input.width.val().trim();
@@ -482,7 +500,7 @@ function preparePlot(mal) {
     const username = input.listField.val().trim();
     const plotKind = document.querySelector('input[name="plot"]:checked').id;
     let width;
-    if (isNormalInteger(widthStr)) {
+    if (isPositiveInteger(widthStr)) {
         width = parseInt(widthStr);
     }
     else { //default
@@ -490,14 +508,16 @@ function preparePlot(mal) {
     }
     const showSeasons = input.seasonsToggle[0].checked;
     const fontSize = input.fontSize.val();
+    //
     const tlConfig = {
         userName: username,
-        width: width,
         minDate: startDate,
         maxDate: endDate,
+        lastN: lastN,
         lang: language,
         seasons: showSeasons,
         fontSize: fontSize,
+        width: width,
         listKind: listKind,
     };
     const getVal = function (id) {
@@ -531,6 +551,14 @@ function preparePlot(mal) {
         try {
             //global
             const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+            // This feels kinda wrong
+            if (tlConfig.lastN) {
+                // Update from date to match the filter of lastN
+                tlConfig.minDate = tln.firstDate.fixedDateStr;
+                updateUri(tlConfig);
+                input.from.val(tlConfig.minDate);
+            }
+            debugData["lastAnimeTimeline"] = tln;
             displayTimeline(tlConfig, tln);
             return;
         }
@@ -1004,6 +1032,8 @@ export function daysBetween(first, second) {
 //
 // Data cleaning
 //
+// I don't remember why I wanted this, but I might of had a good reason.
+// Could probably find this on SO
 /**
  * Returns if the string represents a non negative integer.
  * @param str
@@ -1013,14 +1043,31 @@ export function isNormalInteger(str) {
     const n = ~~Number(str);
     return (String(n) === str) && (n >= 0);
 }
+/**
+ * Returns if the string represents a non negative integer.
+ * @param str
+ * @returns {boolean}
+ */
+export function isPositiveInteger(str) {
+    const n = ~~Number(str);
+    return (String(n) === str) && (n > 0);
+}
 //make user input suitable for anime timeline
-//must not be null
+/**
+ * Clamps date into a useful value
+ * @param date May be rawNullDate
+ * @param minmax -1: clamp min; 1 clamp max
+ * @returns YYYY-MM-DD str
+ */
 export function fixDate(date, minmax) {
     const minYear = 1980; //Nerds can change this in the future
     const maxYear = 2030; //For now its sane
     const test = dateRegex.test(date);
     if (!test) {
-        // Return an error instead?
+        // Maybe should return or throw an error?
+        if (null !== date && "" !== date)
+            console.error("Unexpected date format from:", date);
+        // Pretend all invalid input is equivalent to null date
         date = MAL.rawNullDate;
     }
     let ys;
