@@ -638,12 +638,12 @@ function displayTimeline(tlConfig, tln) {
     //make list
     const controls = document.createElement("ul");
     controls.className = "buttonList";
-    controls.appendChild(wrapListItem(removeButton));
-    controls.appendChild(wrapListItem(svgButton));
     controls.appendChild(wrapListItem(pngButton));
+    controls.appendChild(wrapListItem(svgButton));
     if (debug) {
         controls.appendChild(wrapListItem(jsonButton));
     }
+    controls.appendChild(wrapListItem(removeButton));
     // stats
     const statsDetails = document.createElement("details");
     const statsSummary = document.createElement("summary");

@@ -882,12 +882,12 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
     //make list
     const controls = document.createElement("ul");
     controls.className = "buttonList";
-    controls.appendChild(wrapListItem(removeButton));
-    controls.appendChild(wrapListItem(svgButton));
     controls.appendChild(wrapListItem(pngButton));
+    controls.appendChild(wrapListItem(svgButton));
     if (debug) {
         controls.appendChild(wrapListItem(jsonButton));
     }
+    controls.appendChild(wrapListItem(removeButton));
 
 
     // stats

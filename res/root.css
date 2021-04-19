@@ -30,23 +30,26 @@ header {
 }
 
 ul.buttonList {
-    position: absolute;
-    left: 0;
-    /* float: left; */
+    /* position: absolute; */
+    /* left: 0; */
+    float: right;
     margin-top: 0;
     padding: 0;
     list-style-type: none;
+    display: block;
+}
+
+ul.buttonList > li {
+    display: inline-block;
 }
 
 .buttonList button {
-    width: 100%;
+    /* width: 100%; */
 }
 
-div.timeline svg {
-    /* Allow button list to fill in space. 
-     * I still have no idea how I want this to work
-    */
-    /* margin-left: -100px; */
+div.timeline  {
+    overflow-x: scroll;
+    width: 100%;
 }
 
 
