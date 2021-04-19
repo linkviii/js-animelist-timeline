@@ -154,21 +154,28 @@ class InputForm {
         //
         // FocusYear
         //
+        // Use jquery-ui for negative step
+        input.focusYear.spinner({
+            step: -1,
+        });
         // Default focus to be cleared. No state to be preserved.
         input.focusYear.val("");
         // Center to and from around this year
         function setFocusYear(value) {
             const y = parseInt(value);
+            // console.debug("Year Focus:", y)
             const y0 = (y - 1).toString();
             const y1 = (y + 1).toString();
             input.from.val(`${y0}-12-01`);
             input.to.val(`${y1}-02-01`);
         }
-        // 
-        input.focusYear.on("change", function (e) {
-            if (this.value.length != 4)
-                return;
-            setFocusYear(this.value);
+        input.focusYear.on("spin", function (event, ui) {
+            if (ui.value < 1990) {
+                this.value = new Date().getFullYear().toString();
+                setFocusYear(this.value);
+                return false;
+            }
+            setFocusYear(ui.value);
         });
         // Snap to the current year when first focused
         input.focusYear.on("click", function (e) {
@@ -189,8 +196,13 @@ class InputForm {
         //
         function enableLastN(value) {
             input.from.prop('disabled', value);
-            input.focusYear.prop('disabled', value);
             input.lastN.prop('disabled', !value);
+            if (value) {
+                input.focusYear.spinner("disable");
+            }
+            else {
+                input.focusYear.spinner("enable");
+            }
         }
         input.lastNToggle.on("change", function (e) {
             // console.log(this.checked);
@@ -199,7 +211,7 @@ class InputForm {
         //
         // Width
         //
-        // Use jqueary-ui to make number input with steps that aren't validated
+        // Use jquery-ui to make number input with steps that aren't validated
         input.width.spinner({
             step: 100,
         });
