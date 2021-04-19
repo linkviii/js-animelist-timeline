@@ -314,13 +314,17 @@ class InputForm {
 
 
         //
-        input.widthSlider.on("change", function (e) {
-            let val = parseInt(this.value) / 100 * $(this).width();
+
+        function widthChange() {
+            const slider = input.widthSlider[0];
+            let val = parseInt(slider.value) / 100 * input.widthSlider.width();
             val = Math.ceil(val);
             // $("#width-disp").text(val);
 
             input.width.val(val);
-        });
+        }
+
+        input.widthSlider.on("change", widthChange);
 
         input.width.on("spin", function (event, ui) {
             const percentWidth = Math.floor(parseInt(ui.value) / input.widthSlider.width() * 100);
@@ -342,6 +346,15 @@ class InputForm {
 
 
         }
+
+        //
+        //
+        //
+        window.addEventListener('resize', function () {
+            // console.log("width val: ", input.width.val())
+            // console.log("width slider width: ", input.widthSlider.width())
+            widthChange();
+        });
 
         //
         //
