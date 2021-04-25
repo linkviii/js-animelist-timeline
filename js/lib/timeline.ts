@@ -834,9 +834,10 @@ export class Timeline {
 
     giveTxtBackground(txt, fill): any {
         const bbox = txt.bbox();
-        let rect = txt.parent().rect(bbox.width, bbox.height).fill(fill);
+
+        let rect = new SVG.Rect(bbox.width, bbox.height).fill(fill);
+        txt.before(rect);
         rect.move(txt.x(), txt.y());
-        rect.backward();
 
         rect.radius(2);
         return rect;
