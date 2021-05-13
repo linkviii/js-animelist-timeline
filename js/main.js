@@ -43,6 +43,7 @@ import { Timeline } from "./lib/timeline.js";
 import "./jquery.js";
 import "./lib/jquery-ui/jquery-ui.min.js";
 import "./lib/chartjs/Chart.bundle.js";
+import "./lib/awesomplete/awesomplete.js";
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
 // ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
@@ -56,8 +57,9 @@ export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
-export const usingTestData = false;
-// export const usingTestData: boolean = true
+/** Use a local file instead of asking anilist's servers */
+// export const usingTestData: boolean = false;
+export const usingTestData = true;
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -70,6 +72,19 @@ const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 const userAnimeCache = new Map();
 const userMangaCache = new Map();
 let timelineCount = 0;
+const knownAnime = new Map();
+// Const reference that awesomplete binds to
+const filterList = [];
+const activeFilter = new Set();
+function fillFilterList() {
+    filterList.splice(0, filterList.length); // Clear the list first
+    const lang = input.language.val();
+    for (let [id, title] of knownAnime.entries()) {
+        if (!activeFilter.has(id)) {
+            filterList.push({ label: title.preferred(lang), value: id });
+        }
+    }
+}
 // global for ease of testing. Used as globals.
 // export let username: string;
 // export let tln: AnimeListTimeline;
@@ -100,6 +115,10 @@ class InputForm {
         this.listKind = $("#list-kind");
         this.animeFormat = $("#anime-format");
         this.mangaFormat = $("#manga-format");
+        this.filterKind = $("#filter-kind");
+        // To be poisoned by awesomplete 
+        this.titleFilter = document.getElementById("title-filter");
+        this.clearFilter = $("#clear-filter");
         this.submitButton = $("#listFormSubmit");
         this.clearButton = $("#clear-form");
     }
@@ -132,8 +151,65 @@ class InputForm {
             this.fontSize.val(param[keys.fontSize]);
         }
     }
+    initFilterList() {
+        const input = this;
+        const ul = document.getElementById("filter-list");
+        const awesomplete = new Awesomplete(input.titleFilter, {
+            list: filterList,
+            replace: function (suggestion) {
+                this.input.value = "";
+            },
+        });
+        input.titleFilter.addEventListener("awesomplete-selectcomplete", function (e) {
+            const data = e.text;
+            console.log(e.text);
+            // console.log(text) 
+            //
+            const elm = document.createElement("li");
+            elm.textContent = data.label;
+            elm.dataID = data.value;
+            activeFilter.add(data.value);
+            ul.appendChild(elm);
+            // Move the item out of the dropdown
+            const i = filterList.findIndex(x => x.value === data.value);
+            filterList.splice(i, 1);
+        });
+        //
+        function clearFilter() {
+            // console.log("clear filter called")
+            const lang = input.language.val();
+            const ul = document.getElementById("filter-list");
+            ul.textContent = '';
+            const filter = Array.from(activeFilter);
+            for (let id of filter) {
+                activeFilter.delete(id);
+                // Move the item back into the dropdown
+                filterList.push({ label: knownAnime.get(id).preferred(lang), value: id });
+            }
+        }
+        input.clearFilter.on("click", clearFilter);
+    }
     initListeners() {
         const input = this;
+        // The clear filter button is in hte middle of the form.
+        // The browser would love to activate it for us whenever we press enter.
+        // But I wouldn't love that. 
+        // Also entering a username and submitting before setting dates was a bad experience.
+        // Let's try preventing it from happening.
+        // https://stackoverflow.com/a/1977126/1993919
+        //
+        // BUT, it seems a workaround without an event listener is to just put a hidden button first in the form.
+        if (false) {
+            $(document).on("keydown", "form", function (event) {
+                const entered = event.key == "Enter";
+                const shouldIgnore = event.target.type !== "date";
+                if (entered && shouldIgnore) {
+                    console.log("prevented enter submit");
+                    return false;
+                }
+                return true;
+            });
+        }
         function showMediaKinds(kind) {
             switch (kind) {
                 case "ANIME":
@@ -244,6 +320,7 @@ class InputForm {
         });
         //
         //
+        input.initFilterList();
         //buttons
         input.submitButton[0].addEventListener("click", listFormSubmit);
         input.clearButton.on("click", function () {
@@ -252,8 +329,8 @@ class InputForm {
         });
         //
         resetUI();
-    }
-}
+    } // END initListeners
+} // END InputForm
 export const input = new InputForm();
 function init() {
     if (usingTestData) {
@@ -470,6 +547,10 @@ async function beforeAjax() {
                 const animeList = MAL.animeListFromAniList(aniList, username);
                 debugData["list"] = animeList;
                 userAnimeCache.set(username, animeList);
+                for (let anime of animeList.anime) {
+                    knownAnime.set(anime.myId, anime.seriesTitle);
+                }
+                fillFilterList();
                 preparePlot(animeList);
             }
             break;
@@ -530,6 +611,8 @@ function preparePlot(mal) {
     }
     const showSeasons = input.seasonsToggle[0].checked;
     const fontSize = input.fontSize.val();
+    const includeFilter = input.filterKind.val() === "include";
+    const filter = { include: includeFilter, entrySet: activeFilter };
     //
     const tlConfig = {
         userName: username,
@@ -541,6 +624,7 @@ function preparePlot(mal) {
         fontSize: fontSize,
         width: width,
         listKind: listKind,
+        filter: filter,
     };
     const getVal = function (id) {
         const el = $(`#format-${id}`)[0];

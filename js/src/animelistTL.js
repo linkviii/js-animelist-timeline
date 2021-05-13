@@ -131,6 +131,19 @@ export class AnimeListTimeline {
             if (!filterFormat(anime.seriesType, tlConfig.animeFormat) && !filterFormat(anime.seriesType, tlConfig.mangaFormat)) {
                 continue;
             }
+            if (tlConfig.filter.entrySet.size == 0) {
+                // pass
+            }
+            else if (tlConfig.filter.include) {
+                if (!tlConfig.filter.entrySet.has(anime.myId)) {
+                    continue;
+                }
+            }
+            else {
+                if (tlConfig.filter.entrySet.has(anime.myId)) {
+                    continue;
+                }
+            }
             const boundsMask = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
             const boundsCount = boundsMask.filter(x => x).length;
             if (boundsCount == 0) {

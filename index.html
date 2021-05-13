@@ -9,6 +9,8 @@
     <link href="./js/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
     <link href="./js/lib/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
     <!-- <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.structure.min.css"> -->
+    <link rel="stylesheet" href="./js/lib/awesomplete/awesomplete.css" />
+
 </head>
 
 
@@ -38,6 +40,12 @@
         <iframe name="💾" src="about:blank" style="display:none"></iframe>
 
         <form action="about:blank" id="form" target="💾">
+
+            <!-- 
+                Prevent implicit submission of the form when pressing enter.
+                https://stackoverflow.com/a/51507806/1993919
+            -->
+            <button type="submit" disabled style="display: none" aria-hidden="true"></button>
 
             <fieldset style="display: inline;">
                 <legend>List</legend>
@@ -99,7 +107,7 @@
                 <label for="timeline">Timeline</label>
                 <input type="radio" name="plot" id="timeline" checked>
                 <br>
-                <label for="watch-time">Watch time</label>
+                <label for="watch-time">Watch time graph</label>
                 <input type="radio" name="plot" id="watch-time">
 
             </fieldset>
@@ -131,6 +139,25 @@
                 <input type="number" id="last-n" value="25" min="5" step="5" style="width: 3em;">
                 <input type="checkbox" id="enable-last-n" checked>
 
+            </fieldset>
+
+            <fieldset>
+                <legend>Title Filter</legend>
+
+                <select id="filter-kind">
+                    <option value="include">Include</option>
+                    <option value="exclude">Exclude</option>
+                </select>
+
+                <div style="display: inline;"><input id="title-filter"></div>
+
+                <div style="display: inline; ">
+                    <ul id="filter-list"
+                        style="display: inline-block; width: 25em;background: #0000001c;border: 1px solid black; min-height: 5em;">
+                    </ul>
+                    </ul>
+                </div>
+                <button id="clear-filter">Clear Filter</button>
             </fieldset>
 
             <fieldset>

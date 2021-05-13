@@ -60,6 +60,8 @@ import "./lib/jquery-ui/jquery-ui.min.js";
 
 import "./lib/chartjs/Chart.bundle.js"
 
+import "./lib/awesomplete/awesomplete.js"
+
 //
 declare class Chart {
     constructor(parameters, a);
@@ -70,6 +72,14 @@ declare class Chart {
 declare namespace strftime {
     function utc(): (format: string, date: Date) => string;
 }
+
+declare var Awesomplete;
+
+interface AwesompleteData {
+    label: string;
+    value: any
+}
+
 
 //import FileSaver.js
 declare function saveAs(foo?, fooo?);
@@ -98,8 +108,9 @@ export const debug: boolean = false;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+/** Use a local file instead of asking anilist's servers */
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -119,6 +130,25 @@ const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 const userAnimeCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Map();
 const userMangaCache: Map<string, MAL.MangaList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
+
+const knownAnime: Map<number, MAL.Title> = new Map();
+// Const reference that awesomplete binds to
+const filterList: AwesompleteData[] = [];
+const activeFilter: Set<number> = new Set();
+
+function fillFilterList() {
+    filterList.splice(0, filterList.length); // Clear the list first
+
+    const lang = input.language.val() as string;
+
+    for (let [id, title] of knownAnime.entries()) {
+        if (!activeFilter.has(id)) {
+            filterList.push({ label: title.preferred(lang), value: id });
+        }
+    }
+}
+
+
 
 
 // global for ease of testing. Used as globals.
@@ -165,6 +195,11 @@ class InputForm {
     readonly animeFormat = $("#anime-format") as JQuery<HTMLFieldSetElement>;
     readonly mangaFormat = $("#manga-format") as JQuery<HTMLFieldSetElement>;
 
+    readonly filterKind = $("#filter-kind") as JQuery<HTMLButtonElement>;
+    // To be poisoned by awesomplete 
+    readonly titleFilter = document.getElementById("title-filter") as HTMLInputElement;
+    readonly clearFilter = $("#clear-filter") as JQuery<HTMLButtonElement>;
+
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
     readonly clearButton = $("#clear-form") as JQuery<HTMLButtonElement>;
 
@@ -202,9 +237,90 @@ class InputForm {
 
     }
 
+    initFilterList(): void {
+        const input = this;
+        const ul = document.getElementById("filter-list");
+
+        const awesomplete = new Awesomplete(input.titleFilter, {
+            list: filterList,
+            replace: function (suggestion) {
+                this.input.value = "";
+            },
+
+        });
+
+        input.titleFilter.addEventListener("awesomplete-selectcomplete",
+            function (e) {
+                const data = (<any>e).text as AwesompleteData;
+                console.log((<any>e).text)
+                // console.log(text) 
+
+                //
+                const elm = document.createElement("li");
+                elm.textContent = data.label;
+                (<any>elm).dataID = data.value;
+                activeFilter.add(data.value);
+
+                ul.appendChild(elm);
+
+                // Move the item out of the dropdown
+                const i = filterList.findIndex(x => x.value === data.value);
+                filterList.splice(i, 1);
+            }
+        );
+
+        //
+        function clearFilter() {
+
+            // console.log("clear filter called")
+
+            const lang = input.language.val() as string;
+
+
+            const ul = document.getElementById("filter-list");
+            ul.textContent = '';
+
+            const filter = Array.from(activeFilter);
+
+            for (let id of filter) {
+                activeFilter.delete(id);
+
+                // Move the item back into the dropdown
+                filterList.push({ label: knownAnime.get(id).preferred(lang), value: id });
+
+            }
+
+        }
+        input.clearFilter.on("click", clearFilter);
+
+    }
+
     initListeners(): void {
 
         const input = this;
+
+        // The clear filter button is in hte middle of the form.
+        // The browser would love to activate it for us whenever we press enter.
+        // But I wouldn't love that. 
+        // Also entering a username and submitting before setting dates was a bad experience.
+        // Let's try preventing it from happening.
+        // https://stackoverflow.com/a/1977126/1993919
+        //
+        // BUT, it seems a workaround without an event listener is to just put a hidden button first in the form.
+
+        if (false) {
+            $(document).on("keydown", "form", function (event) {
+                const entered = event.key == "Enter";
+
+                const shouldIgnore = event.target.type !== "date";
+
+                if (entered && shouldIgnore) {
+                    console.log("prevented enter submit")
+                    return false;
+                }
+                return true;
+            });
+        }
 
         function showMediaKinds(kind: string) {
 
@@ -359,6 +475,8 @@ class InputForm {
         //
         //
 
+        input.initFilterList();
+
         //buttons
         input.submitButton[0].addEventListener("click", listFormSubmit);
 
@@ -369,9 +487,9 @@ class InputForm {
 
         //
         resetUI();
-    }
+    } // END initListeners
 
-}
+} // END InputForm
 
 export const input = new InputForm();
 
@@ -670,6 +788,12 @@ async function beforeAjax() {
                 debugData["list"] = animeList;
 
                 userAnimeCache.set(username, animeList);
+
+                for (let anime of animeList.anime) {
+                    knownAnime.set(anime.myId, anime.seriesTitle);
+                }
+                fillFilterList();
+
                 preparePlot(animeList);
 
             }
@@ -757,6 +881,9 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const fontSize = input.fontSize.val() as number;
 
+    const includeFilter = input.filterKind.val() === "include";
+    const filter: ATL.MediaFilter = { include: includeFilter, entrySet: activeFilter };
+
     //
 
     const tlConfig: AnimeListTimelineConfig = {
@@ -769,6 +896,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
         fontSize: fontSize,
         width: width,
         listKind: listKind,
+        filter: filter,
     };
 
     const getVal = function (id: string): boolean {
