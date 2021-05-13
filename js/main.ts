@@ -870,7 +870,7 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
     //make buttons
     const removeButton = document.createElement("button");
-    removeButton.textContent = "❌Remove";
+    removeButton.textContent = "❌ Remove";
     removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
 
