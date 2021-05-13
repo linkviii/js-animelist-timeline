@@ -73,3 +73,10 @@ label.before::after {
     margin-bottom: 15px;
     border-radius: 10px;
 }
+
+input{
+    color: inherit;
+    border-width: 1px;
+    padding: 3px;
+    border-radius: 3px;
+}
