@@ -18,6 +18,7 @@ input:valid {
 
 div#top {
     background-color: #86eeff;
+    padding: 20px;
 }
 
 span#feedback {
@@ -60,4 +61,9 @@ input[type="range"]::-moz-range-progress {
 
 label::after {
     content: ":";
+}
+
+.mainGroup{
+    padding: 10px;
+    margin: 10px;
 }
