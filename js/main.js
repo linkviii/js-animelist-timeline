@@ -627,7 +627,7 @@ function displayTimeline(tlConfig, tln) {
     label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
     //make buttons
     const removeButton = document.createElement("button");
-    removeButton.textContent = "❌Remove";
+    removeButton.textContent = "❌ Remove";
     removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
     const svgButton = document.createElement("button");
@@ -850,6 +850,9 @@ function drawHoursWatched(tlConfig, mal) {
                         type: 'time',
                         time: {
                             minUnit: 'day',
+                            // parser: function (date: Date) {
+                            //     return new Date(date).setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                            // }
                         },
                         ticks: {
                             min: $("#from").val(),
