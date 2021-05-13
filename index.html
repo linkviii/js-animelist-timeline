@@ -39,6 +39,7 @@
 
         <form action="about:blank" id="form" target="💾">
 
+            <div class="fieldContainer">
             <fieldset class="mainGroup">
                 <legend>List</legend>
 
@@ -94,6 +95,8 @@
                 </fieldset>
 
             </fieldset>
+            </div>
+            <div class="fieldContainer">
             <fieldset class="mainGroup">
                 <legend>Plot</legend>
                 <label for="timeline">Timeline</label>
@@ -103,7 +106,9 @@
                 <input type="radio" name="plot" id="watch-time">
 
             </fieldset>
+            </div>
 
+            <div class="fieldContainer">
             <fieldset class="mainGroup">
                 <legend>Dates (optional)</legend>
 
@@ -132,7 +137,9 @@
                 <input type="checkbox" id="enable-last-n" checked>
 
             </fieldset>
+            </div>
 
+            <div class="fieldContainer">
             <fieldset class="mainGroup">
                 <label for="language">Language</label>
 
@@ -145,7 +152,9 @@
                 <label for="seasons">Seasons</label>
                 <input id="seasons" type="checkbox">
             </fieldset>
+            </div>
 
+            <div class="fieldContainer">
             <fieldse  class="mainGroup"t>
                 <label for="font-size">Font Size</label>
                 <input id="font-size" required="" style="width: 3em;" type="number" value="10">
@@ -155,6 +164,7 @@
                 <input id="width-slider" style="display: block; width: 100%;" type="range">
                 <!-- <p id="width-disp">val</p> -->
             </fieldset>
+            </div>
 
             <button id="listFormSubmit" title="Submit" type="submit">New Timeline</button>
             <!-- js calls form.reset() and then reinits other things. -->

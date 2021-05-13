@@ -17,7 +17,6 @@ input:valid {
 }
 
 div#top {
-    background-color: #86eeff;
     padding: 20px;
 }
 
@@ -66,4 +65,11 @@ label::after {
 .mainGroup{
     padding: 10px;
     margin: 10px;
+}
+
+.fieldContainer{
+    background: lightgray;
+    padding: 5px;
+    margin-bottom: 15px;
+    border-radius: 10px;
 }
