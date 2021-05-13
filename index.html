@@ -59,38 +59,38 @@
                     <legend>Format</legend>
                     <!-- Copying descriptions from the api docs. Could tool tip them or something. -->
                     <!-- Anime broadcast on television -->
-                    <label for="format-tv">TV</label>
+                    <label class="before" for="format-tv">TV</label>
                     <input checked="" id="format-tv" type="checkbox">
                     <!-- Anime which are under 15 minutes in length and broadcast on television -->
                     <label for="format-short">Short</label>
-                    <input checked="" id="format-short" type="checkbox">
+                    <input class="before" checked="" id="format-short" type="checkbox">
                     <!-- Anime movies with a theatrical release -->
                     <label for="format-movie">Movie</label>
                     <input checked="" id="format-movie" type="checkbox">
                     <!-- Special episodes that have been included in DVD/Blu-ray releases, picture dramas, pilots, etc -->
-                    <label for="format-special">Special</label>
+                    <label class="before" for="format-special">Special</label>
                     <input checked="" id="format-special" type="checkbox">
                     <!-- (Original Video Animation) Anime that have been released directly on DVD/Blu-ray without originally going through a theatrical release or television broadcast -->
-                    <label for="format-ova">OVA</label>
+                    <label class="before" for="format-ova">OVA</label>
                     <input checked="" id="format-ova" type="checkbox">
                     <!-- (Original Net Animation) Anime that have been originally released online or are only available through streaming services. -->
-                    <label for="format-ona">ONA</label>
+                    <label class="before" for="format-ona">ONA</label>
                     <input checked="" id="format-ona" type="checkbox">
                     <!-- Short anime released as a music video -->
-                    <label for="format-music">Music</label>
+                    <label class="before" for="format-music">Music</label>
                     <input checked="" id="format-music" type="checkbox">
                 </fieldset>
 
                 <fieldset id="manga-format">
                     <legend>Format</legend>
                     <!-- Professionally published manga with more than one chapter -->
-                    <label for="format-manga">Manga</label>
+                    <label class="before" for="format-manga">Manga</label>
                     <input checked="" id="format-manga" type="checkbox">
                     <!-- Written books released as a series of light novels -->
-                    <label for="format-novel">Novel</label>
+                    <label class="before" for="format-novel">Novel</label>
                     <input checked="" id="format-novel" type="checkbox">
                     <!-- Manga with just one chapter -->
-                    <label for="format-one-shot">One Shot</label>
+                    <label class="before" for="format-one-shot">One Shot</label>
                     <input checked="" id="format-one-shot" type="checkbox">
                 </fieldset>
 
@@ -99,11 +99,11 @@
             <div class="fieldContainer">
             <fieldset class="mainGroup">
                 <legend>Plot</legend>
-                <label for="timeline">Timeline</label>
                 <input type="radio" name="plot" id="timeline" checked>
+                <label for="timeline">Timeline</label>
                 <br>
-                <label for="watch-time">Watch time</label>
                 <input type="radio" name="plot" id="watch-time">
+                <label for="watch-time">Watch time</label>
 
             </fieldset>
             </div>
@@ -117,22 +117,22 @@
                     grid-template-columns: auto auto;
                 ">
 
-                    <label for="from">From</label>
+                    <label class="before" for="from">From</label>
                     <input id="from" type="date">
 
-                    <label for="focus-year">Focus on year</label>
+                    <label class="before" for="focus-year">Focus on year</label>
 
                     <!-- jquery ui spinner for negative step -->
                     <input id="focus-year" placeholder="20xx" style="width: 4em; justify-self:end;">
 
-                    <label for="to">To</label>
+                    <label class="before" for="to">To</label>
                     <input id="to" type="date">
                 </div>
                 <span>•</span>
 
                 <span>•</span>
 
-                <label for="last-n">Show n most recent</label>
+                <label class="before" for="last-n">Show n most recent</label>
                 <input type="number" id="last-n" value="25" min="5" step="5" style="width: 3em;">
                 <input type="checkbox" id="enable-last-n" checked>
 
@@ -141,7 +141,7 @@
 
             <div class="fieldContainer">
             <fieldset class="mainGroup">
-                <label for="language">Language</label>
+                <label class="before" for="language">Language</label>
 
                 <select id="language">
                     <option value="english">English</option>
@@ -149,16 +149,16 @@
                     <option value="native">Native</option>
                 </select>
 
-                <label for="seasons">Seasons</label>
+                <label class="before" for="seasons">Seasons</label>
                 <input id="seasons" type="checkbox">
             </fieldset>
             </div>
 
             <div class="fieldContainer">
             <fieldse  class="mainGroup"t>
-                <label for="font-size">Font Size</label>
+                <label class="before" for="font-size">Font Size</label>
                 <input id="font-size" required="" style="width: 3em;" type="number" value="10">
-                <label for="width">Width</label>
+                <label class="before" for="width">Width</label>
                 <!-- jquery ui spinner -->
                 <input id="width" max="9999" min="200" required="" value="1400" style="width: 4em;">
                 <input id="width-slider" style="display: block; width: 100%;" type="range">
