@@ -75,10 +75,7 @@ label.before::after {
     border-radius: 10px;
 }
 
-.fieldContainer.advanced{
-    margin-bottom: 0px;
-    padding: 5px;
-}
+
 
 input{
     color: inherit;
@@ -107,5 +104,5 @@ button.danger{
 
 .smallClose{
     margin: 2px;
-    padding: 8px 15px;
+    padding: 3px 15px;
 }

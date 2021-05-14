@@ -1020,9 +1020,6 @@ function drawHoursWatched(tlConfig, mal) {
                         type: 'time',
                         time: {
                             minUnit: 'day',
-                            // parser: function (date: Date) {
-                            //     return new Date(date).setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                            // }
                         },
                         ticks: {
                             min: $("#from").val(),
