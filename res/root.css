@@ -29,6 +29,11 @@ header {
     float: right;
 }
 
+#filter-list  {
+    list-style-type: none;
+    padding-left: 0;
+}
+
 ul.buttonList {
     /* position: absolute; */
     /* left: 0; */
@@ -68,6 +73,11 @@ label.before::after {
     padding: 5px;
     margin-bottom: 15px;
     border-radius: 10px;
+}
+
+.fieldContainer.advanced{
+    margin-bottom: 0px;
+    padding: 5px;
 }
 
 input{
