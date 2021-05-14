@@ -54,13 +54,13 @@ import "./lib/awesomplete/awesomplete.js";
 // Global data
 //
 /** Enable extra features that aren't generally useful, Might be able to change in the console. */
-export var debug = false;
-// export var debug: boolean = true
+// export var debug: boolean = false;
+export var debug = true;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 /** Use a local file instead of asking anilist's servers */
-export const usingTestData = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData = true;
 // Should probably figure out something to enforce that...
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -1151,6 +1151,36 @@ function removeTl() {
     this.parentElement.parentElement.parentElement.remove();
     // to do? disable remove all if there are no more timelines
 }
+export function savePNG(elm, filename, transparent = false) {
+    const svgdata = new XMLSerializer().serializeToString(elm);
+    {
+        // See https://github.com/Linkviii/js-animelist-timeline/issues/3
+        const img = document.createElement("img");
+        img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const svgSize = elm.getBoundingClientRect();
+        // With 8pt font, at 1x scale the text is blurry 
+        const scale = 2;
+        canvas.width = svgSize.width * scale;
+        canvas.height = svgSize.height * scale;
+        if (!transparent) {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob(function (blob) {
+                saveAs(blob, filename);
+            });
+        };
+    }
+}
+export function saveSVG(elm, filename) {
+    const svgdata = new XMLSerializer().serializeToString(elm);
+    const blob = new Blob([svgdata], { type: "image/svg+xml" });
+    saveAs(blob, filename);
+}
 // "P" | "S" button
 function exportTimeline() {
     //div = ../../.. → div {ul, div#tl_}
@@ -1159,37 +1189,14 @@ function exportTimeline() {
     const container = div.getElementsByClassName("timeline")[0];
     const svg = container.firstElementChild;
     const fileName = container.meta.getDescriptor();
-    const svgdata = new XMLSerializer().serializeToString(svg);
     switch (this.kind) {
         //
         case exportType.Png:
-            {
-                // See https://github.com/Linkviii/js-animelist-timeline/issues/3
-                const img = document.createElement("img");
-                img.setAttribute("src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgdata))));
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-                const svgSize = svg.getBoundingClientRect();
-                // With 8pt font, at 1x scale the text is blurry 
-                const scale = 2;
-                canvas.width = svgSize.width * scale;
-                canvas.height = svgSize.height * scale;
-                ctx.fillStyle = "white";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                img.onload = function () {
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    canvas.toBlob(function (blob) {
-                        saveAs(blob, fileName + ".png");
-                    });
-                };
-            }
+            savePNG(svg, fileName + ".png");
             break;
         //
         case exportType.Svg:
-            {
-                const blob = new Blob([svgdata], { type: "image/svg+xml" });
-                saveAs(blob, fileName + ".svg");
-            }
+            saveSVG(svg, fileName + ".svg");
             break;
         case exportType.Json:
             {
@@ -1392,8 +1399,38 @@ export function updateUri(param) {
     window.history.replaceState(null, null, str);
 }
 //
-// API urls
+// stuff
 //
+//
+// Logo
+//
+/**
+ * Create a simple logo timeline.
+ * I'm choosing to save this to a file and load that file instead of calling this.
+ */
+export function createLogo() {
+    const dates = [
+        "2020-01-01",
+        "2020-01-04",
+        "2020-01-09",
+    ];
+    const logoData = {
+        apiVersion: 2,
+        width: 300,
+        fontSize: 15,
+        // Don't show dates
+        tickFormat: " ",
+        callouts: [
+            { backgroundColor: "transparent", date: dates[0], description: "Anime", color: ATL.startColor1, },
+            { backgroundColor: "transparent", date: dates[1], description: "List", color: ATL.bingeColor, },
+            { backgroundColor: "transparent", date: dates[2], description: "Timeline", color: ATL.endColor },
+        ],
+        startDate: dates[0],
+        endDate: dates[2],
+    };
+    const logoTimeline = new Timeline(logoData, "logo");
+    logoTimeline.build();
+}
 //
 // test(ing) stuff
 //

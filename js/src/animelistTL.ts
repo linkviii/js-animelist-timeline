@@ -9,11 +9,11 @@ import * as MAL from "./MAL.js";
 // import {MALStatus} from "./MAL";
 
 
-const startColor1: string = "#C0C0FF";//blueish
-const startColor2: string = "#0026FF";//blueish
-const endColor: string = "#CD3F85";//reddish
+export const startColor1: string = "#C0C0FF";//blueish
+export const startColor2: string = "#0026FF";//blueish
+export const endColor: string = "#CD3F85";//reddish
 // const bingeColor = "#FFBE89";  // golddish
-const bingeColor = "#000000";  // just black
+export const bingeColor = "#000000";  // just black
 
 enum Season {
     WINTER = "Winter", SPRING = "Spring", SUMMER = "Summer", FALL = "Fall"

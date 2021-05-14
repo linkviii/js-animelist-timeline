@@ -4,11 +4,11 @@ import * as MAL from "./MAL.js";
 // import {MALAnime} from "./MAL";
 // import {MALAnimeList} from "./MAL";
 // import {MALStatus} from "./MAL";
-const startColor1 = "#C0C0FF"; //blueish
-const startColor2 = "#0026FF"; //blueish
-const endColor = "#CD3F85"; //reddish
+export const startColor1 = "#C0C0FF"; //blueish
+export const startColor2 = "#0026FF"; //blueish
+export const endColor = "#CD3F85"; //reddish
 // const bingeColor = "#FFBE89";  // golddish
-const bingeColor = "#000000"; // just black
+export const bingeColor = "#000000"; // just black
 var Season;
 (function (Season) {
     Season["WINTER"] = "Winter";
