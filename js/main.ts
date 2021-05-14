@@ -112,8 +112,8 @@ export var debug: boolean = true
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true
 
 
 // Should probably figure out something to enforce that...
@@ -658,6 +658,10 @@ function init(): void {
 
     //
 
+    if (location.hostname === "127.0.0.1") {
+        const favicon = document.getElementById("favicon") as HTMLLinkElement;
+        favicon.href = "favicon_localhost.png";
+    }
 
 
 }
