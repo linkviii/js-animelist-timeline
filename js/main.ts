@@ -181,7 +181,7 @@ class InputForm {
 
     readonly listField = $("#listName") as JQuery<HTMLInputElement>;
 
-    readonly language = $("#language") as JQuery<HTMLInputElement>;
+    readonly language = $("#language") as JQuery<HTMLSelectElement>;
 
     readonly seasonsToggle = $("#seasons") as JQuery<HTMLInputElement>;
 
@@ -202,10 +202,12 @@ class InputForm {
     readonly animeFormat = $("#anime-format") as JQuery<HTMLFieldSetElement>;
     readonly mangaFormat = $("#manga-format") as JQuery<HTMLFieldSetElement>;
 
-    readonly filterKind = $("#filter-kind") as JQuery<HTMLButtonElement>;
+    readonly filterKind = $("#filter-kind") as JQuery<HTMLSelectElement>;
     // To be poisoned by awesomplete 
     readonly titleFilter = document.getElementById("title-filter") as HTMLInputElement;
     readonly clearFilter = $("#clear-filter") as JQuery<HTMLButtonElement>;
+
+    readonly eventKind = $("#event-kind") as JQuery<HTMLSelectElement>;
 
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
     readonly clearButton = $("#clear-form") as JQuery<HTMLButtonElement>;
@@ -990,6 +992,8 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
     const includeFilter = input.filterKind.val() === "include";
     const filter: ATL.MediaFilter = { include: includeFilter, entrySet: activeFilter };
 
+    const eventPreference = input.eventKind.val() as ATL.EventPreference;
+
     //
 
     const tlConfig: AnimeListTimelineConfig = {
@@ -1003,6 +1007,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
         width: width,
         listKind: listKind,
         filter: filter,
+        eventPreference: eventPreference,
     };
 
     const getVal = function (id: string): boolean {

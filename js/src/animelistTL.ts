@@ -120,6 +120,26 @@ export interface MediaFilter {
     entrySet: Set<number>;
 }
 
+export enum EventPreference {
+    all             = "all",
+    preferStart     = "prefer start",
+    preferFinish    = "prefer finish",
+    startOnly       = "start only",
+    finishOnly      = "finish only",
+    bingedOnly  = "binged only",
+
+}
+
+// export const EventPreference = {
+//     all             : "all",
+//     preferStart     : "prefer start",
+//     preferFinish    : "prefer finish",
+//     startOnly       : "start only",
+//     finishOnly      : "finish only",
+//     bingedOnly      : "binged only",
+
+// }
+
 
 export interface AnimeListTimelineConfig {
     userName: string;
@@ -139,6 +159,7 @@ export interface AnimeListTimelineConfig {
     mangaFormat?: MangaFormatSelection;
 
     filter: MediaFilter;
+    eventPreference: EventPreference;
 }
 
 // Be semi human readable serialization, but use as short of keys as reasonable.
@@ -257,6 +278,9 @@ export class AnimeListTimeline {
                     continue;
                 }
             }
+
+            //
+            
 
             const boundsMask = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
             const boundsCount = boundsMask.filter(x => x).length;

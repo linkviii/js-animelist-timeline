@@ -124,6 +124,7 @@ class InputForm {
         // To be poisoned by awesomplete 
         this.titleFilter = document.getElementById("title-filter");
         this.clearFilter = $("#clear-filter");
+        this.eventKind = $("#event-kind");
         this.submitButton = $("#listFormSubmit");
         this.clearButton = $("#clear-form");
     }
@@ -695,6 +696,7 @@ function preparePlot(mal) {
     const fontSize = input.fontSize.val();
     const includeFilter = input.filterKind.val() === "include";
     const filter = { include: includeFilter, entrySet: activeFilter };
+    const eventPreference = input.eventKind.val();
     //
     const tlConfig = {
         userName: username,
@@ -707,6 +709,7 @@ function preparePlot(mal) {
         width: width,
         listKind: listKind,
         filter: filter,
+        eventPreference: eventPreference,
     };
     const getVal = function (id) {
         const el = $(`#format-${id}`)[0];

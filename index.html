@@ -50,7 +50,7 @@
             -->
             <button type="submit" disabled style="display: none" aria-hidden="true"></button>
 
-            <fieldset style="display: inline;">
+            <fieldset style="display: inline-block;">
                 <legend>List</legend>
 
                 <label for="listName">Username</label>
@@ -105,7 +105,7 @@
                 </fieldset>
 
             </fieldset>
-            <fieldset style="display:inline;">
+            <fieldset style="display:inline-block;">
                 <legend>Plot</legend>
                 <label for="timeline">Timeline</label>
                 <input type="radio" name="plot" id="timeline" checked>
@@ -115,7 +115,7 @@
 
             </fieldset>
 
-            <fieldset style="display: inline;">
+            <fieldset style="display: inline-block;">
                 <legend>Dates (optional)</legend>
 
                 <div style="
@@ -146,7 +146,7 @@
 
             </fieldset>
 
-            <fieldset class="advanced">
+            <fieldset class="advanced" style="display: inline-block;">
                 <legend>Title Filter</legend>
 
                 <select id="filter-kind">
@@ -163,6 +163,21 @@
                     </ul>
                 </div>
                 <button id="clear-filter">Clear Filter</button>
+            </fieldset>
+
+            <fieldset class="advanced" style="display: inline-block;">
+                <legend>Events</legend>
+                <!-- I meant to write radio buttons but I did this instead. As if I know what I want anyway. -->
+                <select id="event-kind">
+                    <!-- See animelistTL.EventPreference -->
+                    <option value="all">All</option>
+                    <option value="prefer start">Prefer Start</option>
+                    <option value="prefer end">Prefer Finish</option>
+                    <option value="start only">Start Only</option>
+                    <option value="finish only">Finish Only</option>
+                    <option value="binged only">Binged Only</option>
+                </select>
+
             </fieldset>
 
             <fieldset>

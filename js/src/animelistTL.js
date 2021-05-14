@@ -83,6 +83,15 @@ function filterFormat(format, formatSelection) {
         return false;
     }
 }
+export var EventPreference;
+(function (EventPreference) {
+    EventPreference["all"] = "all";
+    EventPreference["preferStart"] = "prefer start";
+    EventPreference["preferFinish"] = "prefer finish";
+    EventPreference["startOnly"] = "start only";
+    EventPreference["finishOnly"] = "finish only";
+    EventPreference["bingedOnly"] = "binged only";
+})(EventPreference || (EventPreference = {}));
 // Be semi human readable serialization, but use as short of keys as reasonable.
 // Do not want the url to be unreasonably long.
 // Changing these values will break existing links
@@ -144,6 +153,7 @@ export class AnimeListTimeline {
                     continue;
                 }
             }
+            //
             const boundsMask = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
             const boundsCount = boundsMask.filter(x => x).length;
             if (boundsCount == 0) {
