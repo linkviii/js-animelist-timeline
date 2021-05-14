@@ -62,6 +62,7 @@
     });
   </script> -->
   <input id="myinput" />
+  <input id="query" class="awesomplete" />
   <script>
     var input = document.getElementById("myinput");
 
@@ -85,10 +86,10 @@
 
 
     const data = [
-        { label: "Belarus", value: "BY" },
-        { label: "China", value: "CN" },
-        { label: "United States", value: "US" }
-      ];
+      { label: "Belarus", value: "BY" },
+      { label: "China", value: "CN" },
+      { label: "United States", value: "US" }
+    ];
 
     // Show label and insert label into the input:
     new Awesomplete(input, {
@@ -99,10 +100,32 @@
       },
       // "awesomplete-selectcomplete": function (text) {console.log(text)}
     });
-    input.addEventListener("awesomplete-selectcomplete", function (e) { 
-      console.log(e.text) 
-      console.log(e) 
+    input.addEventListener("awesomplete-selectcomplete", function (e) {
+      console.log(e.text)
+      console.log(e)
     })
+
+
+    //
+    const queryInput = document.querySelector("#query");
+
+    const awesomplete = new Awesomplete(queryInput, {
+      filter: () => { // We will provide a list that is already filtered ...
+        return true;
+      },
+      // sort: false,    // ... and sorted.
+      list: []
+    });
+
+    const staticList = ["hello world","teekyu 1","teekyu 2","teekyu 3","teekyu 4","teekyu 5","teekyu 6","teekyu 7",];
+
+    queryInput.addEventListener("input", (event) => {
+      const inputText = event.target.value;
+      // Process inputText as you want, e.g. make an API request.
+      awesomplete.list = ["my " + inputText, "custom " + inputText, "list " + inputText].concat(staticList);
+      awesomplete.evaluate();
+    });
+
 
   </script>
 

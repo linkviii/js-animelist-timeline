@@ -29,6 +29,11 @@ header {
     float: right;
 }
 
+#filter-list  {
+    list-style-type: none;
+    padding-left: 0;
+}
+
 ul.buttonList {
     /* position: absolute; */
     /* left: 0; */

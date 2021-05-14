@@ -131,10 +131,10 @@ const userAnimeCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Ma
 const userMangaCache: Map<string, MAL.MangaList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
-const knownAnime: Map<number, MAL.Title> = new Map();
+export const knownAnime: Map<number, MAL.Title> = new Map();
 // Const reference that awesomplete binds to
-const filterList: AwesompleteData[] = [];
-const activeFilter: Set<number> = new Set();
+export const filterList: AwesompleteData[] = [];
+export const activeFilter: Set<number> = new Set();
 
 function fillFilterList() {
     filterList.splice(0, filterList.length); // Clear the list first
@@ -145,6 +145,11 @@ function fillFilterList() {
         if (!activeFilter.has(id)) {
             filterList.push({ label: title.preferred(lang), value: id });
         }
+    }
+
+    if (filterList.length !== 0) {
+        input.titleFilter.disabled = false;
+        input.titleFilter.placeholder = "Search for titles";
     }
 }
 
@@ -244,12 +249,67 @@ class InputForm {
         const ul = document.getElementById("filter-list");
 
         const awesomplete = new Awesomplete(input.titleFilter, {
-            list: filterList,
+            list: [],
             replace: function (suggestion) {
                 this.input.value = "";
             },
-
+            sort: false,
         });
+
+        function unfilter(id: number, lang: string) {
+            activeFilter.delete(id);
+            // Move the item back into the dropdown
+            filterList.push({ label: knownAnime.get(id).preferred(lang), value: id });
+
+        };
+
+        function addToFilter(data: AwesompleteData) {
+
+            if (typeof data.value === "string") {
+                const all = filterList.filter((elm) =>
+                    elm.label.toLowerCase().includes(data.value.toLowerCase()));
+
+                for (let it of all) {
+                    addToFilter(it);
+                }
+
+            } else {
+                const li = document.createElement("li");
+                const x = document.createElement("button");
+                const label = document.createElement("span");
+
+                x.textContent = "❌";
+                (<any>x).dataID = data.value;
+
+                label.textContent = data.label;
+
+                li.appendChild(x);
+                li.appendChild(label);
+
+                ul.appendChild(li);
+
+                //
+                activeFilter.add(data.value);
+
+
+                //
+                x.addEventListener("click", function (e) {
+                    const id: number = (<any>this).dataID;
+                    const lang = input.language.val() as string;
+
+                    unfilter(id, lang);
+                    // console.log(id);
+
+                    // Remove the li
+                    x.parentElement.remove();
+
+                });
+
+                // Move the item out of the dropdown
+                const i = filterList.findIndex(x => x.value === data.value);
+                filterList.splice(i, 1);
+            }
+        }
 
         input.titleFilter.addEventListener("awesomplete-selectcomplete",
             function (e) {
@@ -258,18 +318,24 @@ class InputForm {
                 // console.log(text) 
 
                 //
-                const elm = document.createElement("li");
-                elm.textContent = data.label;
-                (<any>elm).dataID = data.value;
-                activeFilter.add(data.value);
-
-                ul.appendChild(elm);
-
-                // Move the item out of the dropdown
-                const i = filterList.findIndex(x => x.value === data.value);
-                filterList.splice(i, 1);
+                addToFilter(data);
             }
         );
+
+        addEventListener("input", (event) => {
+            const inputText = (<any>event.target).value.trim() as string;
+            const all: AwesompleteData = { label: `All "${inputText}"`, value: inputText };
+
+            awesomplete.list = [all].concat(filterList);
+        });
+
+        // input.titleFilter.addEventListener("keydown", function(event){
+        //     if (event.key== "Enter"){
+
+        //         console.log("filter::enter", new Date())
+        //     }
+
+        // });
 
         //
         function clearFilter() {
@@ -285,15 +351,15 @@ class InputForm {
             const filter = Array.from(activeFilter);
 
             for (let id of filter) {
-                activeFilter.delete(id);
-
-                // Move the item back into the dropdown
-                filterList.push({ label: knownAnime.get(id).preferred(lang), value: id });
-
+                unfilter(id, lang);
             }
 
-        }
+        };
         input.clearFilter.on("click", clearFilter);
+
+        // Start disabled until data is loaded
+        input.titleFilter.disabled = true;
+
 
     }
 
