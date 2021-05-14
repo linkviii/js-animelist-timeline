@@ -99,6 +99,7 @@ function fillFilterList() {
 //
 class InputForm {
     constructor() {
+        this.advancedToggle = $("#show-advanced");
         // Would be awkward to have both `form` and `from` fields
         this.inputForm = $("#form");
         this.listField = $("#listName");
@@ -210,6 +211,9 @@ class InputForm {
                 return true;
             });
         }
+        //
+        //
+        //
         function showMediaKinds(kind) {
             switch (kind) {
                 case "ANIME":
@@ -226,7 +230,11 @@ class InputForm {
         }
         ;
         showMediaKinds(input.listKind.val());
-        input.listKind.on("change", (e) => showMediaKinds(e.target.value));
+        input.listKind.on("change", function (e) {
+            if (input.advancedToggle[0].checked) {
+                showMediaKinds(e.target.value);
+            }
+        });
         //
         // FocusYear
         //
@@ -327,6 +335,32 @@ class InputForm {
             input.inputForm[0].reset();
             resetUI();
         });
+        //
+        //
+        //
+        function hideAdvanced() {
+            // console.log("Hide advanced.")
+            $(".advanced").hide();
+            input.lastNToggle[0].checked = true;
+            enableLastN(true);
+        }
+        function showAdvanced() {
+            // console.log("Show advanced.")
+            $(".advanced").show();
+            showMediaKinds(input.listKind.val());
+        }
+        function enableAdvanced(value) {
+            if (value) {
+                showAdvanced();
+            }
+            else {
+                hideAdvanced();
+            }
+        }
+        input.advancedToggle.on("change", function () {
+            enableAdvanced(this.checked);
+        });
+        enableAdvanced(input.advancedToggle[0].checked);
         //
         resetUI();
     } // END initListeners

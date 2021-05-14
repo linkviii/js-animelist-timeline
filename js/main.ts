@@ -169,6 +169,8 @@ function fillFilterList() {
 
 class InputForm {
 
+    readonly advancedToggle = $("#show-advanced") as JQuery<HTMLFormElement>;
+
     // Would be awkward to have both `form` and `from` fields
     readonly inputForm = $("#form") as JQuery<HTMLFormElement>;
 
@@ -322,6 +324,10 @@ class InputForm {
             });
         }
 
+        //
+        //
+        //
+
         function showMediaKinds(kind: string) {
 
             switch (kind) {
@@ -340,7 +346,13 @@ class InputForm {
 
         };
         showMediaKinds(<string>input.listKind.val());
-        input.listKind.on("change", (e: Event) => showMediaKinds((<any>e.target).value));
+        input.listKind.on("change",
+            function (e: Event) {
+                if (input.advancedToggle[0].checked) {
+                    showMediaKinds((<any>e.target).value);
+                }
+            }
+        );
 
 
         //
@@ -484,6 +496,34 @@ class InputForm {
             input.inputForm[0].reset();
             resetUI();
         });
+
+        //
+        //
+        //
+        function hideAdvanced() {
+            // console.log("Hide advanced.")
+            $(".advanced").hide();
+            input.lastNToggle[0].checked = true;
+            enableLastN(true);
+        }
+        function showAdvanced() {
+            // console.log("Show advanced.")
+            $(".advanced").show();
+            showMediaKinds(<string>input.listKind.val());
+        }
+
+        function enableAdvanced(value: boolean) {
+            if (value) {
+                showAdvanced();
+            } else {
+                hideAdvanced();
+            }
+        }
+
+        input.advancedToggle.on("change", function () {
+            enableAdvanced(this.checked);
+        });
+        enableAdvanced(input.advancedToggle[0].checked);
 
         //
         resetUI();

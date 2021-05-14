@@ -39,6 +39,9 @@
 
         <iframe name="💾" src="about:blank" style="display:none"></iframe>
 
+        <label for="show-advanced">Show advanced options</label>
+        <input type="checkbox" name="show-advanced" id="show-advanced">
+
         <form action="about:blank" id="form" target="💾">
 
             <!-- 
@@ -62,7 +65,7 @@
 
 
                 <!-- Only show the list for the current Media kind -->
-                <fieldset id="anime-format">
+                <fieldset id="anime-format" class="advanced">
                     <legend>Format</legend>
                     <!-- Copying descriptions from the api docs. Could tool tip them or something. -->
                     <!-- Anime broadcast on television -->
@@ -88,7 +91,7 @@
                     <input checked="" id="format-music" type="checkbox">
                 </fieldset>
 
-                <fieldset id="manga-format">
+                <fieldset id="manga-format" class="advanced">
                     <legend>Format</legend>
                     <!-- Professionally published manga with more than one chapter -->
                     <label for="format-manga">Manga</label>
@@ -120,28 +123,30 @@
                     grid-template-columns: auto auto;
                 ">
 
-                    <label for="from">From</label>
-                    <input id="from" type="date">
+                    <label for="from" class="advanced">From</label>
+                    <input id="from" type="date" class="advanced">
 
-                    <label for="focus-year">Focus on year</label>
+                    <label for="focus-year" class="advanced">Focus on year</label>
 
                     <!-- jquery ui spinner for negative step -->
-                    <input id="focus-year" placeholder="20xx" style="width: 4em; justify-self:end;">
+                    <span class="advanced">
 
-                    <label for="to">To</label>
+                        <input id="focus-year" placeholder="20xx" style="width: 4em; justify-self:end;">
+                    </span>
+
+                    <label for="to">Up to</label>
                     <input id="to" type="date">
                 </div>
-                <span>•</span>
 
-                <span>•</span>
+                <span class="advanced">•</span>
 
                 <label for="last-n">Show n most recent</label>
                 <input type="number" id="last-n" value="25" min="5" step="5" style="width: 3em;">
-                <input type="checkbox" id="enable-last-n" checked>
+                <input type="checkbox" id="enable-last-n" checked class="advanced">
 
             </fieldset>
 
-            <fieldset>
+            <fieldset class="advanced">
                 <legend>Title Filter</legend>
 
                 <select id="filter-kind">
