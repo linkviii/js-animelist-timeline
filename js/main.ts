@@ -109,8 +109,8 @@ export const debug: boolean = false;
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true
 
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -280,7 +280,9 @@ class InputForm {
                 const x = document.createElement("button");
                 const label = document.createElement("span");
 
-                x.textContent = "❌";
+                x.textContent = "X";
+                x.classList.add("smallClose");
+                x.classList.add("danger");
                 (<any>x).dataID = data.value;
 
                 label.textContent = data.label;
@@ -1109,7 +1111,8 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
     //make buttons
     const removeButton = document.createElement("button");
-    removeButton.textContent = "❌Remove";
+    removeButton.textContent = "X";
+    removeButton.classList.add("danger");
     removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
 
@@ -1224,6 +1227,7 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
 
     const removeButton = document.createElement("button");
     removeButton.textContent = "X";
+    removeButton.classList.add("danger");
     removeButton.setAttribute("title", "Remove graph from the page");
     removeButton.addEventListener("click", removeTl);
 
