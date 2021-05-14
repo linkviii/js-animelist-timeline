@@ -102,8 +102,9 @@ declare function unescape(s: string): string;
 // Global data
 //
 
-export const debug: boolean = false;
-// export const debug: boolean = true
+/** Enable extra features that aren't generally useful, Might be able to change in the console. */
+export var debug: boolean = false;
+// export var debug: boolean = true
 
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
@@ -112,6 +113,8 @@ export const debugData = {};
 export const usingTestData: boolean = false;
 // export const usingTestData: boolean = true
 
+
+// Should probably figure out something to enforce that...
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -246,6 +249,9 @@ class InputForm {
 
     }
 
+    /*------------------------------------------------------------------------------- */
+
+
     initFilterList(): void {
         const input = this;
         const ul = document.getElementById("filter-list");
@@ -366,6 +372,8 @@ class InputForm {
 
 
     }
+    /*------------------------------------------------------------------------------- */
+
 
     initListeners(): void {
 
@@ -599,6 +607,21 @@ class InputForm {
         resetUI();
     } // END initListeners
 
+    /*------------------------------------------------------------------------------- */
+
+    validateHTML() {
+        const input = this;
+        //
+
+        for (let option of input.eventKind.children()) {
+            const eventPreference = option.value as ATL.EventPreference;
+            if (!Object.values(ATL.EventPreference).includes(eventPreference)) {
+                console.error("Bad value property", option);
+                alert("Bad HTML value");
+            }
+        }
+    }
+
 } // END InputForm
 
 export const input = new InputForm();
@@ -618,7 +641,7 @@ function init(): void {
 
     input.initParams();
     input.initListeners();
-
+    input.validateHTML();
 
 
     //
@@ -996,6 +1019,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const eventPreference = input.eventKind.val() as ATL.EventPreference;
 
+
     //
 
     const tlConfig: AnimeListTimelineConfig = {
@@ -1076,6 +1100,14 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
     }
 
 }
+
+// ██████╗ ██████╗  █████╗ ██╗    ██╗
+// ██╔══██╗██╔══██╗██╔══██╗██║    ██║
+// ██║  ██║██████╔╝███████║██║ █╗ ██║
+// ██║  ██║██╔══██╗██╔══██║██║███╗██║
+// ██████╔╝██║  ██║██║  ██║╚███╔███╔╝
+// ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
+
 
 // main VI
 // write the timeline to the document

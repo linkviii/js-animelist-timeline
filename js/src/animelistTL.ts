@@ -121,12 +121,12 @@ export interface MediaFilter {
 }
 
 export enum EventPreference {
-    all             = "all",
-    preferStart     = "prefer start",
-    preferFinish    = "prefer finish",
-    startOnly       = "start only",
-    finishOnly      = "finish only",
-    bingedOnly  = "binged only",
+    all = "all",
+    preferStart = "prefer start",
+    preferFinish = "prefer finish",
+    startOnly = "start only",
+    finishOnly = "finish only",
+    bingedOnly = "binged only",
 
 }
 
@@ -219,10 +219,10 @@ export class AnimeListTimeline {
     }
 
     /** Truth mask for start and end watch dates */
-    static filterInbounds(anime: MAL.Media, lb: MAL.Mdate, rb: MAL.Mdate): [boolean, boolean] {
+    static filterInbounds(start: MAL.Mdate, finish: MAL.Mdate, lb: MAL.Mdate, rb: MAL.Mdate): [boolean, boolean] {
 
-        return [AnimeListTimeline.dateInBounds(anime.myStartDate, lb, rb),
-        AnimeListTimeline.dateInBounds(anime.myFinishDate, lb, rb)];
+        return [AnimeListTimeline.dateInBounds(start, lb, rb),
+        AnimeListTimeline.dateInBounds(finish, lb, rb)];
     }
 
 
@@ -254,18 +254,28 @@ export class AnimeListTimeline {
 
         for (let anime of mal.anime) {
 
+            // Could be nice to have a mutable copy of the anime object .
+            // Not doing that now though.
+
             // Put this first for the sake of debugging.
             const title = anime.seriesTitle.preferred(tlConfig.lang);
 
-            // Filter dates and find the extreme of completed anime
+            // (Weak) Copy dates so that we may choose to ignore them
+            let startDate = anime.myStartDate;
+            let finishDate = anime.myFinishDate;
+
+            // Filter to watching and completed
+            // Unsure if dropped or hold should exist. For now they don't.
             if (anime.myStatus != MAL.Status.Completed && anime.myStatus != MAL.Status.Watching) {
                 continue;
             }
 
+            // Filter for media format
             if (!filterFormat(anime.seriesType, tlConfig.animeFormat) && !filterFormat(anime.seriesType, tlConfig.mangaFormat)) {
                 continue;
             }
 
+            // Run the title filter
             if (tlConfig.filter.entrySet.size == 0) {
                 // pass
             }
@@ -280,44 +290,74 @@ export class AnimeListTimeline {
             }
 
             //
-            
-
-            const boundsMask = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);
-            const boundsCount = boundsMask.filter(x => x).length;
+            // Filter dates... sigh
+            //  and find the extreme of completed anime  
 
 
+            // Pretend unwanted event's dates don't exist and allow the bounds check to work
+            if (tlConfig.eventPreference === EventPreference.startOnly) {
+                finishDate = MAL.nullDate;
+            }
+            if (tlConfig.eventPreference === EventPreference.finishOnly) {
+                startDate = MAL.nullDate;
+            }
+
+            //
+            let binged = false;
+            if (!(startDate.isNullDate() || finishDate.isNullDate())) {
+                const dateOrdering = startDate.compare(finishDate);
+                if (dateOrdering > 0) {
+                    console.log(title, ": Finished before start.");
+
+                } else if (dateOrdering === 0) {
+                    binged = true;
+                }
+            }
+
+            if (tlConfig.eventPreference === EventPreference.bingedOnly && !binged) {
+                continue;
+            }
+
+
+            let boundsMask = AnimeListTimeline.filterInbounds(startDate, finishDate, minDate, maxDate);
+            let boundsCount = boundsMask.filter(x => x).length;
+
+            // Neither event is in range
             if (boundsCount == 0) {
                 continue;
             }
 
+            // After finding which event dates are within our time span,
+            // Keep only the more interesting ones
+            if (boundsCount == 2) {
+                if (tlConfig.eventPreference === EventPreference.preferStart) {
+                    boundsCount = 1;
+                    boundsMask[1] = false;
+                }
+                if (tlConfig.eventPreference === EventPreference.preferFinish) {
+                    boundsCount = 1;
+                    boundsMask[0] = false;
+                }
+
+            }
+
             //
             if (boundsMask[0]) {
-                this.firstDate = anime.myStartDate.extremeOfDates(this.firstDate, false);
-                this.lastDate = anime.myStartDate.extremeOfDates(this.lastDate);
+                this.firstDate = startDate.extremeOfDates(this.firstDate, false);
+                this.lastDate = startDate.extremeOfDates(this.lastDate);
             }
             if (boundsMask[1]) {
-                this.firstDate = anime.myFinishDate.extremeOfDates(this.firstDate, false);
-                this.lastDate = anime.myFinishDate.extremeOfDates(this.lastDate);
+                this.firstDate = finishDate.extremeOfDates(this.firstDate, false);
+                this.lastDate = finishDate.extremeOfDates(this.lastDate);
             }
 
             this.mediaSet.push(anime);
 
 
-            let binged = false;
             if (boundsCount == 2) {
-
                 this.boundedSet.push(anime);
-
-                const cmp = anime.myStartDate.compare(anime.myFinishDate);
-
-                if (cmp > 0) {
-                    console.log(title, ": Finished before start.");
-                }
-
-                if (cmp === 0) { binged = true; }
             } else {
                 this.unboundedSet.push(anime);
-
             }
 
 

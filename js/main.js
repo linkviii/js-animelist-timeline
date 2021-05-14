@@ -53,13 +53,15 @@ import "./lib/awesomplete/awesomplete.js";
 //
 // Global data
 //
-export const debug = false;
-// export const debug: boolean = true
+/** Enable extra features that aren't generally useful, Might be able to change in the console. */
+export var debug = false;
+// export var debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 /** Use a local file instead of asking anilist's servers */
 export const usingTestData = false;
 // export const usingTestData: boolean = true
+// Should probably figure out something to enforce that...
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
 }
@@ -157,6 +159,7 @@ class InputForm {
             this.fontSize.val(param[keys.fontSize]);
         }
     }
+    /*------------------------------------------------------------------------------- */
     initFilterList() {
         const input = this;
         const ul = document.getElementById("filter-list");
@@ -241,6 +244,7 @@ class InputForm {
         // Start disabled until data is loaded
         input.titleFilter.disabled = true;
     }
+    /*------------------------------------------------------------------------------- */
     initListeners() {
         const input = this;
         // The clear filter button is in hte middle of the form.
@@ -415,6 +419,18 @@ class InputForm {
         //
         resetUI();
     } // END initListeners
+    /*------------------------------------------------------------------------------- */
+    validateHTML() {
+        const input = this;
+        //
+        for (let option of input.eventKind.children()) {
+            const eventPreference = option.value;
+            if (!Object.values(ATL.EventPreference).includes(eventPreference)) {
+                console.error("Bad value property", option);
+                alert("Bad HTML value");
+            }
+        }
+    }
 } // END InputForm
 export const input = new InputForm();
 function init() {
@@ -427,6 +443,7 @@ function init() {
     // 
     input.initParams();
     input.initListeners();
+    input.validateHTML();
     //
     //
     const removeAll = document.getElementById("clearAllTimelines");
@@ -769,6 +786,12 @@ function preparePlot(mal) {
         drawHoursWatched(tlConfig, mal);
     }
 }
+// ██████╗ ██████╗  █████╗ ██╗    ██╗
+// ██╔══██╗██╔══██╗██╔══██╗██║    ██║
+// ██║  ██║██████╔╝███████║██║ █╗ ██║
+// ██║  ██║██╔══██╗██╔══██║██║███╗██║
+// ██████╔╝██║  ██║██║  ██║╚███╔███╔╝
+// ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
 // main VI
 // write the timeline to the document
 // pre: tln is a valid AnimeListTimeline object
