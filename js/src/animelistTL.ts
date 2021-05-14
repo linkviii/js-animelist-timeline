@@ -111,6 +111,16 @@ function filterFormat(format: string, formatSelection?: AnimeFormatSelection | M
     }
 }
 
+export interface MediaFilter {
+    /** 
+     * When true, only include items present in the filter. 
+     * When false, include everything but things in the filter.
+     */
+    include: boolean;
+    entrySet: Set<number>;
+}
+
+
 export interface AnimeListTimelineConfig {
     userName: string;
     //YYYY-MM-DD
@@ -127,6 +137,8 @@ export interface AnimeListTimelineConfig {
     listKind: string;
     animeFormat?: AnimeFormatSelection;
     mangaFormat?: MangaFormatSelection;
+
+    filter: MediaFilter;
 }
 
 // Be semi human readable serialization, but use as short of keys as reasonable.
@@ -148,6 +160,8 @@ export const AnimeListTimelineConfigKeys = {
 interface MediaCallout extends TimelineCalloutV2 {
     media: MAL.Media;
 }
+
+
 
 /**
  * Data to be used for a js-timeline
@@ -194,7 +208,7 @@ export class AnimeListTimeline {
 
     constructor(mal: MAL.MediaList, tlConfig: AnimeListTimelineConfig) {
 
-        
+
         this.mediaSet = [];
         this.boundedSet = [];
         this.unboundedSet = [];
@@ -229,6 +243,19 @@ export class AnimeListTimeline {
 
             if (!filterFormat(anime.seriesType, tlConfig.animeFormat) && !filterFormat(anime.seriesType, tlConfig.mangaFormat)) {
                 continue;
+            }
+
+            if (tlConfig.filter.entrySet.size == 0) {
+                // pass
+            }
+            else if (tlConfig.filter.include) {
+                if (!tlConfig.filter.entrySet.has(anime.myId)) {
+                    continue;
+                }
+            } else {
+                if (tlConfig.filter.entrySet.has(anime.myId)) {
+                    continue;
+                }
             }
 
             const boundsMask = AnimeListTimeline.filterInbounds(anime, minDate, maxDate);

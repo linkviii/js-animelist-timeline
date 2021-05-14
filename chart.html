@@ -2,7 +2,7 @@
 
 <head>
   <!--Load the AJAX API-->
-  <script  src="./js/lib/chartjs/Chart.bundle.js"></script>
+  <script src="./js/lib/chartjs/Chart.bundle.js"></script>
   <script type="text/javascript">
 
 
@@ -12,6 +12,8 @@
     }
 
   </script>
+  <link rel="stylesheet" href="./js/lib/awesomplete/awesomplete.css" />
+  <script src="./js/lib/awesomplete/awesomplete.js"></script>
 </head>
 
 <body>
@@ -19,8 +21,8 @@
   <!--Div that will hold the pie chart-->
   <div id="chart_div"></div>
 
-  <canvas id="myChart" width="400" height="400"></canvas>
-  <script>
+  <!-- <canvas id="myChart" width="400" height="400"></canvas> -->
+  <!-- <script>
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
       type: 'bar',
@@ -58,6 +60,73 @@
         }
       }
     });
+  </script> -->
+  <input id="myinput" />
+  <input id="query" class="awesomplete" />
+  <script>
+    var input = document.getElementById("myinput");
+
+    // Show label but insert value into the input:
+    // new Awesomplete(input, {
+    //   list: [
+    //     { label: "Belarus", value: "BY" },
+    //     { label: "China", value: "CN" },
+    //     { label: "United States", value: "US" }
+    //   ]
+    // });
+
+    // Same with arrays:
+    // new Awesomplete(input, {
+    //   list: [
+    //     ["Belarus", "BY"],
+    //     ["China", "CN"],
+    //     ["United States", "US"]
+    //   ]
+    // });
+
+
+    const data = [
+      { label: "Belarus", value: "BY" },
+      { label: "China", value: "CN" },
+      { label: "United States", value: "US" }
+    ];
+
+    // Show label and insert label into the input:
+    new Awesomplete(input, {
+      list: data,
+      // insert label instead of value into the input.
+      replace: function (suggestion) {
+        this.input.value = "";
+      },
+      // "awesomplete-selectcomplete": function (text) {console.log(text)}
+    });
+    input.addEventListener("awesomplete-selectcomplete", function (e) {
+      console.log(e.text)
+      console.log(e)
+    })
+
+
+    //
+    const queryInput = document.querySelector("#query");
+
+    const awesomplete = new Awesomplete(queryInput, {
+      filter: () => { // We will provide a list that is already filtered ...
+        return true;
+      },
+      // sort: false,    // ... and sorted.
+      list: []
+    });
+
+    const staticList = ["hello world","teekyu 1","teekyu 2","teekyu 3","teekyu 4","teekyu 5","teekyu 6","teekyu 7",];
+
+    queryInput.addEventListener("input", (event) => {
+      const inputText = event.target.value;
+      // Process inputText as you want, e.g. make an API request.
+      awesomplete.list = ["my " + inputText, "custom " + inputText, "list " + inputText].concat(staticList);
+      awesomplete.evaluate();
+    });
+
+
   </script>
 
 </body>

@@ -60,6 +60,8 @@ import "./lib/jquery-ui/jquery-ui.min.js";
 
 import "./lib/chartjs/Chart.bundle.js"
 
+import "./lib/awesomplete/awesomplete.js"
+
 //
 declare class Chart {
     constructor(parameters, a);
@@ -70,6 +72,14 @@ declare class Chart {
 declare namespace strftime {
     function utc(): (format: string, date: Date) => string;
 }
+
+declare var Awesomplete;
+
+interface AwesompleteData {
+    label: string;
+    value: any
+}
+
 
 //import FileSaver.js
 declare function saveAs(foo?, fooo?);
@@ -98,6 +108,7 @@ export const debug: boolean = false;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 
+/** Use a local file instead of asking anilist's servers */
 export const usingTestData: boolean = false;
 // export const usingTestData: boolean = true
 
@@ -120,6 +131,30 @@ const userAnimeCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Ma
 const userMangaCache: Map<string, MAL.MangaList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
+export const knownAnime: Map<number, MAL.Title> = new Map();
+// Const reference that awesomplete binds to
+export const filterList: AwesompleteData[] = [];
+export const activeFilter: Set<number> = new Set();
+
+function fillFilterList() {
+    filterList.splice(0, filterList.length); // Clear the list first
+
+    const lang = input.language.val() as string;
+
+    for (let [id, title] of knownAnime.entries()) {
+        if (!activeFilter.has(id)) {
+            filterList.push({ label: title.preferred(lang), value: id });
+        }
+    }
+
+    if (filterList.length !== 0) {
+        input.titleFilter.disabled = false;
+        input.titleFilter.placeholder = "Search for titles";
+    }
+}
+
+
+
 
 // global for ease of testing. Used as globals.
 // export let username: string;
@@ -138,6 +173,8 @@ let timelineCount: number = 0;
 //
 
 class InputForm {
+
+    readonly advancedToggle = $("#show-advanced") as JQuery<HTMLFormElement>;
 
     // Would be awkward to have both `form` and `from` fields
     readonly inputForm = $("#form") as JQuery<HTMLFormElement>;
@@ -164,6 +201,11 @@ class InputForm {
 
     readonly animeFormat = $("#anime-format") as JQuery<HTMLFieldSetElement>;
     readonly mangaFormat = $("#manga-format") as JQuery<HTMLFieldSetElement>;
+
+    readonly filterKind = $("#filter-kind") as JQuery<HTMLButtonElement>;
+    // To be poisoned by awesomplete 
+    readonly titleFilter = document.getElementById("title-filter") as HTMLInputElement;
+    readonly clearFilter = $("#clear-filter") as JQuery<HTMLButtonElement>;
 
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
     readonly clearButton = $("#clear-form") as JQuery<HTMLButtonElement>;
@@ -202,9 +244,155 @@ class InputForm {
 
     }
 
+    initFilterList(): void {
+        const input = this;
+        const ul = document.getElementById("filter-list");
+
+        const awesomplete = new Awesomplete(input.titleFilter, {
+            list: [],
+            replace: function (suggestion) {
+                this.input.value = "";
+            },
+            sort: false,
+        });
+
+        function unfilter(id: number, lang: string) {
+            activeFilter.delete(id);
+            // Move the item back into the dropdown
+            filterList.push({ label: knownAnime.get(id).preferred(lang), value: id });
+
+        };
+
+        function addToFilter(data: AwesompleteData) {
+
+            if (typeof data.value === "string") {
+                const all = filterList.filter((elm) =>
+                    elm.label.toLowerCase().includes(data.value.toLowerCase()));
+
+                for (let it of all) {
+                    addToFilter(it);
+                }
+
+            } else {
+                const li = document.createElement("li");
+                const x = document.createElement("button");
+                const label = document.createElement("span");
+
+                x.textContent = "❌";
+                (<any>x).dataID = data.value;
+
+                label.textContent = data.label;
+
+                li.appendChild(x);
+                li.appendChild(label);
+
+                ul.appendChild(li);
+
+                //
+                activeFilter.add(data.value);
+
+
+                //
+                x.addEventListener("click", function (e) {
+                    const id: number = (<any>this).dataID;
+                    const lang = input.language.val() as string;
+
+                    unfilter(id, lang);
+                    // console.log(id);
+
+                    // Remove the li
+                    x.parentElement.remove();
+
+                });
+
+                // Move the item out of the dropdown
+                const i = filterList.findIndex(x => x.value === data.value);
+                filterList.splice(i, 1);
+            }
+        }
+
+        input.titleFilter.addEventListener("awesomplete-selectcomplete",
+            function (e) {
+                const data = (<any>e).text as AwesompleteData;
+                console.log((<any>e).text)
+                // console.log(text) 
+
+                //
+                addToFilter(data);
+            }
+        );
+
+        addEventListener("input", (event) => {
+            const inputText = (<any>event.target).value.trim() as string;
+            const all: AwesompleteData = { label: `All "${inputText}"`, value: inputText };
+
+            awesomplete.list = [all].concat(filterList);
+        });
+
+        // input.titleFilter.addEventListener("keydown", function(event){
+        //     if (event.key== "Enter"){
+
+        //         console.log("filter::enter", new Date())
+        //     }
+
+        // });
+
+        //
+        function clearFilter() {
+
+            // console.log("clear filter called")
+
+            const lang = input.language.val() as string;
+
+
+            const ul = document.getElementById("filter-list");
+            ul.textContent = '';
+
+            const filter = Array.from(activeFilter);
+
+            for (let id of filter) {
+                unfilter(id, lang);
+            }
+
+        };
+        input.clearFilter.on("click", clearFilter);
+
+        // Start disabled until data is loaded
+        input.titleFilter.disabled = true;
+
+
+    }
+
     initListeners(): void {
 
         const input = this;
+
+        // The clear filter button is in hte middle of the form.
+        // The browser would love to activate it for us whenever we press enter.
+        // But I wouldn't love that. 
+        // Also entering a username and submitting before setting dates was a bad experience.
+        // Let's try preventing it from happening.
+        // https://stackoverflow.com/a/1977126/1993919
+        //
+        // BUT, it seems a workaround without an event listener is to just put a hidden button first in the form.
+
+        if (false) {
+            $(document).on("keydown", "form", function (event) {
+                const entered = event.key == "Enter";
+
+                const shouldIgnore = event.target.type !== "date";
+
+                if (entered && shouldIgnore) {
+                    console.log("prevented enter submit")
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        //
+        //
+        //
 
         function showMediaKinds(kind: string) {
 
@@ -224,7 +412,13 @@ class InputForm {
 
         };
         showMediaKinds(<string>input.listKind.val());
-        input.listKind.on("change", (e: Event) => showMediaKinds((<any>e.target).value));
+        input.listKind.on("change",
+            function (e: Event) {
+                if (input.advancedToggle[0].checked) {
+                    showMediaKinds((<any>e.target).value);
+                }
+            }
+        );
 
 
         //
@@ -359,6 +553,8 @@ class InputForm {
         //
         //
 
+        input.initFilterList();
+
         //buttons
         input.submitButton[0].addEventListener("click", listFormSubmit);
 
@@ -368,10 +564,38 @@ class InputForm {
         });
 
         //
-        resetUI();
-    }
+        //
+        //
+        function hideAdvanced() {
+            // console.log("Hide advanced.")
+            $(".advanced").hide();
+            input.lastNToggle[0].checked = true;
+            enableLastN(true);
+        }
+        function showAdvanced() {
+            // console.log("Show advanced.")
+            $(".advanced").show();
+            showMediaKinds(<string>input.listKind.val());
+        }
 
-}
+        function enableAdvanced(value: boolean) {
+            if (value) {
+                showAdvanced();
+            } else {
+                hideAdvanced();
+            }
+        }
+
+        input.advancedToggle.on("change", function () {
+            enableAdvanced(this.checked);
+        });
+        enableAdvanced(input.advancedToggle[0].checked);
+
+        //
+        resetUI();
+    } // END initListeners
+
+} // END InputForm
 
 export const input = new InputForm();
 
@@ -670,6 +894,12 @@ async function beforeAjax() {
                 debugData["list"] = animeList;
 
                 userAnimeCache.set(username, animeList);
+
+                for (let anime of animeList.anime) {
+                    knownAnime.set(anime.myId, anime.seriesTitle);
+                }
+                fillFilterList();
+
                 preparePlot(animeList);
 
             }
@@ -757,6 +987,9 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
     const fontSize = input.fontSize.val() as number;
 
+    const includeFilter = input.filterKind.val() === "include";
+    const filter: ATL.MediaFilter = { include: includeFilter, entrySet: activeFilter };
+
     //
 
     const tlConfig: AnimeListTimelineConfig = {
@@ -769,6 +1002,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
         fontSize: fontSize,
         width: width,
         listKind: listKind,
+        filter: filter,
     };
 
     const getVal = function (id: string): boolean {

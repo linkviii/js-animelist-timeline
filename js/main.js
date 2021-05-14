@@ -43,6 +43,7 @@ import { Timeline } from "./lib/timeline.js";
 import "./jquery.js";
 import "./lib/jquery-ui/jquery-ui.min.js";
 import "./lib/chartjs/Chart.bundle.js";
+import "./lib/awesomplete/awesomplete.js";
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
 // ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
@@ -56,6 +57,7 @@ export const debug = false;
 // export const debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
+/** Use a local file instead of asking anilist's servers */
 export const usingTestData = false;
 // export const usingTestData: boolean = true
 if (debug || usingTestData) {
@@ -70,6 +72,23 @@ const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 const userAnimeCache = new Map();
 const userMangaCache = new Map();
 let timelineCount = 0;
+export const knownAnime = new Map();
+// Const reference that awesomplete binds to
+export const filterList = [];
+export const activeFilter = new Set();
+function fillFilterList() {
+    filterList.splice(0, filterList.length); // Clear the list first
+    const lang = input.language.val();
+    for (let [id, title] of knownAnime.entries()) {
+        if (!activeFilter.has(id)) {
+            filterList.push({ label: title.preferred(lang), value: id });
+        }
+    }
+    if (filterList.length !== 0) {
+        input.titleFilter.disabled = false;
+        input.titleFilter.placeholder = "Search for titles";
+    }
+}
 // global for ease of testing. Used as globals.
 // export let username: string;
 // export let tln: AnimeListTimeline;
@@ -84,6 +103,7 @@ let timelineCount = 0;
 //
 class InputForm {
     constructor() {
+        this.advancedToggle = $("#show-advanced");
         // Would be awkward to have both `form` and `from` fields
         this.inputForm = $("#form");
         this.listField = $("#listName");
@@ -100,6 +120,10 @@ class InputForm {
         this.listKind = $("#list-kind");
         this.animeFormat = $("#anime-format");
         this.mangaFormat = $("#manga-format");
+        this.filterKind = $("#filter-kind");
+        // To be poisoned by awesomplete 
+        this.titleFilter = document.getElementById("title-filter");
+        this.clearFilter = $("#clear-filter");
         this.submitButton = $("#listFormSubmit");
         this.clearButton = $("#clear-form");
     }
@@ -132,8 +156,112 @@ class InputForm {
             this.fontSize.val(param[keys.fontSize]);
         }
     }
+    initFilterList() {
+        const input = this;
+        const ul = document.getElementById("filter-list");
+        const awesomplete = new Awesomplete(input.titleFilter, {
+            list: [],
+            replace: function (suggestion) {
+                this.input.value = "";
+            },
+            sort: false,
+        });
+        function unfilter(id, lang) {
+            activeFilter.delete(id);
+            // Move the item back into the dropdown
+            filterList.push({ label: knownAnime.get(id).preferred(lang), value: id });
+        }
+        ;
+        function addToFilter(data) {
+            if (typeof data.value === "string") {
+                const all = filterList.filter((elm) => elm.label.toLowerCase().includes(data.value.toLowerCase()));
+                for (let it of all) {
+                    addToFilter(it);
+                }
+            }
+            else {
+                const li = document.createElement("li");
+                const x = document.createElement("button");
+                const label = document.createElement("span");
+                x.textContent = "❌";
+                x.dataID = data.value;
+                label.textContent = data.label;
+                li.appendChild(x);
+                li.appendChild(label);
+                ul.appendChild(li);
+                //
+                activeFilter.add(data.value);
+                //
+                x.addEventListener("click", function (e) {
+                    const id = this.dataID;
+                    const lang = input.language.val();
+                    unfilter(id, lang);
+                    // console.log(id);
+                    // Remove the li
+                    x.parentElement.remove();
+                });
+                // Move the item out of the dropdown
+                const i = filterList.findIndex(x => x.value === data.value);
+                filterList.splice(i, 1);
+            }
+        }
+        input.titleFilter.addEventListener("awesomplete-selectcomplete", function (e) {
+            const data = e.text;
+            console.log(e.text);
+            // console.log(text) 
+            //
+            addToFilter(data);
+        });
+        addEventListener("input", (event) => {
+            const inputText = event.target.value.trim();
+            const all = { label: `All "${inputText}"`, value: inputText };
+            awesomplete.list = [all].concat(filterList);
+        });
+        // input.titleFilter.addEventListener("keydown", function(event){
+        //     if (event.key== "Enter"){
+        //         console.log("filter::enter", new Date())
+        //     }
+        // });
+        //
+        function clearFilter() {
+            // console.log("clear filter called")
+            const lang = input.language.val();
+            const ul = document.getElementById("filter-list");
+            ul.textContent = '';
+            const filter = Array.from(activeFilter);
+            for (let id of filter) {
+                unfilter(id, lang);
+            }
+        }
+        ;
+        input.clearFilter.on("click", clearFilter);
+        // Start disabled until data is loaded
+        input.titleFilter.disabled = true;
+    }
     initListeners() {
         const input = this;
+        // The clear filter button is in hte middle of the form.
+        // The browser would love to activate it for us whenever we press enter.
+        // But I wouldn't love that. 
+        // Also entering a username and submitting before setting dates was a bad experience.
+        // Let's try preventing it from happening.
+        // https://stackoverflow.com/a/1977126/1993919
+        //
+        // BUT, it seems a workaround without an event listener is to just put a hidden button first in the form.
+        if (false) {
+            $(document).on("keydown", "form", function (event) {
+                const entered = event.key == "Enter";
+                const shouldIgnore = event.target.type !== "date";
+                if (entered && shouldIgnore) {
+                    console.log("prevented enter submit");
+                    return false;
+                }
+                return true;
+            });
+        }
+        //
+        //
+        //
         function showMediaKinds(kind) {
             switch (kind) {
                 case "ANIME":
@@ -150,7 +278,11 @@ class InputForm {
         }
         ;
         showMediaKinds(input.listKind.val());
-        input.listKind.on("change", (e) => showMediaKinds(e.target.value));
+        input.listKind.on("change", function (e) {
+            if (input.advancedToggle[0].checked) {
+                showMediaKinds(e.target.value);
+            }
+        });
         //
         // FocusYear
         //
@@ -244,6 +376,7 @@ class InputForm {
         });
         //
         //
+        input.initFilterList();
         //buttons
         input.submitButton[0].addEventListener("click", listFormSubmit);
         input.clearButton.on("click", function () {
@@ -251,9 +384,35 @@ class InputForm {
             resetUI();
         });
         //
+        //
+        //
+        function hideAdvanced() {
+            // console.log("Hide advanced.")
+            $(".advanced").hide();
+            input.lastNToggle[0].checked = true;
+            enableLastN(true);
+        }
+        function showAdvanced() {
+            // console.log("Show advanced.")
+            $(".advanced").show();
+            showMediaKinds(input.listKind.val());
+        }
+        function enableAdvanced(value) {
+            if (value) {
+                showAdvanced();
+            }
+            else {
+                hideAdvanced();
+            }
+        }
+        input.advancedToggle.on("change", function () {
+            enableAdvanced(this.checked);
+        });
+        enableAdvanced(input.advancedToggle[0].checked);
+        //
         resetUI();
-    }
-}
+    } // END initListeners
+} // END InputForm
 export const input = new InputForm();
 function init() {
     if (usingTestData) {
@@ -470,6 +629,10 @@ async function beforeAjax() {
                 const animeList = MAL.animeListFromAniList(aniList, username);
                 debugData["list"] = animeList;
                 userAnimeCache.set(username, animeList);
+                for (let anime of animeList.anime) {
+                    knownAnime.set(anime.myId, anime.seriesTitle);
+                }
+                fillFilterList();
                 preparePlot(animeList);
             }
             break;
@@ -530,6 +693,8 @@ function preparePlot(mal) {
     }
     const showSeasons = input.seasonsToggle[0].checked;
     const fontSize = input.fontSize.val();
+    const includeFilter = input.filterKind.val() === "include";
+    const filter = { include: includeFilter, entrySet: activeFilter };
     //
     const tlConfig = {
         userName: username,
@@ -541,6 +706,7 @@ function preparePlot(mal) {
         fontSize: fontSize,
         width: width,
         listKind: listKind,
+        filter: filter,
     };
     const getVal = function (id) {
         const el = $(`#format-${id}`)[0];
