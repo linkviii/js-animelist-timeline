@@ -104,3 +104,8 @@ button{
 button.danger{
     background: rgba(232,93,117,.8);
 }
+
+.smallClose{
+    margin: 2px;
+    padding: 8px 15px;
+}

@@ -183,7 +183,9 @@ class InputForm {
                 const li = document.createElement("li");
                 const x = document.createElement("button");
                 const label = document.createElement("span");
-                x.textContent = "❌";
+                x.textContent = "X";
+                x.classList.add("smallClose");
+                x.classList.add("danger");
                 x.dataID = data.value;
                 label.textContent = data.label;
                 li.appendChild(x);
@@ -793,7 +795,8 @@ function displayTimeline(tlConfig, tln) {
     label.textContent = `${tlConfig.userName}'s ${tlConfig.listKind.toLowerCase()} list`;
     //make buttons
     const removeButton = document.createElement("button");
-    removeButton.textContent = "❌ Remove";
+    removeButton.textContent = "X";
+    removeButton.classList.add("danger");
     removeButton.setAttribute("title", "Remove timeline from the page");
     removeButton.addEventListener("click", removeTl);
     const svgButton = document.createElement("button");
@@ -879,6 +882,7 @@ function drawHoursWatched(tlConfig, mal) {
     label.textContent = `${tlConfig.userName}'s hours watched`;
     const removeButton = document.createElement("button");
     removeButton.textContent = "X";
+    removeButton.classList.add("danger");
     removeButton.setAttribute("title", "Remove graph from the page");
     removeButton.addEventListener("click", removeTl);
     const controls = document.createElement("ul");
