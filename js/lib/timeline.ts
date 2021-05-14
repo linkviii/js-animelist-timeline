@@ -5,7 +5,7 @@
  *
  * See README.md
  *
- * v 2021-04-16
+ * v 2021-05-14
  *   (Try to change with new features. Not strict.)
  * 
  * MIT licensed
@@ -91,6 +91,12 @@ export interface TimelineCalloutV2 {
     description: string;
     date: string;
     color?: string;
+    /** 
+     * 1. callout.backgroundColor 
+     * 2. era.color
+     * 3. Default: White
+     */
+    backgroundColor?: string;
 }
 
 export interface TimelineEraV2 {
@@ -725,10 +731,11 @@ export class Timeline {
             }
 
             const bgEra = this.eraOfDate(calloutDate);
-            let bgColor = "white";
+            let eraColor;
             if (bgEra) {
-                bgColor = bgEra.color || Colors.gray;
+                eraColor = bgEra.color || Colors.gray;
             }
+            let bgColor = callout.backgroundColor || eraColor || "white";
             // const bgFill = { color: bgColor, opacity: 0.15 };
             const bgFill = { color: bgColor, opacity: 1 };
 
