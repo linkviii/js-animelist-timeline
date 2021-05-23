@@ -105,8 +105,8 @@ declare function unescape(s: string): string;
 //
 
 /** Enable extra features that aren't generally useful, Might be able to change in the console. */
-// export var debug: boolean = false;
-export var debug: boolean = true
+export var debug: boolean = false;
+// export var debug: boolean = true
 
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
@@ -213,6 +213,7 @@ class InputForm {
     readonly clearFilter = $("#clear-filter") as JQuery<HTMLButtonElement>;
 
     readonly eventKind = $("#event-kind") as JQuery<HTMLSelectElement>;
+    readonly eventKindDescription = $("#event-kind-description") as JQuery<HTMLElement>;
 
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
     readonly clearButton = $("#clear-form") as JQuery<HTMLButtonElement>;
@@ -433,6 +434,25 @@ class InputForm {
                 }
             }
         );
+
+
+        //
+        //
+        //
+        function describeEvent() {
+            const event = input.eventKind.val() as ATL.EventPreference;
+            input.eventKindDescription.text(ATL.EventPreferenceDescriptions[event]);
+        }
+        describeEvent();
+
+        // There's no way to trigger except for when the value changes???
+        // Would be nice to show info while picking / highlighting an option.
+        // Saw hacky solutions for mouse hover, but keyboard was left out :(
+        input.eventKind.on("change", (e) => {
+            // console.debug(e);
+            describeEvent();
+        });
+
 
 
         //

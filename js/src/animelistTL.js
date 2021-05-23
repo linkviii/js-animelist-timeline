@@ -83,6 +83,8 @@ function filterFormat(format, formatSelection) {
         return false;
     }
 }
+// I have no idea how I should be expressing this.
+// But this doesn't quite seem correct
 export var EventPreference;
 (function (EventPreference) {
     EventPreference["all"] = "all";
@@ -92,6 +94,24 @@ export var EventPreference;
     EventPreference["finishOnly"] = "finish only";
     EventPreference["bingedOnly"] = "binged only";
 })(EventPreference || (EventPreference = {}));
+export const EventPreferenceDescriptions = {};
+EventPreferenceDescriptions[EventPreference.all] =
+    "Display both start and finish watching events. " +
+        "When the events are on the same date, it will display as binged.";
+EventPreferenceDescriptions[EventPreference.preferStart] =
+    "If both start and finish dates are available, show only the start date. " +
+        "The finish date will still be shown if there is no available start date. ";
+EventPreferenceDescriptions[EventPreference.preferFinish] =
+    "If both start and finish dates are available, show only the finish date. " +
+        "The start date will still be shown if there is no available finish date. ";
+EventPreferenceDescriptions[EventPreference.startOnly] =
+    "Ignore finish dates and only show start events. " +
+        "Titles without start dates will be ignored";
+EventPreferenceDescriptions[EventPreference.finishOnly] =
+    "Ignore start dates and only show finish events. " +
+        "Titles without finish dates will be ignored";
+EventPreferenceDescriptions[EventPreference.bingedOnly] =
+    "Show only titles where the start and finish dates are the same. ";
 // Be semi human readable serialization, but use as short of keys as reasonable.
 // Do not want the url to be unreasonably long.
 // Changing these values will break existing links

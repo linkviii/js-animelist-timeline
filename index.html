@@ -161,16 +161,24 @@
             <div class="fieldContainer advanced">
                 <fieldset class="">
                     <legend>Events</legend>
-                    <!-- I meant to write radio buttons but I did this instead. As if I know what I want anyway. -->
-                    <select id="event-kind">
-                        <!-- See animelistTL.EventPreference -->
-                        <option value="all">All</option>
-                        <option value="prefer start">Prefer Start</option>
-                        <option value="prefer finish">Prefer Finish</option>
-                        <option value="start only">Start Only</option>
-                        <option value="finish only">Finish Only</option>
-                        <option value="binged only">Binged Only</option>
-                    </select>
+                    <!-- Give some style like `flex`? The description shouldn't wrap under the select. 
+                        For now they're not long enough for me to worry about. -->
+                    <div>
+
+                        <!-- I meant to write radio buttons but I did this instead. As if I know what I want anyway. -->
+                        <select id="event-kind">
+                            <!-- See animelistTL.EventPreference -->
+                            <option value="all">All</option>
+                            <option value="prefer start">Prefer Start</option>
+                            <option value="prefer finish">Prefer Finish</option>
+                            <option value="start only">Start Only</option>
+                            <option value="finish only">Finish Only</option>
+                            <option value="binged only">Binged Only</option>
+                        </select>
+
+                        <!-- Fill with description of selected option -->
+                        <span id="event-kind-description"></span>
+                    </div>
 
                 </fieldset>
             </div>

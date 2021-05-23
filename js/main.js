@@ -54,8 +54,8 @@ import "./lib/awesomplete/awesomplete.js";
 // Global data
 //
 /** Enable extra features that aren't generally useful, Might be able to change in the console. */
-// export var debug: boolean = false;
-export var debug = true;
+export var debug = false;
+// export var debug: boolean = true
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 /** Use a local file instead of asking anilist's servers */
@@ -127,6 +127,7 @@ class InputForm {
         this.titleFilter = document.getElementById("title-filter");
         this.clearFilter = $("#clear-filter");
         this.eventKind = $("#event-kind");
+        this.eventKindDescription = $("#event-kind-description");
         this.submitButton = $("#listFormSubmit");
         this.clearButton = $("#clear-form");
     }
@@ -289,6 +290,21 @@ class InputForm {
             if (input.advancedToggle[0].checked) {
                 showMediaKinds(e.target.value);
             }
+        });
+        //
+        //
+        //
+        function describeEvent() {
+            const event = input.eventKind.val();
+            input.eventKindDescription.text(ATL.EventPreferenceDescriptions[event]);
+        }
+        describeEvent();
+        // There's no way to trigger except for when the value changes???
+        // Would be nice to show info while picking / highlighting an option.
+        // Saw hacky solutions for mouse hover, but keyboard was left out :(
+        input.eventKind.on("change", (e) => {
+            // console.debug(e);
+            describeEvent();
         });
         //
         // FocusYear

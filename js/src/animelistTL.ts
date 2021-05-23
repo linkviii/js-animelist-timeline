@@ -120,6 +120,9 @@ export interface MediaFilter {
     entrySet: Set<number>;
 }
 
+// I have no idea how I should be expressing this.
+// But this doesn't quite seem correct
+
 export enum EventPreference {
     all = "all",
     preferStart = "prefer start",
@@ -130,6 +133,25 @@ export enum EventPreference {
 
 }
 
+export const EventPreferenceDescriptions = {};
+EventPreferenceDescriptions[EventPreference.all] =
+    "Display both start and finish watching events. " +
+    "When the events are on the same date, it will display as binged.";
+EventPreferenceDescriptions[EventPreference.preferStart] =
+    "If both start and finish dates are available, show only the start date. " +
+    "The finish date will still be shown if there is no available start date. ";
+EventPreferenceDescriptions[EventPreference.preferFinish] =
+    "If both start and finish dates are available, show only the finish date. " +
+    "The start date will still be shown if there is no available finish date. ";
+EventPreferenceDescriptions[EventPreference.startOnly] =
+    "Ignore finish dates and only show start events. " +
+    "Titles without start dates will be ignored";
+EventPreferenceDescriptions[EventPreference.finishOnly] =
+    "Ignore start dates and only show finish events. " +
+    "Titles without finish dates will be ignored";
+EventPreferenceDescriptions[EventPreference.bingedOnly] =
+    "Show only titles where the start and finish dates are the same. ";
+
 // export const EventPreference = {
 //     all             : "all",
 //     preferStart     : "prefer start",
@@ -137,7 +159,6 @@ export enum EventPreference {
 //     startOnly       : "start only",
 //     finishOnly      : "finish only",
 //     bingedOnly      : "binged only",
-
 // }
 
 
