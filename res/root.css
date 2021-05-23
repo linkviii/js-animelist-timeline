@@ -54,6 +54,17 @@ div.timeline  {
 }
 
 
+.check-grid > div {
+    display: inline-block;
+    padding-right: 10px;
+    text-align: center;
+    
+}
+
+.check-grid label {
+    display: block;
+}
+
 /* Maybe should just use jquery ui sliders. */
 input[type="range"]::-moz-range-progress {
     background-color: rgb(162, 162, 253);
