@@ -1127,6 +1127,74 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
 }
 
+//
+
+function calculateStats(tln: AnimeListTimeline, listKind: string) {
+    const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
+
+    let boundedMinutes = null;
+    if (ATL.isAnimeList(tln.boundedSet, listKind)) {
+        boundedMinutes = 0;
+        for (let media of tln.boundedSet) {
+            if (media.seriesEpisodes && media.seriesEpisodesDuration) {
+                const mediaMin = media.seriesEpisodes * media.seriesEpisodesDuration;
+                boundedMinutes += mediaMin;
+            }
+        }
+
+    }
+    return {
+        boundedCount: tln.boundedSet.length,
+        totalCount: tln.mediaSet.length,
+        elapsedDays: elapsedDays,
+        boundedMinutes: boundedMinutes
+    }
+
+}
+
+function statsElement(listKind: string, stats) {
+
+
+    const statsDetails = document.createElement("details");
+
+
+    const statsSummary = document.createElement("summary");
+    statsDetails.appendChild(statsSummary);
+    statsSummary.textContent = "Stats";
+
+    const statsDiv = document.createElement("div");
+    statsDetails.appendChild(statsDiv);
+
+    const statsList = document.createElement("ul");
+    statsDiv.appendChild(statsList);
+
+    let statsLi = document.createElement("li");
+    statsList.appendChild(statsLi);
+    statsLi.textContent = `${stats.totalCount} titles seen`;
+
+    statsLi = document.createElement("li");
+    statsList.appendChild(statsLi);
+    statsLi.textContent = `${stats.boundedCount} titles completed`;
+
+
+    statsLi = document.createElement("li");
+    statsList.appendChild(statsLi);
+    statsLi.textContent = `${stats.elapsedDays} days elapsed`;
+
+
+    if (stats.boundedMinutes) {
+
+        statsLi = document.createElement("li");
+        statsList.appendChild(statsLi);
+        statsLi.textContent = `${minutesToString(stats.boundedMinutes)} watched`
+    }
+
+    //
+    return statsDetails;
+
+}
+
+
 // ██████╗ ██████╗  █████╗ ██╗    ██╗
 // ██╔══██╗██╔══██╗██╔══██╗██║    ██║
 // ██║  ██║██████╔╝███████║██║ █╗ ██║
@@ -1204,37 +1272,9 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
 
     // stats
-    const statsDetails = document.createElement("details");
+    const stats = calculateStats(tln, tlConfig.listKind);
 
-    const statsSummary = document.createElement("summary");
-    statsDetails.appendChild(statsSummary);
-    statsSummary.textContent = "Stats";
-
-    const statsDiv = document.createElement("div");
-    statsDetails.appendChild(statsDiv);
-
-    const statsList = document.createElement("ul");
-    statsDiv.appendChild(statsList);
-
-    let statsLi = document.createElement("li");
-    statsList.appendChild(statsLi);
-
-    const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
-    statsLi.textContent = `${tln.mediaSet.length} ${tlConfig.listKind.toLowerCase()} across ${elapsedDays} days`;
-
-    if (ATL.isAnimeList(tln.boundedSet, tlConfig.listKind)) {
-        let boundedMinutes = 0;
-        for (let media of tln.boundedSet) {
-            if (media.seriesEpisodes && media.seriesEpisodesDuration) {
-                const mediaMin = media.seriesEpisodes * media.seriesEpisodesDuration;
-                boundedMinutes += mediaMin;
-            }
-        }
-        statsLi = document.createElement("li");
-        statsList.appendChild(statsLi);
-        statsLi.textContent = `${minutesToString(boundedMinutes)} watched`
-    }
-
+    const statsDetails = statsElement(tlConfig.listKind, stats);
 
     //
 

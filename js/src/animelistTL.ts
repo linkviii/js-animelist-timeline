@@ -434,6 +434,8 @@ export class AnimeListTimeline {
 
 
         // inb4 terrible bugs
+        // 1. cutting off the start date didn't change the boundedness
+
 
         // Keep only the last n x
         // Should x be anime or activities
@@ -466,9 +468,20 @@ export class AnimeListTimeline {
 
             const filter = (x: MAL.Media) => trueSet.has(x.myId);
 
+            // Reduce the 'open start date' sets to the last n bounds
             this.mediaSet = this.mediaSet.filter(filter);
             this.boundedSet = this.boundedSet.filter(filter);
             this.unboundedSet = this.unboundedSet.filter(filter);
+
+            // Fix boundedness based on new first date
+            // Callout text is not changed...
+            for (let i = this.boundedSet.length - 1; i >= 0; --i) {
+                const anime = this.boundedSet[i];
+
+                if (anime.myStartDate.compare(this.firstDate) < 0) {
+                    this.boundedSet.splice(i, 1);
+                }
+            }
 
 
 
