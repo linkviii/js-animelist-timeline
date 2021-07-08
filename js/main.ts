@@ -1129,6 +1129,23 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
 //
 
+function sortByDuration(mediaList: MAL.Anime[]) {
+    const val = (media: MAL.Anime) => media.seriesEpisodes * media.seriesEpisodesDuration;
+    mediaList.sort((a, b) => val(a) - val(b));
+}
+
+export function dispDurations() {
+    const list: MAL.Anime[] = debugData["list"].anime;
+    sortByDuration(list);
+    const nl = [];
+    for (let media of list) {
+        const mediaMin = media.seriesEpisodes * media.seriesEpisodesDuration;
+        if (media.myStatus == MAL.Status.Completed)
+            nl.push([mediaMin, media.seriesTitle.preferredEnglish()]);
+    }
+    return nl;
+}
+
 function calculateStats(tln: AnimeListTimeline, listKind: string) {
     const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
 
