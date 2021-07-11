@@ -217,6 +217,9 @@ interface MediaCallout extends TimelineCalloutV2 {
 export class AnimeListTimeline {
     //
 
+    public readonly mal: MAL.MediaList;
+    public readonly config: AnimeListTimelineConfig;
+
     public firstDate: MAL.Mdate;
     public lastDate: MAL.Mdate;
 
@@ -250,6 +253,9 @@ export class AnimeListTimeline {
 
     constructor(mal: MAL.MediaList, tlConfig: AnimeListTimelineConfig) {
 
+        // good idea? Bad idea? idk.
+        this.mal = mal;
+        this.config = tlConfig;
 
         this.mediaSet = [];
         this.boundedSet = [];
