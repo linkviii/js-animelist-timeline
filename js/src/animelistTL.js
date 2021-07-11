@@ -136,6 +136,9 @@ export const AnimeListTimelineConfigKeys = {
  */
 export class AnimeListTimeline {
     constructor(mal, tlConfig) {
+        // good idea? Bad idea? idk.
+        this.mal = mal;
+        this.config = tlConfig;
         this.mediaSet = [];
         this.boundedSet = [];
         this.unboundedSet = [];

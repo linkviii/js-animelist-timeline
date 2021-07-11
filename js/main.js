@@ -823,6 +823,11 @@ export function dispDurations() {
     return nl;
 }
 function calculateStats(tln, listKind) {
+    { // dumb hacky way to make sure stats work despite the way displayed events are filtered
+        const config = Object.assign({}, tln.config);
+        config.eventPreference = ATL.EventPreference.all;
+        tln = new AnimeListTimeline(tln.mal, config);
+    }
     const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
     let boundedMinutes = null;
     if (ATL.isAnimeList(tln.boundedSet, listKind)) {

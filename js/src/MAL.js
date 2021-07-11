@@ -159,6 +159,9 @@ function animeFromAniList(anime, status) {
         seriesEpisodes: anime.media.episodes,
         seriesEpisodesDuration: anime.media.duration,
     };
+    if (tmp.myStartDate.isNullDate() && tmp.seriesEpisodes == 1 && !tmp.myFinishDate.isNullDate()) {
+        tmp.myStartDate = tmp.myFinishDate;
+    }
     return tmp;
 }
 function animeFromMalElm(anime) {

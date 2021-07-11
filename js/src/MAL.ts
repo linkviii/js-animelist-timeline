@@ -244,6 +244,11 @@ function animeFromAniList(anime, status: Status): Anime {
         seriesEpisodesDuration: anime.media.duration,
 
     };
+
+    if (tmp.myStartDate.isNullDate() && tmp.seriesEpisodes == 1 && !tmp.myFinishDate.isNullDate()) {
+        tmp.myStartDate = tmp.myFinishDate;
+    }
+
     return tmp as Anime;
 }
 
