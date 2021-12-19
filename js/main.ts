@@ -202,6 +202,8 @@ class InputForm {
     readonly lastN = $("#last-n") as JQuery<HTMLInputElement>;
     readonly lastNToggle = $("#enable-last-n") as JQuery<HTMLInputElement>;
 
+    readonly padFocusToggle = $("#pad-focus") as JQuery<HTMLInputElement>;
+
     readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
 
     readonly animeFormat = $("#anime-format") as JQuery<HTMLFieldSetElement>;
@@ -473,8 +475,15 @@ class InputForm {
             const y0 = (y - 1).toString();
             const y1 = (y + 1).toString();
 
-            input.from.val(`${y0}-12-01`);
-            input.to.val(`${y1}-02-01`);
+            if (input.padFocusToggle[0].checked) {
+
+                input.from.val(`${y0}-12-01`);
+                input.to.val(`${y1}-02-01`);
+            } else {
+                input.from.val(`${y}-01-01`);
+                input.to.val(`${y}-12-31`);
+
+            }
         }
 
 
@@ -514,6 +523,8 @@ class InputForm {
 
             input.from.prop('disabled', value);
             input.lastN.prop('disabled', !value);
+
+            input.padFocusToggle.prop('disabled', value);
             if (value) {
                 (<any>input.focusYear).spinner("disable");
             } else {

@@ -119,6 +119,7 @@ class InputForm {
         this.focusYear = $("#focus-year");
         this.lastN = $("#last-n");
         this.lastNToggle = $("#enable-last-n");
+        this.padFocusToggle = $("#pad-focus");
         this.listKind = $("#list-kind");
         this.animeFormat = $("#anime-format");
         this.mangaFormat = $("#manga-format");
@@ -321,8 +322,14 @@ class InputForm {
             // console.debug("Year Focus:", y)
             const y0 = (y - 1).toString();
             const y1 = (y + 1).toString();
-            input.from.val(`${y0}-12-01`);
-            input.to.val(`${y1}-02-01`);
+            if (input.padFocusToggle[0].checked) {
+                input.from.val(`${y0}-12-01`);
+                input.to.val(`${y1}-02-01`);
+            }
+            else {
+                input.from.val(`${y}-01-01`);
+                input.to.val(`${y}-12-31`);
+            }
         }
         input.focusYear.on("spin", function (event, ui) {
             if (ui.value < 1990) {
@@ -352,6 +359,7 @@ class InputForm {
         function enableLastN(value) {
             input.from.prop('disabled', value);
             input.lastN.prop('disabled', !value);
+            input.padFocusToggle.prop('disabled', value);
             if (value) {
                 input.focusYear.spinner("disable");
             }
