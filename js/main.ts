@@ -112,8 +112,8 @@ export var debug: boolean = false;
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 
 // Should probably figure out something to enforce that...
@@ -1167,6 +1167,7 @@ function calculateStats(tln: AnimeListTimeline, listKind: string) {
 
     const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
 
+    //
     let boundedMinutes = null;
     if (ATL.isAnimeList(tln.boundedSet, listKind)) {
         boundedMinutes = 0;
@@ -1178,16 +1179,50 @@ function calculateStats(tln: AnimeListTimeline, listKind: string) {
         }
 
     }
+
+    //
+    const milestones: [number, string, string][] = [];
+    const finishedAnime: MAL.Media[] = [];
+    for (let anime of tln.mediaSet){
+        if (!anime.myFinishDate.isNullDate()){
+            finishedAnime.push(anime);
+        }
+    }
+    finishedAnime.sort((a, b) => a.myFinishDate.fixedDateStr.localeCompare(b.myFinishDate.fixedDateStr));
+    
+    function pushit(i:number){
+        const anime = finishedAnime[i-1];
+        milestones.push([i, anime.seriesTitle.preferred(tln.config.lang), anime.myFinishDate.fixedDateStr]);
+    };
+
+    if (finishedAnime.length >= 1){
+        pushit(1);
+    }
+    if (finishedAnime.length >= 5){
+        pushit(5);
+    }
+    if (finishedAnime.length >= 10){
+        pushit(10);
+    }
+    for(let i = 25; i <= finishedAnime.length; i += 25){
+        pushit(i);
+    }
+
+
+
+
+    //
     return {
         boundedCount: tln.boundedSet.length,
         totalCount: tln.mediaSet.length,
         elapsedDays: elapsedDays,
-        boundedMinutes: boundedMinutes
-    }
+        boundedMinutes: boundedMinutes,
+        milestones: milestones,
+    };
 
 }
 
-function statsElement(listKind: string, stats) {
+function statsElement(listKind: string, stats: ReturnType<typeof calculateStats>) {
 
 
     const statsDetails = document.createElement("details");
@@ -1222,6 +1257,25 @@ function statsElement(listKind: string, stats) {
         statsLi = document.createElement("li");
         statsList.appendChild(statsLi);
         statsLi.textContent = `${minutesToString(stats.boundedMinutes)} watched`
+    }
+
+    //
+    const milestoneDiv = document.createElement("div");
+    statsDetails.appendChild(milestoneDiv);
+
+    const milestoneLabel =  document.createElement("p");
+    milestoneDiv.appendChild(milestoneLabel);
+    milestoneLabel.textContent = `Anime milestones since ${stats.milestones[0][2]}`;
+
+    const milestoneList =  document.createElement("ol");
+    milestoneDiv.appendChild(milestoneList);
+
+
+    for (let it of stats.milestones){
+        const itDiv = document.createElement("li");
+        milestoneList.appendChild(itDiv);
+        itDiv.value = it[0];
+        itDiv.textContent = `${it[2]}: Finished ${it[1]}`;
     }
 
     //
