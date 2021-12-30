@@ -112,8 +112,8 @@ export var debug: boolean = false;
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true
 
 
 // Should probably figure out something to enforce that...
@@ -1157,12 +1157,15 @@ export function dispDurations() {
     return nl;
 }
 
-function calculateStats(tln: AnimeListTimeline, listKind: string) {
+function calculateStats(otln: AnimeListTimeline, listKind: string) {
 
+    let tln:AnimeListTimeline;
     {   // dumb hacky way to make sure stats work despite the way displayed events are filtered
-        const config = Object.assign({}, tln.config);
+        const config = Object.assign({}, otln.config);
         config.eventPreference = ATL.EventPreference.all;
-        tln = new AnimeListTimeline(tln.mal, config);
+        config.lastN = undefined;
+        config.maxDate = otln.lastDate.fixedDateStr;
+        tln = new AnimeListTimeline(otln.mal, config);
     }
 
     const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
