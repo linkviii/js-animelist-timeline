@@ -915,13 +915,21 @@ function statsElement(listKind, stats) {
     const milestoneLabel = document.createElement("p");
     milestoneDiv.appendChild(milestoneLabel);
     milestoneLabel.textContent = `Anime milestones since ${stats.milestones[0][2]}`;
-    const milestoneList = document.createElement("ol");
+    const milestoneList = document.createElement("ul");
     milestoneDiv.appendChild(milestoneList);
+    milestoneList.classList.add("nlist");
     for (let it of stats.milestones) {
         const itDiv = document.createElement("li");
         milestoneList.appendChild(itDiv);
-        itDiv.value = it[0];
-        itDiv.textContent = `${it[2]}: Finished ${it[1]}`;
+        // itDiv.value = it[0];
+        // itDiv.textContent = `${it[2]}: Finished ${it[1]}`;
+        const itLabel = document.createElement("span");
+        itDiv.appendChild(itLabel);
+        itLabel.classList.add("nlist-label");
+        itLabel.textContent = `${it[0]}. `;
+        const itTxt = document.createElement("span");
+        itDiv.appendChild(itTxt);
+        itTxt.textContent = `${it[2]}: Finished ${it[1]}`;
     }
     //
     return statsDetails;

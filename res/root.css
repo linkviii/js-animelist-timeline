@@ -117,3 +117,20 @@ button.danger{
     margin: 2px;
     padding: 3px 15px;
 }
+
+.nlist {
+    list-style-type: none;
+    margin-left: 0ch;
+    padding-left: 0ch;
+}
+
+.nlist-label {
+    width: 5ch;
+    text-align: right;
+    display: inline-block;
+    margin-right: 1ch;
+
+}
+.nlist-label::after {
+    content: " ";
+}
