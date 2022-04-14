@@ -92,6 +92,16 @@ export class WatchHeatMap {
             headRow.append(cell);
             cell.textContent = monthNames.get(m);
         }
+        for (let s = Q1; s <= Q4; s++) {
+            const cell = document.createElement("th");
+            headRow.append(cell);
+            cell.textContent = ATL.allSeasons[s - Q1];
+        }
+        {
+            const cell = document.createElement("th");
+            headRow.append(cell);
+            cell.textContent = "Year";
+        }
         // ------
         function returnDateSpan(d0, d1) {
             return () => {
@@ -100,6 +110,43 @@ export class WatchHeatMap {
             };
         }
         ;
+        function fill(percent) {
+            // const value =0xff * percent;
+            const scaleMax = 0xEE;
+            const value = (scaleMax * percent) + (0xff - scaleMax);
+            return Math.floor(value).toString(16);
+        }
+        function styleBox(box0, gram, maxgram) {
+            const box = document.createElement("span");
+            box0.append(box);
+            box.classList.add("heat-table-cell");
+            if (gram.startCount === 0 && gram.finishCount === 0) {
+                box.style.backgroundColor = "black";
+                box.textContent = "____";
+            }
+            else {
+                const tooltip = `Started ${gram.startCount} and Finished ${gram.finishCount}`;
+                // box.title = tooltip;
+                // https://stackoverflow.com/a/25813336/1993919
+                box.setAttribute("data-tooltip", tooltip);
+                {
+                    let span = document.createElement("span");
+                    box.append(span);
+                    // span.textContent = gram.startCount.toString();
+                    span.textContent = "__";
+                    let trans = fill(gram.startCount / maxgram.startCount);
+                    span.style.backgroundColor = ATL.startColor1 + trans;
+                }
+                {
+                    let span = document.createElement("span");
+                    box.append(span);
+                    span.textContent = "__";
+                    // span.textContent = gram.finishCount.toString();
+                    let trans = fill(gram.finishCount / maxgram.finishCount);
+                    span.style.backgroundColor = ATL.endColor + trans;
+                }
+            }
+        }
         for (let y = this.minYear; y <= this.maxYear; y++) {
             const row = document.createElement("tr");
             table.append(row);
@@ -111,16 +158,23 @@ export class WatchHeatMap {
                 let gram = year[m];
                 const box = document.createElement("td");
                 row.append(box);
-                box.classList.add("heat-table");
-                box.textContent = gram.finishCount.toString();
                 box.onclick = returnDateSpan(new Date(y, m - 1, 1), new Date(y, m, 0));
-                if (year[m].finishCount === 0) {
-                    box.style.backgroundColor = "black";
-                }
-                else {
-                    let trans = Math.floor(0xFF * (gram.finishCount / this.maxMonthCount.finishCount)).toString(16);
-                    box.style.backgroundColor = ATL.endColor + trans;
-                }
+                styleBox(box, gram, this.maxMonthCount);
+            }
+            //
+            for (let s = Q1; s <= Q4; s++) {
+                const gram = year[s];
+                const box = document.createElement("td");
+                row.append(box);
+                let dates = ATL.seasonBounds(ATL.allSeasons[s - Q1], y);
+                box.onclick = returnDateSpan(dates[0].date, dates[1].date);
+                styleBox(box, gram, this.maxSeasonCount);
+            }
+            {
+                const gram = year[FULL_YEAR];
+                const box = document.createElement("td");
+                row.append(box);
+                styleBox(box, gram, this.maxYearCount);
             }
         }
         return table;

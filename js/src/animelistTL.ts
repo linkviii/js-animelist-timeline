@@ -21,7 +21,7 @@ export enum Season {
 
 export const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
 
-function seasonBounds(season: Season, year: number): [MAL.Mdate, MAL.Mdate] {
+export function seasonBounds(season: Season, year: number): [MAL.Mdate, MAL.Mdate] {
     switch (season) {
         // TODO better define
         case Season.WINTER: return [MAL.dateFromYMD(year, 1, 1), MAL.dateFromYMD(year, 3, 31)];

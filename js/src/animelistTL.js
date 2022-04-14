@@ -17,7 +17,7 @@ export var Season;
     Season["FALL"] = "Fall";
 })(Season || (Season = {}));
 export const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
-function seasonBounds(season, year) {
+export function seasonBounds(season, year) {
     switch (season) {
         // TODO better define
         case Season.WINTER: return [MAL.dateFromYMD(year, 1, 1), MAL.dateFromYMD(year, 3, 31)];
