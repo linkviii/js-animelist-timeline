@@ -219,6 +219,9 @@ export class Mdate {
         // return this.date.getFullYear();
         return parseInt(this.fixedDateStr.slice(0, 4));
     }
+    month() {
+        return parseInt(this.fixedDateStr.slice(5, 7));
+    }
     /**
      *  this > other → +
      *  this < other → -

@@ -45,6 +45,7 @@ import {
 } from "./src/animelistTL.js";
 
 import * as ATL from "./src/animelistTL.js";
+import * as Heat from "./src/heatmap.js"
 
 
 //import MAL.ts
@@ -112,8 +113,8 @@ export var debug: boolean = false;
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 
 // Should probably figure out something to enforce that...
@@ -1159,7 +1160,7 @@ export function dispDurations() {
 
 function calculateStats(otln: AnimeListTimeline, listKind: string) {
 
-    let tln:AnimeListTimeline;
+    let tln: AnimeListTimeline;
     {   // dumb hacky way to make sure stats work despite the way displayed events are filtered
         const config = Object.assign({}, otln.config);
         config.eventPreference = ATL.EventPreference.all;
@@ -1186,28 +1187,28 @@ function calculateStats(otln: AnimeListTimeline, listKind: string) {
     //
     const milestones: [number, string, string][] = [];
     const finishedAnime: MAL.Media[] = [];
-    for (let anime of tln.mediaSet){
-        if (!anime.myFinishDate.isNullDate()){
+    for (let anime of tln.mediaSet) {
+        if (!anime.myFinishDate.isNullDate()) {
             finishedAnime.push(anime);
         }
     }
     finishedAnime.sort((a, b) => a.myFinishDate.fixedDateStr.localeCompare(b.myFinishDate.fixedDateStr));
-    
-    function pushit(i:number){
-        const anime = finishedAnime[i-1];
+
+    function pushit(i: number) {
+        const anime = finishedAnime[i - 1];
         milestones.push([i, anime.seriesTitle.preferred(tln.config.lang), anime.myFinishDate.fixedDateStr]);
     };
 
-    if (finishedAnime.length >= 1){
+    if (finishedAnime.length >= 1) {
         pushit(1);
     }
-    if (finishedAnime.length >= 5){
+    if (finishedAnime.length >= 5) {
         pushit(5);
     }
-    if (finishedAnime.length >= 10){
+    if (finishedAnime.length >= 10) {
         pushit(10);
     }
-    for(let i = 25; i <= finishedAnime.length; i += 25){
+    for (let i = 25; i <= finishedAnime.length; i += 25) {
         pushit(i);
     }
 
@@ -1266,16 +1267,16 @@ function statsElement(listKind: string, stats: ReturnType<typeof calculateStats>
     const milestoneDiv = document.createElement("div");
     statsDetails.appendChild(milestoneDiv);
 
-    const milestoneLabel =  document.createElement("p");
+    const milestoneLabel = document.createElement("p");
     milestoneDiv.appendChild(milestoneLabel);
     milestoneLabel.textContent = `Anime milestones since ${stats.milestones[0][2]}`;
 
-    const milestoneList =  document.createElement("ul");
+    const milestoneList = document.createElement("ul");
     milestoneDiv.appendChild(milestoneList);
     milestoneList.classList.add("nlist");
 
 
-    for (let it of stats.milestones){
+    for (let it of stats.milestones) {
         const itDiv = document.createElement("li");
         milestoneList.appendChild(itDiv);
         // itDiv.value = it[0];
@@ -1286,10 +1287,10 @@ function statsElement(listKind: string, stats: ReturnType<typeof calculateStats>
         itLabel.classList.add("nlist-label");
         itLabel.textContent = `${it[0]}. `;
 
-        
+
         const itTxt = document.createElement("span");
         itDiv.appendChild(itTxt);
-        itTxt.textContent =  `${it[2]}: Finished ${it[1]}`;
+        itTxt.textContent = `${it[2]}: Finished ${it[1]}`;
 
 
     }
@@ -1381,6 +1382,15 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
     const statsDetails = statsElement(tlConfig.listKind, stats);
 
+    // Heatmap
+    const fullConfig = Object.assign({}, tln.config, { minDate: fixDate(MAL.rawNullDate, -1), maxDate: fixDate(MAL.rawNullDate, 1), lastN: 0 });
+    const fullList = userAnimeCache.get(tln.userName) as MAL.AnimeList;
+    // console.log(fullConfig)
+    let allTime = new ATL.AnimeListTimeline(tln.mal, fullConfig);
+    // let allTime = new ATL.AnimeListTimeline(fullList, fullConfig);
+    // console.log(allTime)
+    let heat = new Heat.WatchHeatMap(allTime);
+
     //
 
     //make timeline container
@@ -1392,6 +1402,7 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
     tl.meta = tln;
 
     // add to dom
+    tlArea.appendChild(heat.render());
     tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);

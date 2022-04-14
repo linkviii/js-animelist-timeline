@@ -9,14 +9,14 @@ export const startColor2 = "#0026FF"; //blueish
 export const endColor = "#CD3F85"; //reddish
 // const bingeColor = "#FFBE89";  // golddish
 export const bingeColor = "#000000"; // just black
-var Season;
+export var Season;
 (function (Season) {
     Season["WINTER"] = "Winter";
     Season["SPRING"] = "Spring";
     Season["SUMMER"] = "Summer";
     Season["FALL"] = "Fall";
 })(Season || (Season = {}));
-const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
+export const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
 function seasonBounds(season, year) {
     switch (season) {
         // TODO better define
@@ -26,7 +26,7 @@ function seasonBounds(season, year) {
         case Season.FALL: return [MAL.dateFromYMD(year, 10, 1), MAL.dateFromYMD(year, 12, 31)];
     }
 }
-function seasonOf(date) {
+export function seasonOf(date) {
     const year = date.year();
     for (let season of allSeasons) {
         const bounds = seasonBounds(season, year);

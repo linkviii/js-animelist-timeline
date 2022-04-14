@@ -15,11 +15,11 @@ export const endColor: string = "#CD3F85";//reddish
 // const bingeColor = "#FFBE89";  // golddish
 export const bingeColor = "#000000";  // just black
 
-enum Season {
+export enum Season {
     WINTER = "Winter", SPRING = "Spring", SUMMER = "Summer", FALL = "Fall"
 }
 
-const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
+export const allSeasons = [Season.WINTER, Season.SPRING, Season.SUMMER, Season.FALL];
 
 function seasonBounds(season: Season, year: number): [MAL.Mdate, MAL.Mdate] {
     switch (season) {
@@ -31,7 +31,7 @@ function seasonBounds(season: Season, year: number): [MAL.Mdate, MAL.Mdate] {
     }
 }
 
-function seasonOf(date: MAL.Mdate): Season {
+export function seasonOf(date: MAL.Mdate): Season {
     const year = date.year();
     for (let season of allSeasons) {
         const bounds = seasonBounds(season, year);

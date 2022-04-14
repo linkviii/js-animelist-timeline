@@ -29,7 +29,7 @@ header {
     float: right;
 }
 
-#filter-list  {
+#filter-list {
     list-style-type: none;
     padding-left: 0;
 }
@@ -44,21 +44,21 @@ ul.buttonList {
     display: block;
 }
 
-ul.buttonList > li {
+ul.buttonList>li {
     display: inline-block;
 }
 
-div.timeline  {
+div.timeline {
     overflow-x: scroll;
     width: 100%;
 }
 
 
-.check-grid > div {
+.check-grid>div {
     display: inline-block;
     padding-right: 10px;
     text-align: center;
-    
+
 }
 
 .check-grid label {
@@ -74,12 +74,12 @@ label.before::after {
     content: ":";
 }
 
-.mainGroup{
+.mainGroup {
     padding: 10px;
     margin: 10px;
 }
 
-.fieldContainer{
+.fieldContainer {
     background: lightgray;
     padding: 5px;
     margin-bottom: 15px;
@@ -88,18 +88,18 @@ label.before::after {
 
 
 
-input{
+input {
     color: inherit;
     border-width: 1px;
     padding: 3px;
     border-radius: 3px;
 }
 
-button{
+button {
     align-items: center;
     background: #3db4f2;
     border-radius: 4px;
-    color: rgb(237,241,245);
+    color: rgb(237, 241, 245);
     cursor: pointer;
     display: inline-flex;
     margin-right: 10px;
@@ -109,11 +109,11 @@ button{
     border-width: 0px;
 }
 
-button.danger{
-    background: rgba(232,93,117,.8);
+button.danger {
+    background: rgba(232, 93, 117, .8);
 }
 
-.smallClose{
+.smallClose {
     margin: 2px;
     padding: 3px 15px;
 }
@@ -131,6 +131,19 @@ button.danger{
     margin-right: 1ch;
 
 }
+
 .nlist-label::after {
     content: " ";
+}
+
+.heat-table {
+
+    border-style: solid;
+    border-width: 2px;
+    border-color: transparent;
+
+}
+
+.heat-table:hover {
+    border-color: rebeccapurple;
 }

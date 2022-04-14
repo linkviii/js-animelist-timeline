@@ -35,6 +35,7 @@
 import { AnimeListTimeline, AnimeListTimelineConfigKeys, //
 NoDatedAnimeError } from "./src/animelistTL.js";
 import * as ATL from "./src/animelistTL.js";
+import * as Heat from "./src/heatmap.js";
 //import MAL.ts
 import * as MAL from "./src/MAL.js";
 //import timeline.ts
@@ -59,8 +60,8 @@ export var debug = false;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 /** Use a local file instead of asking anilist's servers */
-export const usingTestData = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData = true;
 // Should probably figure out something to enforce that...
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -1000,6 +1001,14 @@ function displayTimeline(tlConfig, tln) {
     // stats
     const stats = calculateStats(tln, tlConfig.listKind);
     const statsDetails = statsElement(tlConfig.listKind, stats);
+    // Heatmap
+    const fullConfig = Object.assign({}, tln.config, { minDate: fixDate(MAL.rawNullDate, -1), maxDate: fixDate(MAL.rawNullDate, 1), lastN: 0 });
+    const fullList = userAnimeCache.get(tln.userName);
+    // console.log(fullConfig)
+    let allTime = new ATL.AnimeListTimeline(tln.mal, fullConfig);
+    // let allTime = new ATL.AnimeListTimeline(fullList, fullConfig);
+    // console.log(allTime)
+    let heat = new Heat.WatchHeatMap(allTime);
     //
     //make timeline container
     const tl = document.createElement("div");
@@ -1008,6 +1017,7 @@ function displayTimeline(tlConfig, tln) {
     timelineCount++;
     tl.meta = tln;
     // add to dom
+    tlArea.appendChild(heat.render());
     tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
@@ -1172,6 +1182,9 @@ function drawHoursWatched(tlConfig, mal) {
                         type: 'time',
                         time: {
                             minUnit: 'day',
+                            // parser: function (date: Date) {
+                            //     return new Date(date).setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                            // }
                         },
                         ticks: {
                             min: $("#from").val(),
