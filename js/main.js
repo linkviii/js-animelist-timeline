@@ -361,6 +361,7 @@ class InputForm {
         function enableLastN(value) {
             input.from.prop('disabled', value);
             input.lastN.prop('disabled', !value);
+            input.lastNToggle[0].checked = value;
             input.padFocusToggle.prop('disabled', value);
             if (value) {
                 input.focusYear.spinner("disable");
@@ -375,6 +376,7 @@ class InputForm {
         });
         //
         function heatClick(d0, d1) {
+            enableLastN(false);
             input.from[0].valueAsDate = d0;
             input.to[0].valueAsDate = d1;
         }
