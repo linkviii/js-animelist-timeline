@@ -20,7 +20,9 @@ function seasonQ(date) {
     }
 }
 export class WatchHeatMap {
-    constructor(tln) {
+    // spanHandler: SpanHandler;
+    constructor(tln, spanHandler) {
+        this.spanHandler = spanHandler;
         this.data = new Map();
         this.maxMonthCount = { startCount: 0, finishCount: 0 };
         this.maxSeasonCount = { startCount: 0, finishCount: 0 };
@@ -103,13 +105,13 @@ export class WatchHeatMap {
             cell.textContent = "Year";
         }
         // ------
-        function returnDateSpan(d0, d1) {
+        const returnDateSpan = (d0, d1) => {
             return () => {
-                console.log(d0);
-                console.log(d1);
+                // console.log(d0);
+                // console.log(d1);
+                this.spanHandler(d0, d1);
             };
-        }
-        ;
+        };
         function fill(percent) {
             // const value =0xff * percent;
             const scaleMax = 0xEE;
@@ -173,6 +175,7 @@ export class WatchHeatMap {
             {
                 const gram = year[FULL_YEAR];
                 const box = document.createElement("td");
+                box.onclick = returnDateSpan(new Date(y, 0, 1), new Date(y + 1, 0, 0));
                 row.append(box);
                 styleBox(box, gram, this.maxYearCount);
             }

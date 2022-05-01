@@ -201,3 +201,9 @@ th {
     border-radius: 10px;
     color: black;
 }
+
+#heatmap-container {
+    background-color: white;
+    width: fit-content;
+    
+}

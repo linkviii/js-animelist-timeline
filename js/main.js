@@ -121,6 +121,7 @@ class InputForm {
         this.lastN = $("#last-n");
         this.lastNToggle = $("#enable-last-n");
         this.padFocusToggle = $("#pad-focus");
+        this.heatmapSelect = $("#heatmap-select");
         this.listKind = $("#list-kind");
         this.animeFormat = $("#anime-format");
         this.mangaFormat = $("#manga-format");
@@ -371,6 +372,39 @@ class InputForm {
         input.lastNToggle.on("change", function (e) {
             // console.log(this.checked);
             enableLastN(this.checked);
+        });
+        //
+        function heatClick(d0, d1) {
+            input.from[0].valueAsDate = d0;
+            input.to[0].valueAsDate = d1;
+        }
+        input.heatmapSelect.prop("disabled", true);
+        input.heatmapSelect.on("change", () => {
+            const value = input.heatmapSelect.val();
+            console.log(`Focusing heatmap on ${value}`);
+            const container = document.getElementById("heatmap-container");
+            container.replaceChildren();
+            if (value == "@hide") {
+                return;
+            }
+            const config = {
+                userName: value,
+                minDate: fixDate(MAL.rawNullDate, -1),
+                maxDate: fixDate(MAL.rawNullDate, 1),
+                lastN: 0,
+                //
+                lang: "english",
+                seasons: false,
+                width: 0,
+                fontSize: 0,
+                listKind: "ANIME",
+                filter: { include: false, entrySet: new Set() },
+                eventPreference: ATL.EventPreference.all,
+            };
+            const fullList = userAnimeCache.get(value);
+            let allTime = new ATL.AnimeListTimeline(fullList, config);
+            let heat = new Heat.WatchHeatMap(allTime, heatClick);
+            container.append(heat.render());
         });
         //
         // Width
@@ -678,6 +712,25 @@ async function beforeAjax() {
                 const animeList = MAL.animeListFromAniList(aniList, username);
                 debugData["list"] = animeList;
                 userAnimeCache.set(username, animeList);
+                // Add new user to select
+                if (input.heatmapSelect.val() == "") {
+                    input.heatmapSelect.prop("disabled", false);
+                    input.heatmapSelect.empty();
+                    {
+                        const userOpt = document.createElement("option");
+                        userOpt.value = "@hide";
+                        userOpt.textContent = "[HIDE]";
+                        input.heatmapSelect.append(userOpt);
+                    }
+                }
+                {
+                    const userOpt = document.createElement("option");
+                    userOpt.value = username;
+                    userOpt.textContent = username;
+                    input.heatmapSelect.append(userOpt);
+                    input.heatmapSelect.val(username);
+                    input.heatmapSelect.trigger("change");
+                }
                 for (let anime of animeList.anime) {
                     knownAnime.set(anime.myId, anime.seriesTitle);
                 }
@@ -1001,15 +1054,6 @@ function displayTimeline(tlConfig, tln) {
     // stats
     const stats = calculateStats(tln, tlConfig.listKind);
     const statsDetails = statsElement(tlConfig.listKind, stats);
-    // Heatmap
-    const fullConfig = Object.assign({}, tln.config, { minDate: fixDate(MAL.rawNullDate, -1), maxDate: fixDate(MAL.rawNullDate, 1), lastN: 0 });
-    const fullList = userAnimeCache.get(tln.userName);
-    // console.log(fullConfig)
-    let allTime = new ATL.AnimeListTimeline(tln.mal, fullConfig);
-    // let allTime = new ATL.AnimeListTimeline(fullList, fullConfig);
-    // console.log(allTime)
-    let heat = new Heat.WatchHeatMap(allTime);
-    //
     //make timeline container
     const tl = document.createElement("div");
     tl.className = "timeline";
@@ -1017,7 +1061,6 @@ function displayTimeline(tlConfig, tln) {
     timelineCount++;
     tl.meta = tln;
     // add to dom
-    tlArea.appendChild(heat.render());
     tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);

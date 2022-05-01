@@ -137,6 +137,8 @@ const userAnimeCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Ma
 const userMangaCache: Map<string, MAL.MangaList | MAL.BadUsernameError> = new Map();
 let timelineCount: number = 0;
 
+
+
 export const knownAnime: Map<number, MAL.Title> = new Map();
 // Const reference that awesomplete binds to
 export const filterList: AwesompleteData[] = [];
@@ -203,7 +205,11 @@ class InputForm {
     readonly lastN = $("#last-n") as JQuery<HTMLInputElement>;
     readonly lastNToggle = $("#enable-last-n") as JQuery<HTMLInputElement>;
 
+
     readonly padFocusToggle = $("#pad-focus") as JQuery<HTMLInputElement>;
+
+    readonly heatmapSelect = $("#heatmap-select") as JQuery<HTMLSelectElement>
+
 
     readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
 
@@ -540,6 +546,44 @@ class InputForm {
         });
 
 
+        //
+        function heatClick(d0: Date, d1: Date) {
+            input.from[0].valueAsDate = d0;
+            input.to[0].valueAsDate = d1;
+        }
+        input.heatmapSelect.prop("disabled", true);
+        input.heatmapSelect.on("change", () => {
+            const value = input.heatmapSelect.val() as string;
+            console.log(`Focusing heatmap on ${value}`);
+
+
+            const container = document.getElementById("heatmap-container");
+            container.replaceChildren();
+
+            if (value == "@hide") {
+                return;
+            }
+            const config: AnimeListTimelineConfig = {
+                userName: value,
+                minDate: fixDate(MAL.rawNullDate, -1),
+                maxDate: fixDate(MAL.rawNullDate, 1),
+                lastN: 0,
+                //
+                lang: "english",
+                seasons: false,
+                width: 0,
+                fontSize: 0,
+                listKind: "ANIME",
+                filter: { include: false, entrySet: new Set() },
+                eventPreference: ATL.EventPreference.all,
+            };
+            const fullList = userAnimeCache.get(value) as MAL.AnimeList;
+            let allTime = new ATL.AnimeListTimeline(fullList, config);
+            let heat = new Heat.WatchHeatMap(allTime, heatClick);
+
+            container.append(heat.render());
+
+        });
 
 
         //
@@ -955,10 +999,36 @@ async function beforeAjax() {
                     return;
                 }
 
+
+
                 const animeList = MAL.animeListFromAniList(aniList, username);
                 debugData["list"] = animeList;
 
                 userAnimeCache.set(username, animeList);
+
+                // Add new user to select
+                if (input.heatmapSelect.val() == "") {
+
+                    input.heatmapSelect.prop("disabled", false);
+                    input.heatmapSelect.empty();
+
+                    {
+                        const userOpt = document.createElement("option");
+                        userOpt.value = "@hide";
+                        userOpt.textContent = "[HIDE]";
+                        input.heatmapSelect.append(userOpt);
+                    }
+
+                }
+
+                {
+                    const userOpt = document.createElement("option");
+                    userOpt.value = username;
+                    userOpt.textContent = username;
+                    input.heatmapSelect.append(userOpt);
+                    input.heatmapSelect.val(username);
+                    input.heatmapSelect.trigger("change");
+                }
 
                 for (let anime of animeList.anime) {
                     knownAnime.set(anime.myId, anime.seriesTitle);
@@ -1382,16 +1452,7 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
 
     const statsDetails = statsElement(tlConfig.listKind, stats);
 
-    // Heatmap
-    const fullConfig = Object.assign({}, tln.config, { minDate: fixDate(MAL.rawNullDate, -1), maxDate: fixDate(MAL.rawNullDate, 1), lastN: 0 });
-    const fullList = userAnimeCache.get(tln.userName) as MAL.AnimeList;
-    // console.log(fullConfig)
-    let allTime = new ATL.AnimeListTimeline(tln.mal, fullConfig);
-    // let allTime = new ATL.AnimeListTimeline(fullList, fullConfig);
-    // console.log(allTime)
-    let heat = new Heat.WatchHeatMap(allTime);
 
-    //
 
     //make timeline container
     const tl: MyContainer = document.createElement("div");
@@ -1402,7 +1463,6 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
     tl.meta = tln;
 
     // add to dom
-    tlArea.appendChild(heat.render());
     tlArea.appendChild(label);
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);

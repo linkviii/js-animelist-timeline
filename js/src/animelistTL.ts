@@ -80,7 +80,7 @@ export interface MangaFormatSelection {
     oneShot: boolean;
 }
 
-function filterFormat(format: string, formatSelection?: AnimeFormatSelection | MangaFormatSelection) {
+function filterFormat(format: string, formatSelection?: AnimeFormatSelection | MangaFormatSelection): boolean {
     if (formatSelection) {
         // Idk how to make types happy.
         const selection = formatSelection as any;
@@ -107,7 +107,7 @@ function filterFormat(format: string, formatSelection?: AnimeFormatSelection | M
                 return selection.oneShot;
         }
     } else {
-        return false;
+        return true;
     }
 }
 

@@ -31,6 +31,8 @@ function seasonQ(date: MAL.Mdate): number {
     }
 }
 
+type SpanHandler = (d1: Date, d2: Date) => void;
+
 export class WatchHeatMap {
     data = new Map<number, Datagram[]>();
     minYear: number;
@@ -40,7 +42,9 @@ export class WatchHeatMap {
     maxSeasonCount: Datagram = { startCount: 0, finishCount: 0 };
     maxYearCount: Datagram = { startCount: 0, finishCount: 0 };
 
-    constructor(tln: ATL.AnimeListTimeline) {
+    // spanHandler: SpanHandler;
+
+    constructor(tln: ATL.AnimeListTimeline, public spanHandler: SpanHandler) {
         this.minYear = tln.firstDate.year();
         this.maxYear = tln.lastDate.year();
 
@@ -133,10 +137,11 @@ export class WatchHeatMap {
 
         // ------
 
-        function returnDateSpan(d0: Date, d1: Date) {
+        const returnDateSpan = (d0: Date, d1: Date) => {
             return () => {
-                console.log(d0);
-                console.log(d1);
+                // console.log(d0);
+                // console.log(d1);
+                this.spanHandler(d0, d1);
             };
         };
 
@@ -220,6 +225,8 @@ export class WatchHeatMap {
             {
                 const gram = year[FULL_YEAR];
                 const box = document.createElement("td");
+                box.onclick = returnDateSpan(new Date(y, 0, 1), new Date(y + 1, 0, 0));
+
                 row.append(box);
 
                 styleBox(box, gram, this.maxYearCount);

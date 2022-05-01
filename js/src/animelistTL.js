@@ -80,7 +80,7 @@ function filterFormat(format, formatSelection) {
         }
     }
     else {
-        return false;
+        return true;
     }
 }
 // I have no idea how I should be expressing this.
