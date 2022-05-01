@@ -60,8 +60,8 @@ export var debug = false;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 /** Use a local file instead of asking anilist's servers */
-// export const usingTestData: boolean = false;
-export const usingTestData = true;
+export const usingTestData = false;
+// export const usingTestData: boolean = true
 // Should probably figure out something to enforce that...
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
