@@ -205,5 +205,17 @@ th {
 #heatmap-container {
     background-color: white;
     width: fit-content;
-    
+
+}
+
+div > #filter-list {
+    background: #0000001c;
+    border: 1px solid black;
+    min-height: 5em;
+}
+
+#filter-list {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
 }

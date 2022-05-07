@@ -258,19 +258,21 @@
                 <fieldset>
                     <legend>Title Filter</legend>
 
-                    <select id="filter-kind">
-                        <option value="include">Include</option>
-                        <option value="exclude">Exclude</option>
-                    </select>
+                    <span>
+                        <select id="filter-kind">
+                            <option value="include">Include</option>
+                            <option value="exclude">Exclude</option>
+                        </select>
+                        These Titles:
+                    </span>
 
-                    <div style="display: inline;"><input id="title-filter" placeholder="Load a timeline first"></div>
 
-                    <div style="display: inline; ">
-                        <ul id="filter-list"
-                            style="display: inline-block; width: 25em;background: #0000001c;border: 1px solid black; min-height: 5em;">
+                    <div>
+                        <ul id="filter-list">
                         </ul>
-                        </ul>
+
                     </div>
+                    <div style="display: inline;"><input id="title-filter" placeholder="Load a timeline first"></div>
                     <button id="clear-filter">Clear Filter</button>
                 </fieldset>
             </div>
