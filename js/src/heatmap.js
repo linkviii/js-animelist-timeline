@@ -37,7 +37,7 @@ export class WatchHeatMap {
             this.data.set(y, year);
         }
         for (let anime of tln.mediaSet) {
-            let date = anime.myStartDate;
+            let date = anime.userStartDate;
             if (!date.isNullDate()) {
                 let y = date.year();
                 let m = date.month();
@@ -47,7 +47,7 @@ export class WatchHeatMap {
                 year[m].startCount++;
                 year[season].startCount++;
             }
-            date = anime.myFinishDate;
+            date = anime.userFinishDate;
             if (!date.isNullDate()) {
                 let y = date.year();
                 let m = date.month();

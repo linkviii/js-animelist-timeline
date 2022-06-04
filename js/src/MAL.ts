@@ -1,21 +1,9 @@
 /**
- * Abstraction of MAL's API XML
- *
- * Note the api produces different XML than the export tool on the site.
- * Commented fields are from the exported format. I wasn't using them anyway.
- *
- * Example api url:
- * http://myanimelist.net/malappinfo.php?u=linkviii&status=all&type=anime
- *
- * Utilities for dealing with the dates are included.
+
  *
  */
 
 
-// XML parsing util
-function findText(parentTag: Element, childName: string): string {
-    return parentTag.getElementsByTagName(childName)[0].textContent;
-}
 
 
 /**
@@ -53,14 +41,20 @@ function statusFromAniList(status: string): Status {
         case "REPEATING": return Status.Completed;
 
     }
+    return null;
 }
 
 export class BadUsernameError extends Error {
 }
 
 export class AnimeList {
-    public user: User;
-    public anime: Anime[];
+
+    constructor(
+        public user: User,
+        public anime: Anime[]
+    ) {
+
+    }
 }
 
 export class MangaList {
@@ -68,30 +62,9 @@ export class MangaList {
     public anime: Manga[];
 }
 
-export class Manga {
-    public seriesTitle: Title;
-    public seriesType: string;
-    public myStartDate: Mdate;
-    public myFinishDate: Mdate;
-    public myStatus: number;
-    // public seriesAnimedbId: number;
-    public myId: number;
-
-}
-
-function mangaFromAniList(obj, status: Status): Manga {
-    const titleObj = new Title(obj.media.title);
 
 
-    return {
-        seriesTitle: titleObj,
-        seriesType: obj.media.format,
-        myStartDate: dateFromAniList(obj.startedAt),
-        myFinishDate: dateFromAniList(obj.completedAt),
-        myStatus: status,
-        myId: obj.mediaId,
-    }
-}
+
 
 export function mangaListFromAniList(obj, userName: string): MangaList {
     const user = userFromAniList(obj.user, userName);
@@ -108,55 +81,47 @@ export function mangaListFromAniList(obj, userName: string): MangaList {
     return { user: user, anime: allAnime };
 }
 
-export function animeListFromMalElm(MALXML: Element): AnimeList {
-    //An invalid username's document will be `<myanimelist/>`
-    if (MALXML.childNodes[0].childNodes.length == 0) {
-        throw new BadUsernameError();
-    }
 
-    const animeList: any = MALXML.getElementsByTagName('anime');
-    const userInfo = MALXML.getElementsByTagName('myinfo')[0];
-
-    const user = userFromMalElm(userInfo);
-    const anime = [];
-
-    for (let elm of animeList) {
-        anime.push(animeFromMalElm(elm));
-    }
-
-    return { user: user, anime: anime };
-
-
-}
 
 export function animeListFromAniList(obj, userName: string): AnimeList {
+
+    //
+    // FIX THIS ugh
+    //
+
     const user = userFromAniList(obj.user, userName);
 
     const userLists = obj.lists;
     const allAnime = [];
 
+    const otherLists = {};
+
     for (let list of userLists) {
         const status = statusFromAniList(list.status);
-        for (let anime of list.entries) {
-            allAnime.push(animeFromAniList(anime, status));
+        if (null != status) {
+            for (let anime of list.entries) {
+                allAnime.push(animeFromAniList(anime, status));
+            }
+        } else {
+            const tmp = [];
+            for (let anime of list.entries) {
+                tmp.push(anime.mediaId);
+            }
+            otherLists[list.name] = tmp;
+
         }
     }
-    return { user: user, anime: allAnime };
+    return new AnimeList(user, allAnime);
 }
 
-export class User {
-    public userId: number;
-    public userName: string;
+export interface User {
+    userId: number;
+    userName: string;
 }
 
-function userFromMalElm(myinfo: Element): User {
-    return {
-        userId: parseInt(findText(myinfo, "user_id")),
-        userName: findText(myinfo, "user_name"),
-    };
-}
 
-function userFromAniList(obj, name: string) {
+
+function userFromAniList(obj, name: string): User {
     return { userId: obj.id, userName: name, };
 }
 
@@ -195,7 +160,7 @@ export class Title implements ITitle {
         return order.filter(x => x)[0];
     }
 
-    preferred(key: string): string {
+    preferred(key: string | "english" | "romaji" | "native"): string {
         switch (key) {
             case "english": return this.preferredEnglish();
             case "romaji": return this.preferredRomaji();
@@ -206,71 +171,76 @@ export class Title implements ITitle {
 
 }
 
-//immutable
-export class Anime {
+interface IMedia {
+    seriesTitle: Title;
+    seriesType: string;
+    id: number;
 
-    public seriesAnimedbId: number;
-    public seriesTitle: Title;
-    public seriesType: string;
-    public seriesEpisodes: number;
-    public seriesEpisodesDuration: number;
-    public myId: number;
-    public myWatchedEpisodes: number;
-    public myStartDate: Mdate;
-    public myFinishDate: Mdate;
-    public myScore: number;
-    public myTags: string;
-    public myRewatching: number;
-    public myRewatchingEp: number;
-    public myStatus: number;
+    userStartDate: Mdate;
+    userFinishDate: Mdate;
+    userStatus: number;
+}
+
+export interface Anime extends IMedia {
+
+    seriesEpisodes: number;
+    seriesEpisodesDuration: number;
+
+    userWatchedEpisodes: number;
+    userScore: number;
 
 }
 
-function animeFromAniList(anime, status: Status): Anime {
-
-    const titleObj = new Title(anime.media.title);
+export interface Manga extends IMedia {
 
 
-    const tmp = {
+}
+
+type GraphMedia = any;
+
+function mediaFromAniList(obj: GraphMedia, status: Status): IMedia {
+    const titleObj = new Title(obj.media.title);
+
+
+    return {
         seriesTitle: titleObj,
-        seriesType: anime.media.format,
-        myStartDate: dateFromAniList(anime.startedAt),
-        myFinishDate: dateFromAniList(anime.completedAt),
-        myScore: anime.score,
-        myStatus: status,
-        myId: anime.mediaId,
-        myWatchedEpisodes: anime.progress,
+        seriesType: obj.media.format,
+        id: obj.mediaId,
+
+        userStartDate: dateFromAniList(obj.startedAt),
+        userFinishDate: dateFromAniList(obj.completedAt),
+        userStatus: status,
+    };
+}
+
+function mangaFromAniList(obj: GraphMedia, status: Status): Manga {
+    const base = mediaFromAniList(obj, status);
+    return base;
+}
+
+function animeFromAniList(anime: GraphMedia, status: Status): Anime {
+
+    const base = mediaFromAniList(anime, status);
+
+    const tmp: Omit<Anime, keyof IMedia> = {
         seriesEpisodes: anime.media.episodes,
         seriesEpisodesDuration: anime.media.duration,
 
+        userScore: anime.score,
+        userWatchedEpisodes: anime.progress,
+
     };
 
-    if (tmp.myStartDate.isNullDate() && tmp.seriesEpisodes == 1 && !tmp.myFinishDate.isNullDate()) {
-        tmp.myStartDate = tmp.myFinishDate;
+    const it: Anime = { ...base, ...tmp };
+
+    if (it.userStartDate.isNullDate() && it.seriesEpisodes == 1 && !it.userFinishDate.isNullDate()) {
+        it.userStartDate = it.userFinishDate;
     }
 
-    return tmp as Anime;
+    return it;
 }
 
-function animeFromMalElm(anime: Element): Anime {
-    return {
-        seriesAnimedbId: parseInt(findText(anime, "series_animedb_id")),
-        seriesTitle: new Title({ userPreferred: findText(anime, "series_title") }),
-        seriesType: findText(anime, "series_type"),
-        seriesEpisodes: parseInt(findText(anime, "series_episodes")),
-        seriesEpisodesDuration: -1, // Was not present? 
-        myId: parseInt(findText(anime, "my_id")),
-        myWatchedEpisodes: parseInt(findText(anime, "my_watched_episodes")),
-        myStartDate: new Mdate(findText(anime, "my_start_date")),
-        myFinishDate: new Mdate(findText(anime, "my_finish_date")),
-        myScore: parseInt(findText(anime, "my_score")),
-        myStatus: parseInt(findText(anime, "my_status")),
-        myTags: findText(anime, "my_tags"),
-        myRewatching: parseInt(findText(anime, "my_rewatching")),
-        myRewatchingEp: parseInt(findText(anime, "my_rewatching_ep")),
-    };
 
-}
 
 export function dateFromYMD(year: null | number, month: null | number, day: null | number): Mdate {
     const fmt = x => x ? x.toString().padStart(2, "0") : "00";

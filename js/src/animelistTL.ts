@@ -288,12 +288,12 @@ export class AnimeListTimeline {
             const title = anime.seriesTitle.preferred(tlConfig.lang);
 
             // (Weak) Copy dates so that we may choose to ignore them
-            let startDate = anime.myStartDate;
-            let finishDate = anime.myFinishDate;
+            let startDate = anime.userStartDate;
+            let finishDate = anime.userFinishDate;
 
             // Filter to watching and completed
             // Unsure if dropped or hold should exist. For now they don't.
-            if (anime.myStatus != MAL.Status.Completed && anime.myStatus != MAL.Status.Watching) {
+            if (anime.userStatus != MAL.Status.Completed && anime.userStatus != MAL.Status.Watching) {
                 continue;
             }
 
@@ -307,11 +307,11 @@ export class AnimeListTimeline {
                 // pass
             }
             else if (tlConfig.filter.include) {
-                if (!tlConfig.filter.entrySet.has(anime.myId)) {
+                if (!tlConfig.filter.entrySet.has(anime.id)) {
                     continue;
                 }
             } else {
-                if (tlConfig.filter.entrySet.has(anime.myId)) {
+                if (tlConfig.filter.entrySet.has(anime.id)) {
                     continue;
                 }
             }
@@ -394,7 +394,7 @@ export class AnimeListTimeline {
                 const label: string = "[B] " + title;
                 const callout: MediaCallout = {
                     description: label,
-                    date: anime.myStartDate.fixedDateStr,
+                    date: anime.userStartDate.fixedDateStr,
                     color: bingeColor,
                     media: anime
                 };
@@ -414,13 +414,13 @@ export class AnimeListTimeline {
 
                 const startCallout: MediaCallout = {
                     description: startLabel,
-                    date: anime.myStartDate.fixedDateStr,
+                    date: anime.userStartDate.fixedDateStr,
                     color: startColor,
                     media: anime
                 };
                 const endCallout: MediaCallout = {
                     description: finishLabel,
-                    date: anime.myFinishDate.fixedDateStr,
+                    date: anime.userFinishDate.fixedDateStr,
                     color: endColor,
                     media: anime
                 };
@@ -469,10 +469,10 @@ export class AnimeListTimeline {
             // .. how...
             const trueSet = new Set();
             for (let callout of newCallouts) {
-                trueSet.add(callout.media.myId);
+                trueSet.add(callout.media.id);
             }
 
-            const filter = (x: MAL.Media) => trueSet.has(x.myId);
+            const filter = (x: MAL.Media) => trueSet.has(x.id);
 
             // Reduce the 'open start date' sets to the last n bounds
             this.mediaSet = this.mediaSet.filter(filter);
@@ -484,7 +484,7 @@ export class AnimeListTimeline {
             for (let i = this.boundedSet.length - 1; i >= 0; --i) {
                 const anime = this.boundedSet[i];
 
-                if (anime.myStartDate.compare(this.firstDate) < 0) {
+                if (anime.userStartDate.compare(this.firstDate) < 0) {
                     this.boundedSet.splice(i, 1);
                 }
             }

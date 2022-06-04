@@ -260,7 +260,7 @@
 
                     <span>
                         <select id="filter-kind">
-                            <option value="include">Include</option>
+                            <option value="include">Only Include</option>
                             <option value="exclude">Exclude</option>
                         </select>
                         These Titles:
@@ -268,12 +268,13 @@
 
 
                     <div>
-                        <ul id="filter-list">
-                        </ul>
-
+                        <ul id="filter-list"> </ul>
                     </div>
-                    <div style="display: inline;"><input id="title-filter" placeholder="Load a timeline first"></div>
-                    <button id="clear-filter">Clear Filter</button>
+                    <button id="clear-filter">Clear All Filters</button>
+                    <div style="display: block-inline;">
+                        <input id="title-filter" placeholder="Load a timeline first">
+                        <input id="custom-list-filter" placeholder="Load a timeline first" class="dropdown-input">
+                    </div>
                 </fieldset>
             </div>
 

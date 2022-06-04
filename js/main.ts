@@ -113,8 +113,8 @@ export var debug: boolean = false;
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true
+// export const usingTestData: boolean = false;
+export const usingTestData: boolean = true
 
 
 // Should probably figure out something to enforce that...
@@ -143,6 +143,14 @@ export const knownAnime: Map<number, MAL.Title> = new Map();
 // Const reference that awesomplete binds to
 export const filterList: AwesompleteData[] = [];
 export const activeFilter: Set<number> = new Set();
+
+interface CList {
+    user: string;
+    name: string;
+    active?: boolean;
+}
+
+export const customLists: CList[] = [];
 
 function fillFilterList() {
     filterList.splice(0, filterList.length); // Clear the list first
@@ -219,6 +227,8 @@ class InputForm {
     readonly filterKind = $("#filter-kind") as JQuery<HTMLSelectElement>;
     // To be poisoned by awesomplete 
     readonly titleFilter = document.getElementById("title-filter") as HTMLInputElement;
+    readonly customListFilter = document.getElementById("custom-list-filter") as HTMLInputElement;
+
     readonly clearFilter = $("#clear-filter") as JQuery<HTMLButtonElement>;
 
     readonly eventKind = $("#event-kind") as JQuery<HTMLSelectElement>;
@@ -268,7 +278,7 @@ class InputForm {
         const input = this;
         const ul = document.getElementById("filter-list");
 
-        const awesomplete = new Awesomplete(input.titleFilter, {
+        const titleAwesomplete = new Awesomplete(input.titleFilter, {
             list: [],
             replace: function (suggestion) {
                 this.input.value = "";
@@ -336,19 +346,18 @@ class InputForm {
         input.titleFilter.addEventListener("awesomplete-selectcomplete",
             function (e) {
                 const data = (<any>e).text as AwesompleteData;
-                console.log((<any>e).text)
-                // console.log(text) 
+                console.log(data)
 
                 //
                 addToFilter(data);
             }
         );
 
-        addEventListener("input", (event) => {
+        input.titleFilter.addEventListener("input", (event) => {
             const inputText = (<any>event.target).value.trim() as string;
             const all: AwesompleteData = { label: `All "${inputText}"`, value: inputText };
 
-            awesomplete.list = [all].concat(filterList);
+            titleAwesomplete.list = [all].concat(filterList);
         });
 
         // input.titleFilter.addEventListener("keydown", function(event){
@@ -381,6 +390,51 @@ class InputForm {
 
         // Start disabled until data is loaded
         input.titleFilter.disabled = true;
+
+
+        // --------
+
+        customLists.push({
+            user: "linkviii",
+            name: "group watch jk"
+        })
+        customLists.push({
+            user: "linkviii",
+            name: "zzz"
+        })
+        const listDropdown = new Awesomplete(input.customListFilter, {
+            list: customLists,
+            data: (it: CList) => ({ value: it, label: `${it.name}  [${it.user}]` } as AwesompleteData),
+            minChars: 0,
+            replace: function (suggestion) {
+                this.input.value = "";
+            },
+            filter: function (text, input) {
+                console.log([text, input])
+                if (text.value.active) { return false; }
+                return Awesomplete.FILTER_CONTAINS(text, input);
+            }
+
+        });
+
+        input.customListFilter.addEventListener("click", function () {
+            if (listDropdown.ul.hasAttribute('hidden')) {
+                // listDropdown.open();
+                listDropdown.evaluate();
+            }
+        });
+
+        input.customListFilter.addEventListener("awesomplete-selectcomplete",
+            function (e) {
+                const data: CList = (<any>e).text.value;
+                data.active = true;
+                console.log(data)
+
+                //
+                // addToFilter(data);
+            }
+        );
+        debugData["drop"] = listDropdown;
 
 
     }
@@ -1033,7 +1087,7 @@ async function beforeAjax() {
                 }
 
                 for (let anime of animeList.anime) {
-                    knownAnime.set(anime.myId, anime.seriesTitle);
+                    knownAnime.set(anime.id, anime.seriesTitle);
                 }
                 fillFilterList();
 
@@ -1224,7 +1278,7 @@ export function dispDurations() {
     const nl = [];
     for (let media of list) {
         const mediaMin = media.seriesEpisodes * media.seriesEpisodesDuration;
-        if (media.myStatus == MAL.Status.Completed)
+        if (media.userStatus == MAL.Status.Completed)
             nl.push([mediaMin, media.seriesTitle.preferredEnglish()]);
     }
     return nl;
@@ -1260,15 +1314,15 @@ function calculateStats(otln: AnimeListTimeline, listKind: string) {
     const milestones: [number, string, string][] = [];
     const finishedAnime: MAL.Media[] = [];
     for (let anime of tln.mediaSet) {
-        if (!anime.myFinishDate.isNullDate()) {
+        if (!anime.userFinishDate.isNullDate()) {
             finishedAnime.push(anime);
         }
     }
-    finishedAnime.sort((a, b) => a.myFinishDate.fixedDateStr.localeCompare(b.myFinishDate.fixedDateStr));
+    finishedAnime.sort((a, b) => a.userFinishDate.fixedDateStr.localeCompare(b.userFinishDate.fixedDateStr));
 
     function pushit(i: number) {
         const anime = finishedAnime[i - 1];
-        milestones.push([i, anime.seriesTitle.preferred(tln.config.lang), anime.myFinishDate.fixedDateStr]);
+        milestones.push([i, anime.seriesTitle.preferred(tln.config.lang), anime.userFinishDate.fixedDateStr]);
     };
 
     if (finishedAnime.length >= 1) {
@@ -1526,18 +1580,18 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
     // const dateSet: Set<number> = new Set();
     // Look for all the anime that are completed and have both start and finish dates
     for (let entry of mal.anime) {
-        if (entry.myStatus != MAL.Status.Completed) {
+        if (entry.userStatus != MAL.Status.Completed) {
             continue;
         }
-        if (entry.myStartDate.isNullDate() || entry.myFinishDate.isNullDate()) {
+        if (entry.userStartDate.isNullDate() || entry.userFinishDate.isNullDate()) {
             continue;
         }
         anime.push(entry);
-        dateSet.add(entry.myStartDate.fixedDateStr);
-        dateSet.add(entry.myFinishDate.fixedDateStr);
+        dateSet.add(entry.userStartDate.fixedDateStr);
+        dateSet.add(entry.userFinishDate.fixedDateStr);
 
-        const before = new Date(entry.myStartDate.date);
-        const after = new Date(entry.myFinishDate.date);
+        const before = new Date(entry.userStartDate.date);
+        const after = new Date(entry.userFinishDate.date);
         before.setDate(before.getDate() - 1);
         after.setDate(after.getDate() + 1);
 
@@ -1547,7 +1601,7 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
 
     }
 
-    anime.sort((a, b) => a.myStartDate.fixedDateStr.localeCompare(b.myStartDate.fixedDateStr));
+    anime.sort((a, b) => a.userStartDate.fixedDateStr.localeCompare(b.userStartDate.fixedDateStr));
 
     const dates = Array.from(dateSet);
     dates.sort(); // Probably fine on date strings
@@ -1568,7 +1622,7 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
     for (let entry of anime) {
         const duration = entry.seriesEpisodes * entry.seriesEpisodesDuration;
         // let entryDays = daysBetween(entry.myStartDate.date, entry.myFinishDate.date);
-        let entryDays = daysBetween(entry.myStartDate.date, entry.myFinishDate.date) + 1;
+        let entryDays = daysBetween(entry.userStartDate.date, entry.userFinishDate.date) + 1;
         // if (entryDays < 1) entryDays = 1;
         const minPerDay = duration / entryDays;
 
@@ -1586,16 +1640,16 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
 
         // const sortedKeys = Array.from(watchTime.keys()).sort();
 
-        if (entry.myStartDate.fixedDateStr === entry.myFinishDate.fixedDateStr) {
+        if (entry.userStartDate.fixedDateStr === entry.userFinishDate.fixedDateStr) {
             const value = duration / 60;
-            updateKey(watchTime, entry.myFinishDate.fixedDateStr, value);
+            updateKey(watchTime, entry.userFinishDate.fixedDateStr, value);
 
 
         } else for (let keyDate of dates) {
-            if (entry.myStartDate.compare(keyDate) > 0) {
+            if (entry.userStartDate.compare(keyDate) > 0) {
                 prevDay = keyDate;
                 continue;
-            } else if (entry.myFinishDate.compare(keyDate) < 0) {
+            } else if (entry.userFinishDate.compare(keyDate) < 0) {
                 break;
             }
 
