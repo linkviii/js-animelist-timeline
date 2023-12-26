@@ -45,17 +45,6 @@ export class AnimeList {
 }
 export class MangaList {
 }
-function mangaFromAniList(obj, status) {
-    const titleObj = new Title(obj.media.title);
-    return {
-        seriesTitle: titleObj,
-        seriesType: obj.media.format,
-        id: obj.mediaId,
-        userStartDate: dateFromAniList(obj.startedAt),
-        userFinishDate: dateFromAniList(obj.completedAt),
-        userStatus: status,
-    };
-}
 export function mangaListFromAniList(obj, userName) {
     const user = userFromAniList(obj.user, userName);
     const userLists = obj.lists;
@@ -124,24 +113,34 @@ export class Title {
         }
     }
 }
-function animeFromAniList(anime, status) {
-    const titleObj = new Title(anime.media.title);
-    const tmp = {
+function mediaFromAniList(obj, status) {
+    const titleObj = new Title(obj.media.title);
+    return {
         seriesTitle: titleObj,
-        seriesType: anime.media.format,
-        id: anime.mediaId,
+        seriesType: obj.media.format,
+        id: obj.mediaId,
+        userStartDate: dateFromAniList(obj.startedAt),
+        userFinishDate: dateFromAniList(obj.completedAt),
+        userStatus: status,
+    };
+}
+function mangaFromAniList(obj, status) {
+    const base = mediaFromAniList(obj, status);
+    return base;
+}
+function animeFromAniList(anime, status) {
+    const base = mediaFromAniList(anime, status);
+    const tmp = {
         seriesEpisodes: anime.media.episodes,
         seriesEpisodesDuration: anime.media.duration,
-        userStartDate: dateFromAniList(anime.startedAt),
-        userFinishDate: dateFromAniList(anime.completedAt),
         userScore: anime.score,
-        userStatus: status,
         userWatchedEpisodes: anime.progress,
     };
-    if (tmp.userStartDate.isNullDate() && tmp.seriesEpisodes == 1 && !tmp.userFinishDate.isNullDate()) {
-        tmp.userStartDate = tmp.userFinishDate;
+    const it = { ...base, ...tmp };
+    if (it.userStartDate.isNullDate() && it.seriesEpisodes == 1 && !it.userFinishDate.isNullDate()) {
+        it.userStartDate = it.userFinishDate;
     }
-    return tmp;
+    return it;
 }
 export function dateFromYMD(year, month, day) {
     const fmt = x => x ? x.toString().padStart(2, "0") : "00";

@@ -74,13 +74,26 @@ export interface AnimeFormatSelection {
     music: boolean;
 }
 
+export const ALL_FORMATS: AnimeFormatSelection & MangaFormatSelection = {
+    tv:true,
+    short:true,
+    movie:true,
+    special:true,
+    ova:true,
+    ona:true,
+    music:true,
+    manga:true,
+    novel:true,
+    oneShot:true
+}
+
 export interface MangaFormatSelection {
     manga: boolean;
     novel: boolean;
     oneShot: boolean;
 }
 
-function filterFormat(format: string, formatSelection?: AnimeFormatSelection | MangaFormatSelection): boolean {
+function filterFormat(format: string, formatSelection: AnimeFormatSelection | MangaFormatSelection | undefined): boolean {
     if (formatSelection) {
         // Idk how to make types happy.
         const selection = formatSelection as any;
@@ -107,7 +120,7 @@ function filterFormat(format: string, formatSelection?: AnimeFormatSelection | M
                 return selection.oneShot;
         }
     } else {
-        return true;
+        return false;
     }
 }
 
@@ -196,7 +209,7 @@ export const AnimeListTimelineConfigKeys = {
     seasons: "era",
     fontSize: "fs",
     listKind: "kind",
-}
+};
 
 
 interface MediaCallout extends TimelineCalloutV2 {
@@ -257,6 +270,9 @@ export class AnimeListTimeline {
         this.mal = mal;
         this.config = tlConfig;
 
+        console.assert(tlConfig.animeFormat !== undefined || undefined !== tlConfig.mangaFormat, "No media format config.");
+
+
         this.mediaSet = [];
         this.boundedSet = [];
         this.unboundedSet = [];
@@ -298,7 +314,8 @@ export class AnimeListTimeline {
             }
 
             // Filter for media format
-            if (!filterFormat(anime.seriesType, tlConfig.animeFormat) && !filterFormat(anime.seriesType, tlConfig.mangaFormat)) {
+            const matchesAFilter = filterFormat(anime.seriesType, tlConfig.animeFormat) || filterFormat(anime.seriesType, tlConfig.mangaFormat);
+            if (!matchesAFilter) {
                 continue;
             }
 
@@ -507,7 +524,7 @@ export class AnimeListTimeline {
             endDate: this.lastDate.fixedDateStr,
             callouts: callouts,
             tickFormat: "%Y-%m-%d "
-        }
+        };
 
         if (tlConfig.seasons) {
             const eras: Era[] = [];

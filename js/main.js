@@ -60,8 +60,8 @@ export var debug = false;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 /** Use a local file instead of asking anilist's servers */
-// export const usingTestData: boolean = false;
-export const usingTestData = true;
+export const usingTestData = false;
+// export const usingTestData: boolean = true;
 // Should probably figure out something to enforce that...
 if (debug || usingTestData) {
     console.warn("Don't commit debug!");
@@ -425,7 +425,7 @@ class InputForm {
             console.log(`Focusing heatmap on ${value}`);
             const container = document.getElementById("heatmap-container");
             container.replaceChildren();
-            if (value == "@hide") {
+            if (value === "@hide") {
                 return;
             }
             const config = {
@@ -441,6 +441,7 @@ class InputForm {
                 listKind: "ANIME",
                 filter: { include: false, entrySet: new Set() },
                 eventPreference: ATL.EventPreference.all,
+                animeFormat: ATL.ALL_FORMATS
             };
             const fullList = userAnimeCache.get(value);
             let allTime = new ATL.AnimeListTimeline(fullList, config);
@@ -719,6 +720,27 @@ function listFormSubmit(e) {
     beforeAjax().then();
     return;
 }
+function enableHeatmapSelect() {
+    input.heatmapSelect.prop("disabled", false);
+    // Remove the placeholder entry
+    input.heatmapSelect.empty();
+    {
+        const userOpt = document.createElement("option");
+        userOpt.value = "@hide";
+        userOpt.textContent = "[HIDE]";
+        input.heatmapSelect.append(userOpt);
+    }
+}
+function addHeatmapUser(username) {
+    const userOpt = document.createElement("option");
+    userOpt.value = username;
+    userOpt.textContent = username;
+    input.heatmapSelect.append(userOpt);
+    input.heatmapSelect.val(username);
+    input.heatmapSelect.trigger("change");
+}
+function ingestAnimeList() {
+}
 // main II
 // Form api requests and call
 async function beforeAjax() {
@@ -754,24 +776,10 @@ async function beforeAjax() {
                 debugData["list"] = animeList;
                 userAnimeCache.set(username, animeList);
                 // Add new user to select
-                if (input.heatmapSelect.val() == "") {
-                    input.heatmapSelect.prop("disabled", false);
-                    input.heatmapSelect.empty();
-                    {
-                        const userOpt = document.createElement("option");
-                        userOpt.value = "@hide";
-                        userOpt.textContent = "[HIDE]";
-                        input.heatmapSelect.append(userOpt);
-                    }
+                if (input.heatmapSelect.val() === "") {
+                    enableHeatmapSelect();
                 }
-                {
-                    const userOpt = document.createElement("option");
-                    userOpt.value = username;
-                    userOpt.textContent = username;
-                    input.heatmapSelect.append(userOpt);
-                    input.heatmapSelect.val(username);
-                    input.heatmapSelect.trigger("change");
-                }
+                addHeatmapUser(username);
                 for (let anime of animeList.anime) {
                     knownAnime.set(anime.id, anime.seriesTitle);
                 }
@@ -879,10 +887,11 @@ function preparePlot(mal) {
             tlConfig.mangaFormat = mFormats;
             break;
     }
+    console.assert(tlConfig.animeFormat !== undefined || undefined !== tlConfig.mangaFormat, "No media format config.");
     updateUri(tlConfig);
     if (plotKind === "timeline") {
         try {
-            //global
+            //
             const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
             // This feels kinda wrong
             if (tlConfig.lastN) {

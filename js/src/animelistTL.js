@@ -52,6 +52,18 @@ function nextSeason(season, year) {
 }
 export class NoDatedAnimeError extends Error {
 }
+export const ALL_FORMATS = {
+    tv: true,
+    short: true,
+    movie: true,
+    special: true,
+    ova: true,
+    ona: true,
+    music: true,
+    manga: true,
+    novel: true,
+    oneShot: true
+};
 function filterFormat(format, formatSelection) {
     if (formatSelection) {
         // Idk how to make types happy.
@@ -80,7 +92,7 @@ function filterFormat(format, formatSelection) {
         }
     }
     else {
-        return true;
+        return false;
     }
 }
 // I have no idea how I should be expressing this.
@@ -135,10 +147,21 @@ export const AnimeListTimelineConfigKeys = {
  *
  */
 export class AnimeListTimeline {
+    static dateInBounds(date, lb, rb) {
+        if (date.isNullDate())
+            return false;
+        return date.compare(lb) >= 0 && date.compare(rb) <= 0;
+    }
+    /** Truth mask for start and end watch dates */
+    static filterInbounds(start, finish, lb, rb) {
+        return [AnimeListTimeline.dateInBounds(start, lb, rb),
+            AnimeListTimeline.dateInBounds(finish, lb, rb)];
+    }
     constructor(mal, tlConfig) {
         // good idea? Bad idea? idk.
         this.mal = mal;
         this.config = tlConfig;
+        console.assert(tlConfig.animeFormat !== undefined || undefined !== tlConfig.mangaFormat, "No media format config.");
         this.mediaSet = [];
         this.boundedSet = [];
         this.unboundedSet = [];
@@ -167,7 +190,8 @@ export class AnimeListTimeline {
                 continue;
             }
             // Filter for media format
-            if (!filterFormat(anime.seriesType, tlConfig.animeFormat) && !filterFormat(anime.seriesType, tlConfig.mangaFormat)) {
+            const matchesAFilter = filterFormat(anime.seriesType, tlConfig.animeFormat) || filterFormat(anime.seriesType, tlConfig.mangaFormat);
+            if (!matchesAFilter) {
                 continue;
             }
             // Run the title filter
@@ -359,16 +383,6 @@ export class AnimeListTimeline {
         }
         this.data.fontSize = tlConfig.fontSize;
     } //End constructor
-    static dateInBounds(date, lb, rb) {
-        if (date.isNullDate())
-            return false;
-        return date.compare(lb) >= 0 && date.compare(rb) <= 0;
-    }
-    /** Truth mask for start and end watch dates */
-    static filterInbounds(start, finish, lb, rb) {
-        return [AnimeListTimeline.dateInBounds(start, lb, rb),
-            AnimeListTimeline.dateInBounds(finish, lb, rb)];
-    }
     //Debug utility
     getJson() {
         return JSON.stringify(this.data);

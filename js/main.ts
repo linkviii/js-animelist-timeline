@@ -45,7 +45,7 @@ import {
 } from "./src/animelistTL.js";
 
 import * as ATL from "./src/animelistTL.js";
-import * as Heat from "./src/heatmap.js"
+import * as Heat from "./src/heatmap.js";
 
 
 //import MAL.ts
@@ -61,9 +61,9 @@ import * as TL from "./lib/timeline.js";
 import "./jquery.js";
 import "./lib/jquery-ui/jquery-ui.min.js";
 
-import "./lib/chartjs/Chart.bundle.js"
+import "./lib/chartjs/Chart.bundle.js";
 
-import "./lib/awesomplete/awesomplete.js"
+import "./lib/awesomplete/awesomplete.js";
 
 //
 declare class Chart {
@@ -80,7 +80,7 @@ declare var Awesomplete;
 
 interface AwesompleteData {
     label: string;
-    value: any
+    value: any;
 }
 
 
@@ -113,8 +113,8 @@ export var debug: boolean = false;
 export const debugData = {};
 
 /** Use a local file instead of asking anilist's servers */
-// export const usingTestData: boolean = false;
-export const usingTestData: boolean = true
+export const usingTestData: boolean = false;
+// export const usingTestData: boolean = true;
 
 
 // Should probably figure out something to enforce that...
@@ -216,7 +216,7 @@ class InputForm {
 
     readonly padFocusToggle = $("#pad-focus") as JQuery<HTMLInputElement>;
 
-    readonly heatmapSelect = $("#heatmap-select") as JQuery<HTMLSelectElement>
+    readonly heatmapSelect = $("#heatmap-select") as JQuery<HTMLSelectElement>;
 
 
     readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
@@ -346,7 +346,7 @@ class InputForm {
         input.titleFilter.addEventListener("awesomplete-selectcomplete",
             function (e) {
                 const data = (<any>e).text as AwesompleteData;
-                console.log(data)
+                console.log(data);
 
                 //
                 addToFilter(data);
@@ -397,11 +397,11 @@ class InputForm {
         customLists.push({
             user: "linkviii",
             name: "group watch jk"
-        })
+        });
         customLists.push({
             user: "linkviii",
             name: "zzz"
-        })
+        });
         const listDropdown = new Awesomplete(input.customListFilter, {
             list: customLists,
             data: (it: CList) => ({ value: it, label: `${it.name}  [${it.user}]` } as AwesompleteData),
@@ -410,7 +410,7 @@ class InputForm {
                 this.input.value = "";
             },
             filter: function (text, input) {
-                console.log([text, input])
+                console.log([text, input]);
                 if (text.value.active) { return false; }
                 return Awesomplete.FILTER_CONTAINS(text, input);
             }
@@ -428,7 +428,7 @@ class InputForm {
             function (e) {
                 const data: CList = (<any>e).text.value;
                 data.active = true;
-                console.log(data)
+                console.log(data);
 
                 //
                 // addToFilter(data);
@@ -461,7 +461,7 @@ class InputForm {
                 const shouldIgnore = event.target.type !== "date";
 
                 if (entered && shouldIgnore) {
-                    console.log("prevented enter submit")
+                    console.log("prevented enter submit");
                     return false;
                 }
                 return true;
@@ -616,7 +616,7 @@ class InputForm {
             const container = document.getElementById("heatmap-container");
             container.replaceChildren();
 
-            if (value == "@hide") {
+            if (value === "@hide") {
                 return;
             }
             const config: AnimeListTimelineConfig = {
@@ -632,6 +632,7 @@ class InputForm {
                 listKind: "ANIME",
                 filter: { include: false, entrySet: new Set() },
                 eventPreference: ATL.EventPreference.all,
+                animeFormat: ATL.ALL_FORMATS
             };
             const fullList = userAnimeCache.get(value) as MAL.AnimeList;
             let allTime = new ATL.AnimeListTimeline(fullList, config);
@@ -1016,6 +1017,36 @@ function listFormSubmit(e: Event): void {
     return;
 }
 
+function enableHeatmapSelect() {
+    input.heatmapSelect.prop("disabled", false);
+    // Remove the placeholder entry
+    input.heatmapSelect.empty();
+
+    {
+        const userOpt = document.createElement("option");
+        userOpt.value = "@hide";
+        userOpt.textContent = "[HIDE]";
+        input.heatmapSelect.append(userOpt);
+    }
+}
+
+function addHeatmapUser(username: string) {
+
+    const userOpt = document.createElement("option");
+    userOpt.value = username;
+    userOpt.textContent = username;
+
+    input.heatmapSelect.append(userOpt);
+    input.heatmapSelect.val(username);
+    input.heatmapSelect.trigger("change");
+
+}
+
+
+function ingestAnimeList() {
+
+}
+
 // main II
 // Form api requests and call
 async function beforeAjax() {
@@ -1063,28 +1094,10 @@ async function beforeAjax() {
                 userAnimeCache.set(username, animeList);
 
                 // Add new user to select
-                if (input.heatmapSelect.val() == "") {
-
-                    input.heatmapSelect.prop("disabled", false);
-                    input.heatmapSelect.empty();
-
-                    {
-                        const userOpt = document.createElement("option");
-                        userOpt.value = "@hide";
-                        userOpt.textContent = "[HIDE]";
-                        input.heatmapSelect.append(userOpt);
-                    }
-
+                if (input.heatmapSelect.val() === "") {
+                    enableHeatmapSelect();
                 }
-
-                {
-                    const userOpt = document.createElement("option");
-                    userOpt.value = username;
-                    userOpt.textContent = username;
-                    input.heatmapSelect.append(userOpt);
-                    input.heatmapSelect.val(username);
-                    input.heatmapSelect.trigger("change");
-                }
+                addHeatmapUser(username);
 
                 for (let anime of animeList.anime) {
                     knownAnime.set(anime.id, anime.seriesTitle);
@@ -1203,7 +1216,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
     const getVal = function (id: string): boolean {
         const el = $(`#format-${id}`)[0] as HTMLInputElement;
         return el.checked;
-    }
+    };
 
     switch (listKind) {
         case "ANIME":
@@ -1229,12 +1242,14 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
     }
 
 
+    console.assert(tlConfig.animeFormat !== undefined || undefined !== tlConfig.mangaFormat, "No media format config.");
+
     updateUri(tlConfig);
 
     if (plotKind === "timeline") {
 
         try {
-            //global
+            //
             const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
 
             // This feels kinda wrong
@@ -1386,7 +1401,7 @@ function statsElement(listKind: string, stats: ReturnType<typeof calculateStats>
 
         statsLi = document.createElement("li");
         statsList.appendChild(statsLi);
-        statsLi.textContent = `${minutesToString(stats.boundedMinutes)} watched`
+        statsLi.textContent = `${minutesToString(stats.boundedMinutes)} watched`;
     }
 
     //
@@ -1691,7 +1706,7 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
     for (let i = 0; i < sortedEntries.length; ++i) {
         const [date, mins] = sortedEntries[i];
         const t = new Date(date);
-        t.setMinutes(t.getMinutes() + t.getTimezoneOffset())
+        t.setMinutes(t.getMinutes() + t.getTimezoneOffset());
         chartData.push({ t: t, y: mins });
 
         const t2 = new Date(t);
@@ -1785,7 +1800,7 @@ function drawHoursWatched(tlConfig: AnimeListTimelineConfig, mal: MAL.AnimeList)
 
     });
 
-    console.log("made plot?")
+    console.log("made plot?");
 }
 
 // ███████╗███████╗███████╗██████╗ ██████╗  █████╗  ██████╗██╗  ██╗
@@ -2105,7 +2120,7 @@ export function fixDate(date: string, minmax: -1 | 1): string {
         ds = "00";
     }
 
-    return [ys, ms, ds].join("-")
+    return [ys, ms, ds].join("-");
 }
 
 
