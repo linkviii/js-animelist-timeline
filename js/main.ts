@@ -119,6 +119,7 @@ export const usingTestData: boolean = false;
 
 // Should probably figure out something to enforce that...
 if (debug || usingTestData) {
+    console.log("Using debug settings.");
     console.warn("Don't commit debug!");
 }
 
@@ -150,7 +151,10 @@ interface CList {
     active?: boolean;
 }
 
-export const customLists: CList[] = [];
+export const customListsList: CList[] = [];
+
+/* {username: listName: [1,2,3]} */
+export const customListStore: Record<string, typeof MAL.AnimeList.prototype.namedLists> = {};
 
 function fillFilterList() {
     filterList.splice(0, filterList.length); // Clear the list first
@@ -172,9 +176,6 @@ function fillFilterList() {
 
 
 
-// global for ease of testing. Used as globals.
-// export let username: string;
-// export let tln: AnimeListTimeline;
 
 // ██████╗  █████╗  ██████╗ ███████╗    ██╗      ██████╗  █████╗ ██████╗ 
 // ██╔══██╗██╔══██╗██╔════╝ ██╔════╝    ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -394,16 +395,16 @@ class InputForm {
 
         // --------
 
-        customLists.push({
-            user: "linkviii",
-            name: "group watch jk"
-        });
-        customLists.push({
-            user: "linkviii",
-            name: "zzz"
-        });
+        // customListsList.push({
+        //     user: "linkviii",
+        //     name: "group watch jk"
+        // });
+        // customListsList.push({
+        //     user: "linkviii",
+        //     name: "zzz"
+        // });
         const listDropdown = new Awesomplete(input.customListFilter, {
-            list: customLists,
+            list: customListsList,
             data: (it: CList) => ({ value: it, label: `${it.name}  [${it.user}]` } as AwesompleteData),
             minChars: 0,
             replace: function (suggestion) {
@@ -411,7 +412,7 @@ class InputForm {
             },
             filter: function (text, input) {
                 console.log([text, input]);
-                if (text.value.active) { return false; }
+                // if (text.value.active) { return false; }
                 return Awesomplete.FILTER_CONTAINS(text, input);
             }
 
@@ -430,10 +431,25 @@ class InputForm {
                 data.active = true;
                 console.log(data);
 
+                const idList = customListStore[data.user][data.name];
+
+                const lang = input.language.val() as string;
+
+                const list: AwesompleteData[] = [];
+                for (let id of idList) {
+                    let title = knownAnime.get(id);
+                    list.push({
+                        label: title.preferred(lang),
+                        value: id
+                    });
+
+                }
+
                 //
-                // addToFilter(data);
+                list.map(addToFilter);
             }
         );
+        input.customListFilter.disabled = true;
         debugData["drop"] = listDropdown;
 
 
@@ -1103,6 +1119,18 @@ async function beforeAjax() {
                     knownAnime.set(anime.id, anime.seriesTitle);
                 }
                 fillFilterList();
+
+                if (0 !== Object.keys(animeList.namedLists).length) {
+
+                    input.customListFilter.disabled = false;
+                    input.customListFilter.placeholder = "Click to select";
+
+
+                    customListStore[username] = animeList.namedLists;
+                    for (let listName in animeList.namedLists) {
+                        customListsList.push({ user: username, name: listName });
+                    }
+                }
 
                 preparePlot(animeList);
 

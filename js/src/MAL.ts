@@ -51,7 +51,8 @@ export class AnimeList {
 
     constructor(
         public user: User,
-        public anime: Anime[]
+        public anime: Anime[],
+        public namedLists: Record<string, number[]>
     ) {
 
     }
@@ -111,7 +112,7 @@ export function animeListFromAniList(obj, userName: string): AnimeList {
 
         }
     }
-    return new AnimeList(user, allAnime);
+    return new AnimeList(user, allAnime, otherLists);
 }
 
 export interface User {

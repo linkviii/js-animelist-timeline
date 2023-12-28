@@ -38,9 +38,10 @@ function statusFromAniList(status) {
 export class BadUsernameError extends Error {
 }
 export class AnimeList {
-    constructor(user, anime) {
+    constructor(user, anime, namedLists) {
         this.user = user;
         this.anime = anime;
+        this.namedLists = namedLists;
     }
 }
 export class MangaList {
@@ -80,7 +81,7 @@ export function animeListFromAniList(obj, userName) {
             otherLists[list.name] = tmp;
         }
     }
-    return new AnimeList(user, allAnime);
+    return new AnimeList(user, allAnime, otherLists);
 }
 function userFromAniList(obj, name) {
     return { userId: obj.id, userName: name, };
