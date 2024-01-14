@@ -1,8 +1,8 @@
 /**
  * MIT licensed
  *
- * v0.2.1
- * 2021-04-18
+ * v0.3.1
+ * 2024-01-13
  */
 
 /*
@@ -64,6 +64,8 @@ import "./lib/jquery-ui/jquery-ui.min.js";
 import "./lib/chartjs/Chart.bundle.js";
 
 import "./lib/awesomplete/awesomplete.js";
+import { debug, usingTestData } from "./env.js";
+import { ListManager } from "./src/listManager.js";
 
 //
 declare class Chart {
@@ -105,23 +107,14 @@ declare function unescape(s: string): string;
 // Global data
 //
 
-/** Enable extra features that aren't generally useful, Might be able to change in the console. */
-export var debug: boolean = false;
-// export var debug: boolean = true
+
 
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
 
-/** Use a local file instead of asking anilist's servers */
-export const usingTestData: boolean = false;
-// export const usingTestData: boolean = true;
 
 
-// Should probably figure out something to enforce that...
-if (debug || usingTestData) {
-    console.log("Using debug settings.");
-    console.warn("Don't commit debug!");
-}
+
 
 //
 //
@@ -134,8 +127,9 @@ const issueUrl: string = "https://github.com/linkviii/js-animelist-timeline/issu
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 
 
-const userAnimeCache: Map<string, MAL.AnimeList | MAL.BadUsernameError> = new Map();
-const userMangaCache: Map<string, MAL.MangaList | MAL.BadUsernameError> = new Map();
+
+export const listManager = new ListManager();
+
 let timelineCount: number = 0;
 
 
@@ -650,7 +644,7 @@ class InputForm {
                 eventPreference: ATL.EventPreference.all,
                 animeFormat: ATL.ALL_FORMATS
             };
-            const fullList = userAnimeCache.get(value) as MAL.AnimeList;
+            const fullList =  listManager.userAnimeCache.get(value) as MAL.AnimeList;
             let allTime = new ATL.AnimeListTimeline(fullList, config);
             let heat = new Heat.WatchHeatMap(allTime, heatClick);
 
@@ -834,172 +828,7 @@ $(document).ready(init);
 
 
 
-export async function getAniList(userName: string): Promise<any | MAL.BadUsernameError> {
 
-    if (usingTestData) {
-        console.warn("Using test data.");
-        giveFeedback("Using test data");
-
-        const url = "res/anilist_example.json";
-
-        let job = await fetch(url).then(response => response.json());
-        return job;
-
-    }
-
-    const query = `
-    query ($userName: String) { 
-        MediaListCollection(userName: $userName, type: ANIME) {
-            hasNextChunk
-            user {
-                id
-            }
-            lists {
-                name
-                status
-                entries {
-                    mediaId
-                    score
-                    progress
-                    startedAt { year month day } 
-                    completedAt { year month day }
-                    media {
-                        duration
-                        episodes
-                        format
-                        title {
-                            romaji english native userPreferred
-                        }
-                    }
-                }
-            }
-        }
-    }
-    `; // Could probably munch the whitespace with a regex but no real need to
-
-    const variables = {
-        userName: userName
-    };
-
-
-    // Define the config we'll need for our Api request
-    const url = 'https://graphql.anilist.co',
-        options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        };
-
-
-    const response = await fetch(url, options);
-    const foo = await response.json();
-
-    if (foo.errors) {
-        console.error(foo.errors);
-        return new MAL.BadUsernameError();
-    }
-
-    const data = foo.data.MediaListCollection;
-
-    if (data.hasNextChunk) {
-        console.warn("TODO: next chunk not implemented yet.");
-    }
-
-
-    return data;
-
-}
-
-
-
-
-
-export async function getMangaList(userName: string): Promise<any | MAL.BadUsernameError> {
-
-    if (usingTestData) {
-        console.warn("Using test manga list data.");
-
-        const url = "res/TODO.json";
-
-        let job = await fetch(url).then(response => response.json());
-        return job;
-
-    }
-
-    const query = `
-    query ($userName: String) { 
-        MediaListCollection(userName: $userName, type: MANGA) {
-            hasNextChunk
-            user {
-                id
-            }
-            lists {
-                name
-                status
-                entries {
-                    mediaId
-                    score
-                    progress
-                    startedAt { year month day } 
-                    completedAt { year month day }
-                    media {
-                        duration
-                        episodes
-                        format
-                        title {
-                            romaji english native userPreferred
-                        }
-                    }
-                }
-            }
-        }
-    }
-    `; // Could probably munch the whitespace with a regex but no real need to
-
-    const variables = {
-        userName: userName
-    };
-
-
-    // Define the config we'll need for our Api request
-    const url = 'https://graphql.anilist.co',
-        options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        };
-
-
-    const response = await fetch(url, options);
-    const foo = await response.json();
-
-    if (foo.errors) {
-        console.error(foo.errors);
-        return new MAL.BadUsernameError();
-    }
-
-    const data = foo.data.MediaListCollection;
-
-    if (data.hasNextChunk) {
-        console.warn("TODO: next chunk not implemented yet.");
-    }
-
-
-    return data;
-
-}
 
 
 /*  
@@ -1059,8 +888,31 @@ function addHeatmapUser(username: string) {
 }
 
 
-function ingestAnimeList() {
 
+
+function ingestNewAnimeList(username: string, animeList: MAL.AnimeList) {
+    // Add new user to select
+    if (input.heatmapSelect.val() === "") {
+        enableHeatmapSelect();
+    }
+    addHeatmapUser(username);
+
+    for (let anime of animeList.anime) {
+        knownAnime.set(anime.id, anime.seriesTitle);
+    }
+    fillFilterList();
+
+    if (0 !== Object.keys(animeList.namedLists).length) {
+
+        input.customListFilter.disabled = false;
+        input.customListFilter.placeholder = "Click to select";
+
+
+        customListStore[username] = animeList.namedLists;
+        for (let listName in animeList.namedLists) {
+            customListsList.push({ user: username, name: listName });
+        }
+    }
 }
 
 // main II
@@ -1076,102 +928,43 @@ async function beforeAjax() {
         reportNoUser();
         return;
     }
+    if (usingTestData) {
+        console.warn("Using test data.");
+        giveFeedback("Using test data");
+    }
 
     switch (listKind) {
-        case "ANIME":
-            {     // check cache for name
-                // to skip ajax
-                const data: MAL.AnimeList | MAL.BadUsernameError = userAnimeCache.get(username);
-                if (data) {
-                    console.info([username, "'s data loaded from cache."].join(""));
-                    if (data instanceof MAL.BadUsernameError) {
-                        reportBadUser(username);
-                    } else {
-                        preparePlot(data);
-                    }
-                    return;
-                }
+        case "ANIME": {
 
-
-                const aniList = await getAniList(username);
-                debugData["aniList"] = aniList;
-
-                if (aniList instanceof MAL.BadUsernameError) {
-                    reportBadUser(username);
-                    userAnimeCache.set(username, aniList);
-                    return;
-                }
-
-
-
-                const animeList = MAL.animeListFromAniList(aniList, username);
-                debugData["list"] = animeList;
-
-                userAnimeCache.set(username, animeList);
-
-                // Add new user to select
-                if (input.heatmapSelect.val() === "") {
-                    enableHeatmapSelect();
-                }
-                addHeatmapUser(username);
-
-                for (let anime of animeList.anime) {
-                    knownAnime.set(anime.id, anime.seriesTitle);
-                }
-                fillFilterList();
-
-                if (0 !== Object.keys(animeList.namedLists).length) {
-
-                    input.customListFilter.disabled = false;
-                    input.customListFilter.placeholder = "Click to select";
-
-
-                    customListStore[username] = animeList.namedLists;
-                    for (let listName in animeList.namedLists) {
-                        customListsList.push({ user: username, name: listName });
-                    }
-                }
-
-                preparePlot(animeList);
-
+            const animeList = await listManager.getAnimeList(username);
+            if (animeList instanceof MAL.BadUsernameError) {
+                reportBadUser(username);
+                return;
             }
-            break;
-        case "MANGA":
-            {
-                const data: MAL.MangaList | MAL.BadUsernameError = userMangaCache.get(username);
-                if (data) {
-                    console.info([username, "'s data loaded from cache."].join(""));
-                    if (data instanceof MAL.BadUsernameError) {
-                        reportBadUser(username);
-                    } else {
-                        preparePlot(data);
-                    }
-                    return;
-                }
 
-
-                const aniList = await getMangaList(username);
-                debugData["aniList"] = aniList;
-
-                if (aniList instanceof MAL.BadUsernameError) {
-                    reportBadUser(username);
-                    userMangaCache.set(username, aniList);
-                    return;
-                }
-
-                const mangaList = MAL.mangaListFromAniList(aniList, username);
-                debugData["list"] = mangaList;
-
-                userMangaCache.set(username, mangaList);
-                preparePlot(mangaList);
+            debugData["list"] = animeList;
+            if (!animeList.cached) {
+                ingestNewAnimeList(username, animeList);
             }
-            break;
+            preparePlot(animeList);
+
+        } break;
+
+        case "MANGA": {
+
+            const mangaList = await listManager.getMangaList(username);
+            if (mangaList instanceof MAL.BadUsernameError) {
+                reportBadUser(username);
+                return;
+            }
+
+            debugData["list"] = mangaList;
+
+            preparePlot(mangaList);
+        } break;
         default:
             console.error("Unexpected list-kind:", listKind);
     }
-
-
-
 
 }
 

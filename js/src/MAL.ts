@@ -49,6 +49,8 @@ export class BadUsernameError extends Error {
 
 export class AnimeList {
 
+    cached = false;
+
     constructor(
         public user: User,
         public anime: Anime[],
@@ -59,8 +61,11 @@ export class AnimeList {
 }
 
 export class MangaList {
-    public user: User;
-    public anime: Manga[];
+    cached = false;
+    constructor(
+        public user: User,
+        public anime: Manga[],
+    ) { }
 }
 
 
@@ -79,7 +84,7 @@ export function mangaListFromAniList(obj, userName: string): MangaList {
             allAnime.push(mangaFromAniList(anime, status));
         }
     }
-    return { user: user, anime: allAnime };
+    return new MangaList(user, allAnime);
 }
 
 

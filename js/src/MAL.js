@@ -42,9 +42,15 @@ export class AnimeList {
         this.user = user;
         this.anime = anime;
         this.namedLists = namedLists;
+        this.cached = false;
     }
 }
 export class MangaList {
+    constructor(user, anime) {
+        this.user = user;
+        this.anime = anime;
+        this.cached = false;
+    }
 }
 export function mangaListFromAniList(obj, userName) {
     const user = userFromAniList(obj.user, userName);
@@ -56,7 +62,7 @@ export function mangaListFromAniList(obj, userName) {
             allAnime.push(mangaFromAniList(anime, status));
         }
     }
-    return { user: user, anime: allAnime };
+    return new MangaList(user, allAnime);
 }
 export function animeListFromAniList(obj, userName) {
     //
