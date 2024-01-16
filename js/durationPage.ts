@@ -474,6 +474,22 @@ Average minutes per day per title: ${stats.meanMinPerDayPerTitle.toFixed(1)}
     return div;
 }
 
+const fullTimelineConfig: ATL.AnimeListTimelineConfig = {
+    userName: activeUsername,
+    minDate: fixDate(MAL.rawNullDate, -1),
+    maxDate: fixDate(MAL.rawNullDate, 1),
+    lastN: 0,
+    //
+    lang: "english",
+    seasons: false,
+    width: 0,
+    fontSize: 0,
+    listKind: "ANIME",
+    filter: { include: false, entrySet: new Set() },
+    eventPreference: ATL.EventPreference.all,
+    animeFormat: ATL.ALL_FORMATS
+};
+
 function renderActiveList() {
     const animeList = listManager.userAnimeCache.get(activeUsername) as MAL.AnimeList;
     window["animelist"] = animeList;
@@ -482,22 +498,8 @@ function renderActiveList() {
         return;
     }
 
-    const config: ATL.AnimeListTimelineConfig = {
-        userName: activeUsername,
-        minDate: fixDate(MAL.rawNullDate, -1),
-        maxDate: fixDate(MAL.rawNullDate, 1),
-        lastN: 0,
-        //
-        lang: "english",
-        seasons: false,
-        width: 0,
-        fontSize: 0,
-        listKind: "ANIME",
-        filter: { include: false, entrySet: new Set() },
-        eventPreference: ATL.EventPreference.all,
-        animeFormat: ATL.ALL_FORMATS
-    };
-    const timeline = new ATL.AnimeListTimeline(animeList, config);
+
+    const timeline = new ATL.AnimeListTimeline(animeList, fullTimelineConfig);
     window["timeline"] = timeline;
 
     listPane.empty();
@@ -533,6 +535,35 @@ function renderActiveList() {
         const table = renderListAsTable(boundedAnime);
         listPane.append(table);
         listPane.append(renderStats(calculateStats(boundedAnime)));
+
+        const namedLists = Object.keys((animeList.namedLists));
+        if (namedLists.length !== 0) {
+            const db: Record<number, Anime> = {};
+            for (let anime of boundedAnime) {
+                db[anime.id] = anime;
+            }
+
+            for (const listName of namedLists) {
+
+                const list = [];
+                for (const id of animeList.namedLists[listName]) {
+                    const anime = db[id];
+                    if (anime) { list.push(anime); }
+                }
+                if (list.length !== 0) {
+                    const h = document.createElement('h3');
+                    h.textContent = listName;
+                    listPane.append(h);
+
+                    const table = renderListAsTable(list);
+                    listPane.append(table);
+
+                    listPane.append(renderStats(calculateStats(list)));
+
+                }
+            }
+
+        }
 
     }
 
