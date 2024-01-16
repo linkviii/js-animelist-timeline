@@ -76,7 +76,8 @@ class InputForm {
         "none",
         "watch-year",
         "episode-count",
-        "type"
+        "type",
+        "in-season",
     ];
     initParams() {
         /* Set default values */
@@ -137,6 +138,9 @@ class InputForm {
                 case "type":
                     activeGrouper = getType;
                     break;
+                case "in-season":
+                    activeGrouper = watchedInSeason_long;
+                    break;
                 default:
                     console.warn(`Unhandled case: ${value}`);
                     assertUnreachable(value);
@@ -191,8 +195,8 @@ function init() {
         favicon.href = "../favicon_localhost.png";
     }
     // XXX
-    $("#listName").val("ONLOAD");
-    onSubmit();
+    // $("#listName").val("ONLOAD");
+    // onSubmit();
 }
 $(document).ready(init);
 // 
@@ -268,8 +272,21 @@ function getType(anime) {
     return anime.seriesType;
 }
 function watchedInSeason(anime) {
-    const inSeason = anime.userStartDate.inBounds(anime.seriesStart, anime.seriesEnd);
+    // Airing dates may be unavailable.
+    try {
+        return anime.userStartDate.inBounds(anime.seriesStart, anime.seriesEnd);
+    }
+    catch {
+        return false;
+    }
+}
+function watchedInSeason_short(anime) {
+    const inSeason = watchedInSeason(anime);
     return inSeason ? "✅" : "";
+}
+function watchedInSeason_long(anime) {
+    const inSeason = watchedInSeason(anime);
+    return inSeason ? "Watched while airing" : "Watched after completed";
 }
 // function installTableSorting(table: HTMLTableElement) {
 //     const tBody = table.tBodies[0];
@@ -308,7 +325,7 @@ function renderListAsTable(list) {
         ["Score", (anime) => anime.userScore.toString()],
         ["Start Date", (anime) => anime.userStartDate.rawDateStr],
         ["Finish Date", (anime) => anime.userFinishDate.rawDateStr],
-        ["In Season", (anime) => watchedInSeason(anime)]
+        ["In Season", (anime) => watchedInSeason_short(anime)]
     ];
     {
         const headRow = thead.insertRow();

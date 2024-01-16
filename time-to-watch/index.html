@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Anime Watch Durations</title>
+    <title>Time to Watch List</title>
     <!-- Unsure about using base, but it lets loading test data "just work"... -->
     <base href="../" />
     <link href="../favicon.png" rel="shortcut icon" type="image/x-icon" id="favicon">
     <link href="../res/root.css" rel="stylesheet" type="text/css">
-    <link href="../duration/duration.css" rel="stylesheet" type="text/css">
+    <link href="../time-to-watch/duration.css" rel="stylesheet" type="text/css">
     <link href="../js/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
     <link href="../js/lib/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
     <!-- <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.structure.min.css"> -->
@@ -18,18 +18,22 @@
 
 
 <body>
+    <header>
+        <nav class="flex-start">
+            <a href="">Timeline</a> |
+            <span>Time to Watch</span>
+        </nav>
+
+        <span class="flex-end">
+            This is a work in progress. About/Source/Support:
+            <a href="https://github.com/linkviii/js-animelist-timeline">
+                https://github.com/linkviii/js-animelist-timeline
+            </a>
+        </span>
+
+    </header>
     <div id="top">
 
-        <header>
-
-            <span>
-                This is a work in progress. About/Source/Support:
-                <a href="https://github.com/linkviii/js-animelist-timeline">
-                    https://github.com/linkviii/js-animelist-timeline
-                </a>
-            </span>
-
-        </header>
 
         <p>View your list with focus on how long it took.</p>
 
@@ -42,6 +46,9 @@
         <iframe name="💾" src="about:blank" style="display:none"></iframe>
 
         <form action="about:blank" id="form" target="💾">
+
+            <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+            <input style="display: none" type="text" name="fakeusernameremembered" />
 
             <div class="fieldContainer">
                 <fieldset class="mainGroup">
@@ -79,7 +86,7 @@
                         <option value="user-finish"> Finish Watching </option>
                     </select>
 
-                    <label for="sort-secondary">Primary</label>
+                    <label for="sort-secondary">Secondary</label>
                     <select size="6" id="sort-secondary">
                         <option value="name" selected> Name </option>
                         <option value="duration"> Days to watch </option>
@@ -90,11 +97,12 @@
                     </select>
 
                     <label for="group-by">Group by</label>
-                    <select size="4" id="group-by">
-                        <option value="none">None</option>
+                    <select size="6" id="group-by">
+                        <option value="none" selected>None</option>
                         <option value="watch-year">Watch year</option>
                         <option value="episode-count">Episode Count</option>
                         <option value="type">Type</option>
+                        <option value="in-season">In Season</option>
 
                     </select>
 

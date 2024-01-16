@@ -118,7 +118,8 @@ class InputForm {
         "none",
         "watch-year",
         "episode-count",
-        "type"
+        "type",
+        "in-season",
     ] as const;
 
     initParams() {
@@ -165,6 +166,7 @@ class InputForm {
                 case "watch-year": activeGrouper = getWatchYear_s; break;
                 case "episode-count": activeGrouper = getEpisodes_long; break;
                 case "type": activeGrouper = getType; break;
+                case "in-season": activeGrouper = watchedInSeason_long; break;
 
                 default:
                     console.warn(`Unhandled case: ${value}`);
@@ -228,8 +230,8 @@ function init(): void {
     }
 
     // XXX
-    $("#listName").val("ONLOAD");
-    onSubmit();
+    // $("#listName").val("ONLOAD");
+    // onSubmit();
 
 }
 
@@ -327,9 +329,21 @@ function getType(anime: Anime): string {
     return anime.seriesType;
 }
 
-function watchedInSeason(anime: Anime) {
-    const inSeason = anime.userStartDate.inBounds(anime.seriesStart, anime.seriesEnd);
+function watchedInSeason(anime: Anime): boolean {
+    // Airing dates may be unavailable.
+    try {
+        return anime.userStartDate.inBounds(anime.seriesStart, anime.seriesEnd);
+    } catch {
+        return false;
+    }
+}
+function watchedInSeason_short(anime: Anime): string {
+    const inSeason = watchedInSeason(anime);
     return inSeason ? "✅" : "";
+}
+function watchedInSeason_long(anime: Anime): string {
+    const inSeason = watchedInSeason(anime);
+    return inSeason ? "Watched while airing" : "Watched after completed";
 }
 
 // function installTableSorting(table: HTMLTableElement) {
@@ -379,7 +393,7 @@ function renderListAsTable(list: Anime[]) {
         ["Score", (anime: Anime) => anime.userScore.toString()],
         ["Start Date", (anime: Anime) => anime.userStartDate.rawDateStr],
         ["Finish Date", (anime: Anime) => anime.userFinishDate.rawDateStr],
-        ["In Season", (anime: Anime) => watchedInSeason(anime)]
+        ["In Season", (anime: Anime) => watchedInSeason_short(anime)]
     ];
     {
         const headRow = thead.insertRow();

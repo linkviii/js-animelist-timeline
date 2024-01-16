@@ -1,6 +1,8 @@
 body {
     /* Slightly off white. I guess. */
     background-color: azure;
+    margin: 0px;
+    padding: 0px;
 }
 
 .required:before {
@@ -25,8 +27,32 @@ span#feedback {
     margin-left: 20px;
 }
 
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right
+}
+
+.align-left {
+    text-align: left;
+}
+.align-right {
+    text-align: right;
+}
+.flex-start {
+    /* justify-content: flex-start; */
+    flex-grow: 1;
+}
+/* .flex-end {
+    justify-content: flex-end;
+} */
+
 header {
-    float: right;
+    background-color: #3db4f2;
+    padding: 5px;
+    display: flex;
 }
 
 #filter-list {
@@ -208,7 +234,7 @@ th {
 
 }
 
-div > #filter-list {
+div>#filter-list {
     background: #0000001c;
     border: 1px solid black;
     min-height: 5em;
