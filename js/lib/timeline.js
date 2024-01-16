@@ -100,13 +100,37 @@ export class TimelineConverter {
 class OoBDate extends Error {
 }
 export class Timeline {
+    fontSize;
+    fontFamily;
+    fontHeight;
+    calloutProperties;
+    // x,y of adjustment of callout text
+    static textFudge = 3;
+    data;
+    startDate;
+    endDate;
+    /**
+     * The very beginning and end of the axis.
+     * date0 -> x = 0
+     * date1 -> x = width
+     */
+    date0;
+    date1;
+    totalSeconds;
+    tickFormat;
+    markers;
+    maxLabelHeight;
+    width;
+    /** Width that is "dead" to accommodate long text on the far left */
+    deadWidth;
+    extraWidth;
+    drawing;
+    axisGroup;
+    //
+    strfutc = strftime.utc();
     // initializes data for timeline
     // Call `build` to generate svg
     constructor(data, id) {
-        //
-        this.strfutc = strftime.utc();
-        this.debugMap = [];
-        this.canvas = document.createElement("canvas");
         if (data.apiVersion == 2) {
             this.data = data;
         }
@@ -327,6 +351,7 @@ export class Timeline {
         prevLevels.push(level);
         return [calloutHeight, event];
     }
+    debugMap = [];
     putInDebugMap(str, level, point) {
         while (level >= this.debugMap.length) {
             this.debugMap.push({});
@@ -631,6 +656,7 @@ export class Timeline {
         // The box seems fuzzy so lets give a small amount of padding.
         return Math.ceil(box.width) + 1;
     }
+    canvas = document.createElement("canvas");
     getTextDim(text) {
         /*
          * Using SVG.Text's bbox was a performance bottleneck.
@@ -649,8 +675,6 @@ export class Timeline {
         return Math.ceil(metrics.width);
     }
 }
-// x,y of adjustment of callout text
-Timeline.textFudge = 3;
 // Test linear spacing of callouts
 export function makeTestPattern1(width) {
     const testPattern_1 = {

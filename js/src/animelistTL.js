@@ -147,6 +147,19 @@ export const AnimeListTimelineConfigKeys = {
  *
  */
 export class AnimeListTimeline {
+    //
+    mal;
+    config;
+    firstDate;
+    lastDate;
+    data;
+    userName;
+    // All the anime in the timeline
+    mediaSet;
+    // Start and End date in date range
+    boundedSet;
+    // Not that
+    unboundedSet;
     static dateInBounds(date, lb, rb) {
         if (date.isNullDate())
             return false;

@@ -47,6 +47,7 @@ import "./lib/chartjs/Chart.bundle.js";
 import "./lib/awesomplete/awesomplete.js";
 import { debug, usingTestData } from "./env.js";
 import { ListManager } from "./src/listManager.js";
+import { daysBetween, fixDate, isPositiveInteger, minutesToString, updateKey, wrapListItem } from "./src/util.js";
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
 // ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
@@ -63,7 +64,6 @@ export const debugData = {};
 const siteUrl = "https://linkviii.github.io/js-animelist-timeline/";
 const repoUrl = "https://github.com/linkviii/js-animelist-timeline";
 const issueUrl = "https://github.com/linkviii/js-animelist-timeline/issues";
-const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 export const listManager = new ListManager();
 let timelineCount = 0;
 export const knownAnime = new Map();
@@ -96,36 +96,34 @@ function fillFilterList() {
 // Page load
 //
 class InputForm {
-    constructor() {
-        this.advancedToggle = $("#show-advanced");
-        // Would be awkward to have both `form` and `from` fields
-        this.inputForm = $("#form");
-        this.listField = $("#listName");
-        this.language = $("#language");
-        this.seasonsToggle = $("#seasons");
-        this.width = $("#width");
-        this.widthSlider = $("#width-slider");
-        this.fontSize = $("#font-size");
-        this.from = $("#from");
-        this.to = $("#to");
-        this.focusYear = $("#focus-year");
-        this.lastN = $("#last-n");
-        this.lastNToggle = $("#enable-last-n");
-        this.padFocusToggle = $("#pad-focus");
-        this.heatmapSelect = $("#heatmap-select");
-        this.listKind = $("#list-kind");
-        this.animeFormat = $("#anime-format");
-        this.mangaFormat = $("#manga-format");
-        this.filterKind = $("#filter-kind");
-        // To be poisoned by awesomplete 
-        this.titleFilter = document.getElementById("title-filter");
-        this.customListFilter = document.getElementById("custom-list-filter");
-        this.clearFilter = $("#clear-filter");
-        this.eventKind = $("#event-kind");
-        this.eventKindDescription = $("#event-kind-description");
-        this.submitButton = $("#listFormSubmit");
-        this.clearButton = $("#clear-form");
-    }
+    advancedToggle = $("#show-advanced");
+    // Would be awkward to have both `form` and `from` fields
+    inputForm = $("#form");
+    listField = $("#listName");
+    language = $("#language");
+    seasonsToggle = $("#seasons");
+    width = $("#width");
+    widthSlider = $("#width-slider");
+    fontSize = $("#font-size");
+    from = $("#from");
+    to = $("#to");
+    focusYear = $("#focus-year");
+    lastN = $("#last-n");
+    lastNToggle = $("#enable-last-n");
+    padFocusToggle = $("#pad-focus");
+    heatmapSelect = $("#heatmap-select");
+    listKind = $("#list-kind");
+    animeFormat = $("#anime-format");
+    mangaFormat = $("#manga-format");
+    filterKind = $("#filter-kind");
+    // To be poisoned by awesomplete 
+    titleFilter = document.getElementById("title-filter");
+    customListFilter = document.getElementById("custom-list-filter");
+    clearFilter = $("#clear-filter");
+    eventKind = $("#event-kind");
+    eventKindDescription = $("#event-kind-description");
+    submitButton = $("#listFormSubmit");
+    clearButton = $("#clear-form");
     /*------------------------------------------------------------------------------- */
     initParams() {
         const keys = AnimeListTimelineConfigKeys;
@@ -1215,8 +1213,10 @@ var exportType;
     exportType[exportType["Json"] = 2] = "Json";
 })(exportType || (exportType = {}));
 class MyButton extends HTMLButtonElement {
+    kind;
 }
 class MyContainer extends HTMLDivElement {
+    meta;
 }
 // ██████╗ ██╗   ██╗████████╗████████╗ ██████╗ ███╗   ██╗███████╗
 // ██╔══██╗██║   ██║╚══██╔══╝╚══██╔══╝██╔═══██╗████╗  ██║██╔════╝
@@ -1307,113 +1307,6 @@ function exportTimeline() {
 //
 // Util
 //
-export function wrapListItem(elm) {
-    const li = document.createElement("li");
-    li.appendChild(elm);
-    return li;
-}
-export function minutesToString(min) {
-    min = Math.round(min);
-    let h = Math.floor(min / 60);
-    const d = Math.floor(h / 24);
-    h = h % 24;
-    const m = min % 60;
-    if (h > 0 || d > 0) {
-        if (d > 0)
-            return `${d}D ${h}H ${m}M`;
-        else
-            return `${h}H ${m}M`;
-    }
-    return `${m} minutes`;
-}
-export function updateKey(map, key, value) {
-    map.set(key, map.get(key) + value);
-}
-export function daysBetween(first, second) {
-    if (typeof first === 'string') {
-        first = new Date(first);
-    }
-    if (typeof second === 'string') {
-        second = new Date(second);
-    }
-    // Take the difference between the dates and divide by milliseconds per day.
-    // Round to nearest whole number to deal with DST.
-    const diff = (second.valueOf() - first.valueOf());
-    const milliInDay = (1000 * 60 * 60 * 24);
-    return Math.abs(Math.round(diff / milliInDay));
-}
-//
-// Data cleaning
-//
-// I don't remember why I wanted this, but I might of had a good reason.
-// Could probably find this on SO
-/**
- * Returns if the string represents a non negative integer.
- * @param str
- * @returns {boolean}
- */
-export function isNormalInteger(str) {
-    const n = ~~Number(str);
-    return (String(n) === str) && (n >= 0);
-}
-/**
- * Returns if the string represents a non negative integer.
- * @param str
- * @returns {boolean}
- */
-export function isPositiveInteger(str) {
-    const n = ~~Number(str);
-    return (String(n) === str) && (n > 0);
-}
-//make user input suitable for anime timeline
-/**
- * Clamps date into a useful value
- * @param date May be rawNullDate
- * @param minmax -1: clamp min; 1 clamp max
- * @returns YYYY-MM-DD str
- */
-export function fixDate(date, minmax) {
-    const minYear = 1980; //Nerds can change this in the future
-    const maxYear = 2030; //For now its sane
-    const test = dateRegex.test(date);
-    if (!test) {
-        // Maybe should return or throw an error?
-        if (null !== date && "" !== date)
-            console.error("Unexpected date format from:", date);
-        // Pretend all invalid input is equivalent to null date
-        date = MAL.rawNullDate;
-    }
-    let ys;
-    let ms;
-    let ds;
-    if (/^\d\d\d\d\d\d\d\d$/.test(date)) {
-        ys = date.slice(0, 4);
-        ms = date.slice(4, 6);
-        ds = date.slice(6, 8);
-    }
-    else {
-        ys = date.slice(0, 4);
-        ms = date.slice(5, 7);
-        ds = date.slice(8, 10);
-    }
-    const y = parseInt(ys);
-    const m = parseInt(ms);
-    const d = parseInt(ds);
-    //A date needs at least a sane year
-    if (y < minYear || y > maxYear) {
-        if (minmax == -1)
-            ys = minYear.toString();
-        else // (minmax == 1)
-            ys = maxYear.toString();
-    }
-    if (m < 0 || m > 12) {
-        ms = "00";
-    }
-    if (d < 0 || d > 32) {
-        ds = "00";
-    }
-    return [ys, ms, ds].join("-");
-}
 //
 // url query manipulation
 //

@@ -38,18 +38,23 @@ function statusFromAniList(status) {
 export class BadUsernameError extends Error {
 }
 export class AnimeList {
+    user;
+    anime;
+    namedLists;
+    cached = false;
     constructor(user, anime, namedLists) {
         this.user = user;
         this.anime = anime;
         this.namedLists = namedLists;
-        this.cached = false;
     }
 }
 export class MangaList {
+    user;
+    anime;
+    cached = false;
     constructor(user, anime) {
         this.user = user;
         this.anime = anime;
-        this.cached = false;
     }
 }
 export function mangaListFromAniList(obj, userName) {
@@ -93,6 +98,10 @@ function userFromAniList(obj, name) {
     return { userId: obj.id, userName: name, };
 }
 export class Title {
+    english;
+    userPreferred;
+    romaji;
+    native;
     constructor(it) {
         this.english = it.english;
         this.userPreferred = it.userPreferred;
@@ -125,6 +134,8 @@ function mediaFromAniList(obj, status) {
     return {
         seriesTitle: titleObj,
         seriesType: obj.media.format,
+        seriesStart: dateFromAniList(obj.media.startDate),
+        seriesEnd: dateFromAniList(obj.media.endDate),
         id: obj.mediaId,
         userStartDate: dateFromAniList(obj.startedAt),
         userFinishDate: dateFromAniList(obj.completedAt),
@@ -159,6 +170,16 @@ function dateFromAniList(obj) {
     return dateFromYMD(obj.year, obj.month, obj.day);
 }
 export class Mdate {
+    /*
+     * YYYY-MM-DD
+     * MM and DD can be 00 but YYYY must be a year
+     */
+    rawDateStr;
+    fixedDateStr;
+    /**
+     * Available only if not nullDate
+     */
+    date;
     constructor(date) {
         //@assume valid string
         this.rawDateStr = date;
@@ -239,6 +260,12 @@ export class Mdate {
         else { //if (val < 0){
             return d2;
         }
+    }
+    inBounds(lb, rb) {
+        const date = this;
+        if (date.isNullDate())
+            return false;
+        return date.compare(lb) >= 0 && date.compare(rb) <= 0;
     }
 }
 export const rawNullDate = "0000-00-00";

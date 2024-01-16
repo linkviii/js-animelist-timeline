@@ -66,6 +66,7 @@ import "./lib/chartjs/Chart.bundle.js";
 import "./lib/awesomplete/awesomplete.js";
 import { debug, usingTestData } from "./env.js";
 import { ListManager } from "./src/listManager.js";
+import { daysBetween, fixDate, isPositiveInteger, minutesToString, updateKey, wrapListItem } from "./src/util.js";
 
 //
 declare class Chart {
@@ -124,7 +125,6 @@ const siteUrl: string = "https://linkviii.github.io/js-animelist-timeline/";
 const repoUrl: string = "https://github.com/linkviii/js-animelist-timeline";
 const issueUrl: string = "https://github.com/linkviii/js-animelist-timeline/issues";
 
-const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 
 
 
@@ -644,7 +644,7 @@ class InputForm {
                 eventPreference: ATL.EventPreference.all,
                 animeFormat: ATL.ALL_FORMATS
             };
-            const fullList =  listManager.userAnimeCache.get(value) as MAL.AnimeList;
+            const fullList = listManager.userAnimeCache.get(value) as MAL.AnimeList;
             let allTime = new ATL.AnimeListTimeline(fullList, config);
             let heat = new Heat.WatchHeatMap(allTime, heatClick);
 
@@ -1814,135 +1814,6 @@ function exportTimeline() {
 // Util
 //
 
-export function wrapListItem(elm: Element) {
-    const li = document.createElement("li");
-    li.appendChild(elm);
-    return li;
-}
-
-export function minutesToString(min: number): string {
-    min = Math.round(min);
-
-    let h = Math.floor(min / 60);
-    const d = Math.floor(h / 24);
-    h = h % 24;
-
-    const m = min % 60;
-
-    if (h > 0 || d > 0) {
-        if (d > 0)
-            return `${d}D ${h}H ${m}M`;
-        else
-            return `${h}H ${m}M`;
-    }
-    return `${m} minutes`;
-
-}
-
-export function updateKey<K>(map: Map<K, number>, key: K, value: number) {
-    map.set(key, map.get(key) + value);
-}
-
-export function daysBetween(first: Date | string, second: Date | string): number {
-
-    if (typeof first === 'string') {
-        first = new Date(first);
-    }
-    if (typeof second === 'string') {
-        second = new Date(second);
-    }
-
-    // Take the difference between the dates and divide by milliseconds per day.
-    // Round to nearest whole number to deal with DST.
-
-    const diff = (second.valueOf() - first.valueOf());
-    const milliInDay = (1000 * 60 * 60 * 24);
-    return Math.abs(Math.round(diff / milliInDay));
-}
-
-
-//
-// Data cleaning
-//
-
-// I don't remember why I wanted this, but I might of had a good reason.
-// Could probably find this on SO
-
-/**
- * Returns if the string represents a non negative integer.
- * @param str
- * @returns {boolean}
- */
-export function isNormalInteger(str: string): boolean {
-    const n: number = ~~Number(str);
-    return (String(n) === str) && (n >= 0);
-}
-
-/**
- * Returns if the string represents a non negative integer.
- * @param str
- * @returns {boolean}
- */
-export function isPositiveInteger(str: string): boolean {
-    const n: number = ~~Number(str);
-    return (String(n) === str) && (n > 0);
-}
-
-
-//make user input suitable for anime timeline
-
-/**
- * Clamps date into a useful value
- * @param date May be rawNullDate
- * @param minmax -1: clamp min; 1 clamp max
- * @returns YYYY-MM-DD str
- */
-export function fixDate(date: string, minmax: -1 | 1): string {
-
-    const minYear = 1980;//Nerds can change this in the future
-    const maxYear = 2030;//For now its sane
-
-    const test: boolean = dateRegex.test(date);
-    if (!test) {
-        // Maybe should return or throw an error?
-        if (null !== date && "" !== date)
-            console.error("Unexpected date format from:", date);
-        // Pretend all invalid input is equivalent to null date
-        date = MAL.rawNullDate;
-    }
-    let ys: string;
-    let ms: string;
-    let ds: string;
-    if (/^\d\d\d\d\d\d\d\d$/.test(date)) {
-        ys = date.slice(0, 4);
-        ms = date.slice(4, 6);
-        ds = date.slice(6, 8);
-    } else {
-        ys = date.slice(0, 4);
-        ms = date.slice(5, 7);
-        ds = date.slice(8, 10);
-    }
-    const y: number = parseInt(ys);
-    const m: number = parseInt(ms);
-    const d: number = parseInt(ds);
-
-    //A date needs at least a sane year
-    if (y < minYear || y > maxYear) {
-        if (minmax == -1)
-            ys = minYear.toString();
-        else // (minmax == 1)
-            ys = maxYear.toString();
-
-    }
-    if (m < 0 || m > 12) {
-        ms = "00";
-    }
-    if (d < 0 || d > 32) {
-        ds = "00";
-    }
-
-    return [ys, ms, ds].join("-");
-}
 
 
 //

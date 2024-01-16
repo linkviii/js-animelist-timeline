@@ -20,13 +20,16 @@ function seasonQ(date) {
     }
 }
 export class WatchHeatMap {
+    spanHandler;
+    data = new Map();
+    minYear;
+    maxYear;
+    maxMonthCount = { startCount: 0, finishCount: 0 };
+    maxSeasonCount = { startCount: 0, finishCount: 0 };
+    maxYearCount = { startCount: 0, finishCount: 0 };
     // spanHandler: SpanHandler;
     constructor(tln, spanHandler) {
         this.spanHandler = spanHandler;
-        this.data = new Map();
-        this.maxMonthCount = { startCount: 0, finishCount: 0 };
-        this.maxSeasonCount = { startCount: 0, finishCount: 0 };
-        this.maxYearCount = { startCount: 0, finishCount: 0 };
         this.minYear = tln.firstDate.year();
         this.maxYear = tln.lastDate.year();
         for (let y = this.minYear; y <= this.maxYear; y++) {

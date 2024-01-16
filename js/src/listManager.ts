@@ -40,6 +40,8 @@ export async function getAnilistAnimeList(userName: string): Promise<any | MAL.B
                         title {
                             romaji english native userPreferred
                         }
+                        startDate { year month day } 
+                        endDate { year month day } 
                     }
                 }
             }
@@ -192,6 +194,7 @@ export class ListManager {
         }
 
         const aniList = await getAnilistAnimeList(username);
+        window["lastAnilist"] = aniList;
         if (aniList instanceof MAL.BadUsernameError) {
             this.userAnimeCache.set(username, aniList);
             return aniList;

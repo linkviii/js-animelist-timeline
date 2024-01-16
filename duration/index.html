@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Anime Watch Durations</title>
+    <!-- Unsure about using base, but it lets loading test data "just work"... -->
+    <base href="../" />
+    <link href="../favicon.png" rel="shortcut icon" type="image/x-icon" id="favicon">
+    <link href="../res/root.css" rel="stylesheet" type="text/css">
+    <link href="../duration/duration.css" rel="stylesheet" type="text/css">
+    <link href="../js/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="../js/lib/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+    <!-- <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.structure.min.css"> -->
+    <link rel="stylesheet" href="../js/lib/awesomplete/awesomplete.css" />
+
+</head>
+
+
+<body>
+    <div id="top">
+
+        <header>
+
+            <span>
+                This is a work in progress. About/Source/Support:
+                <a href="https://github.com/linkviii/js-animelist-timeline">
+                    https://github.com/linkviii/js-animelist-timeline
+                </a>
+            </span>
+
+        </header>
+
+        <p>View your list with focus on how long it took.</p>
+
+        <!-- 
+            Submit to an invisible iframe to prevent page refresh on submit.
+            Submitting lets username autocomplete.
+            https://stackoverflow.com/a/29885896/1993919
+         -->
+
+        <iframe name="💾" src="about:blank" style="display:none"></iframe>
+
+        <form action="about:blank" id="form" target="💾">
+
+            <div class="fieldContainer">
+                <fieldset class="mainGroup">
+                    <legend>List</legend>
+
+                    <label for="listName">Username</label>
+                    <input id="listName" required="" spellcheck="false">
+
+                    <!-- <label for="list-kind">Media</label>
+                    <select id="list-kind">
+                        <option value="ANIME">Anime</option>
+                        <option value="MANGA">Manga</option>
+                    </select> -->
+
+                    <button id="listFormSubmit" title="Submit" type="submit">Load Anilist</button>
+
+                </fieldset>
+            </div>
+
+
+
+            <div class="fieldContainer">
+
+
+                <fieldset class="mainGroup">
+                    <legend>Sorting</legend>
+
+                    <label for="sort-primary">Primary</label>
+                    <select size="6" id="sort-primary">
+                        <option value="name" selected> Name </option>
+                        <option value="duration"> Days to watch </option>
+                        <option value="ratio"> Episodes / Days </option>
+                        <option value="score"> Score </option>
+                        <option value="user-start"> Start Watching </option>
+                        <option value="user-finish"> Finish Watching </option>
+                    </select>
+
+                    <label for="sort-secondary">Primary</label>
+                    <select size="6" id="sort-secondary">
+                        <option value="name" selected> Name </option>
+                        <option value="duration"> Days to watch </option>
+                        <option value="ratio"> Episodes / Days </option>
+                        <option value="score"> Score </option>
+                        <option value="user-start"> Start Watching </option>
+                        <option value="user-finish"> Finish Watching </option>
+                    </select>
+
+                    <label for="group-by">Group by</label>
+                    <select size="4" id="group-by">
+                        <option value="none">None</option>
+                        <option value="watch-year">Watch year</option>
+                        <option value="episode-count">Episode Count</option>
+                        <option value="type">Type</option>
+
+                    </select>
+
+                </fieldset>
+
+                <fieldset class="mainGroup">
+                    <label class="before" for="language">Language</label>
+
+                    <select id="language">
+                        <option value="english" selected>English</option>
+                        <option value="romaji">Romaji</option>
+                        <option value="native">Native</option>
+                    </select>
+
+                    <label for="ratio-scale">Ratio:</label>
+
+                    Episodes /
+                    <select id="ratio-scale">
+                        <option value="days" selected>Days</option>
+                        <option value="weeks">Weeks</option>
+                    </select>
+
+
+
+                </fieldset>
+            </div>
+        </form>
+
+        <div id="list-pane"></div>
+
+    </div>
+
+    <!---->
+    <script src="../js/lib/strftime.js"></script>
+    <script type="module">
+        import * as main from "../js/durationPage.js";
+        window.main = main;
+        console.log("Duration main module loaded", new Date().toLocaleTimeString());
+    </script>
+</body>
+
+
+</html>

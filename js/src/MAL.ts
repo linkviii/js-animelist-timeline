@@ -181,6 +181,8 @@ interface IMedia {
     seriesTitle: Title;
     seriesType: string;
     id: number;
+    seriesStart: Mdate;
+    seriesEnd: Mdate;
 
     userStartDate: Mdate;
     userFinishDate: Mdate;
@@ -211,6 +213,8 @@ function mediaFromAniList(obj: GraphMedia, status: Status): IMedia {
     return {
         seriesTitle: titleObj,
         seriesType: obj.media.format,
+        seriesStart: dateFromAniList(obj.media.startDate),
+        seriesEnd: dateFromAniList(obj.media.endDate),
         id: obj.mediaId,
 
         userStartDate: dateFromAniList(obj.startedAt),
@@ -370,6 +374,13 @@ export class Mdate {
             return d2;
         }
 
+    }
+
+    inBounds(lb: Mdate, rb: Mdate): boolean {
+        const date = this;
+        if (date.isNullDate())
+            return false;
+        return date.compare(lb) >= 0 && date.compare(rb) <= 0;
     }
 
 }

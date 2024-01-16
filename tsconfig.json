@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "ESNext",
     "sourceMap": true,
     "module": "es6",
     "baseUrl": "./js"

@@ -29,6 +29,8 @@ export async function getAnilistAnimeList(userName) {
                         title {
                             romaji english native userPreferred
                         }
+                        startDate { year month day } 
+                        endDate { year month day } 
                     }
                 }
             }
@@ -126,9 +128,9 @@ export async function getAnilistMangaList(userName) {
     return data;
 }
 export class ListManager {
+    userAnimeCache = new Map();
+    userMangaCache = new Map();
     constructor() {
-        this.userAnimeCache = new Map();
-        this.userMangaCache = new Map();
     }
     async getAnimeList(username) {
         const data = this.userAnimeCache.get(username);
@@ -140,6 +142,7 @@ export class ListManager {
             return data;
         }
         const aniList = await getAnilistAnimeList(username);
+        window["lastAnilist"] = aniList;
         if (aniList instanceof MAL.BadUsernameError) {
             this.userAnimeCache.set(username, aniList);
             return aniList;
