@@ -412,6 +412,7 @@ function renderListAsTable(list: Anime[]) {
 
     const table = document.createElement("table");
     const thead = table.createTHead();
+    const tfoot = table.createTFoot()
     const columns: [string, (_: Anime) => string][] = [
         ["Time to Watch", (anime: Anime) => daysToYWD(daysToWatch(anime))],
         ["Title", (anime: Anime) => anime.seriesTitle.preferred(activeLang)],
@@ -423,6 +424,14 @@ function renderListAsTable(list: Anime[]) {
     ];
     {
         const headRow = thead.insertRow();
+        for (const label of columns) {
+
+            headRow.insertCell().textContent = label[0];
+        }
+
+    }
+    {
+        const headRow = tfoot.insertRow();
         for (const label of columns) {
 
             headRow.insertCell().textContent = label[0];

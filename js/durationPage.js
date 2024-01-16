@@ -336,6 +336,7 @@ function renderListAsTable(list) {
     list.sort(sorterAB);
     const table = document.createElement("table");
     const thead = table.createTHead();
+    const tfoot = table.createTFoot();
     const columns = [
         ["Time to Watch", (anime) => daysToYWD(daysToWatch(anime))],
         ["Title", (anime) => anime.seriesTitle.preferred(activeLang)],
@@ -347,6 +348,12 @@ function renderListAsTable(list) {
     ];
     {
         const headRow = thead.insertRow();
+        for (const label of columns) {
+            headRow.insertCell().textContent = label[0];
+        }
+    }
+    {
+        const headRow = tfoot.insertRow();
         for (const label of columns) {
             headRow.insertCell().textContent = label[0];
         }
