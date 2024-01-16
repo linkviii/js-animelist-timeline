@@ -76,7 +76,14 @@
                 <fieldset class="mainGroup">
                     <legend>Sorting</legend>
 
-                    <label for="sort-primary">Primary</label>
+                    <div class="display-inline-block">
+                        <label for="sort-primary" class="display-block">Primary</label>
+                        <label class="label-checkbox">
+                            <input type="checkbox" id="sort-primary-check" />
+                            <span id="sort-primary-check-text">▲</span>
+                        </label>
+                    </div>
+
                     <select size="6" id="sort-primary">
                         <option value="name" selected> Name </option>
                         <option value="duration"> Days to watch </option>
@@ -86,7 +93,17 @@
                         <option value="user-finish"> Finish Watching </option>
                     </select>
 
-                    <label for="sort-secondary">Secondary</label>
+
+                    <div class="display-inline-block">
+
+                        <label for="sort-secondary" class="display-block">Secondary</label>
+
+                        <label class="label-checkbox">
+                            <input type="checkbox" id="sort-secondary-check" />
+                            <span id="sort-secondary-check-text">▲</span>
+                        </label>
+                    </div>
+
                     <select size="6" id="sort-secondary">
                         <option value="name" selected> Name </option>
                         <option value="duration"> Days to watch </option>

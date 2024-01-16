@@ -29,6 +29,7 @@ export let activeGrouper = null;
 export let activeRatio = ratioEpsDays_s;
 export let activeLang = "";
 export const activeSorts = [nullSorter, nullSorter];
+export const activeSortDirections = [1, 1];
 export const listPane = $("#list-pane");
 // ██████╗  █████╗  ██████╗ ███████╗    ██╗      ██████╗  █████╗ ██████╗
 // ██╔══██╗██╔══██╗██╔════╝ ██╔════╝    ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -60,7 +61,11 @@ class InputForm {
     // readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
     submitButton = $("#listFormSubmit");
     sortPrimary = $("#sort-primary");
+    sortPrimaryDirection = $("#sort-primary-check");
+    sortPrimaryDirectionTxt = $("#sort-primary-check-text");
     sortSecondary = $("#sort-secondary");
+    sortSecondaryDirection = $("#sort-secondary-check");
+    sortSecondaryDirectionTxt = $("#sort-secondary-check-text");
     groupBy = $("#group-by");
     language = $("#language");
     ratio = $("#ratio-scale");
@@ -87,6 +92,8 @@ class InputForm {
         input.submitButton[0].addEventListener("click", onSubmit);
         /*  */
         const sortInputs = [input.sortPrimary, input.sortSecondary];
+        const sortDirChecks = [input.sortPrimaryDirection, input.sortSecondaryDirection];
+        const sortDirTexts = [input.sortPrimaryDirectionTxt, input.sortSecondaryDirectionTxt];
         const initSorterN = (n) => {
             const setSort = () => {
                 const value = sortInputs[n].val();
@@ -118,6 +125,16 @@ class InputForm {
             };
             sortInputs[n].on("change", setSort);
             setSort();
+            const setSortDir = () => {
+                const checked = sortDirChecks[n][0].checked;
+                const value = !checked ? 1 : -1;
+                const txt = !checked ? "▲" : "▼";
+                activeSortDirections[n] = value;
+                sortDirTexts[n].text(txt);
+                renderActiveList();
+            };
+            sortDirChecks[n].on("change", setSortDir);
+            setSortDir();
         };
         initSorterN(0);
         initSorterN(1);
@@ -313,7 +330,8 @@ function getWatchYear_s(anime) {
 function renderListAsTable(list) {
     const activeLang = input.language.val();
     const sorterAB = (a, b) => {
-        return activeSorts[0](a, b) || activeSorts[1](a, b);
+        return activeSorts[0](a, b) * activeSortDirections[0] ||
+            activeSorts[1](a, b) * activeSortDirections[1];
     };
     list.sort(sorterAB);
     const table = document.createElement("table");

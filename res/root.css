@@ -245,3 +245,10 @@ div>#filter-list {
     grid-auto-flow: row;
     grid-template: repeat(2, 1fr) / repeat(2, 1fr);
 }
+
+.display-block {
+    display: block;
+}
+.display-inline-block {
+    display: inline-block;
+}

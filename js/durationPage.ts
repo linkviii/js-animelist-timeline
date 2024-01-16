@@ -56,6 +56,7 @@ export let activeGrouper: (_: Anime) => string = null;
 export let activeRatio: (_: Anime) => string = ratioEpsDays_s;
 export let activeLang = "";
 export const activeSorts = [nullSorter, nullSorter];
+export const activeSortDirections = [1, 1];
 
 
 export const listPane = $("#list-pane");
@@ -98,8 +99,16 @@ class InputForm {
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
 
 
+
+
     readonly sortPrimary = $("#sort-primary") as JQuery<HTMLSelectElement>;
+    readonly sortPrimaryDirection = $("#sort-primary-check") as JQuery<HTMLInputElement>;
+    readonly sortPrimaryDirectionTxt = $("#sort-primary-check-text");
+
     readonly sortSecondary = $("#sort-secondary") as JQuery<HTMLSelectElement>;
+    readonly sortSecondaryDirection = $("#sort-secondary-check") as JQuery<HTMLInputElement>;
+    readonly sortSecondaryDirectionTxt = $("#sort-secondary-check-text");
+
     readonly groupBy = $("#group-by") as JQuery<HTMLSelectElement>;
 
     readonly language = $("#language") as JQuery<HTMLSelectElement>;
@@ -134,6 +143,9 @@ class InputForm {
 
         /*  */
         const sortInputs = [input.sortPrimary, input.sortSecondary];
+        const sortDirChecks = [input.sortPrimaryDirection, input.sortSecondaryDirection];
+        const sortDirTexts = [input.sortPrimaryDirectionTxt, input.sortSecondaryDirectionTxt];
+
         const initSorterN = (n: number) => {
             const setSort = () => {
                 const value = sortInputs[n].val() as string as (typeof this.SELECT_SORT_VALUES[number]);
@@ -154,6 +166,19 @@ class InputForm {
             };
             sortInputs[n].on("change", setSort);
             setSort();
+
+            const setSortDir = () => {
+                const checked = sortDirChecks[n][0].checked;
+                const value = !checked ? 1 : -1;
+                const txt = !checked ? "▲" : "▼";
+                activeSortDirections[n] = value;
+                sortDirTexts[n].text(txt);
+                renderActiveList();
+
+            };
+            sortDirChecks[n].on("change", setSortDir);
+            setSortDir();
+
         };
         initSorterN(0);
         initSorterN(1);
@@ -378,7 +403,8 @@ function renderListAsTable(list: Anime[]) {
     const activeLang = input.language.val() as string;
 
     const sorterAB = (a: Anime, b: Anime) => {
-        return activeSorts[0](a, b) || activeSorts[1](a, b);
+        return activeSorts[0](a, b) * activeSortDirections[0] ||
+            activeSorts[1](a, b) * activeSortDirections[1];
     };
 
     list.sort(sorterAB);
