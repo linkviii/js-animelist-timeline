@@ -27,7 +27,7 @@ import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import { Anime } from "./src/MAL.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetIntersection, esSetDifference } from "./src/util.js";
+import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetIntersection, esSetDifference, textNode } from "./src/util.js";
 
 
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗
@@ -160,7 +160,7 @@ class InputForm {
         /*  */
         const setGroupBy = () => {
             const value = input.groupBy.val() as string as (typeof this.SELECT_GROUP_VALUES[number]);
-            console.log(value);
+            console.log(`Grouper: ${value}`);
             switch (value) {
                 case "none": activeGrouper = null; break;
                 case "watch-year": activeGrouper = getWatchYear_s; break;
@@ -190,7 +190,7 @@ class InputForm {
         /*  */
         const setRatio = () => {
             const value = input.ratio.val() as string;
-            console.log(value);
+            console.log(`Ratio: ${value}`);
             switch (value) {
                 case "days": activeRatio = ratioEpsDays_s; break;
                 case "weeks": activeRatio = ratioEpsWeeks_s; break;
@@ -420,6 +420,60 @@ function renderListAsTable(list: Anime[]) {
     return table;
 }
 
+function calculateStats(list: Anime[]) {
+    const titleCount = list.length;
+    let episodeCount = 0;
+    let totalMinutes = 0;
+
+    let sumMinutesPerDay = 0;
+
+    for (const anime of list) {
+        episodeCount += anime.seriesEpisodes;
+        const seriesMin = anime.seriesEpisodes * anime.seriesEpisodesDuration;
+        totalMinutes += seriesMin;
+
+        const watchDays = daysToWatch(anime);
+        sumMinutesPerDay += seriesMin / watchDays;
+    }
+    const meanMinPerDayPerTitle = sumMinutesPerDay / titleCount;
+
+    return {
+        titleCount,
+        episodeCount,
+        totalMinutes,
+        meanMinPerDayPerTitle
+    };
+}
+
+function renderStats(stats: ReturnType<typeof calculateStats>) {
+    const div = document.createElement("div");
+    {
+        const h = document.createElement("h4");
+        h.textContent = "Stats";
+        div.append(h);
+    }
+
+    {
+        const days = Math.floor(stats.totalMinutes / 60 / 24);
+        const txt = `
+Watched ${stats.episodeCount} episodes from ${stats.titleCount} titles. 
+${daysToYMD(days)} (${stats.totalMinutes.toLocaleString()} minutes) watched.
+        `;
+        div.append(textNode('p', txt));
+
+    }
+    {
+        const txt = `
+Average minutes per day per title: ${stats.meanMinPerDayPerTitle.toFixed(1)}        
+        `;
+        div.append(textNode('p', txt));
+
+
+    }
+
+    return div;
+}
+
 function renderActiveList() {
     const animeList = listManager.userAnimeCache.get(activeUsername) as MAL.AnimeList;
     window["animelist"] = animeList;
@@ -470,12 +524,16 @@ function renderActiveList() {
             const list = groups[name];
             const table = renderListAsTable(list);
             listPane.append(table);
+
+            listPane.append(renderStats(calculateStats(list)));
         }
 
     } else {
 
         const table = renderListAsTable(boundedAnime);
         listPane.append(table);
+        listPane.append(renderStats(calculateStats(boundedAnime)));
+
     }
 
 }

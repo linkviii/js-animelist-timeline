@@ -8,6 +8,11 @@ export function wrapListItem(elm) {
     li.appendChild(elm);
     return li;
 }
+export function textNode(tag, txt) {
+    const elm = document.createElement(tag);
+    elm.textContent = txt;
+    return elm;
+}
 export function minutesToString(min) {
     min = Math.round(min);
     let h = Math.floor(min / 60);

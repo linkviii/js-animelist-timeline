@@ -13,6 +13,12 @@ export function wrapListItem(elm: Element) {
     return li;
 }
 
+export function textNode(tag, txt: string) {
+    const elm = document.createElement(tag);
+    elm.textContent = txt;
+    return elm;
+}
+
 export function minutesToString(min: number): string {
     min = Math.round(min);
 
