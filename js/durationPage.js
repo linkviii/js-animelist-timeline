@@ -19,6 +19,21 @@ import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import * as ATL from "./src/animelistTL.js";
 import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetDifference, textNode } from "./src/util.js";
+// 
+// 
+if (Object.groupBy === undefined) {
+    alert("Your browser is not supported. The site is tested with Firefox. The group by feature will not work.");
+}
+//  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗
+// ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝
+// ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗
+// ██║   ██║██║     ██║   ██║██╔══██╗██╔══██║██║     ╚════██║
+// ╚██████╔╝███████╗╚██████╔╝██████╔╝██║  ██║███████╗███████║
+//  ╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
+//
+// Global data
+//
+const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 const nullSorter = (a, b) => 0;
 // Just throw things into this bag. It'll be fine.
 export const debugData = {};
@@ -212,8 +227,8 @@ function init() {
         favicon.href = "../favicon_localhost.png";
     }
     // XXX
-    // $("#listName").val("ONLOAD");
-    // onSubmit();
+    $("#listName").val("ONLOAD");
+    onSubmit();
 }
 $(document).ready(init);
 // 
@@ -281,9 +296,28 @@ function ratioEpsWeeks_s(anime) {
 function getEpisodes(anime) {
     return anime.seriesEpisodes;
 }
+function getEpisodes_s(anime) {
+    return anime.seriesEpisodes.toString();
+}
 function getEpisodes_long(anime) {
-    const s = anime.seriesEpisodes === 0 ? "" : "s";
-    return `${anime.seriesEpisodes} Episode${s}`;
+    const n = anime.seriesEpisodes;
+    if (n === 1) {
+        return "1: 1 Episode";
+    }
+    const tops = [1, 4, 9, 13, 18, 27, 55, 100];
+    const level = tops.findIndex((x) => x >= n);
+    if (level < 0) {
+        return `${tops.length + 1}: ${tops[tops.length - 1] + 1}+`;
+    }
+    else {
+        return `${level + 1}: ${tops[level - 1] + 1}-${tops[level]} Episodes`;
+    }
+    // let range = "";
+    // if (n <=4){
+    //     range = "2-4"
+    // }
+    // const s =  === 1 ? "" : "s";
+    // return `${anime.seriesEpisodes} Episode${s}`;
 }
 function getType(anime) {
     return anime.seriesType;
@@ -335,27 +369,37 @@ function renderListAsTable(list) {
     };
     list.sort(sorterAB);
     const table = document.createElement("table");
+    const columns = [
+        ["Time to Watch", (anime) => daysToYWD(daysToWatch(anime)), "col-num"],
+        ["Eps", getEpisodes_s, "col-num"],
+        ["Title", (anime) => anime.seriesTitle.preferred(activeLang), "col-title"],
+        ["Ratio", activeRatio, "col-num"],
+        ["Score", (anime) => anime.userScore.toString(), "col-num"],
+        ["Start Date", (anime) => anime.userStartDate.rawDateStr, "col-num"],
+        ["Finish Date", (anime) => anime.userFinishDate.rawDateStr, "col-date"],
+        ["In Season", watchedInSeason_short, "col-date"]
+    ];
+    // for (let col of columns){
+    //     const cg = document.createElement("colgroup")
+    // }
     const thead = table.createTHead();
     const tfoot = table.createTFoot();
-    const columns = [
-        ["Time to Watch", (anime) => daysToYWD(daysToWatch(anime))],
-        ["Title", (anime) => anime.seriesTitle.preferred(activeLang)],
-        ["Ratio", activeRatio],
-        ["Score", (anime) => anime.userScore.toString()],
-        ["Start Date", (anime) => anime.userStartDate.rawDateStr],
-        ["Finish Date", (anime) => anime.userFinishDate.rawDateStr],
-        ["In Season", (anime) => watchedInSeason_short(anime)]
-    ];
     {
         const headRow = thead.insertRow();
-        for (const label of columns) {
-            headRow.insertCell().textContent = label[0];
+        for (const col of columns) {
+            const cell = document.createElement("th");
+            cell.textContent = col[0];
+            // cell.className = col[2];
+            headRow.append(cell);
         }
     }
     {
         const headRow = tfoot.insertRow();
-        for (const label of columns) {
-            headRow.insertCell().textContent = label[0];
+        for (const col of columns) {
+            const cell = document.createElement("th");
+            cell.textContent = col[0];
+            // cell.className = col[2];
+            headRow.append(cell);
         }
     }
     const tbody = table.createTBody();
@@ -363,8 +407,9 @@ function renderListAsTable(list) {
     for (const anime of boundedAnime) {
         const dataRow = tbody.insertRow();
         for (const it of columns) {
-            dataRow.insertCell().textContent = it[1](anime);
-            // anime.
+            const cell = dataRow.insertCell();
+            cell.textContent = it[1](anime);
+            cell.className = it[2];
         }
     }
     return table;
@@ -445,7 +490,7 @@ function renderActiveList() {
     if (activeGrouper) {
         const groups = Object.groupBy(boundedAnime, activeGrouper);
         const groupNames = Object.keys(groups);
-        groupNames.sort();
+        groupNames.sort(collator.compare);
         for (const name of groupNames) {
             const h = document.createElement('h3');
             h.textContent = name;

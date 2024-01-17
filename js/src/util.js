@@ -56,7 +56,7 @@ export function daysToYWD(n) {
         n = n % 7;
         s += `${w}W `;
     }
-    if (n !== 0) {
+    if (true || n !== 0) {
         s += `${n}D`;
     }
     return s;

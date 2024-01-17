@@ -1,15 +1,37 @@
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    /* Not collapse for sticky header */
+    border-spacing: 0;
+    /* table-layout: fixed; */
 }
 
-th,
-td {
-    border: 1px solid black;
+:root {
+    --table-border: 1px solid black;
+    --table-border-2: 2px solid black;
 }
 
-/* Time to Watch */
-td:nth-child(1) {
-    text-align: right;
+table th {
+    border-top: var(--table-border-2);
+    border-right: var(--table-border);
+    border-bottom: var(--table-border-2);
+    top: 0;
+    position: sticky;
+}
+
+table td {
+    border-right: var(--table-border);
+    border-bottom: var(--table-border);
+}
+
+table th:first-child,
+table td:first-child {
+    border-left: var(--table-border);
+}
+
+thead th,
+tfoot td {
+    background-color: white;
+    background-clip: padding-box;
 }
 
 tbody tr:nth-child(odd) {
@@ -17,21 +39,35 @@ tbody tr:nth-child(odd) {
     /* color: #fff; */
 }
 
+.col-num {
+    text-align: right;
+}
+.col-title {
+    /* That didn't work... I don't care enough */
+    /* display: block; */
+    /* max-width: 20%; */
+}
+
+
+/*
+ * ---------------------------- 
+ */
+
 /* https://stackoverflow.com/a/66550060/1993919 */
 label.label-checkbox {
     cursor: pointer;
-  }
-  
-  
-  label.label-checkbox input {
+}
+
+
+label.label-checkbox input {
     position: absolute;
     top: 0;
     left: 0;
     visibility: hidden;
     pointer-events: none;
-  }
-  
-  label.label-checkbox span {
+}
+
+label.label-checkbox span {
     padding: 11px 21px;
     border: 1px solid #ccc;
     display: inline-block;
@@ -40,10 +76,10 @@ label.label-checkbox {
     margin: 7px;
     background: #f5f5f5;
     user-select: none;
-  }
-  
-  label.label-checkbox input:checked + span {
+}
+
+label.label-checkbox input:checked+span {
     box-shadow: inset 1px 2px 5px #777;
     transform: translateY(1px);
     background: #e5e5e5;
-  }
+}
