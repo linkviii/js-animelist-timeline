@@ -45,6 +45,9 @@ export let activeRatio = ratioEpsDays_s;
 export let activeLang = "";
 export const activeSorts = [nullSorter, nullSorter];
 export const activeSortDirections = [1, 1];
+export const activeFilters = {
+    day1Ep1: false,
+};
 export const listPane = $("#list-pane");
 // ██████╗  █████╗  ██████╗ ███████╗    ██╗      ██████╗  █████╗ ██████╗
 // ██╔══██╗██╔══██╗██╔════╝ ██╔════╝    ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -70,6 +73,20 @@ function validateSelect(select, options) {
         console.log("HTML Missing:", fromJS);
     }
 }
+class LabelCheckbox_PushButton {
+    /* https://stackoverflow.com/a/66550060/1993919 */
+    topElm = document.createElement("label");
+    inputElm = document.createElement("input");
+    textElm = document.createElement("span");
+    constructor(parent, text) {
+        this.topElm.className = "label-checkbox";
+        this.inputElm.type = "checkbox";
+        this.textElm.textContent = text;
+        this.topElm.append(this.inputElm);
+        this.topElm.append(this.textElm);
+        parent.append(this.topElm);
+    }
+}
 class InputForm {
     inputForm = $("#form");
     listUsername = $("#listName");
@@ -82,6 +99,7 @@ class InputForm {
     sortSecondaryDirection = $("#sort-secondary-check");
     sortSecondaryDirectionTxt = $("#sort-secondary-check-text");
     groupBy = $("#group-by");
+    filteringSection = $("#filtering-set");
     language = $("#language");
     ratio = $("#ratio-scale");
     SELECT_SORT_VALUES = [
@@ -181,7 +199,18 @@ class InputForm {
         };
         input.groupBy.on("change", setGroupBy);
         setGroupBy();
-        /*  */
+        /* ------------------------------------------ */
+        function initSetFilter(key, button) {
+            const setter = () => {
+                const checked = button.inputElm.checked;
+                activeFilters[key] = checked;
+                renderActiveList();
+            };
+            button.inputElm.onchange = setter;
+        }
+        const b1Day1Ep = new LabelCheckbox_PushButton(input.filteringSection[0], "❌ 1 Ep 1 Day");
+        initSetFilter("day1Ep1", b1Day1Ep);
+        /* ------------------------------------------ */
         const setLang = () => {
             const value = input.language.val();
             activeLang = value;
@@ -227,8 +256,8 @@ function init() {
         favicon.href = "../favicon_localhost.png";
     }
     // XXX
-    $("#listName").val("ONLOAD");
-    onSubmit();
+    // $("#listName").val("ONLOAD");
+    // onSubmit();
 }
 $(document).ready(init);
 // 
@@ -258,6 +287,16 @@ function makeDateSorter(key) {
 // ██║╚██╔╝██║██╔══██║██║██║╚██╗██║
 // ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+function filterList(list) {
+    return list.filter((anime) => {
+        if (activeFilters.day1Ep1) {
+            if (anime.seriesEpisodes === 1 && daysToWatch(anime) === 1) {
+                return false;
+            }
+        }
+        return true;
+    });
+}
 async function onSubmit() {
     const username = $("#listName").val().trim();
     // const listKind = $("#list-kind").val() as string;
@@ -495,20 +534,21 @@ function renderActiveList() {
             const h = document.createElement('h3');
             h.textContent = name;
             listPane.append(h);
-            const list = groups[name];
+            const list = filterList(groups[name]);
             const table = renderListAsTable(list);
             listPane.append(table);
             listPane.append(renderStats(calculateStats(list)));
         }
     }
     else {
-        const table = renderListAsTable(boundedAnime);
+        const flist = filterList(boundedAnime);
+        const table = renderListAsTable(flist);
         listPane.append(table);
-        listPane.append(renderStats(calculateStats(boundedAnime)));
+        listPane.append(renderStats(calculateStats(flist)));
         const namedLists = Object.keys((animeList.namedLists));
         if (namedLists.length !== 0) {
             const db = {};
-            for (let anime of boundedAnime) {
+            for (let anime of flist) {
                 db[anime.id] = anime;
             }
             for (const listName of namedLists) {

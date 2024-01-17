@@ -64,6 +64,9 @@ export let activeRatio: (_: Anime) => string = ratioEpsDays_s;
 export let activeLang = "";
 export const activeSorts = [nullSorter, nullSorter];
 export const activeSortDirections = [1, 1];
+export const activeFilters = {
+    day1Ep1: false,
+};
 
 
 export const listPane = $("#list-pane");
@@ -98,6 +101,29 @@ function validateSelect(select: JQuery<HTMLSelectElement>, options: Readonly<str
     }
 }
 
+class LabelCheckbox_PushButton {
+    /* https://stackoverflow.com/a/66550060/1993919 */
+
+    topElm = document.createElement("label");
+
+    inputElm = document.createElement("input");
+
+    textElm = document.createElement("span");
+
+    constructor(parent: HTMLElement, text: string) {
+        this.topElm.className = "label-checkbox";
+
+        this.inputElm.type = "checkbox";
+
+        this.textElm.textContent = text;
+
+        this.topElm.append(this.inputElm);
+        this.topElm.append(this.textElm);
+
+        parent.append(this.topElm);
+    }
+}
+
 class InputForm {
     readonly inputForm = $("#form") as JQuery<HTMLFormElement>;
 
@@ -117,6 +143,8 @@ class InputForm {
     readonly sortSecondaryDirectionTxt = $("#sort-secondary-check-text");
 
     readonly groupBy = $("#group-by") as JQuery<HTMLSelectElement>;
+
+    readonly filteringSection = $("#filtering-set");
 
     readonly language = $("#language") as JQuery<HTMLSelectElement>;
     readonly ratio = $("#ratio-scale") as JQuery<HTMLSelectElement>;
@@ -210,7 +238,22 @@ class InputForm {
         input.groupBy.on("change", setGroupBy);
         setGroupBy();
 
-        /*  */
+        /* ------------------------------------------ */
+
+        function initSetFilter(key: keyof typeof activeFilters, button: LabelCheckbox_PushButton) {
+            const setter = () => {
+                const checked = button.inputElm.checked;
+                activeFilters[key] = checked;
+                renderActiveList()
+            };
+            button.inputElm.onchange = setter;
+        }
+
+        const b1Day1Ep = new LabelCheckbox_PushButton(input.filteringSection[0], "❌ 1 Ep 1 Day");
+        initSetFilter("day1Ep1", b1Day1Ep);
+
+
+        /* ------------------------------------------ */
         const setLang = () => {
             const value = input.language.val() as string;
             activeLang = value;
@@ -262,8 +305,8 @@ function init(): void {
     }
 
     // XXX
-    $("#listName").val("ONLOAD");
-    onSubmit();
+    // $("#listName").val("ONLOAD");
+    // onSubmit();
 
 }
 
@@ -301,6 +344,19 @@ function makeDateSorter(key: "userFinishDate" | "userStartDate"): AnimeSorter {
 // ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
 
+
+function filterList(list: Anime[]) {
+    return list.filter((anime: Anime) => {
+
+        if (activeFilters.day1Ep1) {
+            if (anime.seriesEpisodes === 1 && daysToWatch(anime) === 1) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+}
 
 async function onSubmit() {
     const username = ($("#listName").val() as string).trim();
@@ -598,7 +654,7 @@ function renderActiveList() {
             h.textContent = name;
             listPane.append(h);
 
-            const list = groups[name];
+            const list = filterList(groups[name]);
             const table = renderListAsTable(list);
             listPane.append(table);
 
@@ -607,14 +663,15 @@ function renderActiveList() {
 
     } else {
 
-        const table = renderListAsTable(boundedAnime);
+        const flist = filterList(boundedAnime);
+        const table = renderListAsTable(flist);
         listPane.append(table);
-        listPane.append(renderStats(calculateStats(boundedAnime)));
+        listPane.append(renderStats(calculateStats(flist)));
 
         const namedLists = Object.keys((animeList.namedLists));
         if (namedLists.length !== 0) {
             const db: Record<number, Anime> = {};
-            for (let anime of boundedAnime) {
+            for (let anime of flist) {
                 db[anime.id] = anime;
             }
 
