@@ -2,6 +2,7 @@
 
  *
  */
+import { assertUnreachable } from "./util.js";
 /**
  *Exported list gave status as a string.
  */
@@ -34,6 +35,18 @@ function statusFromAniList(status) {
         case "REPEATING": return Status.Completed;
     }
     return null;
+}
+function statusFromMALExport(status) {
+    switch (status) {
+        case STATUSES.watching: return Status.Watching;
+        case STATUSES.planToWatch: return Status.PlanToWatch;
+        case STATUSES.completed: return Status.Completed;
+        case STATUSES.dropped: return Status.Dropped;
+        case STATUSES.onHold: return Status.OnHold;
+        default:
+            console.warn(`Unexpected MAL status ${status}`);
+            assertUnreachable(status);
+    }
 }
 export class BadUsernameError extends Error {
 }
@@ -69,10 +82,44 @@ export function mangaListFromAniList(obj, userName) {
     }
     return new MangaList(user, allAnime);
 }
+function tagTxt(parent, tag) {
+    return parent.getElementsByTagName(tag)[0].textContent;
+}
+function userFromMALExport(myinfo) {
+    return {
+        userName: tagTxt(myinfo, "user_name"),
+        userId: parseInt(tagTxt(myinfo, "user_id"))
+    };
+}
+function animeFromMALExport(tag) {
+    const title = new Title({ userPreferred: tagTxt(tag, "series_title") });
+    const status = statusFromMALExport(tagTxt(tag, "my_status"));
+    return {
+        id: parseInt(tagTxt(tag, "series_animedb_id")),
+        seriesTitle: title,
+        seriesType: tagTxt(tag, "series_type"),
+        seriesEpisodes: parseInt(tagTxt(tag, "series_episodes")),
+        seriesEpisodesDuration: 0,
+        seriesStart: nullDate,
+        seriesEnd: nullDate,
+        userStartDate: new Mdate(tagTxt(tag, "my_start_date")),
+        userFinishDate: new Mdate(tagTxt(tag, "my_finish_date")),
+        userScore: parseInt(tagTxt(tag, "my_score")),
+        userWatchedEpisodes: parseInt(tagTxt(tag, "my_watched_episodes")),
+        userStatus: status
+    };
+}
+export function animeListFromMALExport(xml) {
+    const user = userFromMALExport(xml.getElementsByTagName("myinfo")[0]);
+    const animeList = [];
+    for (const animeTag of xml.getElementsByTagName("anime")) {
+        const anime = animeFromMALExport(animeTag);
+        animeList.push(anime);
+    }
+    const namedLists = {};
+    return new AnimeList(user, animeList, namedLists);
+}
 export function animeListFromAniList(obj, userName) {
-    //
-    // FIX THIS ugh
-    //
     const user = userFromAniList(obj.user, userName);
     const userLists = obj.lists;
     const allAnime = [];

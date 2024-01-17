@@ -1,3 +1,16 @@
+/* 
+ *
+*/
+
+#list-box {
+    /* width: ; */
+}
+#list-box>fieldset {
+    width: 45%;
+    display: inline-block;
+}
+
+/* ----------- */
 table {
     border-collapse: separate;
     /* Not collapse for sticky header */
@@ -42,6 +55,7 @@ tbody tr:nth-child(odd) {
 .col-num {
     text-align: right;
 }
+
 .col-title {
     /* That didn't work... I don't care enough */
     /* display: block; */

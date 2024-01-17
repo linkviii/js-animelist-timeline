@@ -4,6 +4,11 @@
 
 import * as MAL from "./MAL.js";
 
+// 
+
+export function assertUnreachable(x: never): void { }
+
+
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 
 
@@ -70,7 +75,7 @@ export function daysToYWD(n: number) {
         n = n % 7;
         s += `${w}W `;
     }
-    if (true ||n !== 0) {
+    if (true || n !== 0) {
         s += `${n}D`;
     }
     return s;

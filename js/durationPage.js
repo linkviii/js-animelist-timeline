@@ -18,7 +18,7 @@ import { usingTestData } from "./env.js";
 import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetDifference, textNode } from "./src/util.js";
+import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetDifference, textNode, assertUnreachable } from "./src/util.js";
 // 
 // 
 if (Object.groupBy === undefined) {
@@ -58,7 +58,6 @@ export const listPane = $("#list-pane");
 //
 // Page load
 //
-function assertUnreachable(x) { }
 function validateSelect(select, options) {
     const name = select[0].id;
     const htmlValues = new Set(select.children().map((i, opt) => opt.value));
@@ -92,6 +91,7 @@ class InputForm {
     listUsername = $("#listName");
     // readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
     submitButton = $("#listFormSubmit");
+    malUpload = document.getElementById("mal-upload");
     sortPrimary = $("#sort-primary");
     sortPrimaryDirection = $("#sort-primary-check");
     sortPrimaryDirectionTxt = $("#sort-primary-check-text");
@@ -123,6 +123,23 @@ class InputForm {
     initListeners() {
         const input = this;
         input.submitButton[0].addEventListener("click", onSubmit);
+        /* ------------------------------------------ */
+        input.malUpload.onchange = async () => {
+            console.log("upload: onchange");
+            const f = input.malUpload.files[0];
+            const txt = await f.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(txt, "text/xml");
+            // console.log(txt);
+            // console.log(xml);
+            const animeList = MAL.animeListFromMALExport(xml);
+            activeUsername = animeList.user.userName;
+            listManager.userAnimeCache.set(activeUsername, animeList);
+            input.submitButton[0].disabled = true;
+            input.listUsername[0].disabled = true;
+            renderActiveList();
+        };
+        /* ------------------------------------------ */
         /*  */
         const sortInputs = [input.sortPrimary, input.sortSecondary];
         const sortDirChecks = [input.sortPrimaryDirection, input.sortSecondaryDirection];

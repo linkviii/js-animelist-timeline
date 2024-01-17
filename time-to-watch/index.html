@@ -50,9 +50,9 @@
             <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
             <input style="display: none" type="text" name="fakeusernameremembered" />
 
-            <div class="fieldContainer">
+            <div class="fieldContainer" id="list-box">
                 <fieldset class="mainGroup">
-                    <legend>List</legend>
+                    <legend>Anilist</legend>
 
                     <label for="listName">Username</label>
                     <input id="listName" required="" spellcheck="false">
@@ -65,6 +65,14 @@
 
                     <button id="listFormSubmit" title="Submit" type="submit">Load Anilist</button>
 
+                </fieldset>
+                <fieldset class="mainGroup">
+                    <legend>MAL</legend>
+                    <label for="mal-upload">MAL XML</label>
+                    <input type="file" id="mal-upload" name="mal list" accept="text/xml" />
+                    <a href="https://myanimelist.net/panel.php?go=export">Export MAL XML</a>
+                    <p>MAL's API cannot be used. Some features will not work when using a MAL export. Just go use the <a
+                            href="https://anilist.co/settings/import">Anilist import</a>.</p>
                 </fieldset>
             </div>
 

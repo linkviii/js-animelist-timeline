@@ -3,7 +3,16 @@
  *
  */
 
+import { assertUnreachable } from "./util.js";
 
+type BaseObject = Record<string, string>;
+
+
+type ValuesAsKeys<T extends BaseObject> = {
+    [K in keyof T as T[K]]: number;
+};
+
+type Values<T> = T[keyof T];
 
 
 /**
@@ -17,7 +26,7 @@ export const STATUSES = {
     dropped: "Dropped",
     planToWatch: "Plan to Watch"
 
-};
+} as const;
 
 /**
  * MAL API gives a number. What ever happened to 5?
@@ -42,6 +51,18 @@ function statusFromAniList(status: string): Status {
 
     }
     return null;
+}
+function statusFromMALExport(status: Values<typeof STATUSES>): Status {
+    switch (status) {
+        case STATUSES.watching: return Status.Watching;
+        case STATUSES.planToWatch: return Status.PlanToWatch;
+        case STATUSES.completed: return Status.Completed;
+        case STATUSES.dropped: return Status.Dropped;
+        case STATUSES.onHold: return Status.OnHold;
+        default:
+            console.warn(`Unexpected MAL status ${status}`);
+            assertUnreachable(status);
+    }
 }
 
 export class BadUsernameError extends Error {
@@ -87,13 +108,50 @@ export function mangaListFromAniList(obj, userName: string): MangaList {
     return new MangaList(user, allAnime);
 }
 
+function tagTxt(parent: Element, tag: string): string {
+    return parent.getElementsByTagName(tag)[0].textContent;
+}
 
+function userFromMALExport(myinfo: Element): User {
+    return {
+        userName: tagTxt(myinfo, "user_name"),
+        userId: parseInt(tagTxt(myinfo, "user_id"))
+    };
+}
+function animeFromMALExport(tag: Element): Anime {
+    const title = new Title({ userPreferred: tagTxt(tag, "series_title") });
+    const status = statusFromMALExport(tagTxt(tag, "my_status") as any);
+    return {
+        id: parseInt(tagTxt(tag, "series_animedb_id")),
+        seriesTitle: title,
+        seriesType: tagTxt(tag, "series_type"),
+        seriesEpisodes: parseInt(tagTxt(tag, "series_episodes")),
+        seriesEpisodesDuration: 0,
+        seriesStart: nullDate,
+        seriesEnd: nullDate,
+        userStartDate: new Mdate(tagTxt(tag, "my_start_date")),
+        userFinishDate: new Mdate(tagTxt(tag, "my_finish_date")),
+        userScore: parseInt(tagTxt(tag, "my_score")),
+        userWatchedEpisodes: parseInt(tagTxt(tag, "my_watched_episodes")),
+        userStatus: status
+
+    };
+}
+
+export function animeListFromMALExport(xml: Document): AnimeList {
+    const user = userFromMALExport(xml.getElementsByTagName("myinfo")[0]);
+    const animeList = [];
+    for (const animeTag of xml.getElementsByTagName("anime")) {
+        const anime = animeFromMALExport(animeTag);
+        animeList.push(anime);
+    }
+    const namedLists = {};
+
+    return new AnimeList(user, animeList, namedLists);
+}
 
 export function animeListFromAniList(obj, userName: string): AnimeList {
 
-    //
-    // FIX THIS ugh
-    //
 
     const user = userFromAniList(obj.user, userName);
 

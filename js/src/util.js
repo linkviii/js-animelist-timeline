@@ -2,6 +2,8 @@
  *
  */
 import * as MAL from "./MAL.js";
+// 
+export function assertUnreachable(x) { }
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
 export function wrapListItem(elm) {
     const li = document.createElement("li");
