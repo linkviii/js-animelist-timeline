@@ -122,7 +122,8 @@ function animeFromMALExport(tag: Element): Anime {
     const title = new Title({ userPreferred: tagTxt(tag, "series_title") });
     const status = statusFromMALExport(tagTxt(tag, "my_status") as any);
     return {
-        id: parseInt(tagTxt(tag, "series_animedb_id")),
+        idAniList: null,
+        idMAL: parseInt(tagTxt(tag, "series_animedb_id")),
         seriesTitle: title,
         seriesType: tagTxt(tag, "series_type"),
         seriesEpisodes: parseInt(tagTxt(tag, "series_episodes")),
@@ -238,7 +239,8 @@ export class Title implements ITitle {
 interface IMedia {
     seriesTitle: Title;
     seriesType: string;
-    id: number;
+    idAniList: number | null;
+    idMAL: number;
     seriesStart: Mdate;
     seriesEnd: Mdate;
 
@@ -273,8 +275,8 @@ function mediaFromAniList(obj: GraphMedia, status: Status): IMedia {
         seriesType: obj.media.format,
         seriesStart: dateFromAniList(obj.media.startDate),
         seriesEnd: dateFromAniList(obj.media.endDate),
-        id: obj.mediaId,
-
+        idAniList: obj.mediaId,
+        idMAL: obj.media.idMal,
         userStartDate: dateFromAniList(obj.startedAt),
         userFinishDate: dateFromAniList(obj.completedAt),
         userStatus: status,

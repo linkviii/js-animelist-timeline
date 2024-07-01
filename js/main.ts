@@ -898,7 +898,7 @@ function ingestNewAnimeList(username: string, animeList: MAL.AnimeList) {
     addHeatmapUser(username);
 
     for (let anime of animeList.anime) {
-        knownAnime.set(anime.id, anime.seriesTitle);
+        knownAnime.set(anime.idAniList, anime.seriesTitle);
     }
     fillFilterList();
 

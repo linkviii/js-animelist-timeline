@@ -23,6 +23,7 @@ export async function getAnilistAnimeList(userName) {
                     startedAt { year month day } 
                     completedAt { year month day }
                     media {
+                        idMal
                         duration
                         episodes
                         format

@@ -34,6 +34,7 @@ export async function getAnilistAnimeList(userName: string): Promise<any | MAL.B
                     startedAt { year month day } 
                     completedAt { year month day }
                     media {
+                        idMal
                         duration
                         episodes
                         format
@@ -121,6 +122,7 @@ export async function getAnilistMangaList(userName: string): Promise<any | MAL.B
                     startedAt { year month day } 
                     completedAt { year month day }
                     media {
+                        idMal
                         duration
                         episodes
                         format

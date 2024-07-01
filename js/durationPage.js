@@ -424,11 +424,38 @@ function renderListAsTable(list) {
             activeSorts[1](a, b) * activeSortDirections[1];
     };
     list.sort(sorterAB);
+    const titleCell = (anime) => {
+        const div = document.createElement("div");
+        const left = document.createElement("span");
+        const right = document.createElement("span");
+        div.classList.add("col-title-inner");
+        div.append(left);
+        div.append(right);
+        // NOT using append on the name
+        left.textContent = anime.seriesTitle.preferred(activeLang);
+        if (anime.idAniList) {
+            const link = document.createElement("a");
+            // Probs not the best way to make the url, but I don't care.
+            link.href = `https://anilist.co/anime/${anime.idAniList}`;
+            link.textContent = "🔗";
+            link.target = "_blank";
+            right.append(link);
+        }
+        if (anime.idMAL) {
+            const link = document.createElement("a");
+            // Probs not the best way to make the url, but I don't care.
+            link.href = `https://myanimelist.net/anime/${anime.idMAL}`;
+            link.textContent = "🕶";
+            link.target = "_blank";
+            right.append(link);
+        }
+        return div;
+    };
     const table = document.createElement("table");
     const columns = [
         ["Time to Watch", (anime) => daysToYWD(daysToWatch(anime)), "col-num"],
         ["Eps", getEpisodes_s, "col-num"],
-        ["Title", (anime) => anime.seriesTitle.preferred(activeLang), "col-title"],
+        ["Title", titleCell, "col-title"],
         ["Ratio", activeRatio, "col-num"],
         ["Score", (anime) => anime.userScore.toString(), "col-num"],
         ["Start Date", (anime) => anime.userStartDate.rawDateStr, "col-num"],
@@ -464,7 +491,7 @@ function renderListAsTable(list) {
         const dataRow = tbody.insertRow();
         for (const it of columns) {
             const cell = dataRow.insertCell();
-            cell.textContent = it[1](anime);
+            cell.append(it[1](anime));
             cell.className = it[2];
         }
     }
@@ -566,7 +593,7 @@ function renderActiveList() {
         if (namedLists.length !== 0) {
             const db = {};
             for (let anime of flist) {
-                db[anime.id] = anime;
+                db[anime.idAniList] = anime;
             }
             for (const listName of namedLists) {
                 const list = [];

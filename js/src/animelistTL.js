@@ -212,12 +212,12 @@ export class AnimeListTimeline {
                 // pass
             }
             else if (tlConfig.filter.include) {
-                if (!tlConfig.filter.entrySet.has(anime.id)) {
+                if (!tlConfig.filter.entrySet.has(anime.idAniList)) {
                     continue;
                 }
             }
             else {
-                if (tlConfig.filter.entrySet.has(anime.id)) {
+                if (tlConfig.filter.entrySet.has(anime.idAniList)) {
                     continue;
                 }
             }
@@ -344,9 +344,9 @@ export class AnimeListTimeline {
             // .. how...
             const trueSet = new Set();
             for (let callout of newCallouts) {
-                trueSet.add(callout.media.id);
+                trueSet.add(callout.media.idAniList);
             }
-            const filter = (x) => trueSet.has(x.id);
+            const filter = (x) => trueSet.has(x.idAniList);
             // Reduce the 'open start date' sets to the last n bounds
             this.mediaSet = this.mediaSet.filter(filter);
             this.boundedSet = this.boundedSet.filter(filter);

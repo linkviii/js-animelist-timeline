@@ -616,7 +616,7 @@ function ingestNewAnimeList(username, animeList) {
     }
     addHeatmapUser(username);
     for (let anime of animeList.anime) {
-        knownAnime.set(anime.id, anime.seriesTitle);
+        knownAnime.set(anime.idAniList, anime.seriesTitle);
     }
     fillFilterList();
     if (0 !== Object.keys(animeList.namedLists).length) {

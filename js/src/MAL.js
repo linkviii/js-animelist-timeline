@@ -95,7 +95,8 @@ function animeFromMALExport(tag) {
     const title = new Title({ userPreferred: tagTxt(tag, "series_title") });
     const status = statusFromMALExport(tagTxt(tag, "my_status"));
     return {
-        id: parseInt(tagTxt(tag, "series_animedb_id")),
+        idAniList: null,
+        idMAL: parseInt(tagTxt(tag, "series_animedb_id")),
         seriesTitle: title,
         seriesType: tagTxt(tag, "series_type"),
         seriesEpisodes: parseInt(tagTxt(tag, "series_episodes")),
@@ -183,7 +184,8 @@ function mediaFromAniList(obj, status) {
         seriesType: obj.media.format,
         seriesStart: dateFromAniList(obj.media.startDate),
         seriesEnd: dateFromAniList(obj.media.endDate),
-        id: obj.mediaId,
+        idAniList: obj.mediaId,
+        idMAL: obj.media.idMal,
         userStartDate: dateFromAniList(obj.startedAt),
         userFinishDate: dateFromAniList(obj.completedAt),
         userStatus: status,
