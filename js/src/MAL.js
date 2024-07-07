@@ -189,6 +189,7 @@ function mediaFromAniList(obj, status) {
         userStartDate: dateFromAniList(obj.startedAt),
         userFinishDate: dateFromAniList(obj.completedAt),
         userStatus: status,
+        userScore: obj.score,
     };
 }
 function mangaFromAniList(obj, status) {
@@ -200,7 +201,6 @@ function animeFromAniList(anime, status) {
     const tmp = {
         seriesEpisodes: anime.media.episodes,
         seriesEpisodesDuration: anime.media.duration,
-        userScore: anime.score,
         userWatchedEpisodes: anime.progress,
     };
     const it = { ...base, ...tmp };

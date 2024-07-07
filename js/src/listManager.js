@@ -1,7 +1,7 @@
-import { usingTestData } from "../env.js";
+import * as env from "../env.js";
 import * as MAL from "./MAL.js";
 export async function getAnilistAnimeList(userName) {
-    if (usingTestData) {
+    if (env.usingTestData) {
         const url = "res/anilist_example.json";
         let job = await fetch(url).then(response => response.json());
         return job;
@@ -63,10 +63,13 @@ export async function getAnilistAnimeList(userName) {
     if (data.hasNextChunk) {
         console.warn("TODO: next chunk not implemented yet.");
     }
+    if (env.debug) {
+        console.info("\n" + JSON.stringify(data) + "\n");
+    }
     return data;
 }
 export async function getAnilistMangaList(userName) {
-    if (usingTestData) {
+    if (env.usingTestData) {
         console.warn("Using test manga list data.");
         const url = "res/TODO.json";
         let job = await fetch(url).then(response => response.json());
@@ -89,6 +92,7 @@ export async function getAnilistMangaList(userName) {
                     startedAt { year month day } 
                     completedAt { year month day }
                     media {
+                        idMal
                         duration
                         episodes
                         format

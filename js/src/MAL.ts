@@ -247,6 +247,7 @@ interface IMedia {
     userStartDate: Mdate;
     userFinishDate: Mdate;
     userStatus: number;
+    userScore: number;
 }
 
 export interface Anime extends IMedia {
@@ -255,7 +256,6 @@ export interface Anime extends IMedia {
     seriesEpisodesDuration: number;
 
     userWatchedEpisodes: number;
-    userScore: number;
 
 }
 
@@ -280,6 +280,7 @@ function mediaFromAniList(obj: GraphMedia, status: Status): IMedia {
         userStartDate: dateFromAniList(obj.startedAt),
         userFinishDate: dateFromAniList(obj.completedAt),
         userStatus: status,
+        userScore: obj.score,
     };
 }
 
@@ -296,7 +297,6 @@ function animeFromAniList(anime: GraphMedia, status: Status): Anime {
         seriesEpisodes: anime.media.episodes,
         seriesEpisodesDuration: anime.media.duration,
 
-        userScore: anime.score,
         userWatchedEpisodes: anime.progress,
 
     };

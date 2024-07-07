@@ -27,7 +27,7 @@ import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import { Anime } from "./src/MAL.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetIntersection, esSetDifference, textNode, assertUnreachable } from "./src/util.js";
+import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, LabelCheckbox_PushButton, esSetIntersection, esSetDifference, textNode, assertUnreachable, validateSelect } from "./src/util.js";
 
 
 // 
@@ -83,45 +83,9 @@ export const listPane = $("#list-pane");
 //
 
 
-function validateSelect(select: JQuery<HTMLSelectElement>, options: Readonly<string[]>) {
-    const name = select[0].id;
-    const htmlValues = new Set(select.children().map((i, opt) => opt.value));
-    const jsValues = new Set(options);
-    // console.log(name, htmlValues);
-    const isGood = esSetEq(htmlValues, jsValues);
-    if (!isGood) {
-        const fromHTML = esSetDifference(htmlValues, jsValues);
-        const fromJS = esSetDifference(jsValues, htmlValues);
 
-        console.warn(`${name}:\tInvalid select`);
-        console.log("HTML Extra:", fromHTML);
-        console.log("HTML Missing:", fromJS);
 
-    }
-}
 
-class LabelCheckbox_PushButton {
-    /* https://stackoverflow.com/a/66550060/1993919 */
-
-    topElm = document.createElement("label");
-
-    inputElm = document.createElement("input");
-
-    textElm = document.createElement("span");
-
-    constructor(parent: HTMLElement, text: string) {
-        this.topElm.className = "label-checkbox";
-
-        this.inputElm.type = "checkbox";
-
-        this.textElm.textContent = text;
-
-        this.topElm.append(this.inputElm);
-        this.topElm.append(this.textElm);
-
-        parent.append(this.topElm);
-    }
-}
 
 class InputForm {
     readonly inputForm = $("#form") as JQuery<HTMLFormElement>;
@@ -305,6 +269,8 @@ class InputForm {
     validateHTML() {
 
         validateSelect(input.sortPrimary, this.SELECT_SORT_VALUES);
+        validateSelect(input.sortSecondary, this.SELECT_SORT_VALUES);
+        validateSelect(input.groupBy, this.SELECT_GROUP_VALUES);
     }
     /* -------------- */
     init() {

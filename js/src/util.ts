@@ -18,9 +18,13 @@ export function wrapListItem(elm: Element) {
     return li;
 }
 
-export function textNode(tag, txt: string) {
-    const elm = document.createElement(tag);
+export function textNode(tag, txt: string, classes?: string) {
+    const elm = document.createElement(tag) as HTMLElement;
     elm.textContent = txt;
+    if (classes) {
+
+        elm.className = classes;
+    }
     return elm;
 }
 
@@ -216,4 +220,47 @@ export function esSetDifference<T>(a: Set<T>, b: Set<T>) {
         _difference.delete(elem);
     }
     return _difference;
+}
+
+/* --------------------------------------------------------------------------- */
+
+export function validateSelect(select: JQuery<HTMLSelectElement>, options: Readonly<string[]>) {
+    const name = select[0].id;
+    const htmlValues = new Set(select.children().map((i, opt) => opt.value));
+    const jsValues = new Set(options);
+    // console.log(name, htmlValues);
+    const isGood = esSetEq(htmlValues, jsValues);
+    if (!isGood) {
+        const fromHTML = esSetDifference(htmlValues, jsValues);
+        const fromJS = esSetDifference(jsValues, htmlValues);
+
+        console.warn(`${name}:\tInvalid select`);
+        console.log("HTML Extra:", fromHTML);
+        console.log("HTML Missing:", fromJS);
+
+    }
+}
+/* --------------------------------------------------------------------------- */
+
+export class LabelCheckbox_PushButton {
+    /* https://stackoverflow.com/a/66550060/1993919 */
+
+    topElm = document.createElement("label");
+
+    inputElm = document.createElement("input");
+
+    textElm = document.createElement("span");
+
+    constructor(parent: HTMLElement, text: string) {
+        this.topElm.className = "label-checkbox";
+
+        this.inputElm.type = "checkbox";
+
+        this.textElm.textContent = text;
+
+        this.topElm.append(this.inputElm);
+        this.topElm.append(this.textElm);
+
+        parent.append(this.topElm);
+    }
 }

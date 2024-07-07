@@ -1,5 +1,5 @@
 
-import { usingTestData } from "../env.js";
+import * as env from "../env.js";
 import * as MAL from "./MAL.js";
 
 
@@ -7,7 +7,7 @@ import * as MAL from "./MAL.js";
 
 export async function getAnilistAnimeList(userName: string): Promise<any | MAL.BadUsernameError> {
 
-    if (usingTestData) {
+    if (env.usingTestData) {
 
 
         const url = "res/anilist_example.json";
@@ -85,6 +85,11 @@ export async function getAnilistAnimeList(userName: string): Promise<any | MAL.B
     }
 
 
+    if (env.debug) {
+        console.info("\n" + JSON.stringify(data) + "\n");
+    }
+
+
     return data;
 
 }
@@ -95,7 +100,7 @@ export async function getAnilistAnimeList(userName: string): Promise<any | MAL.B
 
 export async function getAnilistMangaList(userName: string): Promise<any | MAL.BadUsernameError> {
 
-    if (usingTestData) {
+    if (env.usingTestData) {
         console.warn("Using test manga list data.");
 
         const url = "res/TODO.json";

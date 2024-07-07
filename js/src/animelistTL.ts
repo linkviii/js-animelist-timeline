@@ -74,17 +74,39 @@ export interface AnimeFormatSelection {
     music: boolean;
 }
 
-export const ALL_FORMATS: AnimeFormatSelection & MangaFormatSelection = {
-    tv:true,
-    short:true,
-    movie:true,
-    special:true,
-    ova:true,
-    ona:true,
-    music:true,
-    manga:true,
-    novel:true,
-    oneShot:true
+type AnyFormatSelection = AnimeFormatSelection & MangaFormatSelection;
+
+export const ALL_FORMATS: AnyFormatSelection = {
+    tv: true,
+    short: true,
+    movie: true,
+    special: true,
+    ova: true,
+    ona: true,
+    music: true,
+    manga: true,
+    novel: true,
+    oneShot: true,
+} as const;
+
+const NO_FORMATS: AnyFormatSelection = {
+    tv: false,
+    short: false,
+    movie: false,
+    special: false,
+    ova: false,
+    ona: false,
+    music: false,
+    manga: false,
+    novel: false,
+    oneShot: false,
+} as const;
+
+export function makeFormatSelection(selection: Partial<AnyFormatSelection>) {
+    let dst = {};
+    Object.assign(dst, NO_FORMATS, selection);
+    return dst as AnyFormatSelection;
+
 }
 
 export interface MangaFormatSelection {

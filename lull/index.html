@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Watch Lulls</title>
+    <!-- Unsure about using base, but it lets loading test data "just work"... -->
+    <base href="../" />
+    <link href="./favicon.png" rel="shortcut icon" type="image/x-icon" id="favicon">
+    <link href="./res/root.css" rel="stylesheet" type="text/css">
+    <link href="./lull/lull.css" rel="stylesheet" type="text/css">
+    <link href="./js/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="./js/lib/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+    <!-- <link rel="stylesheet" type="text/css" href="./js/lib/jquery-ui/jquery-ui.structure.min.css"> -->
+    <link rel="stylesheet" href="./js/lib/awesomplete/awesomplete.css" />
+
+</head>
+
+
+<body>
+    <header>
+        <nav class="flex-start">
+            <a href="">Timeline</a> |
+            <span>Lulls</span>
+        </nav>
+
+        <span class="flex-end">
+            This is a work in progress. About/Source/Support:
+            <a href="https://github.com/linkviii/js-animelist-timeline">
+                https://github.com/linkviii/js-animelist-timeline
+            </a>
+        </span>
+
+    </header>
+    <div id="top">
+
+
+        <p>Find your biggest gaps in starting new anime.</p>
+
+        <!-- 
+            Submit to an invisible iframe to prevent page refresh on submit.
+            Submitting lets username autocomplete.
+            https://stackoverflow.com/a/29885896/1993919
+         -->
+
+        <iframe name="💾" src="about:blank" style="display:none"></iframe>
+
+        <form action="about:blank" id="form" target="💾">
+
+            <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+            <input style="display: none" type="text" name="fakeusernameremembered" />
+
+            <div class="fieldContainer" id="list-box">
+                <fieldset class="mainGroup">
+                    <legend>Anilist</legend>
+
+                    <label for="listName">Username</label>
+                    <input id="listName" required="" spellcheck="false">
+
+                    <!-- <label for="list-kind">Media</label>
+                    <select id="list-kind">
+                        <option value="ANIME">Anime</option>
+                        <option value="MANGA">Manga</option>
+                    </select> -->
+
+                    <button id="listFormSubmit" title="Submit" type="submit">Load Anilist</button>
+
+                </fieldset>
+                <fieldset class="mainGroup">
+                    <legend>MAL</legend>
+                    <label for="mal-upload">MAL XML</label>
+                    <input type="file" id="mal-upload" name="mal list" accept="text/xml" />
+                    <a href="https://myanimelist.net/panel.php?go=export">Export MAL XML</a>
+                    <p>MAL's API cannot be used. Some features will not work when using a MAL export. Just go use the <a
+                            href="https://anilist.co/settings/import">Anilist import</a>.</p>
+                </fieldset>
+            </div>
+
+
+
+            <div class="fieldContainer">
+
+
+                <fieldset class="mainGroup display-inline-block">
+                    <legend>Sorting</legend>
+
+                    <div class="display-inline-block">
+                        <label for="sort-primary" class="display-block">Primary</label>
+                        <label class="label-checkbox">
+                            <input type="checkbox" id="sort-primary-check" />
+                            <span id="sort-primary-check-text">▲</span>
+                        </label>
+                    </div>
+
+                    <select size="4" id="sort-primary">
+                        <option value="duration"> Lull Duration</option>
+                        <!-- <option value="user-start"> Start Watching </option> -->
+                        <option value="user-finish"> Lull Start </option>
+                    </select>
+
+
+                    <!-- <div class="display-inline-block">
+
+                        <label for="sort-secondary" class="display-block">Secondary</label>
+
+                        <label class="label-checkbox">
+                            <input type="checkbox" id="sort-secondary-check" />
+                            <span id="sort-secondary-check-text">▲</span>
+                        </label>
+                    </div> -->
+
+                    <!-- <select size="6" id="sort-secondary">
+                        <option value="name" selected> Name </option>
+                        <option value="duration"> Days to watch </option>
+                        <option value="ratio"> Episodes / Days </option>
+                        <option value="score"> Score </option>
+                        <option value="user-start"> Start Watching </option>
+                        <option value="user-finish"> Finish Watching </option>
+                    </select> -->
+
+                    <label for="group-by">Group by</label>
+                    <select size="4" id="group-by">
+                        <option value="none" selected>None</option>
+                        <option value="watch-year">Finished year</option>
+                        <option value="lull">Lull Duration</option>
+                        <!-- <option value="episode-count">Episode Count</option> -->
+                        <!-- <option value="type">Type</option> -->
+
+                    </select>
+
+                </fieldset>
+
+                <!-- <fieldset class="mainGroup display-inline-block" id="filtering-set">
+                    <legend>Filtering</legend>
+                </fieldset> -->
+
+                <fieldset class="mainGroup">
+                    <label class="before" for="language">Language</label>
+
+                    <select id="language">
+                        <option value="english" selected>English</option>
+                        <option value="romaji">Romaji</option>
+                        <option value="native">Native</option>
+                    </select>
+
+
+
+                </fieldset>
+            </div>
+        </form>
+
+        <div id="list-pane"></div>
+        <div id="console-pane"></div>
+
+    </div>
+
+    <!---->
+    <script src="js/lib/strftime.js"></script>
+    <script type="module">
+        import * as main from "./js/lullPage.js";
+        window.main = main;
+        console.log("Lull main module loaded", new Date().toLocaleTimeString());
+    </script>
+</body>
+
+
+</html>

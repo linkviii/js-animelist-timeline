@@ -62,8 +62,25 @@ export const ALL_FORMATS = {
     music: true,
     manga: true,
     novel: true,
-    oneShot: true
+    oneShot: true,
 };
+const NO_FORMATS = {
+    tv: false,
+    short: false,
+    movie: false,
+    special: false,
+    ova: false,
+    ona: false,
+    music: false,
+    manga: false,
+    novel: false,
+    oneShot: false,
+};
+export function makeFormatSelection(selection) {
+    let dst = {};
+    Object.assign(dst, NO_FORMATS, selection);
+    return dst;
+}
 function filterFormat(format, formatSelection) {
     if (formatSelection) {
         // Idk how to make types happy.
