@@ -28,4 +28,7 @@ Timeline layout issues are probably for js-timeline.
 ## License
 Project is MIT licensed. Help would be cool but lol.
 
+# Dev notes:
+
+
  

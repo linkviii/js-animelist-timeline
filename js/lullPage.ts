@@ -80,6 +80,9 @@ class InputForm {
     // readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
     readonly submitButton = $("#listFormSubmit") as JQuery<HTMLButtonElement>;
 
+    readonly malUpload = document.getElementById("mal-upload") as HTMLInputElement;
+
+
     readonly language = $("#language") as JQuery<HTMLSelectElement>;
 
     readonly groupBy = $("#group-by") as JQuery<HTMLSelectElement>;
@@ -111,6 +114,8 @@ class InputForm {
 
     initParams() {
         /* Set default values */
+        this.sortPrimary.val("duration");
+        this.sortPrimaryDirection[0].checked = true;
     }
 
     initListeners(): void {
@@ -118,6 +123,25 @@ class InputForm {
 
         input.submitButton[0].addEventListener("click", onSubmit);
 
+        /* ------------------------------------------ */
+
+        input.malUpload.onchange = async () => {
+            console.log("upload: onchange");
+            const f = input.malUpload.files[0];
+            const txt = await f.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(txt, "text/xml");
+            // console.log(txt);
+            // console.log(xml);
+            const animeList = MAL.animeListFromMALExport(xml);
+            activeUsername = animeList.user.userName;
+            listManager.userAnimeCache.set(activeUsername, animeList);
+
+            input.submitButton[0].disabled = true;
+            input.listUsername[0].disabled = true;
+            renderActiveList();
+        };
+        /* ------------------------------------------ */
 
         /* ------------------------------------------ */
 
@@ -194,7 +218,7 @@ class InputForm {
     /* -------------- */
     validateHTML() {
 
-        // validateSelect(input.sortPrimary, this.SELECT_SORT_VALUES);
+        validateSelect(input.sortPrimary, this.SELECT_SORT_VALUES);
         validateSelect(input.groupBy, this.SELECT_GROUP_VALUES);
 
     }
@@ -218,8 +242,8 @@ function init(): void {
     }
 
     // XXX
-    $("#listName").val("ONLOAD");
-    onSubmit();
+    // $("#listName").val("ONLOAD");
+    // onSubmit();
 
 
 
@@ -323,7 +347,7 @@ function renderLullsTable(lulls: Lull[], endGroups: Partial<Record<string, MAL.M
             li.append(textNode("span", anime.seriesTitle.preferred(activeLang), "title-name"));
             li.append(" ");
 
-            const links = textNode("span", "", "links");
+            const links = textNode("span", "", "title-links");
 
             if (anime.idAniList) {
                 const link = document.createElement("a");

@@ -20,8 +20,7 @@
 <body>
     <header>
         <nav class="flex-start">
-            <a href="">Timeline</a> |
-            <span>Lulls</span>
+            <!-- Filled in by navbar.ts -->
         </nav>
 
         <span class="flex-end">
@@ -85,7 +84,7 @@
                     <legend>Sorting</legend>
 
                     <div class="display-inline-block">
-                        <label for="sort-primary" class="display-block">Primary</label>
+                        <!-- <label for="sort-primary" class="display-block">Primary</label> -->
                         <label class="label-checkbox">
                             <input type="checkbox" id="sort-primary-check" />
                             <span id="sort-primary-check-text">▲</span>
@@ -156,6 +155,7 @@
 
     <!---->
     <script src="js/lib/strftime.js"></script>
+    <script src="js/navbar.js"></script>
     <script type="module">
         import * as main from "./js/lullPage.js";
         window.main = main;

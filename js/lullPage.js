@@ -45,6 +45,7 @@ class InputForm {
     listUsername = $("#listName");
     // readonly listKind = $("#list-kind") as JQuery<HTMLInputElement>;
     submitButton = $("#listFormSubmit");
+    malUpload = document.getElementById("mal-upload");
     language = $("#language");
     groupBy = $("#group-by");
     sortPrimary = $("#sort-primary");
@@ -68,10 +69,29 @@ class InputForm {
     ];
     initParams() {
         /* Set default values */
+        this.sortPrimary.val("duration");
+        this.sortPrimaryDirection[0].checked = true;
     }
     initListeners() {
         const input = this;
         input.submitButton[0].addEventListener("click", onSubmit);
+        /* ------------------------------------------ */
+        input.malUpload.onchange = async () => {
+            console.log("upload: onchange");
+            const f = input.malUpload.files[0];
+            const txt = await f.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(txt, "text/xml");
+            // console.log(txt);
+            // console.log(xml);
+            const animeList = MAL.animeListFromMALExport(xml);
+            activeUsername = animeList.user.userName;
+            listManager.userAnimeCache.set(activeUsername, animeList);
+            input.submitButton[0].disabled = true;
+            input.listUsername[0].disabled = true;
+            renderActiveList();
+        };
+        /* ------------------------------------------ */
         /* ------------------------------------------ */
         const setLang = () => {
             const value = input.language.val();
@@ -142,7 +162,7 @@ class InputForm {
     }
     /* -------------- */
     validateHTML() {
-        // validateSelect(input.sortPrimary, this.SELECT_SORT_VALUES);
+        validateSelect(input.sortPrimary, this.SELECT_SORT_VALUES);
         validateSelect(input.groupBy, this.SELECT_GROUP_VALUES);
     }
     /* -------------- */
@@ -160,8 +180,8 @@ function init() {
         favicon.href = "../favicon_localhost.png";
     }
     // XXX
-    $("#listName").val("ONLOAD");
-    onSubmit();
+    // $("#listName").val("ONLOAD");
+    // onSubmit();
 }
 $(document).ready(init);
 const durationSorter = (a, b) => {
@@ -236,7 +256,7 @@ function renderLullsTable(lulls, endGroups, startGroups) {
             li.append(" ");
             li.append(textNode("span", anime.seriesTitle.preferred(activeLang), "title-name"));
             li.append(" ");
-            const links = textNode("span", "", "links");
+            const links = textNode("span", "", "title-links");
             if (anime.idAniList) {
                 const link = document.createElement("a");
                 // Probs not the best way to make the url, but I don't care.

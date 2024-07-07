@@ -10,6 +10,7 @@
 #list-box {
     /* width: ; */
 }
+
 #list-box>fieldset {
     width: 45%;
     display: inline-block;
@@ -67,10 +68,19 @@ tbody tr:nth-child(odd) {
     /* max-width: 20%; */
 }
 
-.col-title-inner :nth-child(2){
+.title-score {
+    background-color: aqua;
+    border-radius: 20px;
+    padding: 5px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
 
+.title-links {
     float: right;
 }
+
+
 
 /*
  * ---------------------------- 

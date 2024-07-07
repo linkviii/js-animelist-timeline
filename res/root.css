@@ -55,6 +55,12 @@ header {
     display: flex;
 }
 
+.nav-active {
+    background-color: azure;
+    border-radius: 15px;
+    padding: 3px;
+}
+
 #filter-list {
     list-style-type: none;
     padding-left: 0;
