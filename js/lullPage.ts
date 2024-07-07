@@ -381,7 +381,7 @@ function renderLullsTable(lulls: Lull[], endGroups: Partial<Record<string, MAL.M
     }
 
     const columns: [string, (_: Lull) => (string | HTMLElement), string][] = [
-        ["Lull", (lull: Lull) => lull.lull.toString(), "col-num"],
+        ["Lull", (lull: Lull) => daysToYWD(lull.lull), "col-num"],
         ["Day", (lull: Lull) => lull.thisEnd, "col-date"],
         ["Completed", displayEnds, "col-name-list"],
 

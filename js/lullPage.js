@@ -18,7 +18,7 @@ import { usingTestData } from "./env.js";
 import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, fixDate, textNode, assertUnreachable, validateSelect } from "./src/util.js";
+import { daysBetween, daysToYWD, fixDate, textNode, assertUnreachable, validateSelect } from "./src/util.js";
 const nullSorter = (a, b) => 0;
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 export const listManager = new ListManager();
@@ -285,7 +285,7 @@ function renderLullsTable(lulls, endGroups, startGroups) {
         return displayAnimes(startGroups[lull.nextStart]);
     }
     const columns = [
-        ["Lull", (lull) => lull.lull.toString(), "col-num"],
+        ["Lull", (lull) => daysToYWD(lull.lull), "col-num"],
         ["Day", (lull) => lull.thisEnd, "col-date"],
         ["Completed", displayEnds, "col-name-list"],
         ["Next", (lull) => lull.nextStart, "col-date"],
