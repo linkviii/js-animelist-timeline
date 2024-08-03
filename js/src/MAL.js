@@ -317,6 +317,9 @@ export class Mdate {
         return date.compare(lb) >= 0 && date.compare(rb) <= 0;
     }
 }
+export function bestMediaID(media) {
+    return media.idAniList ?? media.idMAL;
+}
 export const rawNullDate = "0000-00-00";
 export const nullDate = new Mdate(rawNullDate);
 //# sourceMappingURL=MAL.js.map

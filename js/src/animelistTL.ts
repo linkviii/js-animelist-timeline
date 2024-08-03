@@ -1,6 +1,6 @@
 //import timeline.ts
 import { param } from "jquery";
-import { Timeline, TimelineDataV2, TimelineEraV2 as Era } from "../lib/timeline.js";
+import { Timeline, TimelineDataV2, TimelineEraV2 as Era, OoBDate } from "../lib/timeline.js";
 import { TimelineCalloutV2 } from "../lib/timeline.js";
 //import MAL.ts
 import * as MAL from "./MAL.js";
@@ -238,7 +238,12 @@ interface MediaCallout extends TimelineCalloutV2 {
     media: MAL.Media;
 }
 
-
+interface FilteringState {
+    boundsMask: [boolean, boolean];
+    boundsCount: number;
+    binged: boolean;
+    title: string;
+}
 
 /**
  * Data to be used for a js-timeline
@@ -263,9 +268,9 @@ export class AnimeListTimeline {
 
     public readonly userName: string;
 
-    // All the anime in the timeline
+    /** All the anime in the timeline */
     public mediaSet: Array<MAL.Media>;
-    // Start and End date in date range
+    /** Start and End date in date range */
     public boundedSet: Array<MAL.Media>;
     // Not that
     public unboundedSet: Array<MAL.Media>;
@@ -317,6 +322,11 @@ export class AnimeListTimeline {
         const startColor = !tlConfig.seasons ? startColor1 : startColor2;
 
 
+
+
+
+        const filterRecord: Record<number, FilteringState> = {}; // bestid
+
         for (let anime of mal.anime) {
 
             // Could be nice to have a mutable copy of the anime object .
@@ -325,7 +335,7 @@ export class AnimeListTimeline {
             // Put this first for the sake of debugging.
             const title = anime.seriesTitle.preferred(tlConfig.lang);
 
-            // (Weak) Copy dates so that we may choose to ignore them
+            /*  (Weak) Copy dates so that we may choose to ignore them */
             let startDate = anime.userStartDate;
             let finishDate = anime.userFinishDate;
 
@@ -426,6 +436,19 @@ export class AnimeListTimeline {
                 this.unboundedSet.push(anime);
             }
 
+            filterRecord[MAL.bestMediaID(anime)] = { boundsCount, boundsMask, binged, title };
+
+        }
+
+
+        for (let anime of this.mediaSet) {
+            const id = MAL.bestMediaID(anime);
+
+            const { boundsCount, boundsMask, binged, title } = filterRecord[id];
+
+
+
+            const tie = false;
 
             // 
             if (binged) {
@@ -438,8 +461,26 @@ export class AnimeListTimeline {
                     media: anime
                 };
                 callouts.push(callout);
-            }
-            else {
+            } else if (tie) {
+                const startCallout: MediaCallout = {
+                    description: title,
+                    date: anime.userStartDate.fixedDateStr,
+                    color: startColor,
+                    media: anime,
+                    id: id.toString(),
+                };
+
+                const endCallout: MediaCallout = {
+                    date: anime.userFinishDate.fixedDateStr,
+                    color: endColor,
+                    media: anime,
+                    tie: id.toString(),
+                };
+
+                callouts.push(startCallout);
+                callouts.push(endCallout);
+
+            } else {
 
                 // Put an asterisk when one of the dates is not shown.
                 const oobStar = boundsCount == 1 ? "*" : "";
@@ -478,48 +519,56 @@ export class AnimeListTimeline {
         }
 
 
-        // inb4 terrible bugs
-        // 1. cutting off the start date didn't change the boundedness
+        /*  inb4 terrible bugs
+         * 1. cutting off the start date didn't change the boundedness
+         * 2. Making ties needs to happen afterwards because both the timeline bounds need fixed
+         * and the start of a tie being removed is a problem.
+         */
 
 
-        // Keep only the last n x
-        // Should x be anime or activities
-        // Because it should be easier, implementing activities
+        /* Keep only the last n x
+         * Should x be anime or activities
+         * Because it should be easier, implementing activities
+         */
         if (tlConfig.lastN) {
             Timeline.sortCallouts(callouts);
 
             let newCallouts: MediaCallout[] = [];
 
-            // Get the last n
+            /* Get the last n */
             let i = 0;
             for (i = callouts.length - 1; i >= 0 && i >= callouts.length - tlConfig.lastN; i--) {
                 newCallouts.push(callouts[i]);
             }
-            // `i` is now pointing at the next item
-            // Get the rest of the activity on the bounded date
+            /* `i` is now pointing at the next item .
+             * Get the rest of the activity on the bounded date
+             */
             const day = callouts[i + 1].date;
             this.firstDate = new MAL.Mdate(day);
             while (i >= 0 && callouts[i].date === day) {
                 newCallouts.push(callouts[i]);
+
                 i--;
             }
 
-            // Now we need to fix the bounded set
-            // .. how...
+            /* Now we need to fix the bounded set */
+
             const trueSet = new Set();
             for (let callout of newCallouts) {
                 trueSet.add(callout.media.idAniList);
+
             }
 
             const filter = (x: MAL.Media) => trueSet.has(x.idAniList);
 
-            // Reduce the 'open start date' sets to the last n bounds
+            /*  Reduce the 'open start date' sets to the last n bounds */
             this.mediaSet = this.mediaSet.filter(filter);
             this.boundedSet = this.boundedSet.filter(filter);
             this.unboundedSet = this.unboundedSet.filter(filter);
 
-            // Fix boundedness based on new first date
-            // Callout text is not changed...
+            /* Fix boundedness based on new first date             
+             * Callout text is not changed...
+             */
             for (let i = this.boundedSet.length - 1; i >= 0; --i) {
                 const anime = this.boundedSet[i];
 
@@ -530,15 +579,62 @@ export class AnimeListTimeline {
 
 
 
-            // We'll be kind to our sort later and fix our reverse ordering
+            /*  We'll be kind to our sort later and fix our reverse ordering */
             newCallouts.reverse();
             callouts = newCallouts;
 
+        } // END last n
 
+        const measureData: TimelineDataV2 = {
+            apiVersion: 2,
+            width: tlConfig.width,
+            startDate: this.firstDate.fixedDateStr,
+            endDate: this.lastDate.fixedDateStr,
+            callouts: [{ date: this.firstDate.fixedDateStr }, { date: this.lastDate.fixedDateStr }],
+        };
+
+        const tmpTagId = "tmp-tag-id-12349";
+        const tmpTag = document.createElement("div");
+        tmpTag.id = tmpTagId;
+        tmpTag.style.display = "none";
+        document.body.append(tmpTag);
+        const measuringLine = new Timeline(measureData, tmpTagId);
+
+        for (let anime of this.boundedSet) {
+            const pair = callouts.filter(it => MAL.bestMediaID(it.media) == MAL.bestMediaID(anime));
+            if (pair.length !== 2) {
+                console.warn("Bounded anime fail");
+                continue;
+            }
+
+            let dateDistance = Infinity;
+            const x1 = measuringLine.dateToX(anime.userFinishDate.date);
+            const x0 = measuringLine.dateToX(anime.userStartDate.date);
+            if (!(x1 instanceof OoBDate || x0 instanceof OoBDate))
+                dateDistance = x1 - x0;
+
+            /* Arbitrary amount of space.
+             * Could use text width as a metric, but that can be slow.
+             */
+            const tie = dateDistance < 0.1 * tlConfig.width;
+            if (tie) {
+
+                const start = pair.find(it => it.color === startColor);
+                const end = pair.find(it => it.color == endColor);
+
+                const idStr = MAL.bestMediaID(anime).toString();
+                start.id = idStr;
+                start.description = anime.seriesTitle.preferred(tlConfig.lang);
+                end.tie = idStr;
+                delete end.description;
+
+
+            }
 
         }
+        tmpTag.remove();
 
-        // Object to make an svg timeline
+        /* Object to make an svg timeline */
         this.data = {
             apiVersion: 2,
             width: tlConfig.width,

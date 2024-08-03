@@ -445,6 +445,10 @@ export class Mdate {
 
 }
 
+export function bestMediaID(media:Media){
+    return media.idAniList?? media.idMAL;
+}
+
 export const rawNullDate: string = "0000-00-00";
 export const nullDate: Mdate = new Mdate(rawNullDate);
 
