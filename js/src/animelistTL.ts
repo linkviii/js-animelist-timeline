@@ -322,9 +322,6 @@ export class AnimeListTimeline {
         const startColor = !tlConfig.seasons ? startColor1 : startColor2;
 
 
-
-
-
         const filterRecord: Record<number, FilteringState> = {}; // bestid
 
         for (let anime of mal.anime) {
@@ -332,15 +329,16 @@ export class AnimeListTimeline {
             // Could be nice to have a mutable copy of the anime object .
             // Not doing that now though.
 
-            // Put this first for the sake of debugging.
+            /* Put this first for the sake of debugging. */
             const title = anime.seriesTitle.preferred(tlConfig.lang);
 
             /*  (Weak) Copy dates so that we may choose to ignore them */
             let startDate = anime.userStartDate;
             let finishDate = anime.userFinishDate;
 
-            // Filter to watching and completed
-            // Unsure if dropped or hold should exist. For now they don't.
+            /* Filter to watching and completed
+             * Unsure if dropped or hold should exist. For now they don't. 
+             */
             if (anime.userStatus != MAL.Status.Completed && anime.userStatus != MAL.Status.Watching) {
                 continue;
             }
@@ -351,7 +349,7 @@ export class AnimeListTimeline {
                 continue;
             }
 
-            // Run the title filter
+            /* Run the title filter */
             if (tlConfig.filter.entrySet.size == 0) {
                 // pass
             }
@@ -365,12 +363,12 @@ export class AnimeListTimeline {
                 }
             }
 
-            //
-            // Filter dates... sigh
-            //  and find the extreme of completed anime  
 
+            /*  Filter dates... sigh
+             * and find the extreme of completed anime  
+             */
 
-            // Pretend unwanted event's dates don't exist and allow the bounds check to work
+            /* Pretend unwanted event's dates don't exist and allow the bounds check to work */
             if (tlConfig.eventPreference === EventPreference.startOnly) {
                 finishDate = MAL.nullDate;
             }
@@ -398,13 +396,14 @@ export class AnimeListTimeline {
             let boundsMask = AnimeListTimeline.filterInbounds(startDate, finishDate, minDate, maxDate);
             let boundsCount = boundsMask.filter(x => x).length;
 
-            // Neither event is in range
+            /* Neither event is in range */
             if (boundsCount == 0) {
                 continue;
             }
 
-            // After finding which event dates are within our time span,
-            // Keep only the more interesting ones
+            /* After finding which event dates are within our time span,
+             * Keep only the more interesting ones 
+             */
             if (boundsCount == 2) {
                 if (tlConfig.eventPreference === EventPreference.preferStart) {
                     boundsCount = 1;
@@ -440,6 +439,11 @@ export class AnimeListTimeline {
 
         }
 
+        /* Separate the loop into filtering steps and making the callouts.
+         * It might be beneficial to have all events known before making the callouts,
+         * but truncating to the last n events later must be kept in mind.
+         * [Cannot identify events to tie together at this point].
+         */
 
         for (let anime of this.mediaSet) {
             const id = MAL.bestMediaID(anime);
@@ -447,12 +451,8 @@ export class AnimeListTimeline {
             const { boundsCount, boundsMask, binged, title } = filterRecord[id];
 
 
-
-            const tie = false;
-
             // 
             if (binged) {
-                // const label: string = "Binged " + title;
                 const label: string = "[B] " + title;
                 const callout: MediaCallout = {
                     description: label,
@@ -461,33 +461,13 @@ export class AnimeListTimeline {
                     media: anime
                 };
                 callouts.push(callout);
-            } else if (tie) {
-                const startCallout: MediaCallout = {
-                    description: title,
-                    date: anime.userStartDate.fixedDateStr,
-                    color: startColor,
-                    media: anime,
-                    id: id.toString(),
-                };
-
-                const endCallout: MediaCallout = {
-                    date: anime.userFinishDate.fixedDateStr,
-                    color: endColor,
-                    media: anime,
-                    tie: id.toString(),
-                };
-
-                callouts.push(startCallout);
-                callouts.push(endCallout);
 
             } else {
 
                 // Put an asterisk when one of the dates is not shown.
                 const oobStar = boundsCount == 1 ? "*" : "";
 
-                // const startLabel: string = oobStar + "Started " + title;
                 const startLabel: string = oobStar + "[S] " + title;
-                // const finishLabel: string = oobStar + "finished " + title;
                 const finishLabel: string = oobStar + "[F] " + title;
 
 
@@ -616,7 +596,7 @@ export class AnimeListTimeline {
             /* Arbitrary amount of space.
              * Could use text width as a metric, but that can be slow.
              */
-            const tie = dateDistance < 0.1 * tlConfig.width;
+            const tie = dateDistance < 0.5 * tlConfig.width;
             if (tie) {
 
                 const start = pair.find(it => it.color === startColor);
@@ -624,7 +604,9 @@ export class AnimeListTimeline {
 
                 const idStr = MAL.bestMediaID(anime).toString();
                 start.id = idStr;
-                start.description = anime.seriesTitle.preferred(tlConfig.lang);
+                start.description = "[↔] " + anime.seriesTitle.preferred(tlConfig.lang);
+                // start.color = "purple"
+                end.color = "purple"
                 end.tie = idStr;
                 delete end.description;
 
