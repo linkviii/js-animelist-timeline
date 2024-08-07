@@ -623,7 +623,9 @@ export class AnimeListTimeline {
             startDate: this.firstDate.fixedDateStr,
             endDate: this.lastDate.fixedDateStr,
             callouts: callouts,
-            tickFormat: "%Y-%m-%d "
+            tickFormat: "%Y-%m-%d ",
+            tickFormatPeriod: "%Y-%m--- ",
+            tickFormatEvent: "-%d ",
         };
 
         if (tlConfig.seasons) {

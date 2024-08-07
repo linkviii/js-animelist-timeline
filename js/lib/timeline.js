@@ -10,6 +10,244 @@
  *
  * MIT licensed
  */
+/* ----------------------------------------------------------------------------------- */
+// ████████╗██████╗ ███████╗███████╗
+// ╚══██╔══╝██╔══██╗██╔════╝██╔════╝
+//    ██║   ██████╔╝█████╗  █████╗  
+//    ██║   ██╔══██╗██╔══╝  ██╔══╝  
+//    ██║   ██║  ██║███████╗███████╗
+//    ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝
+/* https://www.geeksforgeeks.org/self-balancing-bst-in-javascript/?ref=lbp */
+class Node {
+    value;
+    left;
+    right;
+    height;
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+        this.height = 1;
+    }
+}
+class AVLTree {
+    root;
+    constructor() {
+        this.root = null;
+    }
+    // get the height of a node 
+    height(node) {
+        if (!node)
+            return 0;
+        return node.height;
+    }
+    // get the balance factor of a node 
+    balanceFactor(node) {
+        if (!node)
+            return 0;
+        return this.height(node.left) - this.height(node.right);
+    }
+    // perform a right rotation 
+    rotateRight(node) {
+        const leftNode = node.left;
+        const rightOfLeftNode = leftNode.right;
+        leftNode.right = node;
+        node.left = rightOfLeftNode;
+        node.height = Math.max(this.height(node.left), this.height(node.right)) + 1;
+        leftNode.height =
+            Math.max(this.height(leftNode.left), this.height(leftNode.right)) + 1;
+        return leftNode;
+    }
+    // perform a left rotation 
+    rotateLeft(node) {
+        const rightNode = node.right;
+        const leftOfRightNode = rightNode.left;
+        rightNode.left = node;
+        node.right = leftOfRightNode;
+        node.height = Math.max(this.height(node.left), this.height(node.right)) + 1;
+        rightNode.height =
+            Math.max(this.height(rightNode.left), this.height(rightNode.right)) + 1;
+        return rightNode;
+    }
+    // insert a new node 
+    insert(value) {
+        this.root = this.insertNode(this.root, value);
+    }
+    insertNode(node, value) {
+        if (node === null) {
+            return new Node(value);
+        }
+        if (value < node.value) {
+            node.left = this.insertNode(node.left, value);
+        }
+        else if (value > node.value) {
+            node.right = this.insertNode(node.right, value);
+        }
+        else {
+            return node; // duplicate values are not allowed 
+        }
+        node.height = Math.max(this.height(node.left), this.height(node.right)) + 1;
+        const balance = this.balanceFactor(node);
+        if (balance > 1 && value < node.left.value) {
+            return this.rotateRight(node);
+        }
+        if (balance > 1 && value > node.left.value) {
+            node.left = this.rotateLeft(node.left);
+            return this.rotateRight(node);
+        }
+        // if(node.right===null) return null
+        if (balance < -1 && value > node.right.value) {
+            return this.rotateLeft(node);
+        }
+        if (balance < -1 && value < node.right.value) {
+            node.right = this.rotateRight(node.right);
+            return this.rotateLeft(node);
+        }
+        return node;
+    }
+    // search for a node 
+    search(value) {
+        return this.searchNode(this.root, value);
+    }
+    searchNode(node, value) {
+        if (!node)
+            return null;
+        if (value < node.value) {
+            return this.searchNode(node.left, value);
+        }
+        else if (value > node.value) {
+            return this.searchNode(node.right, value);
+        }
+        else {
+            return node;
+        }
+    }
+    // delete a node 
+    delete(value) {
+        this.root = this.deleteNode(this.root, value);
+    }
+    deleteNode(node, value) {
+        if (!node) {
+            return null;
+        }
+        if (value < node.value) {
+            node.left = this.deleteNode(node.left, value);
+        }
+        else if (value > node.value) {
+            node.right = this.deleteNode(node.right, value);
+        }
+        else {
+            // node to be deleted has no children 
+            if (!node.left && !node.right) {
+                node = null;
+            }
+            // node to be deleted has one child 
+            else if (!node.left) {
+                node = node.right;
+            }
+            else if (!node.right) {
+                node = node.left;
+            }
+            // node to be deleted has two children 
+            else {
+                const minNode = this.findMinNode(node.right);
+                node.value = minNode.value;
+                node.right = this.deleteNode(node.right, minNode.value);
+            }
+        }
+        if (!node)
+            return null;
+        node.height = Math.max(this.height(node.left), this.height(node.right)) + 1;
+        const balance = this.balanceFactor(node);
+        if (balance > 1 && this.balanceFactor(node.left) >= 0) {
+            return this.rotateRight(node);
+        }
+        if (balance > 1 && this.balanceFactor(node.left) < 0) {
+            node.left = this.rotateLeft(node.left);
+            return this.rotateRight(node);
+        }
+        if (balance < -1 && this.balanceFactor(node.right) <= 0) {
+            return this.rotateLeft(node);
+        }
+        if (balance < -1 && this.balanceFactor(node.right) > 0) {
+            node.right = this.rotateRight(node.right);
+            return this.rotateLeft(node);
+        }
+        return node;
+    }
+    // find the minimum node in a subtree 
+    findMinNode(node) {
+        while (node && node.left) {
+            node = node.left;
+        }
+        return node;
+    }
+    /*
+     * -----------------------
+     * Additions bellow
+     */
+    toArray() {
+        const a = [];
+        let node = this.root;
+        this.toArraySub(node, a);
+        return a;
+    }
+    toArraySub(node, a) {
+        if (node === null)
+            return;
+        {
+            this.toArraySub(node.left, a);
+            a.push(node.value);
+            this.toArraySub(node.right, a);
+        }
+    }
+    findClosest(val) {
+        if (this.root === null) {
+            return null;
+        }
+        this.min_diff = Number.MAX_VALUE;
+        this.min_diff_value = -1;
+        const closest = this.maxDiff(this.root, val);
+        return closest;
+    }
+    /* https://www.geeksforgeeks.org/find-closest-element-binary-search-tree/ */
+    min_diff = Number.MAX_VALUE;
+    min_diff_value = -1;
+    // Function to find node with minimum absolute
+    // difference with given K
+    // min_diff   --> minimum difference till now
+    // min_diff_key  --> node having minimum absolute
+    //                   difference with K
+    maxDiffUtil(ptr, k) {
+        if (ptr === null)
+            return;
+        // if k itself is present
+        if (ptr.value === k) {
+            this.min_diff = 0;
+            this.min_diff_value = k;
+            return;
+        }
+        // update min_diff and min_diff_key by checking
+        // current node value
+        if (this.min_diff > Math.abs(ptr.value - k)) {
+            this.min_diff = Math.abs(ptr.value - k);
+            this.min_diff_value = ptr.value;
+        }
+        // if k is less than ptr->key then move in
+        // left subtree else in right subtree
+        if (k < ptr.value)
+            this.maxDiffUtil(ptr.left, k);
+        else
+            this.maxDiffUtil(ptr.right, k);
+    }
+    // Wrapper over maxDiffUtil()
+    maxDiff(root, k) {
+        // Find value of min_diff_key (Closest key
+        // in tree with k)
+        this.maxDiffUtil(root, k);
+        return this.min_diff_value;
+    }
+}
 // console.info("init strftime");
 // console.info(strftime);
 //Util
@@ -99,15 +337,19 @@ export class TimelineConverter {
  */
 export class OoBDate extends Error {
 }
-function newCalloutLayout() {
+function newLayout() {
     return {
         endpointMap: [[]],
         idMap: {},
         lockedLevelMap: {},
         ties: new Set(),
+        belowPoints: new AVLTree(),
     };
 }
 export class Timeline {
+    static YMD = "%Y-%m-%d";
+    /**  */
+    subtic = false;
     fontSize;
     fontFamily;
     fontHeight;
@@ -136,6 +378,7 @@ export class Timeline {
     axisGroup;
     //
     strfutc = strftime.utc();
+    timelineLayout = newLayout();
     // initializes data for timeline
     // Call `build` to generate svg
     constructor(data, id) {
@@ -153,7 +396,7 @@ export class Timeline {
         this.axisGroup = this.drawing.group();
         this.startDate = new Date(this.data.startDate);
         this.endDate = new Date(this.data.endDate);
-        // Create space if otherwise there would be none.
+        /* Create space if otherwise there would be none. */
         if (this.startDate.valueOf() === this.endDate.valueOf()) {
             this.startDate = new Date(this.startDate.valueOf() - 10000);
             this.endDate = new Date(this.endDate.valueOf() + 10000);
@@ -162,7 +405,7 @@ export class Timeline {
             throw new Error("startDate is ahead of endDate");
         }
         const timeWindowSpan = (this.endDate.valueOf() - this.startDate.valueOf());
-        // Use the same number of pixels regardless of how wide the timeline is
+        /* Use the same number of pixels regardless of how wide the timeline is */
         const paddingScale = 1000 / this.width;
         const timeScale = 0.1;
         const padding = (new Date(timeWindowSpan * timeScale * paddingScale)).valueOf();
@@ -170,7 +413,7 @@ export class Timeline {
         this.date1 = this.endDate.valueOf() + padding;
         this.totalSeconds = (this.date1 - this.date0) / 1000;
         this.tickFormat = this.data.tickFormat;
-        //TODO use a map instead
+        //TODO use a map instead (or maybe not)
         // Also what are these
         this.markers = {};
         //
@@ -190,8 +433,9 @@ export class Timeline {
         if (this.data.eras) {
             this.data.eras.sort((a, b) => compareDateStr(a.endDate, b.endDate));
         }
-        //# maxLabelHeight stores the max height of all axis labels
-        //# and is used in the final height computation in build(self)
+        /* maxLabelHeight stores the max height of all axis labels
+         * and is used in the final height computation in build.
+         */
         this.maxLabelHeight = 0;
         this.data.callouts = this.data.callouts || [];
         // Calculate how far oob callout text can go
@@ -230,10 +474,11 @@ export class Timeline {
     }
     addAxisLabel(dt, kw) {
         kw = kw || {};
-        const fill = kw.fill || Colors.gray;
+        const fill = kw.fill || Colors.black;
         let label;
-        if (this.tickFormat) {
-            label = this.strfutc(this.tickFormat, dt);
+        const dateFormat = kw.dateFormat ?? this.tickFormat;
+        if (dateFormat) {
+            label = this.strfutc(dateFormat, dt);
         }
         else {
             label = dt.toDateString();
@@ -245,8 +490,13 @@ export class Timeline {
             console.warn([dt, label, x]);
             return;
         }
+        const lastLabelX = this.timelineLayout.belowPoints.findClosest(x) || 0;
+        if (Math.abs(x - lastLabelX) < this.fontHeight) {
+            return;
+        }
+        this.timelineLayout.belowPoints.insert(x);
         const tickHeight = 5;
-        // # add tick on line
+        /* Add tick on line */
         const addTick = kw.tick || true;
         if (addTick) {
             const stroke = kw.stroke || Colors.black;
@@ -254,9 +504,9 @@ export class Timeline {
                 .stroke({ color: stroke, width: 2 });
         }
         // # add label
-        // Offset to center the text on the tick
+        /* Offset to center the text on the tick */
         const bar = this.fontHeight;
-        // Distance between the x axis and text
+        /* Distance between the x axis and text */
         const foo = 2 * tickHeight;
         const txt = this.axisGroup.text(label);
         txt.font({ family: this.fontFamily, size: `${this.fontSize}pt`, anchor: 'end' });
@@ -294,7 +544,7 @@ export class Timeline {
         const cuttingRangeEnd = str.length * 0.66;
         const half = Math.floor(str.length / 2);
         //TO-DO better? idk. good enough I guess
-        //split at closest space to the center of the word
+        /* Split at closest space to the center of the word. */
         let bestSplitPoint = 0;
         let splitValue = Infinity;
         for (let i = cuttingRangeStart; i < cuttingRangeEnd; i++) {
@@ -331,7 +581,8 @@ export class Timeline {
         }
         this.debugMap[level][point] = str;
     }
-    calculateCalloutHeight2(eventEndpoint, callout, calloutLayout) {
+    calculateCalloutHeight2(eventEndpoint, callout) {
+        const calloutLayout = this.timelineLayout;
         if (callout.tie) {
             const target = calloutLayout.idMap[callout.tie];
             const calloutHeight = target.level * this.calloutProperties.increment;
@@ -342,11 +593,11 @@ export class Timeline {
         // TODO: Clean this up. It's nasty down here
         const endpointMap = calloutLayout.endpointMap;
         let event = callout.description ?? "";
-        // ensure text does not overlap with previous entries
+        /* Ensure text does not overlap with previous entries. */
         const leftPad = this.calloutProperties.width;
         const leftBoundary = this.calculateEventLeftBoundary(event, eventEndpoint) - leftPad;
         let level = 0; // Valid levels start at 1
-        // Good if the left boundary of this event does not intersect the nearest event to the left
+        /* Good if the left boundary of this event does not intersect the nearest event to the left. */
         const isGood = function (rowIndex) {
             if (calloutLayout.lockedLevelMap[rowIndex]) {
                 return false;
@@ -362,23 +613,24 @@ export class Timeline {
             }
             else {
                 return true;
-            } // If the row doesn't exist yet, then there are no problems using it
+            } /* If the row doesn't exist yet, then there are no problems using it */
         };
         //
-        // Find the first level for which this event will not intersect another.
-        // Also make sure that if drawing under an event there is 1 line of space.
+        /* Find the first level for which this event will not intersect another.
+         * Also make sure that if drawing under an event there is 1 line of space.
+         */
         for (let levI = 0; levI < endpointMap.length; levI++) {
             if (isGood(levI) && isGood(levI + 1)) {
                 level = levI + 1;
                 break;
             }
         }
-        // If space couldn't be found on an existing level, make a new level for it
+        /* If space couldn't be found on an existing level, make a new level for it */
         if (level === 0) {
             level = endpointMap.length;
         }
         // ---------
-        // Do the same checks as above but this time with a bifurcated event
+        /* Do the same checks as above but this time with a bifurcated event */
         const bif = Timeline.bifurcateString(event);
         let bifLevel = 0;
         let bifLeftBoundary;
@@ -403,8 +655,8 @@ export class Timeline {
                 }
             };
             for (let levI = 1; levI < endpointMap.length; levI++) {
-                // Same as above now with bifurcated boundary + the line below.
-                // Level is the top line of text.
+                /* Same as above now with bifurcated boundary + the line below.
+                 * Level is the top line of text. */
                 if (isGood(levI - 1) && isGood(levI) && isGood(levI + 1)) {
                     bifLevel = levI + 1;
                     break;
@@ -414,8 +666,7 @@ export class Timeline {
                 bifLevel = endpointMap.length + 1;
             }
         }
-        // Select level
-        //
+        /* Select level */
         /* After a certain point a title becomes too long to /not/ bifurcate. */
         const maxEventWidth = 50; // char... Dangerous with unicode?
         const useBifurcated = bifLevel !== 0 && (bifLevel <= level
@@ -467,10 +718,10 @@ export class Timeline {
             return 0;
         }
         this.sortCallouts();
-        //# add callouts, one by one, making sure they don't overlap
+        const calloutLayout = this.timelineLayout;
+        /* Add callouts, one by one, making sure they don't overlap */
         const prevX = [-Infinity];
         const prevLevel = [-1];
-        const calloutLayout = newCalloutLayout();
         const seenIds = new Set();
         for (let callout of this.data.callouts) {
             if (callout.id) {
@@ -480,10 +731,10 @@ export class Timeline {
                 calloutLayout.ties.add(callout.tie);
             }
         }
-        //vertical drawing up is negative ~= max height
+        /* vertical drawing up is negative ~= max height */
         let minY = Infinity;
         let minX = Infinity;
-        // Last place we drew an axis label
+        /* Last place we drew an axis label */
         let lastLabelX = 0;
         for (const callout of this.data.callouts) {
             const eventColor = callout.color || Colors.black;
@@ -501,8 +752,8 @@ export class Timeline {
             const bgColor = callout.backgroundColor || eraColor || "white";
             // const bgFill = { color: bgColor, opacity: 0.15 };
             const bgFill = { color: bgColor, opacity: 1 };
-            //# figure out what 'level" to make the callout on
-            const [leftBound, calloutHeight, event] = this.calculateCalloutHeight2(x, callout, calloutLayout);
+            /* Figure out what 'level" to make the callout on */
+            const [leftBound, calloutHeight, event] = this.calculateCalloutHeight2(x, callout);
             const y = 0 - this.calloutProperties.height - calloutHeight;
             minY = Math.min(minY, y);
             minX = Math.min(minX, leftBound);
@@ -531,10 +782,7 @@ export class Timeline {
             txt.font({ family: this.fontFamily, size: `${this.fontSize}pt`, anchor: 'end' });
             txt.fill(eventColor);
             this.giveTxtBackground(txt, bgFill);
-            if (x - lastLabelX > this.fontHeight) {
-                lastLabelX = x;
-                this.addAxisLabel(calloutDate, { tick: false, fill: Colors.black });
-            }
+            this.addAxisLabel(calloutDate, { tick: false, fill: Colors.black, dateFormat: this.data.tickFormatEvent ?? this.tickFormat });
             const circ = this.axisGroup.circle(8).attr({ fill: 'white', cx: x, cy: 0, stroke: eventColor });
         }
         if (!isFinite(minY)) {
@@ -561,6 +809,20 @@ export class Timeline {
                 const timeOffset = (j * timeRange / numTicks);
                 const tickmarkDate = new Date(this.startDate.valueOf() + timeOffset);
                 this.addAxisLabel(tickmarkDate);
+            }
+        }
+        else {
+            const days = daysBetween(this.startDate, this.endDate);
+            let nextMonth = new Date(this.startDate.getUTCFullYear(), this.startDate.getUTCMonth() + 1, 1);
+            const tickFormat = {
+                tick: true,
+                fill: "black",
+                dateFormat: this.data.tickFormatPeriod ?? this.tickFormat,
+                // dateFormat: "%Y-%m                ",
+            };
+            while (nextMonth.valueOf() < this.endDate.valueOf()) {
+                this.addAxisLabel(nextMonth, tickFormat);
+                nextMonth = new Date(nextMonth.getUTCFullYear(), nextMonth.getUTCMonth() + 1, 1);
             }
         }
     }
@@ -643,11 +905,11 @@ export class Timeline {
         //# draw era label and markers at this height
         // const yEra: number = 5 + this.fontHeight;
         const yEra = 0 + this.fontHeight;
+        this.createDateTicks();
         //# create main axis and callouts,
         //# keeping track of how high the callouts are
         this.createMainAxis();
         const yCallouts = this.createCallouts();
-        this.createDateTicks();
         //# determine axis position so that axis + callouts don't overlap with eras
         const yAxis = yEra + this.calloutProperties.height - yCallouts;
         //# determine height so that eras, callouts, axis, and labels just fit
@@ -693,6 +955,21 @@ export class Timeline {
         return Math.ceil(metrics.width) + 1;
     }
 }
+// --------------------------------------------------------------
+function daysBetween(first, second) {
+    if (typeof first === 'string') {
+        first = new Date(first);
+    }
+    if (typeof second === 'string') {
+        second = new Date(second);
+    }
+    // Take the difference between the dates and divide by milliseconds per day.
+    // Round to nearest whole number to deal with DST.
+    const diff = (second.valueOf() - first.valueOf());
+    const milliInDay = (1000 * 60 * 60 * 24);
+    return Math.abs(Math.round(diff / milliInDay));
+}
+// --------------------------------------------------------------
 // Test linear spacing of callouts
 export function makeTestPattern1(width) {
     const testPattern_1 = {
