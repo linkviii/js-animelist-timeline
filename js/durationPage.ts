@@ -653,7 +653,7 @@ function renderActiveList() {
     }
 
 
-    const timeline = new ATL.AnimeListTimeline(animeList, fullTimelineConfig);
+    const timeline = new ATL.AnimeListTimeline(animeList, fullTimelineConfig, true);
     window["timeline"] = timeline;
 
     listPane.empty();

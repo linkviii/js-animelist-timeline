@@ -187,7 +187,7 @@ export class AnimeListTimeline {
         return [AnimeListTimeline.dateInBounds(start, lb, rb),
             AnimeListTimeline.dateInBounds(finish, lb, rb)];
     }
-    constructor(mal, tlConfig) {
+    constructor(mal, tlConfig, dataOnly) {
         // good idea? Bad idea? idk.
         this.mal = mal;
         this.config = tlConfig;
@@ -395,47 +395,49 @@ export class AnimeListTimeline {
             newCallouts.reverse();
             callouts = newCallouts;
         } // END last n
-        const measureData = {
-            apiVersion: 2,
-            width: tlConfig.width,
-            startDate: this.firstDate.fixedDateStr,
-            endDate: this.lastDate.fixedDateStr,
-            callouts: [{ date: this.firstDate.fixedDateStr }, { date: this.lastDate.fixedDateStr }],
-        };
-        const tmpTagId = "tmp-tag-id-12349";
-        const tmpTag = document.createElement("div");
-        tmpTag.id = tmpTagId;
-        tmpTag.style.display = "none";
-        document.body.append(tmpTag);
-        const measuringLine = new Timeline(measureData, tmpTagId);
-        for (let anime of this.boundedSet) {
-            const pair = callouts.filter(it => MAL.bestMediaID(it.media) == MAL.bestMediaID(anime));
-            if (pair.length !== 2) {
-                console.warn("Bounded anime fail");
-                continue;
+        if (!dataOnly) {
+            const measureData = {
+                apiVersion: 2,
+                width: tlConfig.width,
+                startDate: this.firstDate.fixedDateStr,
+                endDate: this.lastDate.fixedDateStr,
+                callouts: [{ date: this.firstDate.fixedDateStr }, { date: this.lastDate.fixedDateStr }],
+            };
+            const tmpTagId = "tmp-tag-id-12349";
+            const tmpTag = document.createElement("div");
+            tmpTag.id = tmpTagId;
+            tmpTag.style.display = "none";
+            document.body.append(tmpTag);
+            const measuringLine = new Timeline(measureData, tmpTagId);
+            for (let anime of this.boundedSet) {
+                const pair = callouts.filter(it => MAL.bestMediaID(it.media) == MAL.bestMediaID(anime));
+                if (pair.length !== 2) {
+                    console.warn("Bounded anime fail");
+                    continue;
+                }
+                let dateDistance = Infinity;
+                const x1 = measuringLine.dateToX(anime.userFinishDate.date);
+                const x0 = measuringLine.dateToX(anime.userStartDate.date);
+                if (!(x1 instanceof OoBDate || x0 instanceof OoBDate))
+                    dateDistance = x1 - x0;
+                /* Arbitrary amount of space.
+                 * Could use text width as a metric, but that can be slow.
+                 */
+                const tie = dateDistance < 0.5 * tlConfig.width;
+                if (tie) {
+                    const start = pair.find(it => it.color === startColor);
+                    const end = pair.find(it => it.color == endColor);
+                    const idStr = MAL.bestMediaID(anime).toString();
+                    start.id = idStr;
+                    start.description = "[↔] " + anime.seriesTitle.preferred(tlConfig.lang);
+                    // start.color = "purple"
+                    end.color = "purple";
+                    end.tie = idStr;
+                    delete end.description;
+                }
             }
-            let dateDistance = Infinity;
-            const x1 = measuringLine.dateToX(anime.userFinishDate.date);
-            const x0 = measuringLine.dateToX(anime.userStartDate.date);
-            if (!(x1 instanceof OoBDate || x0 instanceof OoBDate))
-                dateDistance = x1 - x0;
-            /* Arbitrary amount of space.
-             * Could use text width as a metric, but that can be slow.
-             */
-            const tie = dateDistance < 0.5 * tlConfig.width;
-            if (tie) {
-                const start = pair.find(it => it.color === startColor);
-                const end = pair.find(it => it.color == endColor);
-                const idStr = MAL.bestMediaID(anime).toString();
-                start.id = idStr;
-                start.description = "[↔] " + anime.seriesTitle.preferred(tlConfig.lang);
-                // start.color = "purple"
-                end.color = "purple";
-                end.tie = idStr;
-                delete end.description;
-            }
+            tmpTag.remove();
         }
-        tmpTag.remove();
         /* Object to make an svg timeline */
         this.data = {
             apiVersion: 2,

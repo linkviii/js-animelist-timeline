@@ -645,7 +645,7 @@ class InputForm {
                 animeFormat: ATL.ALL_FORMATS
             };
             const fullList = listManager.userAnimeCache.get(value) as MAL.AnimeList;
-            let allTime = new ATL.AnimeListTimeline(fullList, config);
+            let allTime = new ATL.AnimeListTimeline(fullList, config, true);
             let heat = new Heat.WatchHeatMap(allTime, heatClick);
 
             container.append(heat.render());
@@ -1071,7 +1071,7 @@ function preparePlot(mal: MAL.AnimeList | MAL.MangaList): void {
 
         try {
             //
-            const tln = new AnimeListTimeline(mal, tlConfig); // can throw NoDatedAnimeError
+            const tln = new AnimeListTimeline(mal, tlConfig, false); // can throw NoDatedAnimeError
 
             // This feels kinda wrong
             if (tlConfig.lastN) {
@@ -1128,7 +1128,7 @@ function calculateStats(otln: AnimeListTimeline, listKind: string) {
         config.eventPreference = ATL.EventPreference.all;
         config.lastN = undefined;
         config.maxDate = otln.lastDate.fixedDateStr;
-        tln = new AnimeListTimeline(otln.mal, config);
+        tln = new AnimeListTimeline(otln.mal, config, true);
     }
 
     const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);

@@ -291,7 +291,7 @@ export class AnimeListTimeline {
 
 
 
-    constructor(mal: MAL.MediaList, tlConfig: AnimeListTimelineConfig) {
+    constructor(mal: MAL.MediaList, tlConfig: AnimeListTimelineConfig, dataOnly:boolean) {
 
         // good idea? Bad idea? idk.
         this.mal = mal;
@@ -565,7 +565,7 @@ export class AnimeListTimeline {
 
         } // END last n
 
-        const measureData: TimelineDataV2 = {
+    if(!dataOnly){    const measureData: TimelineDataV2 = {
             apiVersion: 2,
             width: tlConfig.width,
             startDate: this.firstDate.fixedDateStr,
@@ -614,7 +614,7 @@ export class AnimeListTimeline {
             }
 
         }
-        tmpTag.remove();
+        tmpTag.remove();}
 
         /* Object to make an svg timeline */
         this.data = {
