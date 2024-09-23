@@ -1369,6 +1369,8 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
     const removeAll = <HTMLButtonElement>document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
 
+    tl.scrollIntoView();
+
     debugData["lastTimelineSvg"] = svg;
 }
 

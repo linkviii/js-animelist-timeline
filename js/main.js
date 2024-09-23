@@ -976,6 +976,7 @@ function displayTimeline(tlConfig, tln) {
     // console.timeEnd()
     const removeAll = document.getElementById("clearAllTimelines");
     removeAll.disabled = false;
+    tl.scrollIntoView();
     debugData["lastTimelineSvg"] = svg;
 }
 // ***
