@@ -30,6 +30,13 @@ export async function getAnilistAnimeList(userName) {
                         title {
                             romaji english native userPreferred
                         }
+                        synonyms
+                        hashtag
+                        externalLinks {
+                            type
+                            url
+                            site
+                        }
                         startDate { year month day } 
                         endDate { year month day } 
                     }
@@ -64,7 +71,7 @@ export async function getAnilistAnimeList(userName) {
         console.warn("TODO: next chunk not implemented yet.");
     }
     if (env.debug) {
-        console.info("\n" + JSON.stringify(data) + "\n");
+        console.info("\n\n" + JSON.stringify(data) + "\n\n");
     }
     return data;
 }
@@ -99,6 +106,13 @@ export async function getAnilistMangaList(userName) {
                         title {
                             romaji english native userPreferred
                         }
+                        synonyms
+                        hashtag
+                        externalLinks {
+                            type
+                            url
+                            site
+                        }                        
                     }
                 }
             }

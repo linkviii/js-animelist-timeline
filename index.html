@@ -289,12 +289,22 @@
 
             <div class="fieldContainer">
                 <fieldset class="mainGroup">
-                    <label class="before" for="language">Language</label>
+                    <label class="before" for="language">Title</label>
 
                     <select id="language">
-                        <option value="english">English</option>
-                        <option value="romaji">Romaji</option>
-                        <option value="native">Native</option>
+                        <optgroup label="language">
+                            <option value="english">English</option>
+                            <option value="romaji">Romaji</option>
+                            <option value="native">Native</option>
+                        </optgroup>
+                        <optgroup label="Other">
+                            <option value="synonym">Synonym</option>
+                            <option value="url">Website</option>
+                            <option value="hashtag">#</option>
+                            <option value="handle">@</option>
+                            <!-- <option value=""></option> -->
+                            
+                        </optgroup>
                     </select>
 
                     <label class="before" for="seasons">Seasons</label>

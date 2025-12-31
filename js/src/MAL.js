@@ -92,7 +92,7 @@ function userFromMALExport(myinfo) {
     };
 }
 function animeFromMALExport(tag) {
-    const title = new Title({ userPreferred: tagTxt(tag, "series_title") });
+    const title = new Title({ userPreferred: tagTxt(tag, "series_title") }, null, null, null);
     const status = statusFromMALExport(tagTxt(tag, "my_status"));
     return {
         idAniList: null,
@@ -145,16 +145,93 @@ export function animeListFromAniList(obj, userName) {
 function userFromAniList(obj, name) {
     return { userId: obj.id, userName: name, };
 }
+function filterOfficialUrl(links) {
+    if (!links) {
+        return null;
+    }
+    const o = links.filter((it) => {
+        return it.site === "Official Site";
+    });
+    const url = o[0]?.url;
+    if (!url)
+        return null;
+    return url.replace(/https?:\/\//, "");
+}
+function filterHandel(links) {
+    if (!links) {
+        return null;
+    }
+    const priority = ["Twitter", "Instagram", "Facebook"];
+    // Filter out values like
+    //  "https://twitter.com/search?q=\"ミニアニメ\" from:machikado_staff&f=live"
+    const tmp = links.filter((it) => priority.includes(it.site) && !it.url.includes("/search?"));
+    tmp.sort((a, b) => {
+        const ia = priority.indexOf(a.site);
+        const ib = priority.indexOf(b.site);
+        return ia - ib;
+    });
+    // console.log(tmp);
+    let url = tmp[0]?.url;
+    if (!url)
+        return null;
+    if (url.endsWith("/")) {
+        url = url.slice(0, -1);
+    }
+    const split = url.split("/");
+    return '@' + split[split.length - 1];
+}
+function mostlyLatinString(str) {
+    str = str.normalize();
+    // str = str.toLowerCase();
+    let y = 0;
+    let n = 0;
+    for (let c of str) {
+        if (c.codePointAt(0) < 256) {
+            y++;
+        }
+        else {
+            n++;
+        }
+    }
+    return y > n;
+}
+function filterHashtags(str) {
+    if (!str) {
+        return null;
+    }
+    const tags = str.split(' ');
+    return tags.filter(mostlyLatinString)[0];
+}
+const LANG_TITLES = ["english", "romaji", "native"];
+const OTHER_TITLES = ["synonym", "hashtag", "handle", "url"];
 export class Title {
+    // Real titles
     english;
     userPreferred;
     romaji;
     native;
-    constructor(it) {
+    // 
+    synonym;
+    hashtag;
+    handle;
+    url;
+    selectSynonym(synonyms) {
+        if (!synonyms) {
+            return null;
+        }
+        // There is no structure to the array : (
+        // Just hope the first thing is english friendly.
+        return synonyms.find(mostlyLatinString);
+    }
+    constructor(it, synonyms, hashtags, links) {
         this.english = it.english;
         this.userPreferred = it.userPreferred;
         this.romaji = it.romaji;
         this.native = it.native;
+        this.synonym = this.selectSynonym(synonyms);
+        this.hashtag = filterHashtags(hashtags);
+        this.url = filterOfficialUrl(links);
+        this.handle = filterHandel(links);
     }
     preferredEnglish() {
         const order = [this.english, this.userPreferred, this.romaji, this.native];
@@ -168,17 +245,24 @@ export class Title {
         const order = [this.native, this.romaji, this.userPreferred, this.english];
         return order.filter(x => x)[0];
     }
+    preferredOther(key) {
+        if (!OTHER_TITLES.includes(key)) {
+            throw "Key error";
+        }
+        const order = [this[key], this.english, this.userPreferred, this.romaji, this.native];
+        return order.filter(x => x)[0];
+    }
     preferred(key) {
         switch (key) {
             case "english": return this.preferredEnglish();
             case "romaji": return this.preferredRomaji();
             case "native": return this.preferredNative();
-            default: throw "Key error";
+            default: return this.preferredOther(key);
         }
     }
 }
 function mediaFromAniList(obj, status) {
-    const titleObj = new Title(obj.media.title);
+    const titleObj = new Title(obj.media.title, obj.media.synonyms, obj.media.hashtag, obj.media.externalLinks);
     return {
         seriesTitle: titleObj,
         seriesType: obj.media.format,

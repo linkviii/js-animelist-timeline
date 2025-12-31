@@ -1359,6 +1359,7 @@ function displayTimeline(tlConfig: AnimeListTimelineConfig, tln: AnimeListTimeli
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
     tlArea.appendChild(statsDetails);
+    tlArea.setAttribute("data-complete", "yes")
 
     //make timeline after it has a valid anchor in the doc
     // console.time()

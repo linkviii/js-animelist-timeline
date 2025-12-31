@@ -969,6 +969,7 @@ function displayTimeline(tlConfig, tln) {
     tlArea.appendChild(controls);
     tlArea.appendChild(tl);
     tlArea.appendChild(statsDetails);
+    tlArea.setAttribute("data-complete", "yes");
     //make timeline after it has a valid anchor in the doc
     // console.time()
     const svg = new Timeline(tln.data, tl.id);

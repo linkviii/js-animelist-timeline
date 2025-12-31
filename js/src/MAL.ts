@@ -119,7 +119,7 @@ function userFromMALExport(myinfo: Element): User {
     };
 }
 function animeFromMALExport(tag: Element): Anime {
-    const title = new Title({ userPreferred: tagTxt(tag, "series_title") });
+    const title = new Title({ userPreferred: tagTxt(tag, "series_title") }, null, null, null);
     const status = statusFromMALExport(tagTxt(tag, "my_status") as any);
     return {
         idAniList: null,
@@ -190,6 +190,77 @@ function userFromAniList(obj, name: string): User {
     return { userId: obj.id, userName: name, };
 }
 
+interface ExternalLink {
+    type: "INFO" | "SOCIAL" | "STREAMING";
+    url: string;
+    site: "Official Site" //
+    | "Crunchyroll" | "Netflix" | "HIDIVE" | "Hulu" | "Amazon Prime Video" | "YouTube"
+    /* | "Bilibili" | "Bilibili TV" | "iQ" | "Tubi TV" | "Hoopla" */ //
+    | "Twitter" | "Facebook" | "Instagram";
+}
+
+function filterOfficialUrl(links?: ExternalLink[]): string | null {
+    if (!links) {
+        return null;
+    }
+    const o = links.filter((it) => {
+        return it.site === "Official Site";
+    });
+
+    const url = o[0]?.url;
+    if (!url) return null;
+    return url.replace(/https?:\/\//, "");
+}
+
+function filterHandel(links?: ExternalLink[]): string | null {
+    if (!links) {
+        return null;
+    }
+
+    const priority: (ExternalLink['site'])[] = ["Twitter", "Instagram", "Facebook"];
+    // Filter out values like
+    //  "https://twitter.com/search?q=\"ミニアニメ\" from:machikado_staff&f=live"
+    const tmp = links.filter((it) => priority.includes(it.site) && !it.url.includes("/search?"));
+    tmp.sort((a, b) => {
+        const ia = priority.indexOf(a.site);
+        const ib = priority.indexOf(b.site);
+        return ia - ib;
+    });
+    // console.log(tmp);
+
+    let url = tmp[0]?.url;
+    if (!url) return null;
+    if (url.endsWith("/")) {
+        url = url.slice(0, -1);
+    }
+    const split = url.split("/");
+    return '@' + split[split.length - 1];
+}
+
+function mostlyLatinString(str: string): boolean {
+    str = str.normalize();
+    // str = str.toLowerCase();
+
+    let y = 0;
+    let n = 0;
+    for (let c of str) {
+        if (c.codePointAt(0) < 256) {
+            y++;
+        } else {
+            n++;
+        }
+    }
+    return y > n;
+}
+
+function filterHashtags(str?: string) {
+    if (!str) {
+        return null;
+    }
+    const tags = str.split(' ');
+    return tags.filter(mostlyLatinString)[0];
+}
+
 interface ITitle {
     english?: string;
     userPreferred?: string;
@@ -197,17 +268,43 @@ interface ITitle {
     native?: string;
 }
 
+const LANG_TITLES = ["english", "romaji", "native"] as const;
+const OTHER_TITLES = ["synonym", "hashtag", "handle", "url"] as const;
+
+type TitleKey = typeof LANG_TITLES[number] | typeof OTHER_TITLES[number];
+
 export class Title implements ITitle {
+    // Real titles
     public english?: string;
     public userPreferred?: string;
     public romaji?: string;
     public native?: string;
 
-    constructor(it: ITitle) {
+    // 
+    public synonym?: string;
+    public hashtag?: string;
+    public handle?: string;
+    public url?: string;
+
+    private selectSynonym(synonyms?: string[]) {
+        if (!synonyms) {
+            return null;
+        }
+        // There is no structure to the array : (
+        // Just hope the first thing is english friendly.
+        return synonyms.find(mostlyLatinString);
+    }
+
+    constructor(it: ITitle, synonyms: string[] | null, hashtags: string | null, links: null | ExternalLink[]) {
         this.english = it.english;
         this.userPreferred = it.userPreferred;
         this.romaji = it.romaji;
         this.native = it.native;
+
+        this.synonym = this.selectSynonym(synonyms);
+        this.hashtag = filterHashtags(hashtags);
+        this.url = filterOfficialUrl(links);
+        this.handle = filterHandel(links);
     }
 
     preferredEnglish(): string {
@@ -225,12 +322,20 @@ export class Title implements ITitle {
         return order.filter(x => x)[0];
     }
 
-    preferred(key: string | "english" | "romaji" | "native"): string {
+    preferredOther(key: string) {
+        if (!OTHER_TITLES.includes(key as any)) {
+            throw "Key error";
+        }
+        const order = [this[key], this.english, this.userPreferred, this.romaji, this.native];
+        return order.filter(x => x)[0];
+    }
+
+    preferred(key: string | TitleKey): string {
         switch (key) {
             case "english": return this.preferredEnglish();
             case "romaji": return this.preferredRomaji();
             case "native": return this.preferredNative();
-            default: throw "Key error";
+            default: return this.preferredOther(key);
         }
     }
 
@@ -267,7 +372,7 @@ export interface Manga extends IMedia {
 type GraphMedia = any;
 
 function mediaFromAniList(obj: GraphMedia, status: Status): IMedia {
-    const titleObj = new Title(obj.media.title);
+    const titleObj = new Title(obj.media.title, obj.media.synonyms, obj.media.hashtag, obj.media.externalLinks);
 
 
     return {
@@ -445,8 +550,8 @@ export class Mdate {
 
 }
 
-export function bestMediaID(media:Media){
-    return media.idAniList?? media.idMAL;
+export function bestMediaID(media: Media) {
+    return media.idAniList ?? media.idMAL;
 }
 
 export const rawNullDate: string = "0000-00-00";

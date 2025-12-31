@@ -41,6 +41,13 @@ export async function getAnilistAnimeList(userName: string): Promise<any | MAL.B
                         title {
                             romaji english native userPreferred
                         }
+                        synonyms
+                        hashtag
+                        externalLinks {
+                            type
+                            url
+                            site
+                        }
                         startDate { year month day } 
                         endDate { year month day } 
                     }
@@ -86,7 +93,7 @@ export async function getAnilistAnimeList(userName: string): Promise<any | MAL.B
 
 
     if (env.debug) {
-        console.info("\n" + JSON.stringify(data) + "\n");
+        console.info("\n\n" + JSON.stringify(data) + "\n\n");
     }
 
 
@@ -134,6 +141,13 @@ export async function getAnilistMangaList(userName: string): Promise<any | MAL.B
                         title {
                             romaji english native userPreferred
                         }
+                        synonyms
+                        hashtag
+                        externalLinks {
+                            type
+                            url
+                            site
+                        }                        
                     }
                 }
             }
