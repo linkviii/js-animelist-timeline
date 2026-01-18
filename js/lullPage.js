@@ -18,7 +18,7 @@ import { usingTestData } from "./env.js";
 import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, daysToYWD, fixDate, textNode, assertUnreachable, validateSelect } from "./src/util.js";
+import { daysBetween_abs, daysToYWD, fixDate, textNode, assertUnreachable, validateSelect } from "./src/util.js";
 const nullSorter = (a, b) => 0;
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 export const listManager = new ListManager();
@@ -367,7 +367,7 @@ function renderActiveList() {
             lulls.pop();
         }
         lastStart = nextStart;
-        lulls.push({ thisEnd, nextStart, lull: daysBetween(thisEnd, nextStart) });
+        lulls.push({ thisEnd, nextStart, lull: daysBetween_abs(thisEnd, nextStart) });
     }
     // -------------------------------------------
     // -------------------------------------------

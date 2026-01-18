@@ -47,7 +47,7 @@ import "./lib/chartjs/Chart.bundle.js";
 import "./lib/awesomplete/awesomplete.js";
 import { debug, usingTestData } from "./env.js";
 import { ListManager } from "./src/listManager.js";
-import { daysBetween, fixDate, isPositiveInteger, minutesToString, updateKey, wrapListItem } from "./src/util.js";
+import { daysBetween_abs, fixDate, isPositiveInteger, minutesToString, updateKey, wrapListItem } from "./src/util.js";
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗    
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝    
 // ██║  ███╗██║     ██║   ██║██████╔╝███████║██║     ███████╗    
@@ -797,7 +797,7 @@ function calculateStats(otln, listKind) {
         config.maxDate = otln.lastDate.fixedDateStr;
         tln = new AnimeListTimeline(otln.mal, config, true);
     }
-    const elapsedDays = daysBetween(tln.firstDate.date, tln.lastDate.date);
+    const elapsedDays = daysBetween_abs(tln.firstDate.date, tln.lastDate.date);
     //
     let boundedMinutes = null;
     if (ATL.isAnimeList(tln.boundedSet, listKind)) {
@@ -1042,7 +1042,7 @@ function drawHoursWatched(tlConfig, mal) {
     for (let entry of anime) {
         const duration = entry.seriesEpisodes * entry.seriesEpisodesDuration;
         // let entryDays = daysBetween(entry.myStartDate.date, entry.myFinishDate.date);
-        let entryDays = daysBetween(entry.userStartDate.date, entry.userFinishDate.date) + 1;
+        let entryDays = daysBetween_abs(entry.userStartDate.date, entry.userFinishDate.date) + 1;
         // if (entryDays < 1) entryDays = 1;
         const minPerDay = duration / entryDays;
         // let prevDay = entry.myStartDate.fixedDateStr;
@@ -1070,7 +1070,7 @@ function drawHoursWatched(tlConfig, mal) {
                     break;
                 }
                 // let days = daysBetween(prevDay, keyDate) + 1;
-                let days = daysBetween(prevDay, keyDate);
+                let days = daysBetween_abs(prevDay, keyDate);
                 if (deb) {
                     // console.debug("Prev:", prevDay)
                     // console.debug("now: ", keyDate)

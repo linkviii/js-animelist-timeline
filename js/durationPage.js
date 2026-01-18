@@ -18,7 +18,9 @@ import { usingTestData } from "./env.js";
 import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, daysToYMD, daysToYWD, fixDate, LabelCheckbox_PushButton, textNode, assertUnreachable, validateSelect } from "./src/util.js";
+import { daysBetween, daysBetween_abs, daysToYMD, daysToYWD, fixDate, LabelCheckbox_PushButton, textNode, assertUnreachable, validateSelect, keysFromObject } from "./src/util.js";
+import * as Util from "./src/util.js";
+// ----------------------------------------------------------------------------
 // 
 // 
 if (Object.groupBy === undefined) {
@@ -249,6 +251,7 @@ function init() {
     // XXX
     // $("#listName").val("ONLOAD");
     // onSubmit();
+    installSeasonalKey();
 }
 $(document).ready(init);
 // 
@@ -308,7 +311,7 @@ async function onSubmit() {
     renderActiveList();
 }
 function daysToWatch(anime) {
-    return daysBetween(anime.userStartDate.date, anime.userFinishDate.date) + 1;
+    return daysBetween_abs(anime.userStartDate.date, anime.userFinishDate.date) + 1;
 }
 function ratioEpsDays(anime) {
     const days = daysToWatch(anime);
@@ -352,7 +355,7 @@ function getEpisodes_long(anime) {
 function getType(anime) {
     return anime.seriesType;
 }
-function watchedInSeason(anime) {
+function watchedInSeason_bool(anime) {
     // Airing dates may be unavailable.
     try {
         return anime.userStartDate.inBounds(anime.seriesStart, anime.seriesEnd);
@@ -361,12 +364,78 @@ function watchedInSeason(anime) {
         return false;
     }
 }
+const SEASONAL_ENJOYERS = {
+    not: { icon: "", help: "Not watched while airing." },
+    day0: { icon: "✅", help: "Watched since it started airing." },
+    late: { icon: "🟨", help: "Watched after it started airing." },
+    nearlyOver: { icon: "🟧", help: "Watched near the end of airing." },
+    end: { icon: "⬛", help: "Watched as it finished airing." }
+};
+function installSeasonalKey() {
+    const div = document.getElementById("in-season-key");
+    const tableDesc = {
+        header: { content: [{ value: "\"In Season\" Legend", attributes: { "colspan": "2" } }] },
+        data: []
+    };
+    for (const key of keysFromObject(SEASONAL_ENJOYERS)) {
+        const it = SEASONAL_ENJOYERS[key];
+        tableDesc.data.push({ content: [(it.icon), it.help] });
+    }
+    const table = Util.makeTable(tableDesc);
+    div.append(table);
+}
+function watchedInSeason_idk(anime) {
+    if (anime.seriesStart.isNullDate() && anime.seriesEnd.isNullDate()) {
+        return SEASONAL_ENJOYERS.not;
+    }
+    if (anime.seriesEnd.isNullDate()) {
+        if (anime.seriesType === MAL.FORMAT_KEYS.TV) {
+            /* Assume its still airing */
+            return SEASONAL_ENJOYERS.day0;
+        }
+        else {
+            return SEASONAL_ENJOYERS.not;
+        }
+    }
+    // ↓↓ Assert anime.seriesEnd is not null ↓↓
+    const daysStartedBeforeEnd = daysBetween(anime.userStartDate.date, anime.seriesEnd.date);
+    const daysAired = anime.seriesStart.isNullDate() ?
+        365 * 10 /* Arbitrarily long */ :
+        daysBetween(anime.seriesStart.date, anime.seriesEnd.date);
+    const daysStartedAfterStart = daysAired - daysStartedBeforeEnd;
+    if (daysStartedBeforeEnd < 0) {
+        return SEASONAL_ENJOYERS.not;
+    }
+    else if (daysStartedBeforeEnd <= 4) {
+        return SEASONAL_ENJOYERS.end;
+    }
+    else if (daysStartedBeforeEnd <= 3.5 * 7) {
+        return SEASONAL_ENJOYERS.nearlyOver;
+    }
+    else if (daysStartedAfterStart <= 3.5 * 7) {
+        return SEASONAL_ENJOYERS.day0;
+    }
+    return SEASONAL_ENJOYERS.late;
+}
+export function dbgDates(anime) {
+    return {
+        name: anime.seriesTitle.preferredEnglish(),
+        seriesStart: anime.seriesStart.fixedDateStr,
+        seriesEnd: anime.seriesEnd.fixedDateStr,
+        userStart: anime.userStartDate.fixedDateStr,
+        userFinish: anime.userFinishDate.fixedDateStr,
+    };
+}
+window.dbgDates = dbgDates;
 function watchedInSeason_short(anime) {
-    const inSeason = watchedInSeason(anime);
-    return inSeason ? "✅" : "";
+    /* Symbol displayed in the table. */
+    // const inSeason = watchedInSeason_bool(anime);
+    // return inSeason ? "✅" : "";
+    return watchedInSeason_idk(anime).icon;
 }
 function watchedInSeason_long(anime) {
-    const inSeason = watchedInSeason(anime);
+    /* Used as the section labels for group by "In Season" */
+    const inSeason = watchedInSeason_bool(anime);
     return inSeason ? "Watched while airing" : "Watched after completed";
 }
 // function installTableSorting(table: HTMLTableElement) {
@@ -611,11 +680,11 @@ function reportNoDated() {
         .join("");
     giveFeedback(str, 14);
 }
-function usernameFeedback(str) {
+export function usernameFeedback(str) {
     giveFeedback(str);
     input.listUsername.select();
 }
-function giveFeedback(str, sec = 5) {
+export function giveFeedback(str, sec = 5) {
     const time = sec * 1000;
     const feedback = $("#feedback");
     feedback.text(str);

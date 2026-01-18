@@ -27,7 +27,7 @@ import * as MAL from "./src/MAL.js";
 import { ListManager } from "./src/listManager.js";
 import { Anime, Media } from "./src/MAL.js";
 import * as ATL from "./src/animelistTL.js";
-import { daysBetween, daysToYMD, daysToYWD, fixDate, esSetEq, esSetIntersection, esSetDifference, textNode, assertUnreachable, validateSelect } from "./src/util.js";
+import { daysBetween_abs, daysToYMD, daysToYWD, fixDate, esSetEq, esSetIntersection, esSetDifference, textNode, assertUnreachable, validateSelect } from "./src/util.js";
 
 //  ██████╗ ██╗      ██████╗ ██████╗  █████╗ ██╗     ███████╗
 // ██╔════╝ ██║     ██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝
@@ -485,7 +485,7 @@ function renderActiveList() {
         }
         lastStart = nextStart;
 
-        lulls.push({ thisEnd, nextStart, lull: daysBetween(thisEnd, nextStart) });
+        lulls.push({ thisEnd, nextStart, lull: daysBetween_abs(thisEnd, nextStart) });
 
     }
 

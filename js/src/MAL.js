@@ -2,7 +2,7 @@
 
  *
  */
-import { assertUnreachable } from "./util.js";
+import { assertUnreachable, makeSelfMappingFromRecordKeys } from "./util.js";
 /**
  *Exported list gave status as a string.
  */
@@ -48,6 +48,34 @@ function statusFromMALExport(status) {
             assertUnreachable(status);
     }
 }
+/** Anilist formats. Idk about mal.
+ * https://docs.anilist.co/reference/enum/mediaformat
+ */
+export const FORMATS = {
+    /** Anime broadcast on television  */
+    "TV": "TV",
+    /** Anime which are under 15 minutes in length and broadcast on television  */
+    "TV_SHORT": "Short",
+    /** Anime movies with a theatrical release  */
+    "MOVIE": "Movie",
+    /** Special episodes that have been included in DVD/Blu-ray releases, picture dramas, pilots, etc  */
+    "SPECIAL": "Special",
+    /** (Original Video Animation) Anime that have been released directly on DVD/Blu-ray without originally going through a theatrical release or television broadcast  */
+    "OVA": "OVA",
+    /** (Original Net Animation) Anime that have been originally released online or are only available through streaming services.  */
+    "ONA": "ONA",
+    /** Short anime released as a music video  */
+    "MUSIC": "Music",
+    /** Professionally published manga with more than one chapter  */
+    "MANGA": "Manga",
+    /** Written books released as a series of light novels  */
+    "NOVEL": "Novel",
+    /** Manga with just one chapter  */
+    "ONE_SHOT": "One Shot"
+    /** */
+};
+export const FORMAT_KEYS = makeSelfMappingFromRecordKeys(FORMATS);
+// ----------------------------------------------------------------------------
 export class BadUsernameError extends Error {
 }
 export class AnimeList {

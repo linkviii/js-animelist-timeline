@@ -2,9 +2,42 @@
  *
  */
 import * as MAL from "./MAL.js";
-// 
+// ----------------------------------------------------------------------------
 export function assertUnreachable(x) { }
+// ----------------------------------------------------------------------------
+/** Object.keys returns string[] because typescript cannot know all the keys at runtime.
+ * This is unsound if keys of obj differ at runtime from as they were annotated.
+ *
+ * const tmp = keysFromObject({ "ONE": 1, "TWO": 2, "THREE": 3 });
+ * :: tmp: ("ONE" | "TWO" | "THREE")[]
+ *
+ */
+export const keysFromObject = Object.keys;
+// export const keysFromObject = Object.keys as <T extends Record<string, any>>(obj: T) => Array<keyof T >;
+// const tmp = keysFromObject({ "ONE": 1, "TWO": 2, "THREE": 3 });
+function _makeMapToSelf_1(vec) {
+    return Object.fromEntries(vec.map(it => [it, it]));
+}
+function _makeMapToSelf_2(vec) {
+    return Object.fromEntries(vec.map(it => [it, it]));
+}
+/**
+ * {k: k for k in vec}
+ *
+ * Example:
+ * `makeMapToSelf(["ONE", "TWO", "THREE"] as const);`
+ * is the same as
+ * `{ONE:"ONE", TWO:"TWO", THREE:"THREE"} as const;`
+ *
+ */
+export const makeMapToSelf = _makeMapToSelf_1;
+export function makeSelfMappingFromRecordKeys(obj) {
+    return makeMapToSelf(keysFromObject(obj));
+}
+// const tmp = makeSelfMappingFromRecordKeys({ "ONE": 1, "TWO": 2, "THREE": 3 } as const);
+// ----------------------------------------------------------------------------
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
+// ----------------------------------------------------------------------------
 export function wrapListItem(elm) {
     const li = document.createElement("li");
     li.appendChild(elm);
@@ -18,6 +51,7 @@ export function textNode(tag, txt, classes) {
     }
     return elm;
 }
+// ----------------------------------------------------------------------------
 export function minutesToString(min) {
     min = Math.round(min);
     let h = Math.floor(min / 60);
@@ -66,9 +100,14 @@ export function daysToYWD(n) {
     }
     return s;
 }
+// ----------------------------------------------------------------------------
 export function updateKey(map, key, value) {
     map.set(key, map.get(key) + value);
 }
+// ----------------------------------------------------------------------------
+/** second - first
+ * Positive count if first comes before second.
+ */
 export function daysBetween(first, second) {
     if (typeof first === 'string') {
         first = new Date(first);
@@ -80,8 +119,12 @@ export function daysBetween(first, second) {
     // Round to nearest whole number to deal with DST.
     const diff = (second.valueOf() - first.valueOf());
     const milliInDay = (1000 * 60 * 60 * 24);
-    return Math.abs(Math.round(diff / milliInDay));
+    return (Math.round(diff / milliInDay));
 }
+export function daysBetween_abs(first, second) {
+    return Math.abs(daysBetween(first, second));
+}
+// ----------------------------------------------------------------------------
 //
 // Data cleaning
 //
@@ -105,6 +148,7 @@ export function isPositiveInteger(str) {
     const n = ~~Number(str);
     return (String(n) === str) && (n > 0);
 }
+// ----------------------------------------------------------------------------
 //make user input suitable for anime timeline
 /**
  * Clamps date into a useful value
@@ -154,6 +198,7 @@ export function fixDate(date, minmax) {
     }
     return [ys, ms, ds].join("-");
 }
+// ----------------------------------------------------------------------------
 /*
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
  */
@@ -214,4 +259,60 @@ export class LabelCheckbox_PushButton {
         parent.append(this.topElm);
     }
 }
+export function makeTable(desc) {
+    const table = document.createElement("table");
+    function makeHeaderRow(row, rowElm) {
+        /* Body rows use insertCell(), but header rows need createElement("th"). */
+        for (let cell of row.content) {
+            if (typeof cell === "string") {
+                cell = { value: cell };
+            }
+            const elm = document.createElement("th");
+            if (cell.notText) {
+                elm.append(cell.value);
+            }
+            else {
+                elm.textContent = cell.value;
+            }
+            if (cell.attributes) {
+                for (const attr in cell.attributes) {
+                    elm.setAttribute(attr, cell.attributes[attr]);
+                }
+            }
+            rowElm.append(elm);
+        }
+    }
+    if (desc.header) {
+        const head = table.createTHead();
+        makeHeaderRow(desc.header, head);
+    }
+    if (desc.footer) {
+        const head = table.createTFoot();
+        makeHeaderRow(desc.footer, head);
+    }
+    const tbody = table.createTBody();
+    for (const row of desc.data) {
+        const rowElm = tbody.insertRow();
+        for (let cell of row.content) {
+            if (typeof cell === "string") {
+                cell = { value: cell };
+            }
+            const elm = rowElm.insertCell();
+            if (cell.notText) {
+                elm.append(cell.value);
+            }
+            else {
+                elm.textContent = cell.value;
+            }
+            if (cell.attributes) {
+                for (const attr in cell.attributes) {
+                    elm.setAttribute(attr, cell.attributes[attr]);
+                }
+            }
+            rowElm.append(elm);
+        }
+    }
+    return table;
+}
+/* --------------------------------------------------------------------------- */
 //# sourceMappingURL=util.js.map

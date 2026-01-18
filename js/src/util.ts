@@ -4,12 +4,64 @@
 
 import * as MAL from "./MAL.js";
 
-// 
+// ----------------------------------------------------------------------------
 
 export function assertUnreachable(x: never): void { }
+// ----------------------------------------------------------------------------
+
+/** Object.keys returns string[] because typescript cannot know all the keys at runtime.
+ * This is unsound if keys of obj differ at runtime from as they were annotated.
+ * 
+ * const tmp = keysFromObject({ "ONE": 1, "TWO": 2, "THREE": 3 });
+ * :: tmp: ("ONE" | "TWO" | "THREE")[]
+ *
+ */
+export const keysFromObject = Object.keys as <T extends object>(obj: T) => Array<keyof T>;
+// export const keysFromObject = Object.keys as <T extends Record<string, any>>(obj: T) => Array<keyof T >;
+// const tmp = keysFromObject({ "ONE": 1, "TWO": 2, "THREE": 3 });
+
+function _makeMapToSelf_1
+    <
+        T extends (string | number | symbol)[],
+        Ret extends {
+            [K in T[number]]: K
+        }
+    >
+    (vec: T):
+    Ret {
+    return Object.fromEntries(vec.map(it => [it, it])) as any;
+}
+
+type SelfMapping<T extends string[]> = {
+    [K in T[number]]: K
+};
+function _makeMapToSelf_2<T extends string[]>(vec: T): SelfMapping<T> {
+    return Object.fromEntries(vec.map(it => [it, it])) as any;
+}
+
+/** 
+ * {k: k for k in vec}
+ * 
+ * Example: 
+ * `makeMapToSelf(["ONE", "TWO", "THREE"] as const);`
+ * is the same as 
+ * `{ONE:"ONE", TWO:"TWO", THREE:"THREE"} as const;`
+ * 
+ */
+export const makeMapToSelf = _makeMapToSelf_1;
+
+export function makeSelfMappingFromRecordKeys<T extends object>(obj: T) {
+
+    return makeMapToSelf(keysFromObject(obj));
+}
+// const tmp = makeSelfMappingFromRecordKeys({ "ONE": 1, "TWO": 2, "THREE": 3 } as const);
+
+// ----------------------------------------------------------------------------
 
 
 const dateRegex = /^\d\d\d\d[\-\/.]\d\d[\-\/\.]\d\d$|^\d\d\d\d\d\d\d\d$/;
+
+// ----------------------------------------------------------------------------
 
 
 export function wrapListItem(elm: Element) {
@@ -27,6 +79,9 @@ export function textNode(tag, txt: string, classes?: string) {
     }
     return elm;
 }
+
+// ----------------------------------------------------------------------------
+
 
 export function minutesToString(min: number): string {
     min = Math.round(min);
@@ -85,10 +140,19 @@ export function daysToYWD(n: number) {
     return s;
 }
 
+// ----------------------------------------------------------------------------
+
+
 export function updateKey<K>(map: Map<K, number>, key: K, value: number) {
     map.set(key, map.get(key) + value);
 }
 
+// ----------------------------------------------------------------------------
+
+
+/** second - first 
+ * Positive count if first comes before second.
+ */
 export function daysBetween(first: Date | string, second: Date | string): number {
 
     if (typeof first === 'string') {
@@ -103,8 +167,14 @@ export function daysBetween(first: Date | string, second: Date | string): number
 
     const diff = (second.valueOf() - first.valueOf());
     const milliInDay = (1000 * 60 * 60 * 24);
-    return Math.abs(Math.round(diff / milliInDay));
+    return (Math.round(diff / milliInDay));
 }
+
+export function daysBetween_abs(first: Date | string, second: Date | string): number {
+    return Math.abs(daysBetween(first, second));
+}
+
+// ----------------------------------------------------------------------------
 
 
 //
@@ -133,6 +203,8 @@ export function isPositiveInteger(str: string): boolean {
     const n: number = ~~Number(str);
     return (String(n) === str) && (n > 0);
 }
+
+// ----------------------------------------------------------------------------
 
 
 //make user input suitable for anime timeline
@@ -189,6 +261,9 @@ export function fixDate(date: string, minmax: -1 | 1): string {
 
     return [ys, ms, ds].join("-");
 }
+
+// ----------------------------------------------------------------------------
+
 
 /* 
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
@@ -264,3 +339,77 @@ export class LabelCheckbox_PushButton {
         parent.append(this.topElm);
     }
 }
+/* --------------------------------------------------------------------------- */
+export interface TableCell {
+    value: any;
+    /* append value instead of assigning to textContent */
+    notText?: boolean;
+    attributes?: Record<string, string>;
+}
+export interface TableRow {
+    content: (TableCell | string)[];
+}
+export interface TableDesc {
+    header?: TableRow;
+    footer?: TableRow;
+    data: TableRow[];
+}
+export function makeTable(desc: TableDesc) {
+
+    const table = document.createElement("table");
+    function makeHeaderRow(row: TableRow, rowElm: HTMLTableSectionElement) {
+        /* Body rows use insertCell(), but header rows need createElement("th"). */
+        for (let cell of row.content) {
+            if (typeof cell === "string") {
+                cell = { value: cell };
+            }
+            const elm = document.createElement("th");
+            if (cell.notText) {
+                elm.append(cell.value);
+            } else {
+                elm.textContent = cell.value;
+            }
+            if (cell.attributes) {
+                for (const attr in cell.attributes) {
+                    elm.setAttribute(attr, cell.attributes[attr]);
+                }
+            }
+            rowElm.append(elm);
+        }
+    }
+    if (desc.header) {
+        const head = table.createTHead();
+        makeHeaderRow(desc.header, head);
+    }
+    if (desc.footer) {
+        const head = table.createTFoot();
+        makeHeaderRow(desc.footer, head);
+    }
+    const tbody = table.createTBody();
+    for (const row of desc.data) {
+        const rowElm = tbody.insertRow();
+
+        for (let cell of row.content) {
+            if (typeof cell === "string") {
+                cell = { value: cell };
+            }
+            const elm = rowElm.insertCell();
+            if (cell.notText) {
+                elm.append(cell.value);
+            } else {
+                elm.textContent = cell.value;
+            }
+            if (cell.attributes) {
+                for (const attr in cell.attributes) {
+                    elm.setAttribute(attr, cell.attributes[attr]);
+                }
+            }
+            rowElm.append(elm);
+        }
+
+    }
+
+    return table;
+
+}
+/* --------------------------------------------------------------------------- */
